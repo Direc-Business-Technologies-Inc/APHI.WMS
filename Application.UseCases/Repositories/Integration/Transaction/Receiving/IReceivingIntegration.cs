@@ -1,0 +1,16 @@
+﻿using Application.DataTransferObjects.Transactions.Receiving;
+using Integration.SAP.Entities.Transactional.Receiving;
+using Shared.Entities;
+
+namespace Application.UseCases.Repositories.Integration.Transaction.Receiving;
+
+public interface IReceivingIntegration
+{
+    public Task<(IEnumerable<PurchaseOrderSAPDTO>, int)> GetPurchaseOrdersListAsync(DataGridIntent intent);
+    public Task<PurchaseOrderHeaderSAPDTO?> GetPurchaseOrderHeaderAsync(int docEntry);
+    public Task<IEnumerable<PurchaseOrderLineSAPDTO>> GetPurchaseOrderLinesAsync(int docEntry);
+    public Task<(IEnumerable<PurchaseDeliveryNoteSAPDTO>, int)> GetPurchaseDeliveryNotesListAsync(DataGridIntent intent);
+    public Task<PurchaseDeliveryNoteHeaderSAPDTO?> GetPurchaseDeliveryNoteHeaderAsync(int docEntry);
+    public Task<IEnumerable<PurchaseDeliveryNoteLineSAPDTO>> GetPurchaseDeliveryNoteLinesAsync(int docEntry);
+    public Task<bool> PostGoodsReceiptPOAsync(PurchaseDeliveryNoteDTO data);
+}

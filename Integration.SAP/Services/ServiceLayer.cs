@@ -31,10 +31,10 @@ public class ServiceLayer
 
         if (credentials is null)
         {
-            string uri = Environment.GetEnvironmentVariable("SAPSL__URI") ?? string.Empty;
-            string companyDB = Environment.GetEnvironmentVariable("SAPSL__CompanyDB") ?? string.Empty;
-            string userName = Environment.GetEnvironmentVariable("SAPSL__UserName") ?? string.Empty;
-            string password = Environment.GetEnvironmentVariable("SAPSL__Password") ?? string.Empty;
+            string uri = Environment.GetEnvironmentVariable("SAPSL_URI") ?? string.Empty;
+            string companyDB = Environment.GetEnvironmentVariable("SAPSL_CompanyDB") ?? string.Empty;
+            string userName = Environment.GetEnvironmentVariable("SAPSL_UserName") ?? string.Empty;
+            string password = Environment.GetEnvironmentVariable("SAPSL_Password") ?? string.Empty;
 
             if (!string.IsNullOrEmpty(uri) &&
                 !string.IsNullOrEmpty(companyDB) &&
