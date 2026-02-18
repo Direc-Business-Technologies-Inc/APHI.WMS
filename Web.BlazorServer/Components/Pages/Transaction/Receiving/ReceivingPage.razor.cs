@@ -13,7 +13,21 @@ public partial class ReceivingPage
     int SelectedTab { get; set; } = 0;
     #endregion Primitives
 
+    #region Overrides
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        SelectedTab = T.ToLower() == "grpo" ? 1 : 0;
+    }
+
+    #endregion Overrides
+
     #region Custom Functions
-    void TabChanged() => T = SelectedTab == 0 ? "po" : "grpo";
+    void TabChanged()
+    {
+        T = SelectedTab == 0 ? "po" : "grpo";
+        NavManager.NavigateTo($"/transactions/purchasing/receiving?T={T}");
+    }
     #endregion Custom Functions
 }
