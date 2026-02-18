@@ -12,6 +12,7 @@ public partial class AppBreadCrumbs
     #region Parameters
     [Parameter] public required string ModuleCode { get; set; } = string.Empty;
     [Parameter] public PageActionTypeEnum? PageAction { get; set; } = null;
+    [Parameter] public List<NavigationRouteVM> AdditionalRoutes { get; set; } = [];
     #endregion Parameters
 
     #region Injects
@@ -54,7 +55,7 @@ public partial class AppBreadCrumbs
 
             if (action.IsSuccess && action.Result is not null)
             {
-                Routes = action.Result;
+                Routes = [.. action.Result, .. AdditionalRoutes];
                 await InvokeAsync(StateHasChanged);
             }
 
