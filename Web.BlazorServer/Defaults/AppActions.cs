@@ -66,89 +66,18 @@ public enum AppActions
     UpdateRole,
     #endregion Administration - Role Management
 
-    #region Administration - Truck Assignment
-    [Description("Get All Trucks")]
-    GetAllTrucks,
-    [Description("Get Truck")]
-    GetTruck,
-    [Description("View Truck")]
-    ViewTruck,
-    [Description("Update Truck")]
-    UpdateTruck,
-    #endregion Administration - Truck Assignment
+    #region Transaction - Receiving
+    [Description("Get All Purchase Orders")]
+    GetAllPurchaseOrders,
+    [Description("Get All Purchase Delivery Notes")]
+    GetAllPurchaseDeliveryNotes,
+    [Description("Create Goods Receipt PO")]
+    CreateGoodsReceiptPO,
+    [Description("View Purchase Delivery Note")]
+    ViewPurchaseOrder,
+    [Description("View Purchase Order")]
+    ViewPurchaseDeliveryNote,
+    #endregion Transaction - Receiving
 
-    #region Transaction - Inventory
-    [Description("Get All Tanks")]
-    GetAllTanks,
-    [Description("Get All Tank Statuses")]
-    GetAllTankStatuses,
-    [Description("Create Tank")]
-    CreateTank,
-    [Description("View Tank")]
-    ViewTank,
-    [Description("Update Tank")]
-    UpdateTank,
-
-    [Description("Get All Items")]
-    GetAllItems,
-    #endregion Transaction - Inventory
-
-    #region Transaction - Procurement
-    [Description("Get Next Order DocNum")]
-    GetOrderDocNum,
-    [Description("Get All Orders")]
-    GetAllOrders,
-    [Description("Create Order")]
-    CreateOrder,
-    [Description("View Order")]
-    ViewOrder,
-    [Description("Update Order")]
-    UpdateOrder,
-    #endregion Transaction - Procurement
-
-    #region Transaction - InHouse Schedule
-    [Description("Get Next InHouse Schedules DocNum")]
-    GetInHouseSchedulesDocNum,
-    [Description("Get All InHouse Scheduless")]
-    GetAllInHouseSchedules,
-    [Description("Get InHouse Schedule")]
-    GetInHouseSchedule,
-    [Description("Create InHouse Schedules")]
-    CreateInHouseSchedules,
-    [Description("View InHouse Schedules")]
-    ViewInHouseSchedules,
-    [Description("Update InHouse Schedules")]
-    UpdateInHouseSchedules,
-    #endregion Transaction - InHouse Schedule
-
-    #region Transaction - ThirdParty Schedule
-    [Description("Get Next Trip Ticket DocNum")]
-    GetThirdPartySchedulesDocNum,
-    [Description("Get All ThirdParty Scheduless")]
-    GetAllThirdPartySchedules,
-    [Description("Get ThirdParty Schedule")]
-    GetThirdPartySchedule,
-    [Description("Create ThirdParty Schedules")]
-    CreateThirdPartySchedules,
-    [Description("View ThirdParty Schedules")]
-    ViewThirdPartySchedules,
-    [Description("Update ThirdParty Schedules")]
-    UpdateThirdPartySchedules,
-    #endregion Transaction - ThirdParty Schedule
-
-    #region Transaction - Trip Ticket
-    [Description("Get Next Trip Ticket DocNum")]
-    GetTripTicketDocNum,
-    [Description("Get All Trip Tickets")]
-    GetAllTripTickets,
-    [Description("Get ThirdParty Schedule")]
-    GetThirdParty,
-    [Description("Create Trip Ticket")]
-    CreateTripTicket,
-    [Description("View Trip Ticket")]
-    ViewTripTicket,
-    [Description("Update Trip Ticket")]
-    UpdateTripTicket,
-    #endregion Transaction - Trip Ticket
 
 }
