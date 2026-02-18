@@ -1,0 +1,113 @@
+﻿@using Web.BlazorServer.Components.Security
+@using Web.BlazorServer.Components.Shared.Skeletons
+@using Web.BlazorServer.ViewModels.Transaction.Receiving
+
+@inherits BaseForm<PurchaseDeliveryNoteVM>
+@page "/transactions/purchasing/receiving/goods-receipt-po/view"
+@layout ProtectedLayout
+@attribute [AppAuthorizationAttribute("VIEW", "ORCV")]
+
+<PageTitle>@(Creating ? "New Receiving Document" : string.Empty)@(Viewing ? $"PO {FormData.SapReference.DocNum}" : string.Empty)</PageTitle>
+
+<RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween" class="rz-mb-4">
+    <AppBreadCrumbs ModuleCode="ORCV" AdditionalRoutes="@AdditionalRoutes" />
+</RadzenStack>
+<AppContent>
+    <AppFormSkeleton TItem="PurchaseDeliveryNoteVM" Loading="@IsLoadingData" />
+    <RadzenStack Visible="@(!IsLoadingData)" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End" Gap="32px" class="rz-mb-2">
+        <RadzenStack Gap="0px">
+            <RadzenText TextStyle="TextStyle.Subtitle2" Text="@($"PO Ref. No.")" class="rz-m-0" />
+            <RadzenText Text="@($"PO# {FormData.SapReference.DocNum.ToString()}")" class="rz-m-0" />
+        </RadzenStack>
+        <RadzenStack Gap="0px">
+            <RadzenText TextStyle="TextStyle.Subtitle2" Text="@($"PO Doc. Date")" class="rz-m-0" />
+            <RadzenText Text="@FormData.DocDate.ToString("MMM dd, yyyy")" class="rz-m-0" />
+        </RadzenStack>
+        <RadzenStack Gap="0px">
+            <RadzenText TextStyle="TextStyle.Subtitle2" Text="@($"Doc. Due Date")" class="rz-m-0" />
+            <RadzenText Text="@FormData.DocDueDate.ToString("MMM dd, yyyy")" class="rz-m-0" />
+        </RadzenStack>
+    </RadzenStack>
+    <RadzenTemplateForm @ref="@TemplateForm" TItem="PurchaseDeliveryNoteVM" @bind-Data="@FormData" EditContext="@EditContext" Submit="@HandleSubmit">
+        <RadzenStack Gap="2rem">
+            <RadzenFieldset AllowCollapse Text="Details">
+                <ChildContent>
+                    <RadzenRow>
+                        <RadzenColumn Size="12" SizeMD="6">
+                            <RadzenFormField Text="Vendor Ref No." class="rz-w-100">
+                                <ChildContent>
+                                    <RadzenTextBox ReadOnly Value="@FormData.BusinessPartner.CardCode" Name="po_card_code" Disabled="@IsBusy" class="rz-w-100" />
+                                </ChildContent>
+                            </RadzenFormField>
+                        </RadzenColumn>
+                        <RadzenColumn Size="12" SizeMD="6">
+                            <RadzenFormField Text="Supplier Name" class="rz-w-100">
+                                <ChildContent>
+                                    <RadzenTextBox ReadOnly Value="@FormData.BusinessPartner.CardName" Name="po_card_name" Disabled="@IsBusy" class="rz-w-100" />
+                                </ChildContent>
+                            </RadzenFormField>
+                        </RadzenColumn>
+                    </RadzenRow>
+                    <RadzenRow class="rz-mt">
+                        <RadzenColumn Size="12" SizeMD="6">
+                            <RadzenFormField Text="Received By" class="rz-w-100">
+                                <ChildContent>
+                                    <RadzenTextBox ReadOnly="@Viewing" Value="@FormData.ReceivedBy" Name="po_rec_by" Disabled="@IsBusy" class="rz-w-100" />
+                                </ChildContent>
+                            </RadzenFormField>
+                        </RadzenColumn>
+                        <RadzenColumn Size="12" SizeMD="6">
+                            <RadzenFormField Text="Supplier Contact Person" class="rz-w-100">
+                                <ChildContent>
+                                    <RadzenTextBox ReadOnly Value="@(string.IsNullOrEmpty(FormData.SupplierContactPerson) ? "N/A" : FormData.SupplierContactPerson)" Name="po_contact_person" Disabled="@IsBusy" class="rz-w-100" />
+                                </ChildContent>
+                            </RadzenFormField>
+                        </RadzenColumn>
+                    </RadzenRow>
+                </ChildContent>
+            </RadzenFieldset>
+            <RadzenFieldset AllowCollapse Text="Details">
+                <ChildContent>
+                    <RadzenRow>
+                        <RadzenColumn>
+                            <AppTable @ref="@PurchaseDeliveryNoteTable" TItem="PurchaseDeliveryNoteLineVM" @bind-GridSettingsLoaded="@GridSettingsLoaded" Data="@FormData.DocumentLines">
+                                <Columns>
+                                    <RadzenDataGridColumn TItem="PurchaseDeliveryNoteLineVM"
+                                                          Property="@nameof(PurchaseDeliveryNoteLineVM.LineNum)"
+                                                          Width="40px" TextAlign="TextAlign.Center" />
+                                    <RadzenDataGridColumn TItem="PurchaseDeliveryNoteLineVM"
+                                                          Property="@nameof(PurchaseDeliveryNoteLineVM.ItemCode)"
+                                                          Title="Item Code" />
+                                    <RadzenDataGridColumn TItem="PurchaseDeliveryNoteLineVM"
+                                                          Property="@nameof(PurchaseDeliveryNoteLineVM.ItemName)"
+                                                          Title="Item Name" />
+                                    <RadzenDataGridColumn TItem="PurchaseDeliveryNoteLineVM"
+                                                          Property="@nameof(PurchaseDeliveryNoteLineVM.UoMName)"
+                                                          Title="UoM" Width="125px" />
+                                    <RadzenDataGridColumn TItem="PurchaseDeliveryNoteLineVM"
+                                                          Property="@nameof(PurchaseDeliveryNoteLineVM.Quantity)"
+                                                          Title="Quantity" Width="150px">
+                                        <Template Context="data">
+                                            <RadzenNumeric Format="N0" @bind-Value="@data.Quantity" Min="0" ReadOnly ShowUpDown="false" />
+                                        </Template>
+                                    </RadzenDataGridColumn>
+                                    <RadzenDataGridColumn TItem="PurchaseDeliveryNoteLineVM"
+                                                          Property="@nameof(PurchaseDeliveryNoteLineVM.InputType)"
+                                                          Title="Input" Width="100px" />
+                                </Columns>
+                            </AppTable>
+                        </RadzenColumn>
+                    </RadzenRow>
+                </ChildContent>
+            </RadzenFieldset>
+            <RadzenRow>
+                <RadzenColumn>
+                    <RadzenStack class="rz-mt-8" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
+                        <RadzenButton IsBusy="@IsBusy" Text="Back" Disabled="@(IsBusy || Creating)" ButtonStyle="ButtonStyle.Base" Click="@Return" />
+                    </RadzenStack>
+                </RadzenColumn>
+            </RadzenRow>
+        </RadzenStack>
+    </RadzenTemplateForm>
+</AppContent>
+
