@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Radzen;
+using Shared.Services.Repository;
+using Web.BlazorServer.Components.Security;
 using Web.BlazorServer.Components.Shared.CascadingValues;
 using Web.BlazorServer.Helpers;
 using Web.BlazorServer.Services.Implementation;
@@ -23,7 +25,9 @@ public partial class BaseComponent : ComponentBase
     [Inject] protected IToastService ToastService { get; set; } = default!;
     [Inject] protected IAlertService AlertService { get; set; } = default!;
     [Inject] protected IJSRuntime JS { get; set; } = default!;
+    [Inject] protected ICurrentUserService CurrentUserService { get; set; }
     [Inject] protected AuthorizationHelper Can { get; set; } = default!;
+    [Inject] protected AppAuthenticationService AuthenticationService { get; set; } = default!;
     #endregion Injects
 
     #region Primitives
