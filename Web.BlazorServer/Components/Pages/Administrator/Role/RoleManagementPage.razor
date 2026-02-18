@@ -21,7 +21,7 @@
                 <RadzenButton Visible="@Can.Create("OROL")" Icon="add" Size=ButtonSize.Small ButtonStyle="ButtonStyle.Success" Shade="Shade.Light" Click="@CreateRole" />
             </RadzenStack>
         </HeaderTemplate>
-        <Columns>
+        <GridColumns>
             <RadzenDataGridColumn TItem="RoleVM"
                                   Property="@nameof(RoleVM.Active)"
                                   Type="@typeof(bool)"
@@ -51,7 +51,7 @@
                     <RadzenButton Icon="arrow_right_alt" Size="ButtonSize.ExtraSmall" Click="() => ViewRole(data)" />
                 </Template>
             </RadzenDataGridColumn>
-        </Columns>
+        </GridColumns>
     </AppDataGrid>
 </AppContent>
 

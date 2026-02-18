@@ -22,7 +22,7 @@
                 <RadzenButton Visible="@Can.Create("OUSR")" Icon="add" Size=ButtonSize.Small ButtonStyle="ButtonStyle.Success" Shade="Shade.Light" Click="@CreateUser" />
             </RadzenStack>
         </HeaderTemplate>
-        <Columns>
+        <GridColumns>
             <RadzenDataGridColumn TItem="UserDataGridVM"
                                   Property="@nameof(UserDataGridVM.FullName)"
                                   Type="@typeof(string)"
@@ -69,7 +69,7 @@
                     </RadzenStack>
                 </Template>
             </RadzenDataGridColumn>
-        </Columns>
+        </GridColumns>
     </AppDataGrid>
 </AppContent>
 
