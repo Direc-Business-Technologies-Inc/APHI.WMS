@@ -1,6 +1,6 @@
 ﻿namespace Application.DataTransferObjects.Transactions.Commons;
 
-public class LsmsDocNumDTO
+public class AppDocNumDTO
 {
     public string Value { get; set; }
 }
