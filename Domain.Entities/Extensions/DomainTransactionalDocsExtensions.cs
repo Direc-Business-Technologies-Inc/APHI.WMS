@@ -5,10 +5,10 @@ namespace Domain.Extensions;
 
 public static class DomainTransactionalDocsExtensions
 {
-    public static T UpdateLsmsDocNums<T>(this T transDoc, LsmsDocNumVO lsmsDocNums) where T : TransactionalDocumentDEM
+    public static T UpdateLsmsDocNums<T>(this T transDoc, AppDocNumVO lsmsDocNums) where T : TransactionalDocumentDEM
     {
         transDoc
-            .Update(lsmsDocNums);
+            .UpdateAppDocNum(lsmsDocNums);
 
         return transDoc;
     }
@@ -16,7 +16,7 @@ public static class DomainTransactionalDocsExtensions
     public static T UpdateSapDocNums<T>(this T transDoc, SapDocumentReferenceVO sapDocNums) where T : TransactionalDocumentDEM
     {
         transDoc
-            .Update(sapDocNums);
+            .UpdateSapDocRef(sapDocNums);
 
         return transDoc;
     }
