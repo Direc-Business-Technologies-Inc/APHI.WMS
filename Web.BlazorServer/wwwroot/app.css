@@ -71,3 +71,9 @@ p, span {
 .rz-chkbox-box {
     border-width: 2px !important;
 }
+
+.rz-numeric-button-icon {
+    background-color: var(--rz-primary-light) !important;
+    color: var(--rz-white) !important;
+    border-radius: var( --rz-border-radius-1) !important;
+}
