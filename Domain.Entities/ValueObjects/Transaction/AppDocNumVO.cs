@@ -2,13 +2,13 @@
 
 namespace Domain.ValueObjects.Transaction;
 
-public class LsmsDocNumVO : ValueObject
+public class AppDocNumVO : ValueObject
 {
     public string Value { get; private set; }
 
-    LsmsDocNumVO() { }
+    AppDocNumVO() { }
 
-    public LsmsDocNumVO(string value)
+    public AppDocNumVO(string value)
     {
         Value = Guard.Against.NullOrEmpty(value, nameof(value), "LSMS Document Number cannot be null or empty");
     }
