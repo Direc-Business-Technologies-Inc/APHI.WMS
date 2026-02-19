@@ -18,7 +18,8 @@ public partial class ReceivingPage
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
-        SelectedTab = T.ToLower() == "grpo" ? 1 : 0;
+        if (T is not null)
+            SelectedTab = T.ToLower() == "grpo" ? 1 : 0;
     }
 
     #endregion Overrides
