@@ -17,7 +17,7 @@ public class ServiceLayerActions(
         string SapConnectionStringName = Environment.GetEnvironmentVariable("SapConnectionStringName") ??
             throw new MissingMemberException(nameof(SapConnectionStringName));
 
-        string? connString = configuration.GetConnectionString(SapConnectionStringName) ?? Environment.GetEnvironmentVariable($"ConnectionStrings__{SapConnectionStringName}") ?? throw new Exception($"Configuration does not have a connection named {SapConnectionStringName}");
+        string? connString = configuration.GetConnectionString(SapConnectionStringName) ?? Environment.GetEnvironmentVariable($"ConnectionStrings_{SapConnectionStringName}") ?? throw new Exception($"Configuration does not have a connection named {SapConnectionStringName}");
         return connString;
     }
 

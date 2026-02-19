@@ -7,12 +7,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Application.UseCases\Application.UseCases.csproj" />
     <ProjectReference Include="..\Database.Libraries\Database.Libraries.csproj" />
     <ProjectReference Include="..\Shared.Libraries\Shared.Libraries.csproj" />
   </ItemGroup>
 	<ItemGroup>
+		<PackageReference Include="Ardalis.GuardClauses" Version="5.0.0" />
 		<PackageReference Include="B1SLayer" Version="2.1.2" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="10.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="SQLScripts\**">
+			<CopyToOutputDirectory>Always</CopyToOutputDirectory>
+			<Link>Scripts\%(RecursiveDir)%(Filename)%(Extension)</Link>
+		</Content>
 	</ItemGroup>
 </Project>

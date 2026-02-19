@@ -26,7 +26,7 @@ public partial class AppDataGrid<TItem> : BaseComponent where TItem : class
     [Parameter] public RenderFragment Footer { get; set; }
     [Parameter] public RenderFragment LoadingTemplate { get; set; }
     [Parameter] public RenderFragment EmptyTemplate { get; set; }
-    [Parameter] public RenderFragment Columns { get; set; }
+    [Parameter] public RenderFragment GridColumns { get; set; }
     [Parameter] public bool ServerSide { get; set; } = true;
     [Parameter] public DataGridSettings GridSettings { get; set; } = new();
     [Parameter] public EventCallback<DataGridRowMouseEventArgs<TItem>> OnRowDoubleClick { get; set; }
@@ -64,7 +64,13 @@ public partial class AppDataGrid<TItem> : BaseComponent where TItem : class
     public async Task LoadDataAsync(LoadDataArgs args)
     {
 
-        if (IsBusy || ClientSide) return;
+        if (IsBusy || ClientSide)
+        {
+            DGResult = DataGridResultVM<TItem>.New(Data, Data.Count);
+
+            await InvokeAsync(StateHasChanged);
+            return;
+        }
 
         await InvokeAsync(StateHasChanged);
 

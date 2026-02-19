@@ -7,7 +7,7 @@ namespace Application.DataTransferObjects.Transactions.Commons;
 public class TransactionalDocumentDTO : AuditableDTO
 {
     public ApprovalStatus ApprovalStatus { get; set; } = ApprovalStatus.None;
-    public LsmsDocNumDTO LsmsDocNum { get; set; } = new();
+    public AppDocNumDTO LsmsDocNum { get; set; } = new();
     public SapDocumentReferenceDTO SapReference { get; set; } = new();
     public DocumentTypeDTO DocumentType { get; set; } = new();
 }

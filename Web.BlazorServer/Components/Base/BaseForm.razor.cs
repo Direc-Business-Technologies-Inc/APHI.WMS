@@ -7,6 +7,7 @@ namespace Web.BlazorServer.Components.Base;
 
 public abstract partial class BaseForm<TItem> : BaseComponent, IDisposable where TItem : class, new()
 {
+    
     public TItem FormData { get; set; } = default!;
     public TItem FormDataClone { get; set; } = default!;
     public RadzenButton SubmitBtn { get; set; } = default!;

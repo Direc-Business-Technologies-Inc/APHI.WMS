@@ -5,26 +5,42 @@ namespace Domain.ValueObjects.Transaction;
 
 public class SapDocumentReferenceVO : ValueObject
 {
-    public string? DocEntry { get; private set; }
-    public string? DocNum { get; private set; }
+    public int? DocEntry { get; private set; }
+    public int? DocNum { get; private set; }
+    public int? BaseDocEntry { get; private set; }
+    public int? BaseDocNum { get; private set; }
 
     SapDocumentReferenceVO() { }
 
-    public SapDocumentReferenceVO(string docEntry, string docNum)
+    public SapDocumentReferenceVO(int? docEntry = null, int? docNum = null, int? baseDocEntry = null, int? baseDocNum = null)
     {
         DocEntry = docEntry;
         DocNum = docNum;
+        BaseDocEntry = baseDocEntry;
+        BaseDocNum = baseDocNum;
     }
 
-    public SapDocumentReferenceVO SetDocEntry(string docEntry)
+    public SapDocumentReferenceVO SetDocEntry(int docEntry)
     {
-        DocEntry = Guard.Against.NullOrEmpty(docEntry, nameof(docEntry), "Document Entry cannot be null or empty");
+        DocEntry = Guard.Against.Null(docEntry, nameof(docEntry), "Document Entry cannot be null");
+        return this;
+    }
+    
+    public SapDocumentReferenceVO SetBaseDocEntry(int baseDocEntry)
+    {
+        BaseDocEntry = Guard.Against.Null(baseDocEntry, nameof(baseDocEntry), "Base Document Entry cannot be null");
         return this;
     }
 
-    public SapDocumentReferenceVO SetDocNum(string docNum)
+    public SapDocumentReferenceVO SetDocNum(int docNum)
     {
-        DocNum = Guard.Against.NullOrEmpty(docNum, nameof(docNum), "Document Number cannot be null or empty");
+        DocNum = Guard.Against.Null(docNum, nameof(docNum), "Document Number cannot be null");
+        return this;
+    }
+
+    public SapDocumentReferenceVO SetBaseDocNum(int baseDocNum)
+    {
+        BaseDocNum = Guard.Against.Null(baseDocNum, nameof(baseDocNum), "Base Document Number cannot be null");
         return this;
     }
 
@@ -32,6 +48,8 @@ public class SapDocumentReferenceVO : ValueObject
     {
         yield return DocEntry;
         yield return DocNum;
+        yield return BaseDocEntry;
+        yield return BaseDocNum;
     }
 
 }

@@ -9,7 +9,7 @@ namespace Domain.Entities.Transaction.Common;
 public abstract class TransactionalDocumentDEM : AuditableDEM, ITransactionalDocument
 {
     public ApprovalStatus ApprovalStatus { get; private set; }
-    public LsmsDocNumVO LsmsDocNum { get; private set; }
+    public AppDocNumVO LsmsDocNum { get; private set; }
     public SapDocumentReferenceVO? SapReference { get; private set; } = null;
 
     public Guid DocumentTypeId { get; private set; }
@@ -22,20 +22,14 @@ public abstract class TransactionalDocumentDEM : AuditableDEM, ITransactionalDoc
     protected TransactionalDocumentDEM
     (
         Guid documentType,
-        LsmsDocNumVO lsmsDocNums,
+        AppDocNumVO appDocNums,
         SapDocumentReferenceVO? sapDocNums = null
     )
     {
         DocumentTypeId = Guard.Against.NullOrEmpty(documentType, nameof(documentType), "Document type cannot be null");
-        LsmsDocNum = Guard.Against.Null(lsmsDocNums, nameof(lsmsDocNums), "LSMS Document Series cannot be null");
+        LsmsDocNum = Guard.Against.Null(appDocNums, nameof(appDocNums), "LSMS Document Series cannot be null");
         ApprovalStatus = ApprovalStatus.None;
     }
-
-    private Exception DomainException(string v)
-    {
-        throw new NotImplementedException();
-    }
-
 
     /**
      * DEV: Charles Maverick Herrera
@@ -55,13 +49,13 @@ public abstract class TransactionalDocumentDEM : AuditableDEM, ITransactionalDoc
         ApprovalStatus = approvalStatus;
     }
 
-    public TransactionalDocumentDEM Update(LsmsDocNumVO lsmsDocNum)
+    public TransactionalDocumentDEM UpdateAppDocNum(AppDocNumVO lsmsDocNum)
     {
         LsmsDocNum = Guard.Against.Null(lsmsDocNum, nameof(lsmsDocNum), "LSMS Document Series cannot be null");
         return this;
     }
 
-    public TransactionalDocumentDEM Update(SapDocumentReferenceVO sapReference)
+    public TransactionalDocumentDEM UpdateSapDocRef(SapDocumentReferenceVO sapReference)
     {
         SapReference = Guard.Against.Null(sapReference, nameof(sapReference), "SAP Document Series cannot be null");
         return this;

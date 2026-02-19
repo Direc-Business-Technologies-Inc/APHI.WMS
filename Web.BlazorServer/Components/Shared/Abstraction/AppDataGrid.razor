@@ -8,7 +8,7 @@
 <RadzenDataGrid TItem="TItem"
                 Visible="@GridSettingsLoaded"
                 @ref=@(DataGrid)
-                Count="@(DGResult.Count)"
+                Count="@(ClientSide ? Data.Count : DGResult.Count)"
                 IsLoading="@(IsBusy)"
                 LoadData="@(LoadDataAsync)"
                 Data=@(ClientSide ? Data : DGResult.Items)
@@ -32,8 +32,8 @@
     </HeaderTemplate>
 
     <Columns>
-        @if (Columns is not null)
-            @Columns
+        @if (GridColumns is not null)
+            @GridColumns
     </Columns>
 
     <LoadingTemplate>

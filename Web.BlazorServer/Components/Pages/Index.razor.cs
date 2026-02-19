@@ -42,9 +42,18 @@ public partial class Index
             NavManager.NavigateTo("/dashboard", true);
     }
 
-    protected override Task CancelEditing()
+    protected override async Task CancelEditing()
     {
-        throw new NotImplementedException();
+        var action = await AppActionFactory.RunAsync(async () =>
+        {
+            if (!AppBusyService.IsBusy(ActionLogin))
+                AppBusyService.SetBusy(ActionLogin, true);
+
+            var response = await JS!.InvokeAsync<AuthenticationVM>("LogoutAPI", FormData.UserName, FormData.Password, $"{NavManager.BaseUri}api/Authentication");
+            ToastService.Error("User Id cannot be parsed. Please try again.");
+
+            AppBusyService.SetBusy(ActionLogin, false);
+        }, AppActionOptionPresets.Loading(ActionLogin));
     }
 
     protected override async Task HandleSubmit()
@@ -55,7 +64,6 @@ public partial class Index
             AppBusyService.SetBusy(ActionLogin, true);
 
             var response = await JS!.InvokeAsync<AuthenticationVM>("LoginAPI", FormData.UserName, FormData.Password, $"{NavManager.BaseUri}api/Authentication");
-
             Success = response.Success;
             ShowMessage = true;
             if (!response.Success)
@@ -65,7 +73,6 @@ public partial class Index
             else
                 NavManager!.NavigateTo("/dashboard", true);
 
-            AppBusyService.SetBusy(ActionLogin, false);
         }, AppActionOptionPresets.Loading(ActionLogin));
     }
 
@@ -73,6 +80,8 @@ public partial class Index
     {
         throw new NotImplementedException();
     }
+
+
 
     #endregion Overrides
 
