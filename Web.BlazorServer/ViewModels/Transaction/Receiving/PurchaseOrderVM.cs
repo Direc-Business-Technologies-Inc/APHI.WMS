@@ -10,5 +10,5 @@ public class PurchaseOrderVM : MarketingDocumentVM
     public string ReceivedBy { get; set; } = string.Empty;
     public List<PurchaseOrderLineVM> DocumentLines { get; set; } = [];
 
-    public bool Validate() => !string.IsNullOrEmpty(ReceivedBy) && !DocumentLines.All(dl => dl.Quantity > 0);
+    public bool Validate() => !string.IsNullOrEmpty(ReceivedBy) && DocumentLines.All(dl => dl.Quantity > 0);
 }
