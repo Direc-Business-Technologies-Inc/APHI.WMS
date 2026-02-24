@@ -32,10 +32,16 @@ public class UpdateUserCmdHandler(
                    new EmailVO(request.User.Email.Address),
                    new AccountVO(new UserNameVO(request.User.Account.UserName.Value),
                                                 request.User.Account.HashedPassword,
+                                                request.User.Account.Locked,
                                                 request.User.Account.LockoutEnabled),
                    request.User.Company,
                    request.User.Role.Id,
                    request.User.PhoneNumber);
+
+        if (request.User.Active)
+            dem.Activate();
+        else
+            dem.Deactivate();
 
         appCommandRepo.Update(dem);
         return true;
