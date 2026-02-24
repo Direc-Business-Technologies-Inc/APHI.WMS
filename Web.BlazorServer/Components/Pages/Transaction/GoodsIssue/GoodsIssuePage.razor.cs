@@ -28,7 +28,7 @@ public partial class GoodsIssuePage
     void TabChanged()
     {
         T = SelectedTab == 0 ? "aprvd" : SelectedTab == 1 ? "pndng" : "rjct";
-        NavManager.NavigateTo($"/transactions/inventory/goods-receipt?T={T}");
+        NavManager.NavigateTo($"/transactions/inventory/goods-issue?T={T}");
     }
     #endregion Custom Functions
 }

@@ -37,7 +37,6 @@ public partial class GoodsIssueCVUPage
 
     #region Injects
     [Inject] IGoodsIssueHandler GoodsIssueHandler { get; set; } = default!;
-    [Inject] IBusinessPartnerHandler BpHandler { get; set; } = default!;
     [Inject] ITransactionTypeHandler TransTypeHandler { get; set; } = default!;
     [Inject] IWarehouseMasterDataHandler WarehouseHandler { get; set; } = default!;
     [Inject] IGridSettingsService GridSettingsService { get; set; } = default!;
@@ -52,7 +51,7 @@ public partial class GoodsIssueCVUPage
     bool IsLoadingData => AppBusyService.IsBusy(ActionGetGoodsIssue);
 
     readonly string ActionGetGoodsIssue = EnumHelper.GetEnumDescription(AppActions.ViewGoodsIssue);
-    readonly string ActionGetTransactionTypes = EnumHelper.GetEnumDescription(AppActions.GetVendors);
+    readonly string ActionGetTransactionTypes = EnumHelper.GetEnumDescription(AppActions.GetTransactionTypes);
     readonly string ActionGetWarehouses = EnumHelper.GetEnumDescription(AppActions.GetWarehouses);
     readonly string ActionCreateGoodsIssue = EnumHelper.GetEnumDescription(AppActions.CreateGoodsIssue);
 
