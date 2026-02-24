@@ -137,6 +137,20 @@
                                             <RadzenNumeric Format="N0" @bind-Value="@data.Quantity" Min="0" ReadOnly="@Viewing" ShowUpDown="@Creating" />
                                         </Template>
                                     </RadzenDataGridColumn>
+                                    <RadzenDataGridColumn TItem="GoodsReturnLineVM"
+                                                          Type="@typeof(bool)"
+                                                          Frozen
+                                                          FrozenPosition="FrozenColumnPosition.Right"
+                                                          Width="45px"
+                                                          MaxWidth="45px"
+                                                          Pickable="false" Sortable="false" Filterable="false"
+                                                          Visible="@Creating">
+                                        <Template Context="data">
+                                            <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceEvenly">
+                                                <RadzenButton Icon="delete" Size="ButtonSize.ExtraSmall" ButtonStyle="ButtonStyle.Danger" Click="() => RemoveLine(data)" />
+                                            </RadzenStack>
+                                        </Template>
+                                    </RadzenDataGridColumn>
                                 </Columns>
                             </AppTable>
                         </RadzenColumn>

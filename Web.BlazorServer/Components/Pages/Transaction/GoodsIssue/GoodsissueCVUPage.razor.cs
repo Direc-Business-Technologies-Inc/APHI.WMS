@@ -13,6 +13,7 @@ using Web.BlazorServer.Services.Repositories;
 using Web.BlazorServer.ViewModels.Enums;
 using Web.BlazorServer.ViewModels.Others;
 using Web.BlazorServer.ViewModels.Transaction.GoodsIssue;
+using Web.BlazorServer.ViewModels.Transaction.GoodsReceipt;
 
 namespace Web.BlazorServer.Components.Pages.Transaction.GoodsIssue;
 
@@ -279,6 +280,8 @@ public partial class GoodsIssueCVUPage
         if (transType is null)
             return;
     }
+
+    void RemoveLine(GoodsIssueLineVM item) => FormData.DocumentLines = [.. FormData.DocumentLines.Except([item])];
 
     #endregion Custom Functions
 }

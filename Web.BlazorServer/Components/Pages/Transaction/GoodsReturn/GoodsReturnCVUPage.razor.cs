@@ -272,5 +272,7 @@ public partial class GoodsReturnCVUPage
         }, AppActionOptionPresets.Loading(ActionGetWarehouses));
     }
 
+    void RemoveLine(GoodsReturnLineVM item) => FormData.DocumentLines.Remove(item);
+
     #endregion Custom Functions
 }

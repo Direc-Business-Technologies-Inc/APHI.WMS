@@ -65,7 +65,7 @@
                             </RadzenFormField>
                         </RadzenColumn>
                         <RadzenColumn Size="12" SizeMD="6">
-                            <RadzenFormField Text="Trnsaction Type" class="rz-w-100">
+                            <RadzenFormField Text="Transaction Type" class="rz-w-100">
                                 <ChildContent>
                                     <RadzenTextBox ReadOnly Visible="@Viewing" Value="@FormData.TransactionType.Name" Name="gr_trans_Type_name" Disabled="@IsBusy" class="rz-w-100" />
                                     <RadzenDropDown Visible="@(Creating)"
@@ -137,6 +137,20 @@
                                                           Title="Quantity" Width="150px">
                                         <Template Context="data">
                                             <RadzenNumeric Format="N0" @bind-Value="@data.Quantity" Min="0" ReadOnly="@Viewing" ShowUpDown="@Creating" />
+                                        </Template>
+                                    </RadzenDataGridColumn>
+                                    <RadzenDataGridColumn TItem="GoodsIssueLineVM"
+                                                          Type="@typeof(bool)"
+                                                          Frozen
+                                                          FrozenPosition="FrozenColumnPosition.Right"
+                                                          Width="45px"
+                                                          MaxWidth="45px"
+                                                          Pickable="false" Sortable="false" Filterable="false"
+                                                          Visible="@Creating">
+                                        <Template Context="data">
+                                            <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceEvenly">
+                                                <RadzenButton Icon="delete" Size="ButtonSize.ExtraSmall" ButtonStyle="ButtonStyle.Danger" Click="() => RemoveLine(data)" />
+                                            </RadzenStack>
                                         </Template>
                                     </RadzenDataGridColumn>
                                 </Columns>
