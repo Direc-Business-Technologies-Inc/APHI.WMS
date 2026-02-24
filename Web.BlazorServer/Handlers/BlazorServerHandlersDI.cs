@@ -32,6 +32,7 @@ public static class BlazorServerHandlersDI
         services.TryAddTransient<IBusinessPartnerHandler, BusinessPartnerHandler>();
         services.TryAddTransient<IItemMasterDataHandler, ItemMasterDataHandler>();
         services.TryAddTransient<IWarehouseMasterDataHandler, WarehouseMasterDataHandler>();
+        services.TryAddTransient<ITransactionTypeHandler, TransactionTypeHandler>();
 
         return services;
     }
