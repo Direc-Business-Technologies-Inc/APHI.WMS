@@ -6,10 +6,10 @@ SELECT
 	,T0.CardCode
 	,C0.CardName
 	,P0.Name [SupplierContactPerson]
-	,T0.Comments [Remarks]
+	,ISNULL(T0.Comments, '') [Remarks]
 	,CASE 
 		WHEN T0.CANCELED = 'Y' THEN 'Cancelled'	
-		WHEN T0.DocStatus = 'C' THEN 'Close'
+		WHEN T0.DocStatus = 'C' THEN 'Closed'
 	ELSE 'Open'
 	End as DocStatus
 FROM OPOR AS T0

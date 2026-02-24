@@ -121,14 +121,14 @@ public class ReceivingIntegration(
 
     public async Task<bool> PostGoodsReceiptPOAsync(PurchaseDeliveryNoteDTO data)
     {
-        List<GoodsReceiptPOLines> payloadLines = [];
+        List<GoodsReceiptPOLinesPayload> payloadLines = [];
 
         foreach (PurchaseDeliveryNoteLineDTO line in data.DocumentLines.Where(dl => dl.Quantity > 0))
             payloadLines.Add(new(line.BaseEntry, 22, line.BaseLine, data.DocumentLines.IndexOf(line), line.ItemCode, line.Quantity, line.TaxCode, line.Warehouse.WhsCode, EnumHelper.GetEnumDescription(line.InputType)));
 
-        GoodsReceiptPO payload = new(data.BusinessPartner.CardCode, data.DocDate, data.DocDueDate, data.DocDate, data.ReceivedBy, payloadLines);
+        GoodsReceiptPOPayload payload = new(data.BusinessPartner.CardCode, data.DocDate, data.DocDueDate, data.DocDate, data.ReceivedBy, payloadLines);
 
-        await SLActions.PostAsync<object, GoodsReceiptPO>("PurchaseDeliveryNotes", payload);
+        await SLActions.PostAsync<object, GoodsReceiptPOPayload>("PurchaseDeliveryNotes", payload);
 
         return true;
     }

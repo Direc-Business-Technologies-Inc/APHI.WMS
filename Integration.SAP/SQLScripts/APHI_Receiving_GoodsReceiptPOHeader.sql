@@ -1,8 +1,8 @@
 SELECT 
 	 T0.DocEntry
 	,T0.DocNum
-	,T1.BaseEntry
-	,T3.DocNum [BaseDocNum]
+	,ISNULL(T1.BaseEntry, -1) [BaseEntry]
+	,ISNULL(T3.BaseDocNum, -1) [BaseDocNum]
 	,T0.DocDate
 	,T0.DocDueDate
 	,T0.CardCode
