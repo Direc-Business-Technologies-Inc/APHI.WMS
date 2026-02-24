@@ -98,4 +98,14 @@ public enum AppActions
     ViewGoodsReturn,
     #endregion Transaction - Goods Return
 
+    #region Transaction - Goods Receipt
+    [Description("Get All Goods Receipts")]
+    GetAllGoodsReceipts,
+    [Description("Create Goods Receipt")]
+    CreateGoodsReceipt,
+    [Description("View Goods Receipt Request")]
+    ViewGoodsReceiptRequest,
+    [Description("View Goods Receipt")]
+    ViewGoodsReceipt,
+    #endregion Transaction - Goods Receipt
 }
