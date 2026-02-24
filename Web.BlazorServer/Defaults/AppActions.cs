@@ -14,6 +14,8 @@ public enum AppActions
     GetCustomers,
     [Description("Get Vendors")]
     GetVendors,
+    [Description("Get TransactionTypes")]
+    GetTransactionTypes,
     [Description("Get Warehouses")]
     GetWarehouses,
     [Description("Get Vendor")]
