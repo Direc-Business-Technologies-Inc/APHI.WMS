@@ -2,6 +2,6 @@
 
 public class WarehouseVM
 {
-    public string WhsCode { get; set; }
-    public string WhsName { get; set; }
+    public string WhsCode { get; set; } = string.Empty;
+    public string WhsName { get; set; } = string.Empty;
 }
