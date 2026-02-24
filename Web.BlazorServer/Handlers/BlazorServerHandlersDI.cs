@@ -5,6 +5,7 @@ using Web.BlazorServer.Handlers.Implementations.Administration.User;
 using Web.BlazorServer.Handlers.Implementations.Others;
 using Web.BlazorServer.Handlers.Implementations.System;
 using Web.BlazorServer.Handlers.Implementations.Transaction.GoodsIssue;
+using Web.BlazorServer.Handlers.Implementations.Transaction.GoodsReceipt;
 using Web.BlazorServer.Handlers.Implementations.Transaction.GoodsReturn;
 using Web.BlazorServer.Handlers.Implementations.Transaction.Receiving;
 using Web.BlazorServer.Handlers.Repositories.Administration.Authorization;
@@ -13,6 +14,7 @@ using Web.BlazorServer.Handlers.Repositories.Administration.User;
 using Web.BlazorServer.Handlers.Repositories.Others;
 using Web.BlazorServer.Handlers.Repositories.System;
 using Web.BlazorServer.Handlers.Repositories.Transaction.GoodsIssue;
+using Web.BlazorServer.Handlers.Repositories.Transaction.GoodsReceipt;
 using Web.BlazorServer.Handlers.Repositories.Transaction.GoodsReturn;
 using Web.BlazorServer.Handlers.Repositories.Transaction.Receiving;
 
@@ -34,6 +36,7 @@ public static class BlazorServerHandlersDI
         services.TryAddTransient<IBusinessPartnerHandler, BusinessPartnerHandler>();
         services.TryAddTransient<IItemMasterDataHandler, ItemMasterDataHandler>();
         services.TryAddTransient<IWarehouseMasterDataHandler, WarehouseMasterDataHandler>();
+        services.TryAddTransient<IGoodsReceiptHandler, GoodsReceiptHandler>();
         services.TryAddTransient<IGoodsIssueHandler, GoodsIssueHandler>();
         services.TryAddTransient<ITransactionTypeHandler, TransactionTypeHandler>();
 
