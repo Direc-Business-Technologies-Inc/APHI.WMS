@@ -2,7 +2,7 @@
 
 namespace Integration.SAP.Entities.Transactional.Receiving;
 
-public class GoodsReceiptPOLines
+public class GoodsReceiptPOLinesPayload
 {
     public int BaseEntry { get; private set; }
     public int BaseType { get; private set; }
@@ -14,7 +14,7 @@ public class GoodsReceiptPOLines
     public string WarehouseCode { get; private set; }
     public string U_InputType { get; private set; }
 
-    public GoodsReceiptPOLines(int baseEntry,
+    public GoodsReceiptPOLinesPayload(int baseEntry,
                                int baseType,
                                int baseLine,
                                int lineNum,
