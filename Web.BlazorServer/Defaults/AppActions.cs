@@ -14,6 +14,8 @@ public enum AppActions
     GetCustomers,
     [Description("Get Vendors")]
     GetVendors,
+    [Description("Get TransactionTypes")]
+    GetTransactionTypes,
     [Description("Get Warehouses")]
     GetWarehouses,
     [Description("Get Vendor")]
@@ -95,5 +97,27 @@ public enum AppActions
     [Description("View Goods Return")]
     ViewGoodsReturn,
     #endregion Transaction - Goods Return
+
+    #region Transaction - Goods Receipt
+    [Description("Get All Goods Receipts")]
+    GetAllGoodsReceipts,
+    [Description("Create Goods Receipt")]
+    CreateGoodsReceipt,
+    [Description("View Goods Receipt Request")]
+    ViewGoodsReceiptRequest,
+    [Description("View Goods Receipt")]
+    ViewGoodsReceipt,
+    #endregion Transaction - Goods Receipt
+
+    #region Transaction - Goods Issue
+    [Description("Get All Goods Issues")]
+    GetAllGoodsIssues,
+    [Description("Create Goods Issue")]
+    CreateGoodsIssue,
+    [Description("View Goods Issue Request")]
+    ViewGoodsIssueRequest,
+    [Description("View Goods Issue")]
+    ViewGoodsIssue,
+    #endregion Transaction - Goods Issue
 
 }

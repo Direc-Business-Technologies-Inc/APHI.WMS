@@ -13,8 +13,6 @@ public class ReceivingHandler(
     ISender Sender) 
     : IReceivingHandler
 {
-    private IRequest<bool> qry;
-
     public async Task<(IEnumerable<PurchaseDeliveryNoteDataGridVM> Data, int Count)> GetPurchaseDeliveryNoteDataGridAsync(DataGridIntent intent)
     {
         GetPurchaseDeliveryNotesQry qry = new(intent);

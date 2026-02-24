@@ -1,0 +1,10 @@
+﻿using Web.BlazorServer.ViewModels.Others;
+using Web.BlazorServer.ViewModels.Transaction.Commons;
+
+namespace Web.BlazorServer.ViewModels.Transaction.GoodsReceipt;
+
+public class GoodsReceiptLineVM : ItemVM
+{
+    public WarehouseVM Warehouse { get; set; } = new();
+
+}

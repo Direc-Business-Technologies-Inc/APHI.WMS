@@ -2,7 +2,7 @@
 
 namespace Integration.SAP.Entities.Transactional.Receiving;
 
-public class GoodsReceiptPO
+public class GoodsReceiptPOPayload
 {
     public string CardCode { get; private set; }
     public DateTime DocDate { get; private set; }
@@ -10,14 +10,14 @@ public class GoodsReceiptPO
     public DateTime TaxDate { get; private set; }
     public string U_RecBy { get; private set; }
     public string Comments { get; private set; }
-    public List<GoodsReceiptPOLines> DocumentLines { get; private set; } = [];
+    public List<GoodsReceiptPOLinesPayload> DocumentLines { get; private set; } = [];
 
-    public GoodsReceiptPO(string cardCode,
+    public GoodsReceiptPOPayload(string cardCode,
                           DateTime docDate,
                           DateTime docDueDate,
                           DateTime taxDate,
                           string recBy,
-                          List<GoodsReceiptPOLines> documentLines)
+                          List<GoodsReceiptPOLinesPayload> documentLines)
     {
         CardCode = Guard.Against.NullOrEmpty(cardCode, nameof(CardCode), "Card Code cannot be null or empty");
         DocDate = Guard.Against.NullOrOutOfSQLDateRange(docDate, nameof(DocDate), "Doc Date cannot be null or out of range");

@@ -10,6 +10,6 @@
         public string CardCode { get; set; }
         public string CardName { get; set; }
         public string SupplierContactPerson { get; set; }
-        public string Comments { get; set; }
+        public string Remarks { get; set; }
     }
 }

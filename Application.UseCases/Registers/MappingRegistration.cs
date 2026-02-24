@@ -2,6 +2,9 @@
 using Application.DataTransferObjects.Others;
 using Application.DataTransferObjects.Others.SAP;
 using Application.DataTransferObjects.Transactions.Commons;
+using Application.DataTransferObjects.Transactions.Goodsissue;
+using Application.DataTransferObjects.Transactions.GoodsIssue;
+using Application.DataTransferObjects.Transactions.GoodsReceipt;
 using Application.DataTransferObjects.Transactions.GoodsReturn;
 using Application.DataTransferObjects.Transactions.GoodsReturn.SAP;
 using Application.DataTransferObjects.Transactions.Procurement.Order;
@@ -84,6 +87,93 @@ public class MappingRegistration : IRegister
         #endregion DTO to VO
 
         #region SAP DTO to DTO
+
+        #region Others
+
+        config.NewConfig<TransactionTypeSAPDTO, TransactionTypeDTO>()
+            .Map(d => d.Code, s => s.Code)
+            .Map(d => d.Name, s => s.Name)
+            .Map(d => d.Account, s => new GLAccountDTO()
+            {
+                AcctCode = s.AcctCode,
+                AcctName = s.AcctName,
+            });
+
+        #endregion Others
+
+        #region Goods Issue
+
+        config.NewConfig<GoodsIssueHeaderSAPDTO, GoodsIssueDTO>()
+            .Map(d => d.SapReference, s => new SapDocumentReferenceDTO()
+            {
+                DocEntry = s.DocEntry,
+                DocNum = s.DocNum,
+            })
+            .Map(d => d.PreparedBy, s => s.PreparedBy)
+            .Map(d => d.TransactionType, s => new TransactionTypeDTO()
+            {
+                Code = s.TransTypeCode,
+                Name = s.TransTypeName,
+                Account = new GLAccountDTO()
+                {
+                    AcctCode = s.AcctCode,
+                    AcctName = s.AcctName,
+                }
+            })
+            .Map(d => d.DocDate, s => s.DocDate);
+
+        config.NewConfig<GoodsIssueLineSAPDTO, GoodsIssueLineDTO>()
+            .Map(d => d.LineNum, s => s.LineNum + 1)
+            .Map(d => d.ItemCode, s => s.ItemCode)
+            .Map(d => d.ItemName, s => s.ItemName)
+            .Map(d => d.Quantity, s => s.Quantity)
+            .Map(d => d.UoMCode, s => s.UoMCode)
+            .Map(d => d.UoMValue, s => s.UoMValue)
+            .Map(d => d.UoMName, s => s.UoMName)
+            .Map(d => d.Warehouse, s => new WarehouseDTO()
+            {
+                WhsCode = s.WhsCode,
+                WhsName = s.WhsName,
+            });
+
+        #endregion Goods Issue
+
+        #region Goods Receipt
+
+        config.NewConfig<GoodsReceiptHeaderSAPDTO, GoodsReceiptDTO>()
+            .Map(d => d.SapReference, s => new SapDocumentReferenceDTO() 
+            { 
+                DocEntry = s.DocEntry,
+                DocNum = s.DocNum,
+            })
+            .Map(d => d.PreparedBy, s => s.PreparedBy)
+            .Map(d => d.TransactionType, s => new TransactionTypeDTO()
+            {
+                Code = s.TransTypeCode,
+                Name = s.TransTypeName,
+                Account = new GLAccountDTO()
+                {
+                    AcctCode = s.AcctCode,
+                    AcctName = s.AcctName,
+                }
+            })
+            .Map(d => d.DocDate, s => s.DocDate);
+
+        config.NewConfig<GoodsReceiptLineSAPDTO, GoodsReceiptLineDTO>()
+            .Map(d => d.LineNum, s => s.LineNum + 1)
+            .Map(d => d.ItemCode, s => s.ItemCode)
+            .Map(d => d.ItemName, s => s.ItemName)
+            .Map(d => d.Quantity, s => s.Quantity)
+            .Map(d => d.UoMCode, s => s.UoMCode)
+            .Map(d => d.UoMValue, s => s.UoMValue)
+            .Map(d => d.UoMName, s => s.UoMName)
+            .Map(d => d.Warehouse, s => new WarehouseDTO()
+            {
+                WhsCode = s.WhsCode,
+                WhsName = s.WhsName,
+            });
+
+        #endregion Goods Receipt
 
         #region Goods Return
 
