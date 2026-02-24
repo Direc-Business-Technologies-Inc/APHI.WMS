@@ -1,0 +1,36 @@
+﻿@using Web.BlazorServer.ViewModels.Transaction.Commons
+
+@inherits BaseComponent
+
+<RadzenStack Gap="2rem">
+    <AppDataGrid @ref="@IssueItemsDataGrid"
+                 TITem="ItemVM"
+                 GridSettingsLoaded="@GridSettingsLoaded"
+                 DataGetter="@LoadDataAsync"
+                 ActionName="ActionGetItems"
+                 SelectedItems="@SelectedItems"
+                 DataGridSelectionMode="DataGridSelectionMode.Multiple"
+                 OnRowSelect="@OnRowSelect"
+                 OnRowDeselect="@OnRowDeselect">
+        <GridColumns>
+            <RadzenDataGridColumn TItem="ItemVM"
+                                  Width="45px"
+                                  TextAlign="TextAlign.Center"
+                                  Frozen
+                                  FrozenPosition="FrozenColumnPosition.Left">
+                <Template Context="data">
+                    <RadzenCheckBox Value="@(SelectedItems.Any(si => si.ItemCode == data.ItemCode))" />
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="ItemVM"
+                                  Title="Item Code"
+                                  Property="@nameof(ItemVM.ItemCode)" />
+            <RadzenDataGridColumn TItem="ItemVM"
+                                  Title="Item Name"
+                                  Property="@nameof(ItemVM.ItemName)" />
+            <RadzenDataGridColumn TItem="ItemVM"
+                                  Title="UoM"
+                                  Property="@nameof(ItemVM.UoMName)" />
+        </GridColumns>
+    </AppDataGrid>
+</RadzenStack>
