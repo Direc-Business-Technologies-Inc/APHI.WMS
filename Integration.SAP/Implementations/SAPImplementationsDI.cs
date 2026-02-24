@@ -1,4 +1,6 @@
 ﻿using Application.UseCases.Repositories.Integration.Others;
+using Application.UseCases.Repositories.Integration.Transaction.GoodsIssue;
+using Application.UseCases.Repositories.Integration.Transaction.GoodsReceipt;
 using Application.UseCases.Repositories.Integration.Transaction.GoodsReturn;
 using Application.UseCases.Repositories.Integration.Transaction.Receiving;
 using Integration.SAP.Implementations.Others;
@@ -20,6 +22,9 @@ public static class SAPImplementationsDI
         services.TryAddTransient<IBusinessPartnerIntegration, BusinessPartnerIntegration>();
         services.TryAddTransient<IItemMasterDataIntegration, ItemMasterDataIntegration>();
         services.TryAddTransient<IWarehouseMasterDataIntegration, WarehouseMasterDataIntegration>();
+        services.TryAddTransient<ITransactionTypeIntegration, TransactionTypeIntegration>();
+        services.TryAddTransient<IGoodsIssueIntegration, GoodsIssueIntegration>();
+        services.TryAddTransient<IGoodsReceiptIntegration, GoodsReceiptIntegration>();
 
         return services;
     }
