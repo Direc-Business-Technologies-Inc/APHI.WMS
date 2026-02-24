@@ -1,6 +1,6 @@
 SELECT 
-	  T0.Name [Code] 
-	, T0.U_TransType [Name]
+	  T0.Code
+	, T0.Name
 	, T1.AcctCode
 	, T1.AcctName
 FROM [@TRANSACTION_TYPE] T0
