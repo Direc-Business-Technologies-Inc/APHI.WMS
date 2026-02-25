@@ -18,7 +18,7 @@
     <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End" Gap="8px" class="rz-mb-2">
         <RadzenBadge BadgeStyle="@(Creating? BadgeStyle.Success: FormData.Active? BadgeStyle.Success: BadgeStyle.Base)" Text="@(Creating ? "New" : FormData.Active ? "Active" : "Inactive")" />
         |
-        <RadzenText Text="@(string.IsNullOrEmpty(FormData.Code) ? "LSMS Role" : FormData.Code)" />
+        <RadzenText Text="@(string.IsNullOrEmpty(FormData.Code) ? "WMS Role" : FormData.Code)" />
         |
         <RadzenText Text="@FormData.CreatedDate.ToString("MMM dd, yyyy")" />
     </RadzenStack>
