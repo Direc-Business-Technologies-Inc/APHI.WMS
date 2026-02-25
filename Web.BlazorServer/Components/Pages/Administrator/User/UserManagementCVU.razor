@@ -139,8 +139,7 @@
                                 <RadzenColumn Size="12">
                                     <RadzenFormField Text="Role" class="rz-w-100" AllowFloatingLabel="false">
                                         <ChildContent>
-                                            <RadzenTextBox Visible="@Viewing" @bind-Value="@FormData.Role.Name" />
-                                            <RadzenDropDown Visible="@(Creating || Updating)" @bind-Value="@SelectedRole" Placeholder="Administrator" Data="@Roles" TextProperty="@nameof(RoleVM.Name)" AllowFiltering Change="@OnRoleSelect" FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Name="user_role" />
+                                            <RadzenDropDown Visible="@(Creating || Updating)" @bind-Value="@FormData.Role" Placeholder="Administrator" Data="@Roles" TextProperty="@nameof(RoleVM.Name)" AllowFiltering  FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Name="user_role" />
                                         </ChildContent>
                                         <Helper>
                                             <RadzenRequiredValidator Component="user_role" Text="User Role is required" Popup />

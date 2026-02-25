@@ -12,7 +12,7 @@ public class UserVM : AuditableVM
     public AccountVM Account { get; set; } = new();
     public RoleVM? Role { get; set; } = null;
 
-    public string? PhoneNumber { get; set; }
+    public string? PhoneNumber { get; set; } = string.Empty;
     public string Company { get; set; } = string.Empty;
     public string BiometricsId { get; set; } = string.Empty;
     public bool Active { get; set; } = true;
