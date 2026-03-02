@@ -4,7 +4,7 @@ public class GoodsReturnLineSAPDTO
 {
     public int DocEntry { get; set; }
     public int DocNum { get; set; }
-    public string LineNum { get; set; }
+    public int LineNum { get; set; }
     public string ItemCode { get; set; }
     public string ItemName { get; set; }
     public decimal Quantity { get; set; }

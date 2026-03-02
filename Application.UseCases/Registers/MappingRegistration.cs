@@ -390,6 +390,11 @@ public class MappingRegistration : IRegister
             .Map(d => d.UoMCode, s => s.UoMCode)
             .Map(d => d.UoMValue, s => s.UoMValue)
             .Map(d => d.UoMName, s => s.UoMName)
+            .Map(d => d.Warehouse, s => new WarehouseDTO()
+            {
+                WhsCode = s.WhsCode,
+                WhsName = s.WhsName,
+            })
             .Map(d => d.InputType, s => EnumHelper.ParseStringToEnum<InputType>(s.InputType));
 
         config.NewConfig<PurchaseOrderDTO, PurchaseDeliveryNoteDTO>()

@@ -40,7 +40,7 @@ namespace Web.BlazorServer.Handlers.Implementations.Transaction.GoodsReturn
         public async Task<(IEnumerable<GRRDataGridVM> Data, int Count)> GetGoodsReturnRequestDataGridAsync(DataGridIntent intent)
         {
             GetGoodsReturnRequestsQry qry = new(intent);
-            (IEnumerable<GoodsReturnRequestDTO> Data, int Count) = await Sender.Send(qry);
+            (IEnumerable<GRRDataGridDTO> Data, int Count) = await Sender.Send(qry);
 
             return (Data.Adapt<IEnumerable<GRRDataGridVM>>(), Count);
         }

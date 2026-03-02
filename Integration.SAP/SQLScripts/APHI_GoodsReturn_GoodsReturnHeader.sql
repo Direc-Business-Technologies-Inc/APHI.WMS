@@ -25,6 +25,4 @@ LEFT JOIN  POR1 T4 ON T4.DocEntry = T3.BaseEntry AND T4.ObjType = T2.BaseType
 LEFT JOIN OPOR T5 ON T5.DocEntry = T4.DocEntry
 LEFT JOIN  RRR1 T6 ON T6.DocEntry = T1.BaseEntry AND T6.ObjType = T1.BaseType
 LEFT JOIN ORRR T7 ON T7.DocEntry = T6.DocEntry
-WHERE 
-	T0.DocStatus = 'O'
-	AND T0.DocEntry = @DocEntry
+WHERE T0.DocEntry = @DocEntry

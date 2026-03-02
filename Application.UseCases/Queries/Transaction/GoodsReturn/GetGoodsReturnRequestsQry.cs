@@ -7,16 +7,16 @@ using Shared.Entities;
 
 namespace Application.UseCases.Queries.Transaction.GoodsReturn;
 
-public record GetGoodsReturnRequestsQry(DataGridIntent Intent) : IRequest<(IEnumerable<GoodsReturnRequestDTO> Data, int Count)>;
+public record GetGoodsReturnRequestsQry(DataGridIntent Intent) : IRequest<(IEnumerable<GRRDataGridDTO> Data, int Count)>;
 
 public class GetGoodsReturnRequestsQryHandler(
     IGoodsReturnIntegration goodsReturnIntegration)
-    : IRequestHandler<GetGoodsReturnRequestsQry, (IEnumerable<GoodsReturnRequestDTO> Data, int Count)>
+    : IRequestHandler<GetGoodsReturnRequestsQry, (IEnumerable<GRRDataGridDTO> Data, int Count)>
 {
-    public async Task<(IEnumerable<GoodsReturnRequestDTO> Data, int Count)> Handle(GetGoodsReturnRequestsQry request, CancellationToken cancellationToken)
+    public async Task<(IEnumerable<GRRDataGridDTO> Data, int Count)> Handle(GetGoodsReturnRequestsQry request, CancellationToken cancellationToken)
     {
         (IEnumerable<GoodsReturnRequestsSAPDTO> Data, int Count) = await goodsReturnIntegration.GetGRRsListAsync(request.Intent);
 
-        return (Data.Adapt<IEnumerable<GoodsReturnRequestDTO>>(), Count);
+        return (Data.Adapt<IEnumerable<GRRDataGridDTO>>(), Count);
     }
 }

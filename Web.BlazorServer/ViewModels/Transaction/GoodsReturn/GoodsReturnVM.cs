@@ -13,6 +13,7 @@ public class GoodsReturnVM : MarketingDocumentVM
     public int PODocEntry { get; set; }
     public int PODocNum { get; set; }
     public string PreparedBy { get; set; }
+    public bool Standalone { get; set; } = true;
     public WarehouseVM Warehouse { get; set; } = new();
 
     public List<GoodsReturnLineVM> DocumentLines { get; set; } = [];
