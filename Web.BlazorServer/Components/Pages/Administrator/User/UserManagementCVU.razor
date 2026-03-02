@@ -115,23 +115,21 @@
                 <RadzenColumn Size="12" SizeMD="4">
                     <RadzenFieldset AllowCollapse Text="Account">
                         <ChildContent>
-                            <RadzenRow Gap="1rem" class="rz-mt-6 rz-mb-3">
-                                <RadzenColumn Visible="@(Viewing || Updating)" Size="12" SizeMD="3">
-                                    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="8px" class="rz-h-100">
-                                        <RadzenSwitch ReadOnly="@(Viewing)" @bind-Value="@FormData.Active" />
-                                        <RadzenText class="rz-m-0" TextStyle="TextStyle.Subtitle2" Text="@(FormData.Active ? "Active" : "Inactive")" />
-                                    </RadzenStack>
-                                </RadzenColumn>
-                                <RadzenColumn Visible="@(Viewing || Updating)" Size="12" SizeMD="3">
-                                    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="8px" class="rz-h-100">
-                                        <RadzenSwitch ReadOnly="@(Viewing)" @bind-Value="@(FormData.Account.Locked)" />
-                                        <RadzenText class="rz-m-0" TextStyle="TextStyle.Subtitle2" Text="@(!FormData.Account.Locked ? "Unlocked" : "Locked")" />
-                                    </RadzenStack>
-                                </RadzenColumn>
-                                <RadzenColumn Size="12" SizeMD="4">
-                                    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="8px" class="rz-h-100">
-                                        <RadzenSwitch ReadOnly="@(Viewing)" @bind-Value="@FormData.Account.LockoutEnabled" />
-                                        <RadzenText class="rz-m-0" TextStyle="TextStyle.Subtitle2" Text="@(FormData.Account.LockoutEnabled ? "Lockout Enabled" : "Lockout Disabled")" />
+                            <RadzenRow Gap="100" class="rz-mt-6 rz-mb-3">
+                                <RadzenColumn Size="12">
+                                    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="16px" Wrap="FlexWrap.Wrap" class="rz-w-100">
+                                        <RadzenStack Visible="@(Viewing || Updating)" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="8px" class="rz-h-100">
+                                            <RadzenSwitch ReadOnly="@(Viewing)" @bind-Value="@FormData.Active" />
+                                            <RadzenText class="rz-m-0" TextStyle="TextStyle.Subtitle2" Text="@(FormData.Active ? "Active" : "Inactive")" />
+                                        </RadzenStack>
+                                        <RadzenStack Visible="@(Viewing || Updating)" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="8px" class="rz-h-100">
+                                            <RadzenSwitch ReadOnly="@(Viewing)" @bind-Value="@(FormData.Account.Locked)" />
+                                            <RadzenText class="rz-m-0" TextStyle="TextStyle.Subtitle2" Text="@(!FormData.Account.Locked ? "Unlocked" : "Locked")" />
+                                        </RadzenStack>
+                                        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="8px" class="rz-h-100">
+                                            <RadzenSwitch ReadOnly="@(Viewing)" @bind-Value="@FormData.Account.LockoutEnabled" />
+                                            <RadzenText class="rz-m-0" TextStyle="TextStyle.Subtitle2" Text="@(FormData.Account.LockoutEnabled ? "Lockout Enabled" : "Lockout Disabled")" />
+                                        </RadzenStack>
                                     </RadzenStack>
                                 </RadzenColumn>
                             </RadzenRow>
@@ -139,7 +137,8 @@
                                 <RadzenColumn Size="12">
                                     <RadzenFormField Text="Role" class="rz-w-100" AllowFloatingLabel="false">
                                         <ChildContent>
-                                            <RadzenDropDown Visible="@(Creating || Updating)" @bind-Value="@FormData.Role" Placeholder="Administrator" Data="@Roles" TextProperty="@nameof(RoleVM.Name)" AllowFiltering  FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Name="user_role" />
+                                            <RadzenTextBox Visible="@Viewing" ReadOnly Value="@FormData.Role?.Name" Placeholder="WMS-0000" Name="user_username" Disabled="@IsBusy" class="rz-w-100" />
+                                            <RadzenDropDown Visible="@(Creating || Updating)" @bind-Value="@FormData.Role" Placeholder="Administrator" Data="@Roles" TextProperty="@nameof(RoleVM.Name)" AllowFiltering FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Name="user_role" />
                                         </ChildContent>
                                         <Helper>
                                             <RadzenRequiredValidator Component="user_role" Text="User Role is required" Popup />
