@@ -11,7 +11,7 @@ SELECT
 	,T1.NumPerMsr [UoMValue]
 	,T3.UomName [UoMName]
 FROM OIGE T0
-INNER JOIN IGN1 T1 ON T1.DocEntry = T0.DocEntry
+INNER JOIN IGE1 T1 ON T1.DocEntry = T0.DocEntry
 INNER JOIN OITM T2 ON T2.ItemCode = T1.ItemCode
 LEFT JOIN OUOM AS T3 ON T3.UomEntry = T1.UomEntry
 INNER JOIN OWHS T8 ON T8.WhsCode = T1.WhsCode
