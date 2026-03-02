@@ -12,26 +12,21 @@
     </HeaderTemplate>
     <GridColumns>
         <RadzenDataGridColumn TItem="GoodsReceiptDataGridVM"
-                              Property="@nameof(GoodsReceiptDataGridVM.DocNum)"
+                              Property="@nameof(GoodsReceiptDataGridVM.DocEntry)"
                               Type="@typeof(int)"
-                              Title="PO Doc No." />
+                              Title="Doc No." />
         <RadzenDataGridColumn TItem="GoodsReceiptDataGridVM"
                               Property="@nameof(GoodsReceiptDataGridVM.DocDate)"
                               Type="@typeof(DateTime)"
-                              Title="PO Date">
-            <Template>
-                @context.DocDate.ToString("MM/dd/yyyy")
-            </Template>
-        </RadzenDataGridColumn>
+                              Title="Doc Date" />
         <RadzenDataGridColumn TItem="GoodsReceiptDataGridVM"
                               Property="@nameof(GoodsReceiptDataGridVM.PreparedBy)"
                               Type="@typeof(string)"
-                              Title="Supplier Name" />
-        
+                              Title="Prepared By" />
         <RadzenDataGridColumn TItem="GoodsReceiptDataGridVM"
                               Property="@nameof(GoodsReceiptDataGridVM.TransTypeName)"
                               Type="@typeof(string)"
-                              Title="Remarks" />
+                              Title="Trans. Type" />
         <RadzenDataGridColumn TItem="GoodsReceiptDataGridVM"
                               Frozen
                               FrozenPosition="FrozenColumnPosition.Right"
