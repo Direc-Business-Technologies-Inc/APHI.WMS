@@ -27,7 +27,7 @@ public partial class GoodsIssuePage
     #region Custom Functions
     void TabChanged()
     {
-        T = SelectedTab == 0 ? "aprvd" : SelectedTab == 1 ? "pndng" : "rjct";
+        T = SelectedTab == 0 ? "aprvd" : SelectedTab == 1 ? "rjct" : "pndng";
         NavManager.NavigateTo($"/transactions/inventory/goods-issue?T={T}");
     }
     #endregion Custom Functions
