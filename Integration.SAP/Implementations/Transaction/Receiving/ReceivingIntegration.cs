@@ -7,6 +7,7 @@ using Integration.Sap.Repositories;
 using Integration.SAP.Entities.Transactional.Receiving;
 using Shared.Entities;
 using Shared.Kernel;
+using System.Text.Json;
 
 namespace Integration.SAP.Implementations.Transaction.Receiving;
 
@@ -124,7 +125,15 @@ public class ReceivingIntegration(
         List<GoodsReceiptPOLinesPayload> payloadLines = [];
 
         foreach (PurchaseDeliveryNoteLineDTO line in data.DocumentLines.Where(dl => dl.Quantity > 0))
-            payloadLines.Add(new(line.BaseEntry, 22, line.BaseLine, data.DocumentLines.IndexOf(line), line.ItemCode, line.Quantity, line.TaxCode, line.Warehouse.WhsCode, EnumHelper.GetEnumDescription(line.InputType)));
+            payloadLines.Add(new(line.BaseEntry,
+                                 22,
+                                 line.BaseLine,
+                                 data.DocumentLines.Where(dl => dl.Quantity > 0).ToList().IndexOf(line),
+                                 line.ItemCode,
+                                 line.Quantity,
+                                 line.TaxCode,
+                                 line.Warehouse.WhsCode,
+                                 EnumHelper.GetEnumDescription(line.InputType)));
 
         GoodsReceiptPOPayload payload = new(data.BusinessPartner.CardCode, data.DocDate, data.DocDueDate, data.DocDate, data.ReceivedBy, payloadLines);
 
