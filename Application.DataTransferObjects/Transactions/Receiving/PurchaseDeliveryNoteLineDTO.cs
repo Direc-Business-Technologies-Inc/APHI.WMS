@@ -13,6 +13,7 @@ public class PurchaseDeliveryNoteLineDTO : ItemDTO
     public int LineNum { get; set; }
     public int BaseLine { get; set; }
     public string TaxCode { get; set; }
+    public BusinessPartnerDTO BusinessPartner { get; set; }
     public WarehouseDTO Warehouse { get; set; }
     public InputType InputType { get; set; }
 }

@@ -92,7 +92,7 @@
                                     </RadzenDataGridColumn>
                                     <RadzenDataGridColumn TItem="GRRLineVM"
                                                           Property="@nameof(GRRLineVM.Quantity)"
-                                                          Title="Quantity" Width="150px">
+                                                          Title="Quantity" Width="150px" Visible="@Creating">
                                         <Template Context="data">
                                             <RadzenNumeric Format="N0" @bind-Value="@data.Quantity" Min="0" ReadOnly="@Viewing" ShowUpDown="@Creating" />
                                         </Template>

@@ -1,4 +1,5 @@
-﻿using Domain.Entities.ValueObjects.Others;
+﻿using Domain.Entities.Enums.Transaction.GoodsReturn;
+using Domain.Entities.ValueObjects.Others;
 using Mapster;
 using Microsoft.AspNetCore.Components;
 using Radzen;
@@ -101,13 +102,13 @@ public partial class GoodsReturnCVUPage
 
     protected override async Task HandleSubmit()
     {
-        if(FormData.DocumentLines.Count <= 0)
+        if (FormData.DocumentLines.Count <= 0)
         {
             ToastService.Warning("Please select Items to Return");
             return;
         }
 
-        if(FormData.DocumentLines.Any(x => x.Quantity <= 0))
+        if (FormData.DocumentLines.Any(x => x.Quantity <= 0))
         {
             if (!await AlertService.PromptAsync("Some Items in the Goods Return has no Quantity. These Items will be removed in the transaction. Are you sure wou want to proceed?"))
                 return;
@@ -118,7 +119,11 @@ public partial class GoodsReturnCVUPage
         {
             AppBusyService.SetBusy(ActionCreateGoodsReturn, true);
 
-            bool response = await GoodsReturnHandler.PostGoodsReturnAsync(FormData);
+            bool response = false;
+            if (FormData.Standalone)
+                response = await GoodsReturnHandler.PostGoodsReturnAsync(FormData, GoodsReturnPostingSource.Standalone);
+            else
+                response = await GoodsReturnHandler.PostGoodsReturnAsync(FormData, GoodsReturnPostingSource.GRPO);
 
             return response;
         }, AppActionOptionPresets.Confirmed(ActionCreateGoodsReturn));
@@ -151,7 +156,7 @@ public partial class GoodsReturnCVUPage
             GetGoodsReturn(),
             LoadVendors(new()),
             LoadWarehouses(new()));
-        
+
         FormData.PreparedBy = AuthenticationService.GetUserName();
 
         AppBusyService.SetBusy(ActionGetGoodsReturn, false);
@@ -220,7 +225,7 @@ public partial class GoodsReturnCVUPage
             if (DatagridAdapter.QueryIntent.Take <= 0)
                 DatagridAdapter.QueryIntent.Take = 5;
 
-            if(!string.IsNullOrEmpty(args.Filter))
+            if (!string.IsNullOrEmpty(args.Filter))
                 DatagridAdapter.QueryIntent.Filters.Add(new()
                 {
                     LogicalOperator = LogicalOperatorEnum.AND,
@@ -252,7 +257,7 @@ public partial class GoodsReturnCVUPage
             if (DatagridAdapter.QueryIntent.Take <= 0)
                 DatagridAdapter.QueryIntent.Take = 5;
 
-            if(!string.IsNullOrEmpty(args.Filter))
+            if (!string.IsNullOrEmpty(args.Filter))
                 DatagridAdapter.QueryIntent.Filters.Add(new()
                 {
                     LogicalOperator = LogicalOperatorEnum.AND,

@@ -1,4 +1,5 @@
-﻿using Shared.Entities;
+﻿using Domain.Entities.Enums.Transaction.GoodsReturn;
+using Shared.Entities;
 using Web.BlazorServer.ViewModels.Transaction.GoodsReturn;
 
 namespace Web.BlazorServer.Handlers.Repositories.Transaction.GoodsReturn;
@@ -9,6 +10,6 @@ public interface IGoodsReturnHandler
     Task<GoodsReturnRequestVM?> GetGoodsReturnRequestAsync(int docEntry);
     Task<(IEnumerable<GoodsReturnDataGridVM> Data, int Count)> GetGoodsReturnDataGridAsync(DataGridIntent intent);
     Task<GoodsReturnVM?> GetGoodsReturnAsync(int docEntry);
-    Task<bool> PostGoodsReturnAsync(GoodsReturnRequestVM data);
-    Task<bool> PostGoodsReturnAsync(GoodsReturnVM data);
+    Task<bool> PostGoodsReturnAsync(GoodsReturnRequestVM data, GoodsReturnPostingSource source);
+    Task<bool> PostGoodsReturnAsync(GoodsReturnVM data, GoodsReturnPostingSource source);
 }

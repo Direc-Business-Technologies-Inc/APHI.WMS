@@ -7,6 +7,7 @@ using Integration.Sap.Helpers;
 using Integration.Sap.Repositories;
 using Integration.SAP.Entities.Transactional.GoodsReturn;
 using Shared.Entities;
+using System.Text.Json;
 
 namespace Integration.SAP.Implementations.Transaction.GoodsReturn;
 
@@ -123,12 +124,54 @@ public class GoodsReturnIntegration(
         return (docs, rowCount?.Count ?? docs.Count);
     }
 
+    public async Task<bool> PostGoodsReturnFromGRRAsync(GoodsReturnDTO data)
+    {
+        List<PurchaseReturnLinesPayload> payloadLines = [];
+
+        foreach (GoodsReturnLineDTO line in data.DocumentLines.Where(dl => dl.Quantity > 0))
+            payloadLines.Add(new(line.DocEntry, 234000032, line.LineNum, data.DocumentLines.IndexOf(line), line.ItemCode, line.Quantity, line.Warehouse.WhsCode));
+
+        PurchaseReturnPayload payload = new(data.DocDate,
+                                            data.DocDueDate,
+                                            data.BusinessPartner.CardCode,
+                                            data.PreparedBy,
+                                            data.Remarks,
+                                            payloadLines);
+
+        string json = JsonSerializer.Serialize(payload, new JsonSerializerOptions { WriteIndented = true });
+
+        await SLActions.PostAsync<object, PurchaseReturnPayload>("PurchaseReturns", payload);
+
+        return true;
+    }
+
+    public async Task<bool> PostGoodsReturnFromGRPOAsync(GoodsReturnDTO data)
+    {
+        List<PurchaseReturnLinesPayload> payloadLines = [];
+
+        foreach (GoodsReturnLineDTO line in data.DocumentLines.Where(dl => dl.Quantity > 0))
+            payloadLines.Add(new(line.DocEntry, 20, line.LineNum, data.DocumentLines.IndexOf(line), line.ItemCode, line.Quantity, line.Warehouse.WhsCode));
+
+        PurchaseReturnPayload payload = new(data.DocDate,
+                                            data.DocDueDate,
+                                            data.BusinessPartner.CardCode,
+                                            data.PreparedBy,
+                                            data.Remarks,
+                                            payloadLines);
+
+        string json = JsonSerializer.Serialize(payload, new JsonSerializerOptions { WriteIndented = true });
+
+        await SLActions.PostAsync<object, PurchaseReturnPayload>("PurchaseReturns", payload);
+
+        return true;
+    }
+
     public async Task<bool> PostGoodsReturnAsync(GoodsReturnDTO data)
     {
         List<PurchaseReturnLinesPayload> payloadLines = [];
 
         foreach (GoodsReturnLineDTO line in data.DocumentLines.Where(dl => dl.Quantity > 0))
-            payloadLines.Add(new(line.DocEntry, line.DocNum, line.LineNum, data.DocumentLines.IndexOf(line), line.ItemCode, line.Quantity, line.Warehouse.WhsCode));
+            payloadLines.Add(new(line.DocEntry, -1, line.LineNum, data.DocumentLines.IndexOf(line), line.ItemCode, line.Quantity, line.Warehouse.WhsCode));
 
         PurchaseReturnPayload payload = new(data.DocDate,
                                             data.DocDueDate,

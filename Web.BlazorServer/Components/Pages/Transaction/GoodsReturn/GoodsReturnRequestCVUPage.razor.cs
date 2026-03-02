@@ -1,4 +1,5 @@
-﻿using Mapster;
+﻿using Domain.Entities.Enums.Transaction.GoodsReturn;
+using Mapster;
 using Microsoft.AspNetCore.Components;
 using Radzen;
 using Shared.Entities;
@@ -119,20 +120,20 @@ public partial class GoodsReturnRequestCVUPage
         {
             AppBusyService.SetBusy(ActionCreateGoodsReturn, true);
 
-            bool response = await GoodsReturnHandler.PostGoodsReturnAsync(FormData);
+            bool response = await GoodsReturnHandler.PostGoodsReturnAsync(FormData, GoodsReturnPostingSource.GRR);
 
             return response;
         }, AppActionOptionPresets.Confirmed(ActionCreateGoodsReturn));
 
         action.OnSuccess(async (args) =>
         {
-            NavManager.NavigateTo("/transactions/purchasing/goods-return?t=gr");
+            NavManager.NavigateTo("/transactions/purchasing/goods-return?t=grr");
         });
     }
 
     protected override async Task InitializeEditing()
     {
-        NavManager.NavigateTo($"/transactions/purchasing/goods-return/request/create?Ref={FormData.SapReference.DocEntry}", true);
+        NavManager.NavigateTo($"/transactions/purchasing/goods-return/request/create?ref={FormData.SapReference.DocEntry}", true);
     }
 
     #endregion Overrides
@@ -165,13 +166,9 @@ public partial class GoodsReturnRequestCVUPage
 
     async Task GetGoodsReturn()
     {
-        if (Creating)
-            return;
-
         var action = await AppActionFactory.RunAsync(async () =>
         {
-
-            var result = await GoodsReturnHandler.GetGoodsReturnAsync(Ref);
+            var result = await GoodsReturnHandler.GetGoodsReturnRequestAsync(Ref);
 
             AppBusyService.SetBusy(ActionGetGoodsReturn, false);
             return result;
@@ -206,7 +203,7 @@ public partial class GoodsReturnRequestCVUPage
             if (!await AlertService.HasUnsavedChangesAsync(header: "Cancel Goods Return Creation"))
                 return;
 
-        NavManager.NavigateTo($"/transactions/purchasing/goods-return?t=gr", true);
+        NavManager.NavigateTo($"/transactions/purchasing/goods-return?t=grr", true);
     }
 
     async Task LoadVendors(LoadDataArgs args)

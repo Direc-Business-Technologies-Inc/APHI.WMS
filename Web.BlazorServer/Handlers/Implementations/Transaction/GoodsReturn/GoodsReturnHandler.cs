@@ -1,6 +1,7 @@
 ﻿using Application.DataTransferObjects.Transactions.GoodsReturn;
 using Application.UseCases.Commands.Transaction.GoodsReturn;
 using Application.UseCases.Queries.Transaction.GoodsReturn;
+using Domain.Entities.Enums.Transaction.GoodsReturn;
 using Mapster;
 using MediatR;
 using Shared.Entities;
@@ -45,17 +46,17 @@ namespace Web.BlazorServer.Handlers.Implementations.Transaction.GoodsReturn
             return (Data.Adapt<IEnumerable<GRRDataGridVM>>(), Count);
         }
 
-        public async Task<bool> PostGoodsReturnAsync(GoodsReturnRequestVM data)
+        public async Task<bool> PostGoodsReturnAsync(GoodsReturnRequestVM data, GoodsReturnPostingSource source)
         {
-            PostGoodsReturnCmd cmd = new(data.Adapt<GoodsReturnRequestDTO>());
+            PostGoodsReturnCmd cmd = new(data.Adapt<GoodsReturnRequestDTO>(), source);
             bool result = await Sender.Send(cmd);
 
             return result;
         }
 
-        public async Task<bool> PostGoodsReturnAsync(GoodsReturnVM data)
+        public async Task<bool> PostGoodsReturnAsync(GoodsReturnVM data, GoodsReturnPostingSource source)
         {
-            PostGoodsReturnCmd cmd = new(data.Adapt<GoodsReturnRequestDTO>());
+            PostGoodsReturnCmd cmd = new(data.Adapt<GoodsReturnRequestDTO>(), source);
             bool result = await Sender.Send(cmd);
 
             return result;

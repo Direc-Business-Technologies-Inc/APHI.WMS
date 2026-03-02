@@ -16,11 +16,11 @@
         <RadzenDataGridColumn TItem="GRRDataGridVM"
                               Property="@nameof(GRRDataGridVM.DocNum)"
                               Type="@typeof(int)"
-                              Title="PO Doc No." />
+                              Title="GRR Doc No." />
         <RadzenDataGridColumn TItem="GRRDataGridVM"
                               Property="@nameof(GRRDataGridVM.DocDate)"
                               Type="@typeof(DateTime)"
-                              Title="PO Date">
+                              Title="GRPO Date">
             <Template>
                 @context.DocDate.ToString("MM/dd/yyyy")
             </Template>
