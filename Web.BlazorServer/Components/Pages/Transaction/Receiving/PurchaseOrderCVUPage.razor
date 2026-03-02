@@ -15,7 +15,12 @@
 </RadzenStack>
 <AppContent>
     <AppFormSkeleton TItem="PurchaseOrderVM" Loading="@IsLoadingData" />
-    <RadzenStack Visible="@(!IsLoadingData)" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End" Gap="32px" class="rz-mb-2">
+    <RadzenStack Visible="@(!IsLoadingData)"
+                 Orientation="Orientation.Horizontal"
+                 AlignItems="AlignItems.Center"
+                 JustifyContent="JustifyContent.End"
+                 Gap="32px"
+                 class="rz-mb-2">
         <RadzenStack Gap="0px">
             <RadzenText TextStyle="TextStyle.Subtitle2" Text="@($"PO Ref. No.")" class="rz-m-0" />
             <RadzenText Text="@($"PO# {FormData.SapReference.DocNum.ToString()}")" class="rz-m-0" />
@@ -71,11 +76,27 @@
                 <ChildContent>
                     <RadzenRow>
                         <RadzenColumn>
-                            <AppTable @ref="@PurchaseOrderTable" Id="purchase_order_cvu_items" TItem="PurchaseOrderLineVM" @bind-GridSettingsLoaded="@GridSettingsLoaded" Data="@FormData.DocumentLines">
+                            <AppTable @ref="@PurchaseOrderTable"
+                                       Id="purchase_order_cvu_items"
+                                       TItem="PurchaseOrderLineVM"
+                                       @bind-GridSettingsLoaded="@GridSettingsLoaded"
+                                       Data="@FormData.DocumentLines">
+                                <HeaderTemplate>
+                                    <RadzenStack Orientation="Orientation.Horizontal"
+                                                 JustifyContent="JustifyContent.End"
+                                                 AlignItems="AlignItems.Center"
+                                                 Gap="8px">
+                                        <RadzenButton Icon="settings"
+                                                      Size="ButtonSize.Small"
+                                                      ButtonStyle="ButtonStyle.Light"
+                                                      Click="@OpenTableSettings" />
+                                    </RadzenStack>
+                                </HeaderTemplate>
                                 <Columns>
                                     <RadzenDataGridColumn TItem="PurchaseOrderLineVM"
                                                           Property="@nameof(PurchaseOrderLineVM.LineNum)"
-                                                          Width="40px" TextAlign="TextAlign.Center" />
+                                                          Width="40px" 
+                                                          TextAlign="TextAlign.Center" />
                                     <RadzenDataGridColumn TItem="PurchaseOrderLineVM"
                                                           Property="@nameof(PurchaseOrderLineVM.ItemCode)"
                                                           Title="Item Code" />
@@ -84,29 +105,41 @@
                                                           Title="Item Name" />
                                     <RadzenDataGridColumn TItem="PurchaseOrderLineVM"
                                                           Property="@nameof(PurchaseOrderLineVM.Warehouse.WhsName)"
-                                                          Title="Warehouse" Width="150px">
+                                                          Title="Warehouse" 
+                                                          Width="150px">
                                         <Template Context="data">
                                             @data.Warehouse.WhsName
                                         </Template>
                                     </RadzenDataGridColumn>
                                     <RadzenDataGridColumn TItem="PurchaseOrderLineVM"
                                                           Property="@nameof(PurchaseOrderLineVM.UoMName)"
-                                                          Title="UoM" Width="125px" />
+                                                          Title="UoM" 
+                                                          Width="125px" />
                                     <RadzenDataGridColumn TItem="PurchaseOrderLineVM"
                                                           Property="@nameof(PurchaseOrderLineVM.InputType)"
-                                                          Title="Input" Width="100px" />
+                                                          Title="Input" 
+                                                          Width="100px" />
                                     <RadzenDataGridColumn TItem="PurchaseOrderLineVM"
                                                           Property="@nameof(PurchaseOrderLineVM.TargetQuantity)"
-                                                          Title="Planned Qty" Width="150px">
+                                                          Title="Planned Qty" 
+                                                          Width="150px">
                                         <Template Context="data">
-                                            <RadzenNumeric Format="N0" @bind-Value="@data.TargetQuantity" Min="0" ReadOnly ShowUpDown="false" />
+                                            <RadzenNumeric Format="N0"
+                                                           @bind-Value="@data.TargetQuantity"
+                                                           Min="0"
+                                                           ReadOnly
+                                                           ShowUpDown="false" />
                                         </Template>
                                     </RadzenDataGridColumn>
                                     <RadzenDataGridColumn TItem="PurchaseOrderLineVM"
                                                           Property="@nameof(PurchaseOrderLineVM.OpenQuantity)"
                                                           Title="Open Qty" Width="150px">
                                         <Template Context="data">
-                                            <RadzenNumeric Format="N0" @bind-Value="@data.OpenQuantity" Min="0" ReadOnly ShowUpDown="false" />
+                                            <RadzenNumeric Format="N0"
+                                                           @bind-Value="@data.OpenQuantity"
+                                                           Min="0"
+                                                           ReadOnly
+                                                           ShowUpDown="false" />
                                         </Template>
                                     </RadzenDataGridColumn>
                                     @if (Creating)
@@ -115,7 +148,12 @@
                                                               Property="@nameof(PurchaseOrderLineVM.Quantity)"
                                                               Title="Received Qty" Width="150px">
                                             <Template Context="data">
-                                                <RadzenNumeric Format="N0" @bind-Value="@data.Quantity" Min="0" ReadOnly="@(!Creating || data.OpenQuantity <= 0)" ShowUpDown="@(Creating && data.OpenQuantity > 0)" Disabled="@IsBusy" />
+                                                <RadzenNumeric Format="N0"
+                                                               @bind-Value="@data.Quantity"
+                                                               Min="0"
+                                                               ReadOnly="@(!Creating || data.OpenQuantity <= 0)"
+                                                               ShowUpDown="@(Creating && data.OpenQuantity > 0)"
+                                                               Disabled="@IsBusy" />
                                             </Template>
                                         </RadzenDataGridColumn>
                                     }
@@ -143,3 +181,16 @@
     </RadzenTemplateForm>
 </AppContent>
 
+@code {
+    async Task OpenTableSettings()
+    {
+        await DialogService.OpenAsync(
+            "Table Settings",
+            ds => @<AppGridSettings TItem="PurchaseOrderLineVM"
+                                    @bind-Grid=@PurchaseOrderTable.DataGrid
+                                    @bind-GridSettings=@PurchaseOrderTableSettings />,
+        options: GridSettingsService.GetDialogOptions());
+
+        await PurchaseOrderTable.DataGrid.Reload();
+    }
+}
