@@ -60,6 +60,17 @@
                                       TItem="GRRLineVM"
                                       @bind-GridSettingsLoaded="@GridSettingsLoaded"
                                       Data="@FormData.DocumentLines">
+                                <HeaderTemplate>
+                                    <RadzenStack Orientation="Orientation.Horizontal"
+                                                 JustifyContent="JustifyContent.End"
+                                                 AlignItems="AlignItems.Center"
+                                                 Gap="8px">
+                                        <RadzenButton Icon="settings"
+                                                      Size="ButtonSize.Small"
+                                                      ButtonStyle="ButtonStyle.Light"
+                                                      Click="@OpenTableSettings" />
+                                    </RadzenStack>
+                                </HeaderTemplate>
                                 <Columns>
                                     <RadzenDataGridColumn TItem="GRRLineVM"
                                                           Property="@nameof(GRRLineVM.LineNum)"
@@ -126,3 +137,17 @@
         </RadzenStack>
     </RadzenTemplateForm>
 </AppContent>
+
+@code {
+    async Task OpenTableSettings()
+    {
+        await DialogService.OpenAsync(
+            "Table Settings",
+            ds => @<AppGridSettings TItem="GRRLineVM"
+                                    @bind-Grid=@GoodsReturnTable.DataGrid
+                                    @bind-GridSettings=@GoodsReturnTableSettings />,
+        options: GridSettingsService.GetDialogOptions());
+
+        await GoodsReturnTable.DataGrid.Reload();
+    }
+}

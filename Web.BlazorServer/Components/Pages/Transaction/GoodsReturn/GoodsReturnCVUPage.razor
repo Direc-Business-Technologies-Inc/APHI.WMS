@@ -107,7 +107,22 @@
                 <ChildContent>
                     <RadzenRow>
                         <RadzenColumn>
-                            <AppTable @ref="@GoodsReturnTable" Id="goods_return_cvu_items" TItem="GoodsReturnLineVM" @bind-GridSettingsLoaded="@GridSettingsLoaded" Data="@FormData.DocumentLines">
+                            <AppTable @ref="@GoodsReturnTable"
+                                      Id="goods_return_cvu_items"
+                                      TItem="GoodsReturnLineVM"
+                                      @bind-GridSettingsLoaded="@GridSettingsLoaded"
+                                      Data="@FormData.DocumentLines">
+                                <HeaderTemplate>
+                                    <RadzenStack Orientation="Orientation.Horizontal"
+                                                 JustifyContent="JustifyContent.End"
+                                                 AlignItems="AlignItems.Center"
+                                                 Gap="8px">
+                                        <RadzenButton Icon="settings"
+                                                      Size="ButtonSize.Small"
+                                                      ButtonStyle="ButtonStyle.Light"
+                                                      Click="@OpenTableSettings" />
+                                    </RadzenStack>
+                                </HeaderTemplate>
                                 <HeaderTemplate>
                                     <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
                                         <RadzenButton Visible="@Creating" Icon="add" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@AddItems" Disabled="@(string.IsNullOrEmpty(FormData.Warehouse.WhsCode))" />
@@ -186,15 +201,25 @@
 
         await GoodsReturnTable.DataGrid.Reload();
     }
-}
 
-@code {
     async Task CopyFrom()
     {
         await DialogService.OpenAsync(
             "GRPO Selection",
             ds => @<GoodsReturnGRPOSelection @bind-Document="@FormData" />,
             options: GridSettingsService.GetDialogOptions().MaximizedMode());
+
+        await GoodsReturnTable.DataGrid.Reload();
+    }
+
+    async Task OpenTableSettings()
+    {
+        await DialogService.OpenAsync(
+            "Table Settings",
+            ds => @<AppGridSettings TItem="GoodsReturnLineVM"
+                                    @bind-Grid=@GoodsReturnTable.DataGrid
+                                    @bind-GridSettings=@GoodsReturnTableSettings />,
+        options: GridSettingsService.GetDialogOptions());
 
         await GoodsReturnTable.DataGrid.Reload();
     }
