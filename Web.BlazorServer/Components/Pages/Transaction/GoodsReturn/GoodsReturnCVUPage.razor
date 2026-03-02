@@ -130,8 +130,11 @@
                                 </HeaderTemplate>
                                 <Columns>
                                     <RadzenDataGridColumn TItem="GoodsReturnLineVM"
-                                                          Property="@nameof(GoodsReturnLineVM.LineNum)"
-                                                          Width="40px" TextAlign="TextAlign.Center" />
+                                                          Width="40px" TextAlign="TextAlign.Center">
+                                        <Template Context="data">
+                                            @(FormData.DocumentLines.IndexOf(data) + 1)
+                                        </Template>
+                                    </RadzenDataGridColumn>
                                     <RadzenDataGridColumn TItem="GoodsReturnLineVM"
                                                           Property="@nameof(GoodsReturnLineVM.ItemCode)"
                                                           Title="Item Code" />
@@ -197,7 +200,7 @@
         await DialogService.OpenAsync(
             "Item Selection",
             ds => @<GoodsReturnItemSelection @bind-Return="@FormData" />,
-            options: GridSettingsService.GetDialogOptions().MaximizedMode());
+    options: GridSettingsService.GetDialogOptions().MaximizedMode());
 
         await GoodsReturnTable.DataGrid.Reload();
     }
@@ -207,7 +210,7 @@
         await DialogService.OpenAsync(
             "GRPO Selection",
             ds => @<GoodsReturnGRPOSelection @bind-Document="@FormData" />,
-            options: GridSettingsService.GetDialogOptions().MaximizedMode());
+    options: GridSettingsService.GetDialogOptions().MaximizedMode());
 
         await GoodsReturnTable.DataGrid.Reload();
     }

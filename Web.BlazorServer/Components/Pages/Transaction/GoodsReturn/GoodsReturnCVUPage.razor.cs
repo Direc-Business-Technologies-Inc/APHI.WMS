@@ -277,7 +277,15 @@ public partial class GoodsReturnCVUPage
         }, AppActionOptionPresets.Loading(ActionGetWarehouses));
     }
 
-    void RemoveLine(GoodsReturnLineVM item) => FormData.DocumentLines.Remove(item);
+    async Task RemoveLine(GoodsReturnLineVM item)
+    {
+        if (!await AlertService.PromptAsync())
+            return;
+
+        FormData.DocumentLines.Remove(item);
+
+        await GoodsReturnTable.DataGrid.RefreshDataAsync();
+    }
 
     #endregion Custom Functions
 }
