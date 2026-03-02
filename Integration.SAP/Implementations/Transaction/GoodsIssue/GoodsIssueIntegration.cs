@@ -132,7 +132,7 @@ public class GoodsIssueIntegration(
         List<InventoryGenExitLinesPayload> payloadLines = [];
 
         foreach (GoodsIssueLineDTO line in data.DocumentLines.Where(dl => dl.Quantity > 0))
-            payloadLines.Add(new(line.ItemCode, line.Warehouse.WhsCode, line.Quantity));
+            payloadLines.Add(new(line.ItemCode, line.Warehouse.WhsCode, data.TransactionType.Account.AcctCode, line.Quantity));
 
         InventoryGenExitPayload payload = new(data.PreparedBy, data.TransactionType.Code, payloadLines);
 
