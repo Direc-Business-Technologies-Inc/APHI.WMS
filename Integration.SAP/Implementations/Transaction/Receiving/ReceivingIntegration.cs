@@ -131,9 +131,11 @@ public class ReceivingIntegration(
                                  data.DocumentLines.Where(dl => dl.Quantity > 0).ToList().IndexOf(line),
                                  line.ItemCode,
                                  line.Quantity,
+                                 line.Price,
                                  line.TaxCode,
                                  line.Warehouse.WhsCode,
                                  EnumHelper.GetEnumDescription(line.InputType)));
+
 
         GoodsReceiptPOPayload payload = new(data.BusinessPartner.CardCode, data.DocDate, data.DocDueDate, data.DocDate, data.ReceivedBy, payloadLines);
 

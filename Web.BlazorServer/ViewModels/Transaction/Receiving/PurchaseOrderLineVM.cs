@@ -9,6 +9,8 @@ public class PurchaseOrderLineVM : ItemVM
 {
     public int DocEntry { get; set; }
     public int DocNum { get; set; }
+    public bool Free { get; set; }
+    public decimal Price { get; set; } = 0;
     public decimal OpenQuantity { get; set; } = 0;
     public decimal TargetQuantity { get; set; } = 0;
     public WarehouseVM Warehouse { get; set; }

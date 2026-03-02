@@ -133,7 +133,7 @@ public partial class PurchaseOrderCVUPage
 
     async Task LoadDataAsync()
     {
-        if(!AppBusyService.IsBusy(ActionGetPurchaseOrder))
+        if (!AppBusyService.IsBusy(ActionGetPurchaseOrder))
         {
             AppBusyService.SetBusy(ActionGetPurchaseOrder, true);
             await InvokeAsync(StateHasChanged);
@@ -191,6 +191,31 @@ public partial class PurchaseOrderCVUPage
                 return;
 
         NavManager.NavigateTo($"/transactions/purchasing/receiving?t=po", true);
+    }
+
+    async Task RemoveLine(PurchaseOrderLineVM line)
+    {
+        if (!await AlertService.PromptAsync())
+            return;
+
+        FormData.DocumentLines.Remove(line);
+        await PurchaseOrderTable.DataGrid.RefreshDataAsync();
+    }
+
+    async Task AddFreeLine(PurchaseOrderLineVM line)
+    {
+        if (!await AlertService.PromptAsync())
+            return;
+
+        PurchaseOrderLineVM freeLine = line.Adapt<PurchaseOrderLineVM>();
+        freeLine.TargetQuantity = 0;
+        freeLine.OpenQuantity = 0;
+        freeLine.Quantity = 0;
+        freeLine.Price = 0;
+        freeLine.Free = true;
+
+        FormData.DocumentLines.Insert(FormData.DocumentLines.IndexOf(line) + 1,freeLine);
+        await PurchaseOrderTable.DataGrid.RefreshDataAsync();
     }
 
     #endregion Custom Function

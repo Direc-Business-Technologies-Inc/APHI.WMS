@@ -3,6 +3,7 @@ SELECT
 	,T0.DocNum
 	,T1.LineNum
 	,T1.ItemCode
+	,T1.Price
 	,T1.Quantity [TargetQuantity]
 	,T1.OpenQty [OpenQuantity]
 	,ISNULL(T1.unitMsr, 'Manual') [UoMCode]

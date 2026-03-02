@@ -417,7 +417,9 @@ public class MappingRegistration : IRegister
             .Map(d => d.ItemName, s => s.ItemName)
             .Map(d => d.TaxCode, s => s.VatGroup)
             .Map(d => d.Quantity, s => s.Quantity)
+            .Map(d => d.Price, s => s.Price)
             .Map(d => d.Warehouse, s => s.Warehouse)
+            .Map(d => d.Free, s => s.Free)
             .Map(d => d.InputType, s => s.InputType);
 
         #endregion Receiving

@@ -12,6 +12,8 @@ public class PurchaseDeliveryNoteLineVM : ItemVM
     public int BaseDocNum { get; set; }
     public int BaseLine { get; set; }
     public string TaxCode { get; set; }
-    public WarehouseVM Warehouse { get; set; }
-    public InputType InputType { get; set; }
+    public bool Free { get; set; }
+    public decimal Price { get; set; }
+    public WarehouseVM Warehouse { get; set; } = new();
+    public InputType InputType { get; set; } = InputType.Manual;
 }

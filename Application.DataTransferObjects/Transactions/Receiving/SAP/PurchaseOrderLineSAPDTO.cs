@@ -7,6 +7,7 @@ public class PurchaseOrderLineSAPDTO
     public int LineNum { get; set; }
     public string ItemCode { get; set; }
     public string ItemName { get; set; }
+    public decimal Price { get; set; }
     public decimal TargetQuantity { get; set; }
     public decimal OpenQuantity { get; set; }
     public string UoMCode { get; set; }
