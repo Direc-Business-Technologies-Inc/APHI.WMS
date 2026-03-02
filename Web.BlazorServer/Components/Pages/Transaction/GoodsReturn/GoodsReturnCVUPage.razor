@@ -107,7 +107,7 @@
                 <ChildContent>
                     <RadzenRow>
                         <RadzenColumn>
-                            <AppTable @ref="@GoodsReturnTable" TItem="GoodsReturnLineVM" @bind-GridSettingsLoaded="@GridSettingsLoaded" Data="@FormData.DocumentLines">
+                            <AppTable @ref="@GoodsReturnTable" Id="goods_return_cvu_items" TItem="GoodsReturnLineVM" @bind-GridSettingsLoaded="@GridSettingsLoaded" Data="@FormData.DocumentLines">
                                 <HeaderTemplate>
                                     <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
                                         <RadzenButton Visible="@Creating" Icon="add" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@AddItems" Disabled="@(string.IsNullOrEmpty(FormData.Warehouse.WhsCode))" />

@@ -4,6 +4,7 @@
 
 <RadzenStack Gap="2rem">
     <AppDataGrid @ref="@ReturnItemsDataGrid"
+                 Id="goods_return_item_selection_grid"
                  TITem="ItemVM"
                  GridSettingsLoaded="@GridSettingsLoaded"
                  DataGetter="@LoadDataAsync"

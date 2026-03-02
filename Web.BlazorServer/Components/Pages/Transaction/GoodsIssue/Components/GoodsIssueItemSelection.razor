@@ -4,6 +4,7 @@
 
 <RadzenStack Gap="2rem">
     <AppDataGrid @ref="@IssueItemsDataGrid"
+                 Id="goods_issue_item_selection_grid"
                  TITem="ItemVM"
                  GridSettingsLoaded="@GridSettingsLoaded"
                  DataGetter="@LoadDataAsync"
@@ -12,6 +13,11 @@
                  DataGridSelectionMode="DataGridSelectionMode.Multiple"
                  OnRowSelect="@OnRowSelect"
                  OnRowDeselect="@OnRowDeselect">
+        <HeaderTemplate>
+            <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
+                <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />
+            </RadzenStack>
+        </HeaderTemplate>
         <GridColumns>
             <RadzenDataGridColumn TItem="ItemVM"
                                   Width="45px"
@@ -34,3 +40,17 @@
         </GridColumns>
     </AppDataGrid>
 </RadzenStack>
+
+@code {
+    async Task OpenTableSettings()
+    {
+        await DialogService.OpenAsync(
+            "Table Settings",
+            ds => @<AppGridSettings TItem="ItemVM"
+                                    @bind-Grid=@IssueItemsDataGrid.DataGrid
+                                    @bind-GridSettings=@IssueItemsDataGridSettings />,
+        options: GridSettingsService.GetDialogOptions());
+
+        await IssueItemsDataGrid.DataGrid.Reload();
+    }
+}

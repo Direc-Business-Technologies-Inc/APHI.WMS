@@ -2,7 +2,7 @@
 
 @inherits BaseComponent
 
-<AppDataGrid @ref="@GoodsIssueDataGrid" Id="approved_goods_issue_grid" TItem="GoodsIssueDataGridVM" DataGetter="@LoadDataAsync" GridSettings="@GoodsIssueDataGridSettings" @bind-GridSettingsLoaded="@GridSettingsLoaded" ActionName="@ActionGetGoodsIssues">
+<AppDataGrid @ref="@GoodsIssueDataGrid" Id="pending_goods_issue_grid" TItem="GoodsIssueDataGridVM" DataGetter="@LoadDataAsync" GridSettings="@GoodsIssueDataGridSettings" @bind-GridSettingsLoaded="@GridSettingsLoaded" ActionName="@ActionGetGoodsIssues">
     <HeaderTemplate>
         <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
             <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />

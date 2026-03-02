@@ -55,7 +55,11 @@
                 <ChildContent>
                     <RadzenRow>
                         <RadzenColumn>
-                            <AppTable @ref="@GoodsReturnTable" TItem="GRRLineVM" @bind-GridSettingsLoaded="@GridSettingsLoaded" Data="@FormData.DocumentLines">
+                            <AppTable @ref="@GoodsReturnTable"
+                                      Id="goods_return_request_cvu_items"
+                                      TItem="GRRLineVM"
+                                      @bind-GridSettingsLoaded="@GridSettingsLoaded"
+                                      Data="@FormData.DocumentLines">
                                 <Columns>
                                     <RadzenDataGridColumn TItem="GRRLineVM"
                                                           Property="@nameof(GRRLineVM.LineNum)"

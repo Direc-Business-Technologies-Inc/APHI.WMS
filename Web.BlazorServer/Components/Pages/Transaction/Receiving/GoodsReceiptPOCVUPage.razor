@@ -70,7 +70,7 @@
                 <ChildContent>
                     <RadzenRow>
                         <RadzenColumn>
-                            <AppTable @ref="@PurchaseDeliveryNoteTable" TItem="PurchaseDeliveryNoteLineVM" @bind-GridSettingsLoaded="@GridSettingsLoaded" Data="@FormData.DocumentLines">
+                            <AppTable @ref="@PurchaseDeliveryNoteTable" Id="grpo_cvu_items" TItem="PurchaseDeliveryNoteLineVM" @bind-GridSettingsLoaded="@GridSettingsLoaded" Data="@FormData.DocumentLines">
                                 <Columns>
                                     <RadzenDataGridColumn TItem="PurchaseDeliveryNoteLineVM"
                                                           Property="@nameof(PurchaseDeliveryNoteLineVM.LineNum)"
