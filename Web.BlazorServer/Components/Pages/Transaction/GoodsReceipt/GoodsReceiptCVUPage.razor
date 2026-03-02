@@ -109,6 +109,10 @@
                             <AppTable @ref="@GoodsReceiptTable" Id="goods_receipt_cvu_items" TItem="GoodsReceiptLineVM" @bind-GridSettingsLoaded="@GridSettingsLoaded" Data="[..FormData.DocumentLines]">
                                 <HeaderTemplate>
                                     <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
+                                        <RadzenButton Icon="settings"
+                                                      Size="ButtonSize.Small"
+                                                      ButtonStyle="ButtonStyle.Light"
+                                                      Click="@OpenTableSettings" />
                                         <RadzenButton Visible="@Creating" Icon="add" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@AddItems" Disabled="@(string.IsNullOrEmpty(FormData.Warehouse.WhsCode))" />
                                     </RadzenStack>
                                 </HeaderTemplate>
@@ -179,10 +183,23 @@
     async Task AddItems()
     {
         await DialogService.OpenAsync(
-            "Table Settings",
+            "Item Selection",
             ds => @<GoodsReceiptItemSelection @bind-Receipt="@FormData" />,
-            options: GridSettingsService.GetDialogOptions().MaximizedMode());
+    options: GridSettingsService.GetDialogOptions().MaximizedMode());
+
+        await GoodsReceiptTable.DataGrid.Reload();
+    }
+
+    async Task OpenTableSettings()
+    {
+        await DialogService.OpenAsync(
+            "Table Settings",
+            ds => @<AppGridSettings TItem="GoodsReceiptLineVM"
+                                    @bind-Grid=@GoodsReceiptTable.DataGrid
+                                    @bind-GridSettings=@GoodsReceiptTableSettings />,
+        options: GridSettingsService.GetDialogOptions());
 
         await GoodsReceiptTable.DataGrid.Reload();
     }
 }
+
