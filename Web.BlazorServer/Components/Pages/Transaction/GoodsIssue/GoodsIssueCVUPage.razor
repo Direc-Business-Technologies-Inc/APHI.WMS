@@ -109,6 +109,10 @@
                             <AppTable @ref="@GoodsIssueTable" Id="goods_issue_cvu_items" TItem="GoodsIssueLineVM" @bind-GridSettingsLoaded="@GridSettingsLoaded" Data="[..FormData.DocumentLines]">
                                 <HeaderTemplate>
                                     <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
+                                        <RadzenButton Icon="settings"
+                                                      Size="ButtonSize.Small"
+                                                      ButtonStyle="ButtonStyle.Light"
+                                                      Click="@OpenTableSettings" />
                                         <RadzenButton Visible="@Creating" Icon="add" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@AddItems" Disabled="@(string.IsNullOrEmpty(FormData.Warehouse.WhsCode))" />
                                     </RadzenStack>
                                 </HeaderTemplate>
@@ -179,9 +183,21 @@
     async Task AddItems()
     {
         await DialogService.OpenAsync(
-            "Table Settings",
+            "Item Selection",
             ds => @<GoodsIssueItemSelection @bind-Issue="@FormData" />,
-            options: GridSettingsService.GetDialogOptions().MaximizedMode());
+    options: GridSettingsService.GetDialogOptions().MaximizedMode());
+
+        await GoodsIssueTable.DataGrid.Reload();
+    }
+
+    async Task OpenTableSettings()
+    {
+        await DialogService.OpenAsync(
+            "Table Settings",
+            ds => @<AppGridSettings TItem="GoodsIssueLineVM"
+                                    @bind-Grid=@GoodsIssueTable.DataGrid
+                                    @bind-GridSettings=@GoodsIssueTableSettings />,
+        options: GridSettingsService.GetDialogOptions());
 
         await GoodsIssueTable.DataGrid.Reload();
     }
