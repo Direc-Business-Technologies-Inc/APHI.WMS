@@ -34,7 +34,8 @@
         <RadzenDataGridColumn TItem="GoodsIssueDataGridVM"
                               Frozen
                               FrozenPosition="FrozenColumnPosition.Right"
-                              Width="35px">
+                              Width="35px"
+                              Filterable="false" Sortable="false" Pickable="false">
             <Template>
                 <RadzenButton Icon="arrow_right_alt" Size="ButtonSize.ExtraSmall" Click="() => ViewGoodsIssue(context)" />
             </Template>

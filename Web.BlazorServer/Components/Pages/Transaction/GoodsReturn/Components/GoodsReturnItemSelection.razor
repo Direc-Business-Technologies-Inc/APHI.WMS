@@ -23,7 +23,8 @@
                                   Width="45px"
                                   TextAlign="TextAlign.Center"
                                   Frozen
-                                  FrozenPosition="FrozenColumnPosition.Left">
+                                  FrozenPosition="FrozenColumnPosition.Left"
+                                  Filterable="false" Sortable="false" Pickable="false">
                 <Template Context="data">
                     <RadzenCheckBox Value="@(SelectedItems.Any(si => si.ItemCode == data.ItemCode))" />
                 </Template>

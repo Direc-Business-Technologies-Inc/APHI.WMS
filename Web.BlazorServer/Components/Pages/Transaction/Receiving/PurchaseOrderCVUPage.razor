@@ -1,4 +1,5 @@
-﻿@using Web.BlazorServer.Components.Security
+﻿@using Domain.Entities.Enums.Transaction.Receiving
+@using Web.BlazorServer.Components.Security
 @using Web.BlazorServer.Components.Shared.Skeletons
 @using Web.BlazorServer.ViewModels.Transaction.Receiving
 
@@ -94,7 +95,9 @@
                                 </HeaderTemplate>
                                 <Columns>
                                     <RadzenDataGridColumn TItem="PurchaseOrderLineVM"
+                                                          Type="@typeof(int)"
                                                           Width="40px"
+                                                          Filterable="false" Sortable="false" Pickable="false"
                                                           TextAlign="TextAlign.Center">
                                         <Template Context="data">
                                             @(FormData.DocumentLines.IndexOf(data) + 1)
@@ -102,12 +105,15 @@
                                     </RadzenDataGridColumn>
                                     <RadzenDataGridColumn TItem="PurchaseOrderLineVM"
                                                           Property="@nameof(PurchaseOrderLineVM.ItemCode)"
+                                                          Type="@typeof(string)"
                                                           Title="Item Code" />
                                     <RadzenDataGridColumn TItem="PurchaseOrderLineVM"
                                                           Property="@nameof(PurchaseOrderLineVM.ItemName)"
+                                                          Type="@typeof(string)"
                                                           Title="Item Name" />
                                     <RadzenDataGridColumn TItem="PurchaseOrderLineVM"
                                                           Property="@nameof(PurchaseOrderLineVM.Warehouse.WhsName)"
+                                                          Type="@typeof(string)"
                                                           Title="Warehouse"
                                                           Width="150px">
                                         <Template Context="data">
@@ -116,19 +122,23 @@
                                     </RadzenDataGridColumn>
                                     <RadzenDataGridColumn TItem="PurchaseOrderLineVM"
                                                           Property="@nameof(PurchaseOrderLineVM.UoMName)"
+                                                          Type="@typeof(string)"
                                                           Title="UoM"
                                                           Width="125px" />
                                     <RadzenDataGridColumn TItem="PurchaseOrderLineVM"
                                                           Property="@nameof(PurchaseOrderLineVM.InputType)"
+                                                          Type="@typeof(InputType)"
                                                           Title="Input"
                                                           Width="100px" />
                                     <RadzenDataGridColumn TItem="PurchaseOrderLineVM"
                                                           Property="@nameof(PurchaseOrderLineVM.TargetQuantity)"
+                                                          Type="@typeof(decimal)"
                                                           Title="Planned Qty"
                                                           Width="150px">
                                         <Template Context="data">
                                             <RadzenNumeric Format="N0"
                                                            @bind-Value="@data.TargetQuantity"
+                                                           Type="@typeof(decimal)"
                                                            Min="0"
                                                            ReadOnly
                                                            ShowUpDown="false" />
@@ -140,6 +150,7 @@
                                         <Template Context="data">
                                             <RadzenNumeric Format="N0"
                                                            @bind-Value="@data.OpenQuantity"
+                                                           Type="@typeof(decimal)"
                                                            Min="0"
                                                            ReadOnly
                                                            ShowUpDown="false" />
@@ -156,6 +167,7 @@
                                                     <ChildContent>
                                                         <RadzenNumeric Format="N0"
                                                                        @bind-Value="@data.Quantity"
+                                                                       Type="@typeof(decimal)"
                                                                        Min="0"
                                                                        Max="@(data.Free == true ? null : data.TargetQuantity)"
                                                                        ReadOnly="@((!Creating || data.OpenQuantity <= 0) && data.Free == false)"

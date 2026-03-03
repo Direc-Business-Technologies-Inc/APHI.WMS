@@ -137,12 +137,15 @@
                                     </RadzenDataGridColumn>
                                     <RadzenDataGridColumn TItem="GoodsReturnLineVM"
                                                           Property="@nameof(GoodsReturnLineVM.ItemCode)"
+                                                          Type="@typeof(string)"
                                                           Title="Item Code" />
                                     <RadzenDataGridColumn TItem="GoodsReturnLineVM"
                                                           Property="@nameof(GoodsReturnLineVM.ItemName)"
+                                                          Type="@typeof(string)"
                                                           Title="Item Name" />
                                     <RadzenDataGridColumn TItem="GoodsReturnLineVM"
                                                           Property="@nameof(GoodsReturnLineVM.Warehouse.WhsName)"
+                                                          Type="@typeof(string)"
                                                           Title="Warehouse" Width="150px">
                                         <Template Context="data">
                                             @data.Warehouse.WhsName
@@ -150,9 +153,11 @@
                                     </RadzenDataGridColumn>
                                     <RadzenDataGridColumn TItem="GoodsReturnLineVM"
                                                           Property="@nameof(GoodsReturnLineVM.UoMName)"
+                                                          Type="@typeof(string)"
                                                           Title="UoM" Width="125px" />
                                     <RadzenDataGridColumn TItem="GoodsReturnLineVM"
                                                           Property="@nameof(GoodsReturnLineVM.Quantity)"
+                                                          Type="@typeof(decimal)"
                                                           Title="Quantity" Width="150px">
                                         <Template Context="data">
                                             <RadzenNumeric Format="N0" @bind-Value="@data.Quantity" Min="0" ReadOnly="@Viewing" ShowUpDown="@Creating" />
@@ -176,6 +181,7 @@
                             </AppTable>
                         </RadzenColumn>
                     </RadzenRow>
+
                 </ChildContent>
             </RadzenFieldset>
             <RadzenRow>

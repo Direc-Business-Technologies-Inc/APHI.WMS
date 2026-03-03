@@ -23,20 +23,24 @@
                                   Width="45px"
                                   TextAlign="TextAlign.Center"
                                   Frozen
-                                  FrozenPosition="FrozenColumnPosition.Left">
+                                  FrozenPosition="FrozenColumnPosition.Left"
+                                  Filterable="false" Pickable="false" Sortable="false">
                 <Template Context="data">
                     <RadzenCheckBox Value="@(SelectedItems.Any(si => si.ItemCode == data.ItemCode))" />
                 </Template>
             </RadzenDataGridColumn>
             <RadzenDataGridColumn TItem="ItemVM"
                                   Title="Item Code"
-                                  Property="@nameof(ItemVM.ItemCode)" />
+                                  Property="@nameof(ItemVM.ItemCode)"
+                                  Type="@typeof(string)" />
             <RadzenDataGridColumn TItem="ItemVM"
                                   Title="Item Name"
-                                  Property="@nameof(ItemVM.ItemName)" />
+                                  Property="@nameof(ItemVM.ItemName)"
+                                  Type="@typeof(string)" />
             <RadzenDataGridColumn TItem="ItemVM"
                                   Title="UoM"
-                                  Property="@nameof(ItemVM.UoMName)" />
+                                  Property="@nameof(ItemVM.UoMName)"
+                                  Type="@typeof(string)" />
         </GridColumns>
     </AppDataGrid>
 </RadzenStack>

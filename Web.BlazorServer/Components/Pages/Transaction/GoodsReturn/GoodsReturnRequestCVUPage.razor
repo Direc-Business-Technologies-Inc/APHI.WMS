@@ -74,15 +74,19 @@
                                 <Columns>
                                     <RadzenDataGridColumn TItem="GRRLineVM"
                                                           Property="@nameof(GRRLineVM.LineNum)"
+                                                          Type="@typeof(int)"
                                                           Width="40px" TextAlign="TextAlign.Center" />
                                     <RadzenDataGridColumn TItem="GRRLineVM"
                                                           Property="@nameof(GRRLineVM.ItemCode)"
+                                                          Type="@typeof(string)"
                                                           Title="Item Code" />
                                     <RadzenDataGridColumn TItem="GRRLineVM"
                                                           Property="@nameof(GRRLineVM.ItemName)"
+                                                          Type="@typeof(string)"
                                                           Title="Item Name" />
                                     <RadzenDataGridColumn TItem="GRRLineVM"
                                                           Property="@nameof(GRRLineVM.Warehouse.WhsName)"
+                                                          Type="@typeof(string)"
                                                           Title="Warehouse" Width="150px">
                                         <Template Context="data">
                                             @data.Warehouse.WhsName
@@ -90,9 +94,11 @@
                                     </RadzenDataGridColumn>
                                     <RadzenDataGridColumn TItem="GRRLineVM"
                                                           Property="@nameof(GRRLineVM.UoMName)"
+                                                          Type="@typeof(string)"
                                                           Title="UoM" Width="125px" />
                                     <RadzenDataGridColumn TItem="GRRLineVM"
                                                           Property="@nameof(GRRLineVM.TargetQty)"
+                                                          Type="@typeof(decimal)"
                                                           Title="Target Qty" Width="150px">
                                         <Template Context="data">
                                             <RadzenNumeric Format="N0" @bind-Value="@data.TargetQty" Min="0" ReadOnly ShowUpDown="false" />
@@ -100,6 +106,7 @@
                                     </RadzenDataGridColumn>
                                     <RadzenDataGridColumn TItem="GRRLineVM"
                                                           Property="@nameof(GRRLineVM.OpenQty)"
+                                                          Type="@typeof(decimal)"
                                                           Title="Open Qty" Width="150px">
                                         <Template Context="data">
                                             <RadzenNumeric Format="N0" @bind-Value="@data.OpenQty" Min="0" ReadOnly ShowUpDown="false" />
@@ -107,6 +114,7 @@
                                     </RadzenDataGridColumn>
                                     <RadzenDataGridColumn TItem="GRRLineVM"
                                                           Property="@nameof(GRRLineVM.Quantity)"
+                                                          Type="@typeof(decimal)"
                                                           Title="Quantity" Width="150px" Visible="@Creating">
                                         <Template Context="data">
                                             <RadzenNumeric Format="N0" @bind-Value="@data.Quantity" Min="0" ReadOnly="@Viewing" ShowUpDown="@Creating" />

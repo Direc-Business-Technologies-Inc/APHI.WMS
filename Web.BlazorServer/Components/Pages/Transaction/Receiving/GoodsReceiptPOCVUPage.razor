@@ -89,18 +89,23 @@
                                 <Columns>
                                     <RadzenDataGridColumn TItem="PurchaseDeliveryNoteLineVM"
                                                           Property="@nameof(PurchaseDeliveryNoteLineVM.LineNum)"
+                                                          Type="@typeof(int)"
                                                           Width="40px" TextAlign="TextAlign.Center" />
                                     <RadzenDataGridColumn TItem="PurchaseDeliveryNoteLineVM"
                                                           Property="@nameof(PurchaseDeliveryNoteLineVM.ItemCode)"
+                                                          Type="@typeof(string)"
                                                           Title="Item Code" />
                                     <RadzenDataGridColumn TItem="PurchaseDeliveryNoteLineVM"
                                                           Property="@nameof(PurchaseDeliveryNoteLineVM.ItemName)"
+                                                          Type="@typeof(string)"
                                                           Title="Item Name" />
                                     <RadzenDataGridColumn TItem="PurchaseDeliveryNoteLineVM"
                                                           Property="@nameof(PurchaseDeliveryNoteLineVM.UoMName)"
+                                                          Type="@typeof(string)"
                                                           Title="UoM" Width="125px" />
                                     <RadzenDataGridColumn TItem="PurchaseDeliveryNoteLineVM"
                                                           Property="@nameof(PurchaseDeliveryNoteLineVM.Quantity)"
+                                                          Type="@typeof(decimal)"
                                                           Title="Quantity" Width="150px">
                                         <Template Context="data">
                                             <RadzenNumeric Format="N0" @bind-Value="@data.Quantity" Min="0" ReadOnly ShowUpDown="false" />

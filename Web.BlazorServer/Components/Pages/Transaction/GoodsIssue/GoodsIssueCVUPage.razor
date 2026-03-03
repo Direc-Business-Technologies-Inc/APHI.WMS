@@ -119,26 +119,47 @@
                                 <Columns>
                                     <RadzenDataGridColumn TItem="GoodsIssueLineVM"
                                                           Property="@nameof(GoodsIssueLineVM.LineNum)"
-                                                          Width="40px" TextAlign="TextAlign.Center" />
+                                                          Width="40px" TextAlign="TextAlign.Center"
+                                                          Type="@typeof(int)" />
                                     <RadzenDataGridColumn TItem="GoodsIssueLineVM"
                                                           Property="@nameof(GoodsIssueLineVM.ItemCode)"
-                                                          Title="Item Code" />
+                                                          Title="Item Code"
+                                                          Type="@typeof(string)" />
                                     <RadzenDataGridColumn TItem="GoodsIssueLineVM"
                                                           Property="@nameof(GoodsIssueLineVM.ItemName)"
-                                                          Title="Item Name" />
+                                                          Title="Item Name"
+                                                          Type="@typeof(string)" />
                                     <RadzenDataGridColumn TItem="GoodsIssueLineVM"
                                                           Property="@nameof(GoodsIssueLineVM.Warehouse.WhsName)"
-                                                          Title="Warehouse" Width="150px">
+                                                          Title="Warehouse" Width="150px"
+                                                          Type="@typeof(string)">
                                         <Template Context="data">
-                                            @data.Warehouse.WhsName
+                                            <RadzenFormField class="rz-w-100 remove-form-input-margin">
+                                                <ChildContent>
+                                                    <RadzenTextBox ReadOnly Visible="@Viewing" Value="@FormData.Warehouse.WhsName" Name="gr_whs_name" Disabled="@IsBusy" class="rz-w-100" />
+                                                    <RadzenDropDown Visible="@(Creating)"
+                                                                    @bind-Value="@data.Warehouse"
+                                                                    Data="@Warehouses"
+                                                                    Count="@WarehousesCount"
+                                                                    LoadData="@LoadWarehouses"
+                                                                    AllowVirtualization
+                                                                    Name="@($"gi_{data.ItemCode}_whs")"
+                                                                    AllowFiltering
+                                                                    TextProperty="@nameof(WarehouseVM.WhsName)"
+                                                                    Placeholder="No Vendor Selected"
+                                                                    class="rz-w-100" />
+                                                </ChildContent>
+                                            </RadzenFormField>
                                         </Template>
                                     </RadzenDataGridColumn>
                                     <RadzenDataGridColumn TItem="GoodsIssueLineVM"
                                                           Property="@nameof(GoodsIssueLineVM.UoMName)"
-                                                          Title="UoM" Width="125px" />
+                                                          Title="UoM" Width="125px"
+                                                          Type="@typeof(string)" />
                                     <RadzenDataGridColumn TItem="GoodsIssueLineVM"
                                                           Property="@nameof(GoodsIssueLineVM.Quantity)"
-                                                          Title="Quantity" Width="150px">
+                                                          Title="Quantity" Width="150px"
+                                                          Type="@typeof(decimal)">
                                         <Template Context="data">
                                             <RadzenNumeric Format="N0" @bind-Value="@data.Quantity" Min="0" ReadOnly="@Viewing" ShowUpDown="@Creating" />
                                         </Template>
