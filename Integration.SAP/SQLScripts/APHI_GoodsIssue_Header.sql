@@ -7,6 +7,8 @@ SELECT
      , T1.Name [TransTypeName]
      , T2.AcctCode
      , T2.AcctName
+     , T0.U_BpCode [CardCode]
+     , T0.U_BPName [CardName]
      , T0.U_SchlYear [SchoolYear]
      , T0.U_SRFNo [SrfNo]
      , T0.U_Desig [Designation]
