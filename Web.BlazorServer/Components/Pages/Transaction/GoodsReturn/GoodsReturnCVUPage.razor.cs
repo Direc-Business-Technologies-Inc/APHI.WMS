@@ -7,6 +7,7 @@ using Shared.Entities;
 using Shared.Kernel;
 using Web.BlazorServer.Components.Shared.Abstraction;
 using Web.BlazorServer.Defaults;
+using Web.BlazorServer.Handlers.Implementations.Others;
 using Web.BlazorServer.Handlers.Implementations.Transaction.Receiving;
 using Web.BlazorServer.Handlers.Repositories.Others;
 using Web.BlazorServer.Handlers.Repositories.Transaction.GoodsReturn;
@@ -38,6 +39,7 @@ public partial class GoodsReturnCVUPage
     [Inject] IGoodsReturnHandler GoodsReturnHandler { get; set; } = default!;
     [Inject] IBusinessPartnerHandler BpHandler { get; set; } = default!;
     [Inject] IWarehouseMasterDataHandler WarehouseHandler { get; set; } = default!;
+    [Inject] ISchoolYearHandler SchoolYearHandler { get; set; } = default!;
     [Inject] IGridSettingsService GridSettingsService { get; set; } = default!;
     #endregion Injects
 
@@ -53,9 +55,12 @@ public partial class GoodsReturnCVUPage
     readonly string ActionGetVendors = EnumHelper.GetEnumDescription(AppActions.GetVendors);
     readonly string ActionGetWarehouses = EnumHelper.GetEnumDescription(AppActions.GetWarehouses);
     readonly string ActionCreateGoodsReturn = EnumHelper.GetEnumDescription(AppActions.CreateGoodsReturn);
+    readonly string ActionGetReturnTypes = EnumHelper.GetEnumDescription(AppActions.GetReturnTypes);
+    readonly string ActionGetSchoolYears = EnumHelper.GetEnumDescription(AppActions.GetSchoolYears);
 
     int BusinessPartnersCount { get; set; } = 0;
     int WarehousesCount { get; set; } = 0;
+    int SchoolYearsCount { get; set; } = 0;
 
     #endregion Primitives
 
@@ -64,6 +69,9 @@ public partial class GoodsReturnCVUPage
     DataGridSettings GoodsReturnTableSettings { get; set; } = new();
     List<BusinessPartnerVM> BusinessPartners { get; set; } = [];
     List<WarehouseVM> Warehouses { get; set; } = [];
+    List<ReturnTypeVM> ReturnTypes { get; set; } = [];
+    List<SchoolYearVM> SchoolYears { get; set; } = [];
+
 
     public IDataGridIntentAdapter DatagridAdapter { get; set; } = default!;
     #endregion Data Structures
@@ -154,7 +162,9 @@ public partial class GoodsReturnCVUPage
 
         await Task.WhenAll(
             GetGoodsReturn(),
+            LoadReturnTypes(),
             LoadVendors(new()),
+            LoadSchoolYears(new()),
             LoadWarehouses(new()));
 
         FormData.PreparedBy = AuthenticationService.GetUserName();
@@ -285,6 +295,54 @@ public partial class GoodsReturnCVUPage
         FormData.DocumentLines.Remove(item);
 
         await GoodsReturnTable.DataGrid.RefreshDataAsync();
+    }
+
+    async Task LoadSchoolYears(LoadDataArgs args)
+    {
+
+        var action = await AppActionFactory.RunAsync(async () =>
+        {
+            await Task.Yield();
+
+            AppBusyService.SetBusy(ActionGetSchoolYears, true);
+
+            DatagridAdapter = new DataGridIntentAdapter(args);
+            DatagridAdapter.AdaptToPagination();
+            if (DatagridAdapter.QueryIntent.Take <= 0)
+                DatagridAdapter.QueryIntent.Take = 5;
+
+            if (!string.IsNullOrEmpty(args.Filter))
+                DatagridAdapter.QueryIntent.Filters.Add(new()
+                {
+                    LogicalOperator = LogicalOperatorEnum.AND,
+                    Property = nameof(SchoolYearVM.Code),
+                    Value = args.Filter,
+                    ComparisonOperator = ComparisonOperatorEnum.Contains
+                });
+
+            (IEnumerable<SchoolYearVM> Data, int Count) = await SchoolYearHandler.GetSchoolYearsAsync(DatagridAdapter.QueryIntent);
+
+            SchoolYears = [.. Data];
+            SchoolYearsCount = Count;
+
+            AppBusyService.SetBusy(ActionGetSchoolYears, false);
+
+            await InvokeAsync(StateHasChanged);
+        }, AppActionOptionPresets.Loading(ActionGetSchoolYears));
+    }
+
+    async Task LoadReturnTypes()
+    {
+
+        var action = await AppActionFactory.RunAsync(async () =>
+        {
+            AppBusyService.SetBusy(ActionGetReturnTypes, true);
+
+
+            ReturnTypes = [.. await GoodsReturnHandler.GetReturnTypesAsync()];
+
+            AppBusyService.SetBusy(ActionGetReturnTypes, false);
+        }, AppActionOptionPresets.Loading(ActionGetReturnTypes));
     }
 
     #endregion Custom Functions
