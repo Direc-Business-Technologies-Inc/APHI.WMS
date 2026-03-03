@@ -46,6 +46,14 @@ namespace Web.BlazorServer.Handlers.Implementations.Transaction.GoodsReturn
             return (Data.Adapt<IEnumerable<GRRDataGridVM>>(), Count);
         }
 
+        public async Task<IEnumerable<ReturnTypeVM>> GetReturnTypesAsync()
+        {
+            GetReturnTypesQry qry = new();
+            IEnumerable<ReturnTypeDTO> response = await Sender.Send(qry);
+
+            return response.Adapt<IEnumerable<ReturnTypeVM>>();
+        }
+
         public async Task<bool> PostGoodsReturnAsync(GoodsReturnRequestVM data, GoodsReturnPostingSource source)
         {
             PostGoodsReturnCmd cmd = new(data.Adapt<GoodsReturnRequestDTO>(), source);

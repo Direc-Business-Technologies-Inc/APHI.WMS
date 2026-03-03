@@ -12,4 +12,5 @@ public interface IGoodsReturnHandler
     Task<GoodsReturnVM?> GetGoodsReturnAsync(int docEntry);
     Task<bool> PostGoodsReturnAsync(GoodsReturnRequestVM data, GoodsReturnPostingSource source);
     Task<bool> PostGoodsReturnAsync(GoodsReturnVM data, GoodsReturnPostingSource source);
+    Task<IEnumerable<ReturnTypeVM>> GetReturnTypesAsync();
 }
