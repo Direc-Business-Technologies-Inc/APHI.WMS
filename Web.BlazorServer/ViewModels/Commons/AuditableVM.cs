@@ -1,6 +1,6 @@
 ﻿namespace Web.BlazorServer.ViewModels.Commons;
 
-public class AuditableVM : EntityVM
+public abstract class AuditableVM : EntityVM
 {
     public Guid CreatedBy { get; set; }
     public DateTime CreatedDate { get; set; } = DateTime.Now;
