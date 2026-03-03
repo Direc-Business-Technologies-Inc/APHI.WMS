@@ -37,7 +37,7 @@
                             <RadzenColumn Size="12" SizeMD="4">
                                 <RadzenFormField Text="Warehouse" class="rz-w-100">
                                     <ChildContent>
-                                        <RadzenTextBox ReadOnly Visible="@Viewing" Value="@(string.Join(",", FormData.DocumentLines.Select(x => x.Warehouse.WhsName)))" Placeholder="No Warehouse Selected" Name="gi_whs_name" Disabled="@IsBusy" class="rz-w-100" />
+                                        <RadzenTextBox ReadOnly Visible="@Viewing" Value="@(string.Join(",", FormData.DocumentLines.Select(x => x.Warehouse.WhsName).ToHashSet()))" Placeholder="No Warehouse Selected" Name="gi_whs_name" Disabled="@IsBusy" class="rz-w-100" />
                                         <RadzenDropDown Visible="@(Creating)"
                                                         @bind-Value="@FormData.Warehouse"
                                                         Change="() => OnWarehouseChange(FormData.Warehouse)"
