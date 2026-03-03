@@ -8,5 +8,10 @@ public class GoodsIssueDTO : MarketingDocumentDTO
 {
     public string PreparedBy { get; set; }
     public TransactionTypeDTO TransactionType { get; set; }
+    public string SchoolYear { get; set; }
+    public string SrfNo { get; set; }
+    public string Designation { get; set; }
+    public string DocRemarks { get; set; }
+    public string ApprovedBy { get; set; }
     public IEnumerable<GoodsIssueLineDTO> DocumentLines { get; set; } = [];
 }
