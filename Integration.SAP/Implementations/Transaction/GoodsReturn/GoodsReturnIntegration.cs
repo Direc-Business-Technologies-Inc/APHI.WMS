@@ -184,4 +184,15 @@ public class GoodsReturnIntegration(
 
         return true;
     }
+
+    public async Task<IEnumerable<ReturnTypeSAPDTO>> GetReturnTypesAsync()
+    {
+        var qryDetails = qryManager.GetSqlScriptWithMetadata("APHI_GoodsReturn_ReturnTypes", out string qry, out bool found);
+        if (!found)
+            throw new Exception("Query for getting all Return Types not found.");
+
+        List<ReturnTypeSAPDTO> data = await SLActions.RawQueryAsync<ReturnTypeSAPDTO>(qry);
+
+        return data;
+    }
 }

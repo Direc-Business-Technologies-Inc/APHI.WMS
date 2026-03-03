@@ -15,4 +15,5 @@ public interface IGoodsReturnIntegration
     public Task<bool> PostGoodsReturnAsync(GoodsReturnDTO data);
     public Task<bool> PostGoodsReturnFromGRRAsync(GoodsReturnDTO data);
     public Task<bool> PostGoodsReturnFromGRPOAsync(GoodsReturnDTO data);
+    public Task<IEnumerable<ReturnTypeSAPDTO>> GetReturnTypesAsync();
 }
