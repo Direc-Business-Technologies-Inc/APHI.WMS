@@ -134,7 +134,18 @@ public class GoodsReceiptIntegration(
         foreach (GoodsReceiptLineDTO? line in data.DocumentLines.Where(dl => dl.Quantity > 0))
             payloadLines.Add(new(line.ItemCode, line.Warehouse.WhsCode, data.TransactionType.Account.AcctCode, line.Quantity));
 
-        InventoryGenEntryPayload payload = new(data.PreparedBy, data.TransactionType.Code, payloadLines);
+        InventoryGenEntryPayload payload = new(data.PreparedBy,
+                                               data.TransactionType.Code,
+                                               payloadLines,
+                                               data.BusinessPartner.CardCode,
+                                               data.BusinessPartner.CardName,
+                                               data.PurNo,
+                                               data.WarNo,
+                                               data.Designation,
+                                               data.ReceivedBy,
+                                               data.DocRemarks,
+                                               data.ApprovedBy,
+                                               data.NotedBy);
 
         try
         {
