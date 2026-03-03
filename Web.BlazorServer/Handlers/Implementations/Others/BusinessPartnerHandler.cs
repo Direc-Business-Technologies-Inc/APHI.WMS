@@ -12,6 +12,14 @@ public class BusinessPartnerHandler(
     ISender Sender) 
     : IBusinessPartnerHandler
 {
+    public async Task<(IEnumerable<BusinessPartnerVM> Data, int Count)> GetAllAsync(DataGridIntent intent)
+    {
+        GetAllBusinessPartnersQry qry = new(intent);
+        (IEnumerable<BusinessPartnerDTO> Data, int Count) = await Sender.Send(qry);
+
+        return (Data.Adapt<IEnumerable<BusinessPartnerVM>>(), Count);
+    }
+
     public async Task<(IEnumerable<BusinessPartnerVM> Data, int Count)> GetVendorsAsync(DataGridIntent intent)
     {
         GetVendorsQry qry = new(intent);

@@ -20,6 +20,8 @@ public enum AppActions
     GetWarehouses,
     [Description("Get Vendor")]
     GetVendor,
+    [Description("Get BusinessPartners")]
+    GetBusinessPartners,
     [Description("Get Revenue Streams")]
     GetRevenueStreams,
     [Description("Get Delivery Types")]
