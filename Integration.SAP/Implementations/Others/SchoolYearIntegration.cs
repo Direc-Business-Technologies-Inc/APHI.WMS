@@ -28,7 +28,7 @@ public class SchoolYearIntegration(
         {
             intent.Sorts.Add(new AppSortDescriptor
             {
-                Property = "CardName",
+                Property = "Name",
                 Direction = SortDirectionEnum.Ascending
             });
         }
