@@ -136,12 +136,16 @@ public class GoodsIssueIntegration(
 
         InventoryGenExitPayload payload = new(data.PreparedBy,
                                               data.TransactionType.Code,
+                                              payloadLines,
+                                              data.BusinesasPartner?.CardCode,
+                                              data.BusinesasPartner?.CardName,
                                               data.SchoolYear,
                                               data.SrfNo,
                                               data.Designation,
-                                              data.DocRemarks,
+                                              data.Remarks,
                                               data.ApprovedBy,
-                                              payloadLines);
+                                              data.ReceivedBy,
+                                              data.NotedBy);
 
         try
         {
