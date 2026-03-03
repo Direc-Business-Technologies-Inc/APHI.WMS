@@ -26,6 +26,8 @@ public enum AppActions
     GetDeliveryTypes,
     [Description("Get Items")]
     GetAllItems,
+    [Description("Get School Years")]
+    GetSchoolYears,
     [Description("Login")]
     Login,
     [Description("Logout")]
