@@ -41,6 +41,7 @@ public partial class GoodsIssueCVUPage
     [Inject] ITransactionTypeHandler TransTypeHandler { get; set; } = default!;
     [Inject] IWarehouseMasterDataHandler WarehouseHandler { get; set; } = default!;
     [Inject] ISchoolYearHandler SchoolYearHandler { get; set; } = default!;
+    [Inject] IBusinessPartnerHandler BusinessPartnerHandler { get; set; } = default!;
     [Inject] IGridSettingsService GridSettingsService { get; set; } = default!;
     #endregion Injects
 
@@ -56,6 +57,7 @@ public partial class GoodsIssueCVUPage
     readonly string ActionGetTransactionTypes = EnumHelper.GetEnumDescription(AppActions.GetTransactionTypes);
     readonly string ActionGetWarehouses = EnumHelper.GetEnumDescription(AppActions.GetWarehouses);
     readonly string ActionGetSchoolYears = EnumHelper.GetEnumDescription(AppActions.GetSchoolYears);
+    readonly string ActionGetBusinessPartners = EnumHelper.GetEnumDescription(AppActions.GetBusinessPartners);
     readonly string ActionCreateGoodsIssue = EnumHelper.GetEnumDescription(AppActions.CreateGoodsIssue);
 
     int BusinessPartnersCount { get; set; } = 0;
@@ -158,6 +160,7 @@ public partial class GoodsIssueCVUPage
             GetGoodsIssue(),
             LoadTransactionTypes(),
             LoadWarehouses(new()),
+            LoadBusinessPartners(new()),
             LoadSchoolYears(new()));
 
         FormData.PreparedBy = AuthenticationService.GetUserName();
@@ -320,6 +323,40 @@ public partial class GoodsIssueCVUPage
 
             await InvokeAsync(StateHasChanged);
         }, AppActionOptionPresets.Loading(ActionGetSchoolYears));
+    }
+
+    async Task LoadBusinessPartners(LoadDataArgs args)
+    {
+
+        var action = await AppActionFactory.RunAsync(async () =>
+        {
+            await Task.Yield();
+
+            AppBusyService.SetBusy(ActionGetBusinessPartners, true);
+
+            DatagridAdapter = new DataGridIntentAdapter(args);
+            DatagridAdapter.AdaptToPagination();
+            if (DatagridAdapter.QueryIntent.Take <= 0)
+                DatagridAdapter.QueryIntent.Take = 5;
+
+            if (!string.IsNullOrEmpty(args.Filter))
+                DatagridAdapter.QueryIntent.Filters.Add(new()
+                {
+                    LogicalOperator = LogicalOperatorEnum.AND,
+                    Property = nameof(BusinessPartnerVM.CardName),
+                    Value = args.Filter,
+                    ComparisonOperator = ComparisonOperatorEnum.Contains
+                });
+
+            (IEnumerable<BusinessPartnerVM> Data, int Count) = await BusinessPartnerHandler.GetAllAsync(DatagridAdapter.QueryIntent);
+
+            BusinessPartners = [.. Data];
+            BusinessPartnersCount = Count;
+
+            AppBusyService.SetBusy(ActionGetBusinessPartners, false);
+
+            await InvokeAsync(StateHasChanged);
+        }, AppActionOptionPresets.Loading(ActionGetBusinessPartners));
     }
 
     #endregion Custom Functions

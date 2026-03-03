@@ -33,10 +33,10 @@
                 <ChildContent>
                     <RadzenStack Gap="0.5rem">
                         <RadzenRow Gap="1rem">
-                            <RadzenColumn Visible="@(!Viewing)" Size="12" SizeMD="4">
+                            <RadzenColumn Size="12" SizeMD="4">
                                 <RadzenFormField Text="Warehouse" class="rz-w-100" AllowFloatingLabel="false">
                                     <ChildContent>
-                                        <RadzenTextBox ReadOnly Visible="@Viewing" Value="@FormData.Warehouse?.WhsName" Placeholder="No Warehouse Selected" Name="gr_whs_name" Disabled="@IsBusy" class="rz-w-100" />
+                                        <RadzenTextBox ReadOnly Visible="@Viewing" Value="@(string.Join(",", FormData.DocumentLines.Select(x => x.Warehouse.WhsName)))" Placeholder="No Warehouse Selected" Name="gr_whs_name" Disabled="@IsBusy" class="rz-w-100" />
                                         <RadzenDropDown Visible="@(Creating)"
                                                         @bind-Value="@FormData.Warehouse"
                                                         Change="() => OnWarehouseChange(FormData.Warehouse)"
@@ -56,7 +56,26 @@
                                     </Helper>
                                 </RadzenFormField>
                             </RadzenColumn>
-                            <RadzenColumn Size="12" SizeMD="4" OffsetMD="@(Viewing ? 8 : 4)">
+                            <RadzenColumn Size="12" SizeMD="4">
+                                <RadzenFormField Text="Business Partner" class="rz-w-100" AllowFloatingLabel="false">
+                                    <ChildContent>
+                                        <RadzenTextBox Visible="@(Viewing)" ReadOnly Value="@FormData.BusinessPartner?.CardName" Name="gr_bp" Placeholder="No Business Partner Selected" Disabled="@IsBusy" class="rz-w-100" />
+                                        <RadzenDropDown Visible="@(!Viewing)"
+                                                        @bind-Value="@FormData.BusinessPartner"
+                                                        Data="@BusinessPartners"
+                                                        Count="@BusinessPartnersCount"
+                                                        LoadData="@LoadBusinessPartners"
+                                                        TextProperty="@nameof(BusinessPartnerVM.CardName)"
+                                                        AllowVirtualization
+                                                        AllowClear
+                                                        Name="gr_bp_selection"
+                                                        AllowFiltering
+                                                        Placeholder="No Business Partner Selected"
+                                                        class="rz-w-100" />
+                                    </ChildContent>
+                                </RadzenFormField>
+                            </RadzenColumn>
+                            <RadzenColumn Size="12" SizeMD="4">
                                 <RadzenFormField Text="School Year" class="rz-w-100" AllowFloatingLabel="false">
                                     <ChildContent>
                                         <RadzenTextBox Visible="@(Viewing)" ReadOnly Value="@FormData.SchoolYear" Name="gr_school_year" Placeholder="No School Year Selected" Disabled="@IsBusy" class="rz-w-100" />
@@ -175,11 +194,13 @@
                                                           Title="Warehouse" Width="150px"
                                                           Type="@typeof(string)">
                                         <Template Context="data">
-                                            <RadzenFormField class="rz-w-100 remove-form-input-margin" AllowFloatingLabel="false">
+                                            @if (Viewing)
+                                            {
+                                                @data.Warehouse.WhsName
+                                            }
+                                            <RadzenFormField Visible="@(Creating)" class="rz-w-100 remove-form-input-margin" AllowFloatingLabel="false">
                                                 <ChildContent>
-                                                    <RadzenTextBox ReadOnly Visible="@Viewing" Value="@FormData.Warehouse?.WhsName" Name="gr_whs_name" Disabled="@IsBusy" class="rz-w-100" />
-                                                    <RadzenDropDown Visible="@(Creating)"
-                                                                    @bind-Value="@data.Warehouse"
+                                                    <RadzenDropDown @bind-Value="@data.Warehouse"
                                                                     Data="@Warehouses"
                                                                     Count="@WarehousesCount"
                                                                     LoadData="@LoadWarehouses"
