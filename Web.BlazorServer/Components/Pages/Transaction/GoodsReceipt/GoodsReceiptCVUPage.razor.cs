@@ -5,6 +5,7 @@ using Shared.Entities;
 using Shared.Kernel;
 using Web.BlazorServer.Components.Shared.Abstraction;
 using Web.BlazorServer.Defaults;
+using Web.BlazorServer.Handlers.Implementations.Others;
 using Web.BlazorServer.Handlers.Repositories.Others;
 using Web.BlazorServer.Handlers.Repositories.Transaction.GoodsReceipt;
 using Web.BlazorServer.Helpers;
@@ -42,6 +43,7 @@ public partial class GoodsReceiptCVUPage
     [Inject] ITransactionTypeHandler TransTypeHandler { get; set; } = default!;
     [Inject] IWarehouseMasterDataHandler WarehouseHandler { get; set; } = default!;
     [Inject] IGridSettingsService GridSettingsService { get; set; } = default!;
+    [Inject] IBusinessPartnerHandler BusinessPartnerHandler { get; set; } = default!;
     #endregion Injects
 
     #region Primitives
@@ -55,6 +57,7 @@ public partial class GoodsReceiptCVUPage
     readonly string ActionGetGoodsReceipt = EnumHelper.GetEnumDescription(AppActions.ViewGoodsReceipt);
     readonly string ActionGetTransactionTypes = EnumHelper.GetEnumDescription(AppActions.GetVendors);
     readonly string ActionGetWarehouses = EnumHelper.GetEnumDescription(AppActions.GetWarehouses);
+    readonly string ActionGetBusinessPartners = EnumHelper.GetEnumDescription(AppActions.GetBusinessPartners);
     readonly string ActionCreateGoodsReceipt = EnumHelper.GetEnumDescription(AppActions.CreateGoodsReceipt);
 
     int BusinessPartnersCount { get; set; } = 0;
@@ -154,6 +157,7 @@ public partial class GoodsReceiptCVUPage
         await Task.WhenAll(
             GetGoodsReceipt(),
             LoadTransactionTypes(),
+            LoadBusinessPartners(new()),
             LoadWarehouses(new()));
 
         FormData.PreparedBy = AuthenticationService.GetUserName();
@@ -283,6 +287,40 @@ public partial class GoodsReceiptCVUPage
     }
 
     void RemoveLine(GoodsReceiptLineVM item) => FormData.DocumentLines = [.. FormData.DocumentLines.Except([item])];
+
+    async Task LoadBusinessPartners(LoadDataArgs args)
+    {
+
+        var action = await AppActionFactory.RunAsync(async () =>
+        {
+            await Task.Yield();
+
+            AppBusyService.SetBusy(ActionGetBusinessPartners, true);
+
+            DatagridAdapter = new DataGridIntentAdapter(args);
+            DatagridAdapter.AdaptToPagination();
+            if (DatagridAdapter.QueryIntent.Take <= 0)
+                DatagridAdapter.QueryIntent.Take = 5;
+
+            if (!string.IsNullOrEmpty(args.Filter))
+                DatagridAdapter.QueryIntent.Filters.Add(new()
+                {
+                    LogicalOperator = LogicalOperatorEnum.AND,
+                    Property = nameof(BusinessPartnerVM.CardName),
+                    Value = args.Filter,
+                    ComparisonOperator = ComparisonOperatorEnum.Contains
+                });
+
+            (IEnumerable<BusinessPartnerVM> Data, int Count) = await BusinessPartnerHandler.GetAllAsync(DatagridAdapter.QueryIntent);
+
+            BusinessPartners = [.. Data];
+            BusinessPartnersCount = Count;
+
+            AppBusyService.SetBusy(ActionGetBusinessPartners, false);
+
+            await InvokeAsync(StateHasChanged);
+        }, AppActionOptionPresets.Loading(ActionGetBusinessPartners));
+    }
 
     #endregion Custom Functions
 }
