@@ -1,7 +1,6 @@
 ﻿using Application.DataTransferObjects.Others;
 using Application.DataTransferObjects.Transactions.Commons;
 using Application.DataTransferObjects.Transactions.GoodsIssue;
-using Domain.Entities.ValueObjects.Others;
 
 namespace Application.DataTransferObjects.Transactions.Goodsissue;
 
@@ -9,6 +8,7 @@ public class GoodsIssueDTO : MarketingDocumentDTO
 {
     public string? SchoolYear { get; set; }
     public TransactionTypeDTO TransactionType { get; set; }
+    public BusinessPartnerDTO? BusinesasPartner { get; set; } = null;
     public string? SrfNo { get; set; }
     public string? Designation { get; set; }
     public string? ReceivedBy { get; set; }
