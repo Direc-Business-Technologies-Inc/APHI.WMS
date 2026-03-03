@@ -120,6 +120,11 @@ public class MappingRegistration : IRegister
                     AcctName = s.AcctName,
                 }
             })
+            .Map(d => d.BusinesasPartner, s => s.CardCode == null ? null : new BusinessPartnerDTO()
+            {
+                CardCode = s.CardCode,
+                CardName = s.CardName ?? s.CardCode,
+            })
             .Map(d => d.DocDate, s => s.DocDate);
 
         config.NewConfig<GoodsIssueLineSAPDTO, GoodsIssueLineDTO>()
