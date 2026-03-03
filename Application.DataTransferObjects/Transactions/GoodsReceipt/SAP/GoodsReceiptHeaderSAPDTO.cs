@@ -10,4 +10,14 @@ public class GoodsReceiptHeaderSAPDTO
     public string TransTypeName { get; set; }
     public string AcctCode { get; set; }
     public string AcctName { get; set; }
+    public string CardCode { get; set; }
+    public string CardName { get; set; }
+    public string WarNo { get; set; }
+    public string PurNo { get; set; }
+    public string DocRemarks { get; set; }
+    public string Designation { get; set; }
+    public string ReceivedBy { get; set; }
+    public string ApprovedBy { get; set; }
+    public string NotedBy { get; set; }
+
 }
