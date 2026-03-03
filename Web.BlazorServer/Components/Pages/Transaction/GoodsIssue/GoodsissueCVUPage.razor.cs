@@ -40,6 +40,7 @@ public partial class GoodsIssueCVUPage
     [Inject] IGoodsIssueHandler GoodsIssueHandler { get; set; } = default!;
     [Inject] ITransactionTypeHandler TransTypeHandler { get; set; } = default!;
     [Inject] IWarehouseMasterDataHandler WarehouseHandler { get; set; } = default!;
+    [Inject] ISchoolYearHandler SchoolYearHandler { get; set; } = default!;
     [Inject] IGridSettingsService GridSettingsService { get; set; } = default!;
     #endregion Injects
 
@@ -54,10 +55,12 @@ public partial class GoodsIssueCVUPage
     readonly string ActionGetGoodsIssue = EnumHelper.GetEnumDescription(AppActions.ViewGoodsIssue);
     readonly string ActionGetTransactionTypes = EnumHelper.GetEnumDescription(AppActions.GetTransactionTypes);
     readonly string ActionGetWarehouses = EnumHelper.GetEnumDescription(AppActions.GetWarehouses);
+    readonly string ActionGetSchoolYears = EnumHelper.GetEnumDescription(AppActions.GetSchoolYears);
     readonly string ActionCreateGoodsIssue = EnumHelper.GetEnumDescription(AppActions.CreateGoodsIssue);
 
     int BusinessPartnersCount { get; set; } = 0;
     int WarehousesCount { get; set; } = 0;
+    int SchoolYearsCount { get; set; } = 0;
 
     #endregion Primitives
 
@@ -66,6 +69,7 @@ public partial class GoodsIssueCVUPage
     DataGridSettings GoodsIssueTableSettings { get; set; } = new();
     List<BusinessPartnerVM> BusinessPartners { get; set; } = [];
     List<WarehouseVM> Warehouses { get; set; } = [];
+    List<SchoolYearVM> SchoolYears { get; set; } = [];
     List<TransactionTypeVM> TransactionTypes { get; set; } = [];
 
     public IDataGridIntentAdapter DatagridAdapter { get; set; } = default!;
@@ -153,7 +157,8 @@ public partial class GoodsIssueCVUPage
         await Task.WhenAll(
             GetGoodsIssue(),
             LoadTransactionTypes(),
-            LoadWarehouses(new()));
+            LoadWarehouses(new()),
+            LoadSchoolYears(new()));
 
         FormData.PreparedBy = AuthenticationService.GetUserName();
 
@@ -282,6 +287,40 @@ public partial class GoodsIssueCVUPage
     }
 
     void RemoveLine(GoodsIssueLineVM item) => FormData.DocumentLines = [.. FormData.DocumentLines.Except([item])];
+
+    async Task LoadSchoolYears(LoadDataArgs args)
+    {
+
+        var action = await AppActionFactory.RunAsync(async () =>
+        {
+            await Task.Yield();
+
+            AppBusyService.SetBusy(ActionGetSchoolYears, true);
+
+            DatagridAdapter = new DataGridIntentAdapter(args);
+            DatagridAdapter.AdaptToPagination();
+            if (DatagridAdapter.QueryIntent.Take <= 0)
+                DatagridAdapter.QueryIntent.Take = 5;
+
+            if (!string.IsNullOrEmpty(args.Filter))
+                DatagridAdapter.QueryIntent.Filters.Add(new()
+                {
+                    LogicalOperator = LogicalOperatorEnum.AND,
+                    Property = nameof(SchoolYearVM.Code),
+                    Value = args.Filter,
+                    ComparisonOperator = ComparisonOperatorEnum.Contains
+                });
+
+            (IEnumerable<SchoolYearVM> Data, int Count) = await SchoolYearHandler.GetSchoolYearsAsync(DatagridAdapter.QueryIntent);
+
+            SchoolYears = [.. Data];
+            SchoolYearsCount = Count;
+
+            AppBusyService.SetBusy(ActionGetSchoolYears, false);
+
+            await InvokeAsync(StateHasChanged);
+        }, AppActionOptionPresets.Loading(ActionGetSchoolYears));
+    }
 
     #endregion Custom Functions
 }
