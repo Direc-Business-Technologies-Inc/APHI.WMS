@@ -134,9 +134,17 @@ public class GoodsReturnIntegration(
         PurchaseReturnPayload payload = new(data.DocDate,
                                             data.DocDueDate,
                                             data.BusinessPartner.CardCode,
+                                            data.ReturnType,
                                             data.PreparedBy,
-                                            data.Remarks,
-                                            payloadLines);
+                                            payloadLines,
+                                            data.SchoolYear,
+                                            data.DRNo,
+                                            data.SINo,
+                                            data.DeliveredBy,
+                                            data.ReceivedBy,
+                                            data.DocRemarks,
+                                            data.ApprovedBy,
+                                            data.CheckedBy);
 
         string json = JsonSerializer.Serialize(payload, new JsonSerializerOptions { WriteIndented = true });
 
@@ -155,9 +163,17 @@ public class GoodsReturnIntegration(
         PurchaseReturnPayload payload = new(data.DocDate,
                                             data.DocDueDate,
                                             data.BusinessPartner.CardCode,
+                                            data.ReturnType,
                                             data.PreparedBy,
-                                            data.Remarks,
-                                            payloadLines);
+                                            payloadLines,
+                                            data.SchoolYear,
+                                            data.DRNo,
+                                            data.SINo,
+                                            data.DeliveredBy,
+                                            data.ReceivedBy,
+                                            data.DocRemarks,
+                                            data.ApprovedBy,
+                                            data.CheckedBy);
 
         string json = JsonSerializer.Serialize(payload, new JsonSerializerOptions { WriteIndented = true });
 
@@ -176,9 +192,17 @@ public class GoodsReturnIntegration(
         PurchaseReturnPayload payload = new(data.DocDate,
                                             data.DocDueDate,
                                             data.BusinessPartner.CardCode,
+                                            data.ReturnType,
                                             data.PreparedBy,
-                                            data.Remarks,
-                                            payloadLines);
+                                            payloadLines,
+                                            data.SchoolYear,
+                                            data.DRNo,
+                                            data.SINo,
+                                            data.DeliveredBy,
+                                            data.ReceivedBy,
+                                            data.DocRemarks,
+                                            data.ApprovedBy,
+                                            data.CheckedBy);
 
         await SLActions.PostAsync<object, PurchaseReturnPayload>("PurchaseReturns", payload);
 
