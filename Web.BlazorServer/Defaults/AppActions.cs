@@ -90,6 +90,8 @@ public enum AppActions
     #endregion Transaction - Receiving
 
     #region Transaction - Goods Return
+    [Description("Get Return Types")]
+    GetReturnTypes,
     [Description("Get All Goods Return Requests")]
     GetAllGoodsReturnRequests,
     [Description("Get All Goods Returns")]
