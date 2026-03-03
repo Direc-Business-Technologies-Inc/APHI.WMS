@@ -18,8 +18,10 @@ public class SchoolYearIntegration(
     {
         Dictionary<string, string> columnMap = new()
             {
-                { "CardCode", "T0.CardCode" },
-                { "CardName", "T0.CardName" },
+                { "Code", "Code" },
+                { "Name", "Name" },
+                { "YearFrom", "U_YearFrom" },
+                { "YearTo", "U_YearTo" },
             };
 
         if (intent.Sorts.Count <= 0)
