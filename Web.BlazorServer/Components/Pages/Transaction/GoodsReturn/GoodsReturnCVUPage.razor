@@ -127,14 +127,14 @@
                             <RadzenColumn Size="12" SizeMD="4">
                                 <RadzenFormField Text="DR No." class="rz-w-100" AllowFloatingLabel="false">
                                     <ChildContent>
-                                        <RadzenTextBox ReadOnly @bind-Value="@FormData.DRNo" Placeholder="DR-015" Name="gr_dr_no" Disabled="@IsBusy" class="rz-w-100" />
+                                        <RadzenTextBox ReadOnly="@Viewing" @bind-Value="@FormData.DRNo" Placeholder="DR-015" Name="gr_dr_no" Disabled="@IsBusy" class="rz-w-100" />
                                     </ChildContent>
                                 </RadzenFormField>
                             </RadzenColumn>
                             <RadzenColumn Size="12" SizeMD="4">
                                 <RadzenFormField Text="SI No." class="rz-w-100" AllowFloatingLabel="false">
                                     <ChildContent>
-                                        <RadzenTextBox ReadOnly @bind-Value="@FormData.SINo" Placeholder="SI-06" Name="gr_si_no" Disabled="@IsBusy" class="rz-w-100" />
+                                        <RadzenTextBox ReadOnly="@Viewing" @bind-Value="@FormData.SINo" Placeholder="SI-06" Name="gr_si_no" Disabled="@IsBusy" class="rz-w-100" />
                                     </ChildContent>
                                 </RadzenFormField>
                             </RadzenColumn>
@@ -239,6 +239,11 @@
                         <RadzenFormField Text="Prepared By" class="rz-w-100" AllowFloatingLabel="false">
                             <ChildContent>
                                 <RadzenTextBox ReadOnly Value="@FormData.PreparedBy" Name="gr_prep_by" Placeholder="WMS User ABC" Disabled="@IsBusy" class="rz-w-100" />
+                            </ChildContent>
+                        </RadzenFormField>
+                        <RadzenFormField Text="Reviewed By" class="rz-w-100" AllowFloatingLabel="false">
+                            <ChildContent>
+                                <RadzenTextBox ReadOnly="@Viewing" @bind-Value="@FormData.ReviewedBy" Name="gr_rev_by" Placeholder="WMS User C" Disabled="@IsBusy" class="rz-w-100" />
                             </ChildContent>
                         </RadzenFormField>
                         <RadzenFormField Text="Checked By" class="rz-w-100" AllowFloatingLabel="false">
