@@ -18,7 +18,11 @@
         <RadzenDataGridColumn TItem="GoodsReceiptDataGridVM"
                               Property="@nameof(GoodsReceiptDataGridVM.DocDate)"
                               Type="@typeof(DateTime)"
-                              Title="Doc Date" />
+                              Title="Doc Date">
+            <Template>
+                @context.DocDate.ToString("MM/dd/yyyy")
+            </Template>
+        </RadzenDataGridColumn>
         <RadzenDataGridColumn TItem="GoodsReceiptDataGridVM"
                               Property="@nameof(GoodsReceiptDataGridVM.PreparedBy)"
                               Type="@typeof(string)"
