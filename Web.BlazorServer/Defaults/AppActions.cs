@@ -30,6 +30,8 @@ public enum AppActions
     GetAllItems,
     [Description("Get School Years")]
     GetSchoolYears,
+    [Description("Get Purchase Type")]
+    GetPurchaseType,
     [Description("Login")]
     Login,
     [Description("Logout")]
