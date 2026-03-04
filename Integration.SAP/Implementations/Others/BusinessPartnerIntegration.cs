@@ -30,9 +30,9 @@ public class BusinessPartnerIntegration(
             });
         }
 
-        var qryDetails = qryManager.GetSqlScriptWithMetadata("APHI_Others_Vendors", out string qry, out bool found);
+        var qryDetails = qryManager.GetSqlScriptWithMetadata("APHI_Others_AllBps", out string qry, out bool found);
         if (!found)
-            throw new Exception("Base query for getting vendors not found.");
+            throw new Exception("Base query for getting all Business Partners not found.");
 
         string query = DataGridQueryBuilder.BuildQuery(qry, intent);
         string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent.Filters, columnMap);
@@ -60,9 +60,9 @@ public class BusinessPartnerIntegration(
             });
         }
 
-        var qryDetails = qryManager.GetSqlScriptWithMetadata("APHI_Others_ALLBPs", out string qry, out bool found);
+        var qryDetails = qryManager.GetSqlScriptWithMetadata("APHI_Others_Vendors", out string qry, out bool found);
         if (!found)
-            throw new Exception("Base query for getting all Business Partners not found.");
+            throw new Exception("Base query for getting all Vendors not found.");
 
         string query = DataGridQueryBuilder.BuildQuery(qry, intent);
         string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent.Filters, columnMap);
