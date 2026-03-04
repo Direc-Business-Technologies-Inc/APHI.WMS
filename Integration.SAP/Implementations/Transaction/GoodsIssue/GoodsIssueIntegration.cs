@@ -9,6 +9,7 @@ using Integration.Sap.Repositories;
 using Integration.SAP.Entities.Transactional.GoodsIssue;
 using Mapster.Adapters;
 using Shared.Entities;
+using System.Text.Json;
 
 namespace Integration.SAP.Implementations.Transaction.GoodsIssue;
 
@@ -137,15 +138,20 @@ public class GoodsIssueIntegration(
         InventoryGenExitPayload payload = new(data.PreparedBy,
                                               data.TransactionType.Code,
                                               payloadLines,
-                                              data.BusinesasPartner?.CardCode,
-                                              data.BusinesasPartner?.CardName,
+                                              data.BusinessPartner?.CardCode,
+                                              data.BusinessPartner?.CardName,
                                               data.SchoolYear,
                                               data.SrfNo,
                                               data.Designation,
-                                              data.Remarks,
+                                              data.DocRemarks,
                                               data.ApprovedBy,
                                               data.ReceivedBy,
                                               data.NotedBy);
+
+        string jsonString = JsonSerializer.Serialize(payload, new JsonSerializerOptions
+        {
+            WriteIndented = true
+        });
 
         try
         {
