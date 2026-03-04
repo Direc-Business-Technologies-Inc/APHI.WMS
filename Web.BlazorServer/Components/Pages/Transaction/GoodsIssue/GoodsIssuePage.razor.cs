@@ -19,7 +19,7 @@ public partial class GoodsIssuePage
     {
         base.OnParametersSet();
         if (T is not null)
-            SelectedTab = T.ToLower() == "aprvd" ? 0 : T.ToLower() == "pndng" ? 1 : 2;
+            SelectedTab = T.ToLower() == "aprvd" ? 0 : T.ToLower() == "rjct" ? 1 : 2;
     }
 
     #endregion Overrides
