@@ -125,21 +125,21 @@
                             <RadzenColumn Size="12" SizeMD="4">
                                 <RadzenFormField Text="PUR No." class="rz-w-100" AllowFloatingLabel="false">
                                     <ChildContent>
-                                        <RadzenTextBox Visible="@(Viewing)" ReadOnly @bind-Value="@FormData.WarNo" Name="gi_pur_no" Placeholder="4004" Disabled="@IsBusy" class="rz-w-100" />
+                                        <RadzenTextBox Readonly="@(Viewing)" @bind-Value="@FormData.WarNo" Name="gi_pur_no" Placeholder="4004" Disabled="@IsBusy" class="rz-w-100" />
                                     </ChildContent>
                                 </RadzenFormField>
                             </RadzenColumn>
                             <RadzenColumn Size="12" SizeMD="4">
                                 <RadzenFormField Text="Designation" class="rz-w-100" AllowFloatingLabel="false">
                                     <ChildContent>
-                                        <RadzenTextBox Visible="@(Viewing)" ReadOnly @bind-Value="@FormData.Designation" Name="gi_designation" Placeholder="Administrator" Disabled="@IsBusy" class="rz-w-100" />
+                                        <RadzenTextBox Readonly="@(Viewing)" @bind-Value="@FormData.Designation" Name="gi_designation" Placeholder="Administrator" Disabled="@IsBusy" class="rz-w-100" />
                                     </ChildContent>
                                 </RadzenFormField>
                             </RadzenColumn>
                             <RadzenColumn Size="12" SizeMD="4">
                                 <RadzenFormField Text="Received By" class="rz-w-100" AllowFloatingLabel="false">
                                     <ChildContent>
-                                        <RadzenTextBox Visible="@(Viewing)" ReadOnly @bind-Value="@FormData.ReceivedBy" Name="gi_rec_by" Placeholder="Contact Person A" Disabled="@IsBusy" class="rz-w-100" />
+                                        <RadzenTextBox Readonly="@(Viewing)" @bind-Value="@FormData.ReceivedBy" Name="gi_rec_by" Placeholder="Contact Person A" Disabled="@IsBusy" class="rz-w-100" />
                                     </ChildContent>
                                 </RadzenFormField>
                             </RadzenColumn>
