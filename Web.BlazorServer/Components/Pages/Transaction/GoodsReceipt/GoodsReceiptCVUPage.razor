@@ -78,7 +78,7 @@
                             <RadzenColumn Size="12" SizeMD="4">
                                 <RadzenFormField Text="WAR No." class="rz-w-100" AllowFloatingLabel="false">
                                     <ChildContent>
-                                        <RadzenTextBox Visible="@(Viewing)" ReadOnly @bind-Value="@FormData.WarNo" Name="gi_war_no" Placeholder="1001" Disabled="@IsBusy" class="rz-w-100" />
+                                        <RadzenTextBox ReadOnly="@(Viewing)" @bind-Value="@FormData.WarNo" Name="gi_war_no" Placeholder="1001" Disabled="@IsBusy" class="rz-w-100" />
                                     </ChildContent>
                                 </RadzenFormField>
                             </RadzenColumn>
@@ -125,7 +125,7 @@
                             <RadzenColumn Size="12" SizeMD="4">
                                 <RadzenFormField Text="PUR No." class="rz-w-100" AllowFloatingLabel="false">
                                     <ChildContent>
-                                        <RadzenTextBox Readonly="@(Viewing)" @bind-Value="@FormData.WarNo" Name="gi_pur_no" Placeholder="4004" Disabled="@IsBusy" class="rz-w-100" />
+                                        <RadzenTextBox Readonly="@(Viewing)" @bind-Value="@FormData.PurNo" Name="gi_pur_no" Placeholder="4004" Disabled="@IsBusy" class="rz-w-100" />
                                     </ChildContent>
                                 </RadzenFormField>
                             </RadzenColumn>
