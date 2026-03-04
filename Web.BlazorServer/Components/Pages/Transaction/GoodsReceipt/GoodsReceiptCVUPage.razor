@@ -198,7 +198,7 @@
                                             </RadzenFormField>
                                         </Template>
                                     </RadzenDataGridColumn>
-                                    <RadzenDataGridColumn TItem="GoodsReceiptLineVM"
+                                    <RadzenDataGridColumn Visible="@Creating" TItem="GoodsReceiptLineVM"
                                                           Property="@nameof(GoodsReceiptLineVM.OnHandQty)"
                                                           Title="OnHand Qty" Width="150px">
                                         <Template Context="data">
