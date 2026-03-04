@@ -13,6 +13,7 @@ using Web.BlazorServer.Services.Implementation;
 using Web.BlazorServer.Services.Repositories;
 using Web.BlazorServer.ViewModels.Enums;
 using Web.BlazorServer.ViewModels.Others;
+using Web.BlazorServer.ViewModels.Transaction.Commons;
 using Web.BlazorServer.ViewModels.Transaction.GoodsReceipt;
 using Web.BlazorServer.ViewModels.Transaction.GoodsReturn;
 
@@ -44,6 +45,7 @@ public partial class GoodsReceiptCVUPage
     [Inject] IWarehouseMasterDataHandler WarehouseHandler { get; set; } = default!;
     [Inject] IGridSettingsService GridSettingsService { get; set; } = default!;
     [Inject] IBusinessPartnerHandler BusinessPartnerHandler { get; set; } = default!;
+    [Inject] IItemMasterDataHandler ItemMasterDataHandler { get; set; } = default!;
     #endregion Injects
 
     #region Primitives
@@ -57,6 +59,7 @@ public partial class GoodsReceiptCVUPage
     readonly string ActionGetGoodsReceipt = EnumHelper.GetEnumDescription(AppActions.ViewGoodsReceipt);
     readonly string ActionGetTransactionTypes = EnumHelper.GetEnumDescription(AppActions.GetVendors);
     readonly string ActionGetWarehouses = EnumHelper.GetEnumDescription(AppActions.GetWarehouses);
+    readonly string ActionGetItems = EnumHelper.GetEnumDescription(AppActions.GetAllItems);
     readonly string ActionGetBusinessPartners = EnumHelper.GetEnumDescription(AppActions.GetBusinessPartners);
     readonly string ActionCreateGoodsReceipt = EnumHelper.GetEnumDescription(AppActions.CreateGoodsReceipt);
 
@@ -320,6 +323,28 @@ public partial class GoodsReceiptCVUPage
 
             await InvokeAsync(StateHasChanged);
         }, AppActionOptionPresets.Loading(ActionGetBusinessPartners));
+    }
+
+    async Task UpdateItemWarehouse(GoodsReceiptLineVM item)
+    {
+        var action = await AppActionFactory.RunAsync(async () =>
+        {
+            await Task.Yield();
+
+            DatagridAdapter = new DataGridIntentAdapter(new());
+            DatagridAdapter.AdaptToPagination();
+            if (DatagridAdapter.QueryIntent.Take <= 0)
+                DatagridAdapter.QueryIntent.Take = 5;
+
+            (IEnumerable<ItemVM> Data, int Count) = await ItemMasterDataHandler.GetItemsInWarehouseAsync(DatagridAdapter.QueryIntent, item.Warehouse.WhsCode, [item.ItemCode]);
+
+            if (Count > 0)
+                item.OnHandQty = Data.First().Quantity;
+
+            await GoodsReceiptTable.DataGrid.RefreshDataAsync();
+
+            await InvokeAsync(StateHasChanged);
+        }, AppActionOptionPresets.Loading(ActionGetItems));
     }
 
     #endregion Custom Functions

@@ -184,6 +184,7 @@
                                                     }
                                                     <RadzenDropDown Visible="@(Creating)"
                                                                     @bind-Value="@data.Warehouse"
+                                                                    @bind-Value:after="() => UpdateItemWarehouse(data)"
                                                                     Data="@Warehouses"
                                                                     Count="@WarehousesCount"
                                                                     LoadData="@LoadWarehouses"
@@ -195,6 +196,13 @@
                                                                     class="rz-w-100" />
                                                 </ChildContent>
                                             </RadzenFormField>
+                                        </Template>
+                                    </RadzenDataGridColumn>
+                                    <RadzenDataGridColumn TItem="GoodsReceiptLineVM"
+                                                          Property="@nameof(GoodsReceiptLineVM.OnHandQty)"
+                                                          Title="OnHand Qty" Width="150px">
+                                        <Template Context="data">
+                                            @data.OnHandQty.ToString("N0")
                                         </Template>
                                     </RadzenDataGridColumn>
                                     <RadzenDataGridColumn TItem="GoodsReceiptLineVM"
@@ -292,9 +300,9 @@
         await DialogService.OpenAsync(
             "Table Settings",
             ds => @<AppGridSettings TItem="GoodsReceiptLineVM"
-                                        @bind-Grid=@GoodsReceiptTable.DataGrid
-                                        @bind-GridSettings=@GoodsReceiptTableSettings />,
-            options: GridSettingsService.GetDialogOptions());
+                                    @bind-Grid=@GoodsReceiptTable.DataGrid
+                                    @bind-GridSettings=@GoodsReceiptTableSettings />,
+        options: GridSettingsService.GetDialogOptions());
 
         await GoodsReceiptTable.DataGrid.Reload();
     }
