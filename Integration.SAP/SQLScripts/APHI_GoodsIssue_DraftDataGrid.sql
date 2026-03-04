@@ -2,7 +2,7 @@ select
 	 T0.DocEntry
 	,T0.DocNum
     ,T0.DocDate
-	,T0.U_PrepBy [Prepared By]
+	,T0.U_PrepBy [PreparedBy]
 	,T2.Code [TransTypeCode]
     ,T2.Name [TransTypeName]
     ,T3.AcctCode
