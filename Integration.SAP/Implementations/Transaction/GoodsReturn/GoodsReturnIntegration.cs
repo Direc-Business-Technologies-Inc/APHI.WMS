@@ -173,6 +173,7 @@ public class GoodsReturnIntegration(
                                             data.ReceivedBy,
                                             data.DocRemarks,
                                             data.ApprovedBy,
+                                            data.ReviewedBy,
                                             data.CheckedBy);
 
         string json = JsonSerializer.Serialize(payload, new JsonSerializerOptions { WriteIndented = true });
@@ -202,6 +203,7 @@ public class GoodsReturnIntegration(
                                             data.ReceivedBy,
                                             data.DocRemarks,
                                             data.ApprovedBy,
+                                            data.ReviewedBy,
                                             data.CheckedBy);
 
         await SLActions.PostAsync<object, PurchaseReturnPayload>("PurchaseReturns", payload);

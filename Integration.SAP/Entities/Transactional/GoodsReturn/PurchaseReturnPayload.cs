@@ -18,6 +18,7 @@ public class PurchaseReturnPayload
     public string? U_Remarks { get; private set; }
     public string? U_AppBy { get; private set; }
     public string? U_CheckBy { get; private set; }
+    public string? U_RevBy { get; private set; }
 
 
     public List<PurchaseReturnLinesPayload> DocumentLines { get; private set; } = [];
@@ -35,6 +36,7 @@ public class PurchaseReturnPayload
                        string? receivedBy = null,
                        string? docRemarks = null,
                        string? approvedBy = null,
+                       string? reviewedBy = null,
                        string? checkedBy = null)
     {
         DocDate = Guard.Against.NullOrOutOfSQLDateRange(docDate, nameof(DocDate), "Doc Date cannot be null or out of range");
@@ -51,6 +53,7 @@ public class PurchaseReturnPayload
         U_Remarks = docRemarks;
         U_AppBy = approvedBy;
         U_CheckBy = checkedBy;
+        U_RevBy = reviewedBy;
 
         DocumentLines = [.. Guard.Against.NullOrEmpty(documentLines, nameof(DocumentLines), "Document Lines cannot be null or empty")];
     }
