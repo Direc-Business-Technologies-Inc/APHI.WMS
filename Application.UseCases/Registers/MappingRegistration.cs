@@ -120,7 +120,7 @@ public class MappingRegistration : IRegister
                     AcctName = s.AcctName,
                 }
             })
-            .Map(d => d.BusinesasPartner, s => s.CardCode == null ? null : new BusinessPartnerDTO()
+            .Map(d => d.BusinessPartner, s => s.CardCode == null ? null : new BusinessPartnerDTO()
             {
                 CardCode = s.CardCode,
                 CardName = s.CardName ?? s.CardCode,
@@ -146,8 +146,8 @@ public class MappingRegistration : IRegister
         #region Goods Receipt
 
         config.NewConfig<GoodsReceiptHeaderSAPDTO, GoodsReceiptDTO>()
-            .Map(d => d.SapReference, s => new SapDocumentReferenceDTO() 
-            { 
+            .Map(d => d.SapReference, s => new SapDocumentReferenceDTO()
+            {
                 DocEntry = s.DocEntry,
                 DocNum = s.DocNum,
             })
@@ -330,6 +330,7 @@ public class MappingRegistration : IRegister
                 CardCode = s.CardCode,
                 CardName = s.CardName,
             })
+            .Map(d => d.ItemGroupCodes, s => SplitAndTrim(s.ItemGroupCodes))
             .Map(d => d.SupplierContactPerson, s => s.SupplierContactPerson)
             .Map(d => d.Remarks, s => s.Remarks);
 
@@ -431,5 +432,13 @@ public class MappingRegistration : IRegister
 
         #endregion SAP DTO to DTO
     }
+    private static List<string> SplitAndTrim(string value)
+    {
+        return string.IsNullOrEmpty(value)
+            ? []
+            : [.. value.Split(',').Select(g => g.Trim())];
+    }
 }
+
+
 

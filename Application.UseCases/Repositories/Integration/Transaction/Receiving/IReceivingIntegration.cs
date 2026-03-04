@@ -1,4 +1,5 @@
 ﻿using Application.DataTransferObjects.Transactions.Receiving;
+using Application.DataTransferObjects.Transactions.Receiving.SAP;
 using Integration.SAP.Entities.Transactional.Receiving;
 using Shared.Entities;
 
@@ -13,4 +14,5 @@ public interface IReceivingIntegration
     public Task<PurchaseDeliveryNoteHeaderSAPDTO?> GetPurchaseDeliveryNoteHeaderAsync(int docEntry);
     public Task<IEnumerable<PurchaseDeliveryNoteLineSAPDTO>> GetPurchaseDeliveryNoteLinesAsync(int docEntry);
     public Task<bool> PostGoodsReceiptPOAsync(PurchaseDeliveryNoteDTO data);
+    public Task<IEnumerable<PurchaseTypeSAPDTO>> GetPurchaseTypesAsync();
 }

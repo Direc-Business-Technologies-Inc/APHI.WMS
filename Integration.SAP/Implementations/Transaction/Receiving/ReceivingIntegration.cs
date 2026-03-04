@@ -1,4 +1,5 @@
 ﻿using Application.DataTransferObjects.Transactions.Receiving;
+using Application.DataTransferObjects.Transactions.Receiving.SAP;
 using Application.UseCases.Repositories.Integration.Transaction.Receiving;
 using Database.Libraries.Repositories;
 using Integration.Sap.Entities;
@@ -120,13 +121,20 @@ public class ReceivingIntegration(
         return (docs, rowCount?.Count ?? docs.Count);
     }
 
+    public async Task<IEnumerable<PurchaseTypeSAPDTO>> GetPurchaseTypesAsync()
+    {
+        List<PurchaseTypeSAPDTO>? lines = await SLActions.QueryAsync<PurchaseTypeSAPDTO>("APHI_Receiving_PurchaseType");
+
+        return lines;
+    }
+
     public async Task<bool> PostGoodsReceiptPOAsync(PurchaseDeliveryNoteDTO data)
     {
-        List<GoodsReceiptPOLinesPayload> payloadLines = [];
+        List<object> payloadLines = [];
 
-        foreach (PurchaseDeliveryNoteLineDTO line in data.DocumentLines.Where(dl => dl.Quantity > 0))
-            payloadLines.Add(new(line.BaseEntry,
-                                 22,
+        foreach (PurchaseDeliveryNoteLineDTO line in data.DocumentLines.Where(dl => dl.Quantity > 0 && dl.Price > 0))
+            payloadLines.Add(new GoodsReceiptPOLinesPayload(line.BaseEntry,
+                                 line.BaseEntry == 0 ? 0 : 22,
                                  line.BaseLine,
                                  data.DocumentLines.Where(dl => dl.Quantity > 0).ToList().IndexOf(line),
                                  line.ItemCode,
@@ -136,8 +144,40 @@ public class ReceivingIntegration(
                                  line.Warehouse.WhsCode,
                                  EnumHelper.GetEnumDescription(line.InputType)));
 
+        foreach (PurchaseDeliveryNoteLineDTO line in data.DocumentLines.Where(dl => dl.Quantity > 0 && dl.Price <= 0))
+            payloadLines.Add(new GoodsReceiptPOLinesStandalonePayload(data.DocumentLines.Where(dl => dl.Quantity > 0).ToList().IndexOf(line),
+                                 line.ItemCode,
+                                 line.Quantity,
+                                 line.Price,
+                                 line.TaxCode,
+                                 line.Warehouse.WhsCode,
+                                 EnumHelper.GetEnumDescription(line.InputType)));
 
-        GoodsReceiptPOPayload payload = new(data.BusinessPartner.CardCode, data.DocDate, data.DocDueDate, data.DocDate, data.ReceivedBy, payloadLines);
+
+        GoodsReceiptPOPayload payload = new(data.BusinessPartner.CardCode,
+                                            data.DocDate,
+                                            data.DocDueDate,
+                                            data.DocDate,
+                                            data.PreparedBy,
+                                            payloadLines,
+                                            data.SchoolYear,
+                                            data.PONo,
+                                            data.DRNo,
+                                            data.Time,
+                                            data.SINo,
+                                            data.PurchaseType,
+                                            data.ItemName,
+                                            data.DeliveredBy,
+                                            data.ReceivedBy,
+                                            data.DocRemarks,
+                                            data.ReviewedBy,
+                                            data.ApprovedBy,
+                                            data.NotedBy);
+
+        string json = JsonSerializer.Serialize(payload, new JsonSerializerOptions
+        {
+            WriteIndented = true
+        });
 
         await SLActions.PostAsync<object, GoodsReceiptPOPayload>("PurchaseDeliveryNotes", payload);
 
