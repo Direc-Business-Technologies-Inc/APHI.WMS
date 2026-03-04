@@ -5,6 +5,7 @@ using Shared.Entities;
 using Shared.Kernel;
 using Web.BlazorServer.Components.Shared.Abstraction;
 using Web.BlazorServer.Defaults;
+using Web.BlazorServer.Handlers.Implementations.Others;
 using Web.BlazorServer.Handlers.Repositories.Others;
 using Web.BlazorServer.Handlers.Repositories.Transaction.GoodsIssue;
 using Web.BlazorServer.Helpers;
@@ -12,6 +13,7 @@ using Web.BlazorServer.Services.Implementation;
 using Web.BlazorServer.Services.Repositories;
 using Web.BlazorServer.ViewModels.Enums;
 using Web.BlazorServer.ViewModels.Others;
+using Web.BlazorServer.ViewModels.Transaction.Commons;
 using Web.BlazorServer.ViewModels.Transaction.GoodsIssue;
 using Web.BlazorServer.ViewModels.Transaction.GoodsReceipt;
 
@@ -43,6 +45,8 @@ public partial class GoodsIssueCVUPage
     [Inject] ISchoolYearHandler SchoolYearHandler { get; set; } = default!;
     [Inject] IBusinessPartnerHandler BusinessPartnerHandler { get; set; } = default!;
     [Inject] IGridSettingsService GridSettingsService { get; set; } = default!;
+    [Inject] IItemMasterDataHandler ItemMasterDataHandler { get; set; } = default!;
+
     #endregion Injects
 
     #region Primitives
@@ -56,6 +60,7 @@ public partial class GoodsIssueCVUPage
     readonly string ActionGetGoodsIssue = EnumHelper.GetEnumDescription(AppActions.ViewGoodsIssue);
     readonly string ActionGetTransactionTypes = EnumHelper.GetEnumDescription(AppActions.GetTransactionTypes);
     readonly string ActionGetWarehouses = EnumHelper.GetEnumDescription(AppActions.GetWarehouses);
+    readonly string ActionGetItems = EnumHelper.GetEnumDescription(AppActions.GetAllItems);
     readonly string ActionGetSchoolYears = EnumHelper.GetEnumDescription(AppActions.GetSchoolYears);
     readonly string ActionGetBusinessPartners = EnumHelper.GetEnumDescription(AppActions.GetBusinessPartners);
     readonly string ActionCreateGoodsIssue = EnumHelper.GetEnumDescription(AppActions.CreateGoodsIssue);
@@ -357,6 +362,28 @@ public partial class GoodsIssueCVUPage
 
             await InvokeAsync(StateHasChanged);
         }, AppActionOptionPresets.Loading(ActionGetBusinessPartners));
+    }
+
+    async Task UpdateItemWarehouse(GoodsIssueLineVM item)
+    {
+        var action = await AppActionFactory.RunAsync(async () =>
+        {
+            await Task.Yield();
+
+            DatagridAdapter = new DataGridIntentAdapter(new());
+            DatagridAdapter.AdaptToPagination();
+            if (DatagridAdapter.QueryIntent.Take <= 0)
+                DatagridAdapter.QueryIntent.Take = 5;
+
+            (IEnumerable<ItemVM> Data, int Count) = await ItemMasterDataHandler.GetItemsInWarehouseAsync(DatagridAdapter.QueryIntent, item.Warehouse.WhsCode, [item.ItemCode]);
+
+            if (Count > 0)
+                item.OnHandQty = Data.First().Quantity;
+
+            await GoodsIssueTable.DataGrid.RefreshDataAsync();
+
+            await InvokeAsync(StateHasChanged);
+        }, AppActionOptionPresets.Loading(ActionGetItems));
     }
 
     #endregion Custom Functions

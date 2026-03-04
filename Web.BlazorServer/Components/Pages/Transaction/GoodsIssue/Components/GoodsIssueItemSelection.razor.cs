@@ -53,7 +53,7 @@ public partial class GoodsIssueItemSelection
         {
             AppBusyService.SetBusy(ActionGetItems, true);
 
-            var response = await ItemsHandler.GetMerchandiseItemsAsync(intent);
+            var response = await ItemsHandler.GetWarehouseItemsAsync(intent, Issue.Warehouse?.WhsCode ?? string.Empty);
 
             return response;
 
@@ -84,6 +84,7 @@ public partial class GoodsIssueItemSelection
                 ItemCode = data.ItemCode,
                 ItemName = data.ItemName,
                 Quantity = 0,
+                OnHandQty = data.Quantity,
                 UoMCode = data.UoMCode,
                 UoMName = data.UoMName,
                 UoMValue = data.UoMValue,

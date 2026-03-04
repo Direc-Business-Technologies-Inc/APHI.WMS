@@ -201,6 +201,7 @@
                                             <RadzenFormField Visible="@(Creating)" class="rz-w-100 remove-form-input-margin" AllowFloatingLabel="false">
                                                 <ChildContent>
                                                     <RadzenDropDown @bind-Value="@data.Warehouse"
+                                                                    @bind-Value:after="() => UpdateItemWarehouse(data)"
                                                                     Data="@Warehouses"
                                                                     Count="@WarehousesCount"
                                                                     LoadData="@LoadWarehouses"
@@ -212,6 +213,13 @@
                                                                     class="rz-w-100" />
                                                 </ChildContent>
                                             </RadzenFormField>
+                                        </Template>
+                                    </RadzenDataGridColumn>
+                                    <RadzenDataGridColumn TItem="GoodsIssueLineVM"
+                                                          Property="@nameof(GoodsIssueLineVM.OnHandQty)"
+                                                          Title="OnHand Qty" Width="150px">
+                                        <Template Context="data">
+                                            @data.OnHandQty.ToString("N0")
                                         </Template>
                                     </RadzenDataGridColumn>
                                     <RadzenDataGridColumn TItem="GoodsIssueLineVM"
