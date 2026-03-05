@@ -224,7 +224,7 @@ public partial class GoodsIssueCVUPage
             if (!await AlertService.HasUnsavedChangesAsync(header: "Cancel Goods Issue Creation"))
                 return;
 
-        NavManager.NavigateTo($"/transactions/inventory/goods-issue/?t=pndng", true);
+        NavManager.NavigateTo($"/transactions/inventory/goods-issue/?T={(Draft == 1 ? "pndng" : "aprvd")}", true);
     }
 
     async Task LoadTransactionTypes()

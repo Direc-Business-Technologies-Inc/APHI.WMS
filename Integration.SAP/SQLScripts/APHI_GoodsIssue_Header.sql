@@ -2,10 +2,10 @@ SELECT
 	  T0.DocEntry
     , T0.DocNum
     , T0.DocDate
-	, T2.Code [TransTypeCode]
-    , T2.Name [TransTypeName]
-    , T3.AcctCode
-    , T3.AcctName
+	, T1.Code [TransTypeCode]
+    , T1.Name [TransTypeName]
+    , T2.AcctCode
+    , T2.AcctName
 	, T0.U_SchlYear [SchoolYear]
 	, T0.U_TransType [TransType]
     , T0.U_SRFNo [SrfNo]
