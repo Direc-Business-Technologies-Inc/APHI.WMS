@@ -10,6 +10,7 @@ public class PurchaseDeliveryNoteLineSAPDTO
     public string WhsCode { get; set; }
     public string WhsName { get; set; }
     public decimal Quantity { get; set; }
+    public decimal OpenQty { get; set; }
     public string UoMCode { get; set; }
     public decimal UoMValue { get; set; }
     public string UoMName { get; set; }

@@ -15,6 +15,7 @@ public class PurchaseDeliveryNoteLineDTO : ItemDTO
     public decimal Price { get; set; }
     public string TaxCode { get; set; }
     public bool Free { get; set; }
+    public decimal OpenQty { get; set; }
     public BusinessPartnerDTO BusinessPartner { get; set; }
     public WarehouseDTO Warehouse { get; set; }
     public InputType InputType { get; set; }
