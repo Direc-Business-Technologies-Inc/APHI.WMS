@@ -6,6 +6,7 @@ SELECT
 	,T3.WhsName
 	,T1.ItemCode
 	,T2.ItemName
+	,T1.OpenQty
 	,T1.Quantity
 	,ISNULL(T1.unitMsr, 'Manual') [UoMCode]
 	,T1.NumPerMsr [UoMValue]
