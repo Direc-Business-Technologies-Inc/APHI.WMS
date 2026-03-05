@@ -281,7 +281,7 @@
                 <RadzenColumn Size="12" SizeMD="4">
                     <RadzenFormField Text="Remarks" class="rz-w-100" AllowFloatingLabel="false">
                         <ChildContent>
-                            <RadzenTextArea ReadOnly="@Viewing" @bind-Value="@FormData.DocRemarks" Name="gr_remarks" Rows="3" Disabled="@IsBusy" class="rz-w-100" Placeholder="This Goods Issue is for ..." />
+                            <RadzenTextArea ReadOnly="@Viewing" @bind-Value="@FormData.DocRemarks" Name="gr_remarks" Rows="3" Disabled="@IsBusy" class="rz-w-100" Placeholder="The Received Items are for..." />
                         </ChildContent>
                     </RadzenFormField>
                 </RadzenColumn>
@@ -290,6 +290,11 @@
                         <RadzenFormField Text="Prepared By" class="rz-w-100" AllowFloatingLabel="false">
                             <ChildContent>
                                 <RadzenTextBox ReadOnly Value="@FormData.PreparedBy" Name="gr_prep_by" Placeholder="WMS User ABC" Disabled="@IsBusy" class="rz-w-100" />
+                            </ChildContent>
+                        </RadzenFormField>
+                        <RadzenFormField Text="Received By" class="rz-w-100" AllowFloatingLabel="false">
+                            <ChildContent>
+                                <RadzenTextBox ReadOnly="@Viewing" Value="@FormData.ReceivedBy" Name="gr_rec_by" Placeholder="WMS User DEF" Disabled="@IsBusy" class="rz-w-100" />
                             </ChildContent>
                         </RadzenFormField>
                         <RadzenFormField Text="Approved By" class="rz-w-100" AllowFloatingLabel="false">

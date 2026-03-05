@@ -22,7 +22,21 @@ SELECT
 	,T0.U_PurchType [PurchaseType]
 	,T0.U_ItemName [ItemName]
 	,T0.U_Remarks [DocRemarks]
+	,AX1.*
 FROM OPDN AS T0
+OUTER APPLY (
+	SELECT
+		 STRING_AGG(ItmsGrpCod, ', ')    [ItemGroupCodes]
+	FROM (
+		SELECT DISTINCT
+			 C1.ItmsGrpCod
+			,C2.ItmsGrpNam
+		FROM POR1 T1
+		INNER JOIN OITM AS C1 ON T1.ItemCode = C1.ItemCode
+		INNER JOIN OITB AS C2 ON C1.ItmsGrpCod = C2.ItmsGrpCod
+		WHERE T1.DocEntry = T0.DocEntry
+	) Distinct_Groups
+) AX1
 INNER JOIN PDN1 AS T1 ON T0.DocEntry = T1.DocEntry
 INNER JOIN OPOR AS T3 ON T1.BaseEntry = T3.DocEntry
 INNER JOIN OCRD AS T5 ON T0.CardCode = T5.CardCode

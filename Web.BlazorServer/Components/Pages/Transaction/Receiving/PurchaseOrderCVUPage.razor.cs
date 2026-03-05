@@ -62,7 +62,7 @@ public partial class PurchaseOrderCVUPage
 
     AppTable<PurchaseOrderLineVM> PurchaseOrderTable { get; set; } = default!;
     DataGridSettings PurchaseOrderTableSettings { get; set; } = new();
-    
+
     List<PurchaseTypeVM> PurchaseTypes { get; set; } = [];
     List<SchoolYearVM> SchoolYears { get; set; } = [];
     List<NavigationRouteVM> AdditionalRoutes { get; set; } = [new() {
@@ -188,7 +188,11 @@ public partial class PurchaseOrderCVUPage
             {
                 action.Result.Adapt(FormData);
 
-                FormData.ReceivedBy = AuthenticationService.GetUserName();
+                if (Creating)
+                {
+                    FormData.ReceivedBy = AuthenticationService.GetUserName();
+                    FormData.PreparedBy = AuthenticationService.GetUserName();
+                }
             }
         });
     }
@@ -234,7 +238,7 @@ public partial class PurchaseOrderCVUPage
         freeLine.DocEntry = 0;
         freeLine.LineNum = 0;
 
-        FormData.DocumentLines.Insert(FormData.DocumentLines.IndexOf(line) + 1,freeLine);
+        FormData.DocumentLines.Insert(FormData.DocumentLines.IndexOf(line) + 1, freeLine);
         await PurchaseOrderTable.DataGrid.RefreshDataAsync();
     }
 
