@@ -34,7 +34,7 @@
                         <ChildContent>
                             <RadzenRow class="rz-my-2">
                                 <RadzenColumn Size="12">
-                                    <RadzenFormField Text="First Name" class="rz-w-100" AllowFloatingLabel="false">
+                                    <RadzenFormField Text="First Name*" class="rz-w-100" AllowFloatingLabel="false">
                                         <ChildContent>
                                             <RadzenTextBox ReadOnly="@Viewing" @bind-Value="@FormData.Name.FirstName" Placeholder="User First Name" Name="user_firstname" Disabled="@IsBusy" class="rz-w-100" />
                                         </ChildContent>
@@ -55,7 +55,7 @@
                             </RadzenRow>
                             <RadzenRow class="rz-my-2">
                                 <RadzenColumn Size="12">
-                                    <RadzenFormField Text="Last Name" class="rz-w-100" AllowFloatingLabel="false">
+                                    <RadzenFormField Text="Last Name*" class="rz-w-100" AllowFloatingLabel="false">
                                         <ChildContent>
                                             <RadzenTextBox ReadOnly="@Viewing" @bind-Value="@FormData.Name.LastName" Placeholder="User Last Name" Name="user_lastname" Disabled="@IsBusy" class="rz-w-100" />
                                         </ChildContent>
@@ -73,7 +73,7 @@
                         <ChildContent>
                             <RadzenRow class="rz-my-2">
                                 <RadzenColumn Size="12">
-                                    <RadzenFormField Text="Email" class="rz-w-100" AllowFloatingLabel="false">
+                                    <RadzenFormField Text="Email*" class="rz-w-100" AllowFloatingLabel="false">
                                         <ChildContent>
                                             <RadzenTextBox ReadOnly="@Viewing" @bind-Value="@FormData.Email.Address" Placeholder="email@email.com" Name="user_email" Disabled="@IsBusy" class="rz-w-100" />
                                         </ChildContent>
@@ -86,7 +86,7 @@
                             </RadzenRow>
                             <RadzenRow class="rz-my-2">
                                 <RadzenColumn Size="12">
-                                    <RadzenFormField Text="Phone No." class="rz-w-100" AllowFloatingLabel="false">
+                                    <RadzenFormField Text="Phone No.*" class="rz-w-100" AllowFloatingLabel="false">
                                         <ChildContent>
                                             <RadzenTextBox ReadOnly="@Viewing" @bind-Value="@FormData.PhoneNumber" Placeholder="0999 XXX XXXX" Name="user_phone" Disabled="@IsBusy" class="rz-w-100" />
                                         </ChildContent>
@@ -99,7 +99,7 @@
                             </RadzenRow>
                             <RadzenRow class="rz-my-2">
                                 <RadzenColumn Size="12">
-                                    <RadzenFormField Text="Company" class="rz-w-100" AllowFloatingLabel="false">
+                                    <RadzenFormField Text="Company*" class="rz-w-100" AllowFloatingLabel="false">
                                         <ChildContent>
                                             <RadzenTextBox ReadOnly="@Viewing" @bind-Value="@FormData.Company" Placeholder="Direc" Name="user_company" Disabled="@IsBusy" class="rz-w-100" />
                                         </ChildContent>
@@ -135,7 +135,7 @@
                             </RadzenRow>
                             <RadzenRow Gap="1rem" class="rz-my-2" AlignItems="AlignItems.End">
                                 <RadzenColumn Size="12">
-                                    <RadzenFormField Text="Role" class="rz-w-100" AllowFloatingLabel="false">
+                                    <RadzenFormField Text="Role*" class="rz-w-100" AllowFloatingLabel="false">
                                         <ChildContent>
                                             <RadzenTextBox Visible="@Viewing" ReadOnly Value="@FormData.Role?.Name" Placeholder="WMS-0000" Name="user_username" Disabled="@IsBusy" class="rz-w-100" />
                                             <RadzenDropDown Visible="@(Creating || Updating)" @bind-Value="@FormData.Role" Placeholder="Administrator" Data="@Roles" TextProperty="@nameof(RoleVM.Name)" AllowFiltering FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Name="user_role" />
@@ -148,7 +148,7 @@
                             </RadzenRow>
                             <RadzenRow Gap="1rem" class="rz-my-2" AlignItems="AlignItems.End">
                                 <RadzenColumn Size="12" SizeMD="@(Creating ? 6 : 12)">
-                                    <RadzenFormField Text="Username" class="rz-w-100" AllowFloatingLabel="false">
+                                    <RadzenFormField Text="Username*" class="rz-w-100" AllowFloatingLabel="false">
                                         <ChildContent>
                                             <RadzenTextBox ReadOnly @bind-Value="@FormData.Account.UserName.Value" Placeholder="WMS-0000" Name="user_username" Disabled="@IsBusy" class="rz-w-100" />
                                         </ChildContent>
@@ -161,7 +161,7 @@
                                     </RadzenFormField>
                                 </RadzenColumn>
                                 <RadzenColumn Visible="@(Creating)" Size="12" SizeMD="6">
-                                    <RadzenFormField Text="Password" class="rz-w-100" AllowFloatingLabel="false">
+                                    <RadzenFormField Text="Password*" class="rz-w-100" AllowFloatingLabel="false">
                                         <ChildContent>
                                             <RadzenPassword Visible="@(!PasswordVisibility)" ReadOnly="@Viewing" @bind-Value="@FormData.Account.HashedPassword" Placeholder="********" Name="user_password_h" Disabled="@IsBusy" class="rz-w-100" />
                                             <RadzenTextBox Visible="@PasswordVisibility" ReadOnly="@Viewing" @bind-Value="@FormData.Account.HashedPassword" Placeholder="********" Name="user_password_v" Disabled="@IsBusy" class="rz-w-100" />
