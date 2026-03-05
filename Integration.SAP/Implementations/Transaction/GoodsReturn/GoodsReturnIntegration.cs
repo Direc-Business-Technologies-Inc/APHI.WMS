@@ -129,7 +129,7 @@ public class GoodsReturnIntegration(
         List<PurchaseReturnLinesPayload> payloadLines = [];
 
         foreach (GoodsReturnLineDTO line in data.DocumentLines.Where(dl => dl.Quantity > 0))
-            payloadLines.Add(new(line.DocEntry, 234000032, line.LineNum, data.DocumentLines.IndexOf(line), line.ItemCode, line.Quantity, line.Warehouse.WhsCode));
+            payloadLines.Add(new(data.SapReference.DocEntry, 234000032, line.LineNum, data.DocumentLines.IndexOf(line), line.ItemCode, line.Quantity, line.Warehouse.WhsCode));
 
         PurchaseReturnPayload payload = new(data.DocDate,
                                             data.DocDueDate,
@@ -158,7 +158,7 @@ public class GoodsReturnIntegration(
         List<PurchaseReturnLinesPayload> payloadLines = [];
 
         foreach (GoodsReturnLineDTO line in data.DocumentLines.Where(dl => dl.Quantity > 0))
-            payloadLines.Add(new(line.DocEntry, 20, line.LineNum, data.DocumentLines.IndexOf(line), line.ItemCode, line.Quantity, line.Warehouse.WhsCode));
+            payloadLines.Add(new(data.GRPODocEntry, 20, line.LineNum, data.DocumentLines.IndexOf(line), line.ItemCode, line.Quantity, line.Warehouse.WhsCode));
 
         PurchaseReturnPayload payload = new(data.DocDate,
                                             data.DocDueDate,
@@ -188,7 +188,7 @@ public class GoodsReturnIntegration(
         List<PurchaseReturnLinesPayload> payloadLines = [];
 
         foreach (GoodsReturnLineDTO line in data.DocumentLines.Where(dl => dl.Quantity > 0))
-            payloadLines.Add(new(line.DocEntry, -1, line.LineNum, data.DocumentLines.IndexOf(line), line.ItemCode, line.Quantity, line.Warehouse.WhsCode));
+            payloadLines.Add(new(-1, -1, -1, data.DocumentLines.IndexOf(line), line.ItemCode, line.Quantity, line.Warehouse.WhsCode));
 
         PurchaseReturnPayload payload = new(data.DocDate,
                                             data.DocDueDate,
