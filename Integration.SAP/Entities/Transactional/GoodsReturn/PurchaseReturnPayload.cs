@@ -21,14 +21,14 @@ public class PurchaseReturnPayload
     public string? U_RevBy { get; private set; }
 
 
-    public List<PurchaseReturnLinesPayload> DocumentLines { get; private set; } = [];
+    public List<object> DocumentLines { get; private set; } = [];
 
     public PurchaseReturnPayload(DateTime docDate,
                        DateTime docDueDate,
                        string cardCode,
                        string returnType,
                        string prepBy,
-                       List<PurchaseReturnLinesPayload> documentLines,
+                       List<object> documentLines,
                        string? schoolYear = null,
                        string? drNo = null,
                        string? siNo = null,

@@ -29,3 +29,23 @@ public class PurchaseReturnLinesPayload
         WarehouseCode = Guard.Against.NullOrEmpty(whsCode, nameof(WarehouseCode), "Warehouse Code cannot be null or empty");
     }
 }
+
+public class StandalonePurchaseReturnLinesPayload
+{
+    public int LineNum { get; private set; }
+    public string ItemCode { get; private set; }
+    public decimal Quantity { get; private set; }
+    public string WarehouseCode { get; private set; }
+
+    public StandalonePurchaseReturnLinesPayload(
+                           int lineNum,
+                           string itemCode,
+                           decimal qty,
+                           string whsCode)
+    {
+        LineNum = Guard.Against.Negative(lineNum, nameof(LineNum), "Base Line cannot be negative or null");
+        ItemCode = Guard.Against.NullOrEmpty(itemCode, nameof(ItemCode), "Item Code cannot be null or empty");
+        Quantity = Guard.Against.NegativeOrZero(qty, nameof(Quantity), "Quantity cannot be negative or zero");
+        WarehouseCode = Guard.Against.NullOrEmpty(whsCode, nameof(WarehouseCode), "Warehouse Code cannot be null or empty");
+    }
+}
