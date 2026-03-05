@@ -136,7 +136,7 @@
                             <RadzenColumn Size="12" SizeMD="@(FormData.ItemGroupCodes.Contains("100") ? 3 : 4)">
                                 <RadzenFormField Text="Time" class="rz-w-100" AllowFloatingLabel="false">
                                     <ChildContent>
-                                        <RadzenDatePicker ShowTime="true" TimeOnly="true" DateFormat="HH:mm" Name="po_time" Placeholder="1400" @bind-Value="@Time" @bind-Value:after="@ParseIntTime" />
+                                        <RadzenDatePicker ReadOnly="@Viewing"  ShowTime="true" TimeOnly="true" DateFormat="HH:mm" Name="po_time" Placeholder="1400" @bind-Value="@Time" @bind-Value:after="@ParseIntTime" />
                                     </ChildContent>
                                 </RadzenFormField>
                             </RadzenColumn>

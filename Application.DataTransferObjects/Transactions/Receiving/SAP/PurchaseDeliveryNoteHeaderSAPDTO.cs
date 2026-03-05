@@ -6,6 +6,7 @@ public class PurchaseDeliveryNoteHeaderSAPDTO
     public int DocNum { get; set; }
     public int BaseEntry { get; set; }
     public int BaseDocNum { get; set; }
+    public int Time { get; set; }
     public DateTime DocDate { get; set; }
     public DateTime DocDueDate { get; set; }
     public string CardCode { get; set; }

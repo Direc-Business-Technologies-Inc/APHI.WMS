@@ -18,6 +18,7 @@ SELECT
 	,T0.U_SchlYear [SchoolYear]
 	,T0.U_SINo [SINo]
 	,T0.U_DelBy [DeliveredBy]
+	,T0.U_Time [Time]
 	,T0.U_RevBy [ReviewedBy]
 	,T0.U_PurchType [PurchaseType]
 	,T0.U_ItemName [ItemName]

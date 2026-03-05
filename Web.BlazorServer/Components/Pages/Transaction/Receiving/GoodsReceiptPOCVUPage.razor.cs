@@ -157,7 +157,10 @@ public partial class GoodsReceiptPOCVUPage
             {
                 action.Result.Adapt(FormData);
 
-                FormData.ReceivedBy = AuthenticationService.GetUserName();
+                if (Creating)
+                    FormData.ReceivedBy = AuthenticationService.GetUserName();
+                if (Viewing)
+                    ParseTimeFromInt();
             }
         });
     }
@@ -229,5 +232,15 @@ public partial class GoodsReceiptPOCVUPage
         FormData.Time = Time.Value.Hour * 100 + Time.Value.Minute;
     }
 
+    void ParseTimeFromInt()
+    {
+        if (FormData.Time is null)
+            return;
+
+        int hours = FormData.Time.Value / 100;
+        int minutes = FormData.Time.Value % 100;
+
+        Time = new TimeOnly(hours, minutes);
+    }
     #endregion Custom Function
 }

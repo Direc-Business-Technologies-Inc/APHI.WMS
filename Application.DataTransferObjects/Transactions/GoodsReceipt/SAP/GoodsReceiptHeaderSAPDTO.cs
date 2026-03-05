@@ -5,6 +5,7 @@ public class GoodsReceiptHeaderSAPDTO
     public int DocEntry { get; set; }
     public int DocNum { get; set; }
     public DateTime DocDate { get; set; }
+    public int Time { get; set; }
     public string PreparedBy { get; set; }
     public string TransTypeCode { get; set; }
     public string TransTypeName { get; set; }
