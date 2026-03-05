@@ -116,12 +116,19 @@ public partial class GoodsReturnCVUPage
             return;
         }
 
+        if (FormData.DocumentLines.All(x => x.Quantity <= 0))
+        {
+            ToastService.Warning("All Items in the Document have no Quantity.");
+            return;
+        }
+
         if (FormData.DocumentLines.Any(x => x.Quantity <= 0))
         {
             if (!await AlertService.PromptAsync("Some Items in the Goods Return has no Quantity. These Items will be removed in the transaction. Are you sure wou want to proceed?"))
                 return;
             FormData.DocumentLines.RemoveAll(x => x.Quantity <= 0);
         }
+
 
         var action = await AppActionFactory.RunAsync(async () =>
         {

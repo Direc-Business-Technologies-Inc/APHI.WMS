@@ -73,9 +73,14 @@ public partial class GoodsReturnGRPOSelection
         if (copyFrom.SapReference.DocEntry <= 0)
             ToastService.Warning("Failed to Get the source Goods Receipt PO. Please try again.");
 
+        Document.GRPODocEntry = copyFrom.SapReference.DocEntry ?? 0;
+        Document.GRPODocNum = copyFrom.SapReference.DocNum ?? 0;
+        Document.SchoolYear = copyFrom.SchoolYear;
+        Document.DRNo = copyFrom.DRNo;
+        Document.SINo = copyFrom.SINo;
         Document.Warehouse = copyFrom.DocumentLines.FirstOrDefault()?.Warehouse ?? new();
         Document.BusinessPartner = copyFrom.BusinessPartner;
-
+         
         Document.DocumentLines = [.. copyFrom.DocumentLines.Select(dl => new GoodsReturnLineVM()
         {
             LineNum = copyFrom.DocumentLines.IndexOf(dl) + 1,
@@ -88,12 +93,12 @@ public partial class GoodsReturnGRPOSelection
             UoMName = dl.UoMName,
             UoMValue = dl.UoMValue,
             TargetQuantity = dl.Quantity,
-            OpenQuantity = dl.Quantity,
+            OpenQuantity = dl.OpenQty,
             Quantity = dl.Quantity,
             Warehouse = dl.Warehouse,
         })];
 
         await DocumentChanged.InvokeAsync(Document);
-        DialogService.Close();
+        DialogService.Close(true);
     }
 }

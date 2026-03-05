@@ -196,12 +196,20 @@
                                                           Property="@nameof(GoodsReturnLineVM.UoMName)"
                                                           Type="@typeof(string)"
                                                           Title="UoM" Width="125px" />
+                                    <RadzenDataGridColumn Visible="@(Creating && !FormData.Standalone)" TItem="GoodsReturnLineVM"
+                                                          Property="@nameof(GoodsReturnLineVM.OpenQuantity)"
+                                                          Type="@typeof(decimal)"
+                                                          Title="Open Quantity" Width="150px">
+                                        <Template Context="data">
+                                            <RadzenNumeric Format="N0" @bind-Value="@data.OpenQuantity" Min="0" ReadOnly ShowUpDown="false" />
+                                        </Template>
+                                    </RadzenDataGridColumn>
                                     <RadzenDataGridColumn TItem="GoodsReturnLineVM"
                                                           Property="@nameof(GoodsReturnLineVM.Quantity)"
                                                           Type="@typeof(decimal)"
                                                           Title="Quantity" Width="150px">
                                         <Template Context="data">
-                                            <RadzenNumeric Format="N0" @bind-Value="@data.Quantity" Min="0" ReadOnly="@Viewing" ShowUpDown="@Creating" />
+                                            <RadzenNumeric Format="N0" @bind-Value="@data.Quantity" Min="0" Max="@data.OpenQuantity" ReadOnly="@(Viewing || data.OpenQuantity <= 0)" />
                                         </Template>
                                     </RadzenDataGridColumn>
                                     <RadzenDataGridColumn TItem="GoodsReturnLineVM"
@@ -291,11 +299,13 @@
 
     async Task CopyFrom()
     {
-        await DialogService.OpenAsync(
+        bool? result = await DialogService.OpenAsync(
             "GRPO Selection",
             ds => @<GoodsReturnGRPOSelection @bind-Document="@FormData" />,
     options: GridSettingsService.GetDialogOptions().MaximizedMode());
 
+        if (result is not null && result is true)
+            FormData.Standalone = false;
         await GoodsReturnTable.DataGrid.Reload();
     }
 
