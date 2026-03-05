@@ -1,4 +1,5 @@
-﻿using Application.DataTransferObjects.Transactions.Commons;
+﻿using Application.DataTransferObjects.Others;
+using Application.DataTransferObjects.Transactions.Commons;
 
 namespace Application.DataTransferObjects.Transactions.GoodsReturn;
 
@@ -21,5 +22,6 @@ public class GoodsReturnDTO : MarketingDocumentDTO
     public string? ReviewedBy { get; set; }
     public string? ApprovedBy { get; set; }
     public string? CheckedBy { get; set; }
+    public WarehouseDTO? Warehouse { get; set; } = null;
     public List<GoodsReturnLineDTO> DocumentLines { get; set; } = [];
 }

@@ -15,6 +15,8 @@ public class GoodsReturnHeaderSAPDTO
     public DateTime DocDueDate { get; set; }
     public string CardCode { get; set; }
     public string CardName { get; set; }
+    public string WhsCode { get; set; }
+    public string WhsName { get; set; }
     public string Remarks { get; set; }
     public string? SchoolYear { get; set; }
     public string? DRNo { get; set; }
