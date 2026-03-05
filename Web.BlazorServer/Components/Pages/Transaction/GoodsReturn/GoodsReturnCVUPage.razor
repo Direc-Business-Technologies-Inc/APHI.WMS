@@ -209,7 +209,7 @@
                                                           Type="@typeof(decimal)"
                                                           Title="Quantity" Width="150px">
                                         <Template Context="data">
-                                            <RadzenNumeric Format="N0" @bind-Value="@data.Quantity" Min="0" Max="@data.OpenQuantity" ReadOnly="@(Viewing || data.OpenQuantity <= 0)" />
+                                            <RadzenNumeric Format="N0" @bind-Value="@data.Quantity" Min="0" Max="@(FormData.Standalone ? null : data.OpenQuantity)" ReadOnly="@(Viewing || (!FormData.Standalone && data.OpenQuantity <= 0))" ShowUpDown="@Creating" />
                                         </Template>
                                     </RadzenDataGridColumn>
                                     <RadzenDataGridColumn TItem="GoodsReturnLineVM"
