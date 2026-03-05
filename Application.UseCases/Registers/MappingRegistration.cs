@@ -258,6 +258,11 @@ public class MappingRegistration : IRegister
             .Map(d => d.PODocEntry, s => s.PODocEntry)
             .Map(d => d.PODocNum, s => s.PODocNum)
             .Map(d => d.DocDueDate, s => s.DocDueDate)
+            .Map(d => d.Warehouse, s => new WarehouseDTO()
+            {
+                WhsCode = s.WhsCode,
+                WhsName = s.WhsName,
+            })
             .Map(d => d.BusinessPartner, s => new BusinessPartnerDTO()
             {
                 CardCode = s.CardCode,
