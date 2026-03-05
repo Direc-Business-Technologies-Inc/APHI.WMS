@@ -126,10 +126,10 @@ public class GoodsReturnIntegration(
 
     public async Task<bool> PostGoodsReturnFromGRRAsync(GoodsReturnDTO data)
     {
-        List<PurchaseReturnLinesPayload> payloadLines = [];
+        List<object> payloadLines = [];
 
         foreach (GoodsReturnLineDTO line in data.DocumentLines.Where(dl => dl.Quantity > 0))
-            payloadLines.Add(new(data.SapReference.DocEntry, 234000032, line.LineNum, data.DocumentLines.IndexOf(line), line.ItemCode, line.Quantity, line.Warehouse.WhsCode));
+            payloadLines.Add(new PurchaseReturnLinesPayload(data.SapReference.DocEntry, 234000032, line.LineNum, data.DocumentLines.IndexOf(line), line.ItemCode, line.Quantity, line.Warehouse.WhsCode));
 
         PurchaseReturnPayload payload = new(data.DocDate,
                                             data.DocDueDate,
@@ -155,10 +155,10 @@ public class GoodsReturnIntegration(
 
     public async Task<bool> PostGoodsReturnFromGRPOAsync(GoodsReturnDTO data)
     {
-        List<PurchaseReturnLinesPayload> payloadLines = [];
+        List<object> payloadLines = [];
 
         foreach (GoodsReturnLineDTO line in data.DocumentLines.Where(dl => dl.Quantity > 0))
-            payloadLines.Add(new(data.GRPODocEntry, 20, line.LineNum, data.DocumentLines.IndexOf(line), line.ItemCode, line.Quantity, line.Warehouse.WhsCode));
+            payloadLines.Add(new PurchaseReturnLinesPayload(data.GRPODocEntry, 20, line.LineNum, data.DocumentLines.IndexOf(line), line.ItemCode, line.Quantity, line.Warehouse.WhsCode));
 
         PurchaseReturnPayload payload = new(data.DocDate,
                                             data.DocDueDate,
@@ -185,10 +185,10 @@ public class GoodsReturnIntegration(
 
     public async Task<bool> PostGoodsReturnAsync(GoodsReturnDTO data)
     {
-        List<PurchaseReturnLinesPayload> payloadLines = [];
+        List<object> payloadLines = [];
 
         foreach (GoodsReturnLineDTO line in data.DocumentLines.Where(dl => dl.Quantity > 0))
-            payloadLines.Add(new(-1, -1, -1, data.DocumentLines.IndexOf(line), line.ItemCode, line.Quantity, line.Warehouse.WhsCode));
+            payloadLines.Add(new StandalonePurchaseReturnLinesPayload(data.DocumentLines.IndexOf(line), line.ItemCode, line.Quantity, line.Warehouse.WhsCode));
 
         PurchaseReturnPayload payload = new(data.DocDate,
                                             data.DocDueDate,
