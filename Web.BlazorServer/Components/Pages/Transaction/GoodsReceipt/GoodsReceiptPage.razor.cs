@@ -6,7 +6,7 @@ public partial class GoodsReceiptPage
 {
     #region Parameters
     [SupplyParameterFromQuery]
-    [Parameter] public string T { get; set; } = "aprvd";
+    [Parameter] public string T { get; set; } = "pndng";
     #endregion Parameters
 
     #region Primitives
@@ -19,7 +19,7 @@ public partial class GoodsReceiptPage
     {
         base.OnParametersSet();
         if (T is not null)
-            SelectedTab = T.ToLower() == "aprvd" ? 0 : T.ToLower() == "rjct" ? 1 : 2;
+            SelectedTab = T.ToLower() == "pndng" ? 0 : T.ToLower() == "aprvd" ? 1 : 2;
     }
 
     #endregion Overrides
@@ -27,7 +27,7 @@ public partial class GoodsReceiptPage
     #region Custom Functions
     void TabChanged()
     {
-        T = SelectedTab == 0 ? "aprvd" : SelectedTab == 1 ? "rjct" : "pndng";
+        T = SelectedTab == 0 ? "pndng" : SelectedTab == 1 ? "aprvd" : "rjct";
         NavManager.NavigateTo($"/transactions/inventory/goods-receipt?T={T}");
     }
     #endregion Custom Functions
