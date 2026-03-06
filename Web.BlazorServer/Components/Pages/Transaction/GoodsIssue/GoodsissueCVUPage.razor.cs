@@ -121,7 +121,13 @@ public partial class GoodsIssueCVUPage
             return;
         }
 
-        if (FormData.DocumentLines.Any(x => x.Quantity <= 0))
+        if (FormData.DocumentLines.All(x => x.Quantity <= 0))
+        {
+            ToastService.Warning("Please provide Quantities to the selected Items");
+            return;
+        }
+
+            if (FormData.DocumentLines.Any(x => x.Quantity <= 0))
         {
             if (!await AlertService.PromptAsync("Some Items in the Goods Issue has no Quantity. These Items will be removed in the transaction. Are you sure wou want to proceed?"))
                 return;
