@@ -2,7 +2,7 @@
 
 namespace Application.DataTransferObjects.Transactions.Delivery.SAP;
 
-public class SalesOrderLinesSAPDTO : ItemDTO
+public class SalesOrderLineSAPDTO : ItemDTO
 {
     public string WhsCode { get; set; }
     public string WhsName { get; set; }
