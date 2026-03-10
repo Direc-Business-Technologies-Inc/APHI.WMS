@@ -1,5 +1,5 @@
 ﻿SELECT
-	ORDR.DocEntry
+	 ORDR.DocEntry
 	,ORDR.DocNum
 	,ORDR.DocDate
 	,ORDR.CardCode
