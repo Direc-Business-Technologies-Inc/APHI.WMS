@@ -4,7 +4,7 @@ using Application.DataTransferObjects.Transactions.GoodsReceipt;
 
 namespace Application.DataTransferObjects.Transactions.Delivery;
 
-internal class DeliveryDTO : MarketingDocumentDTO
+public class DeliveryDTO : MarketingDocumentDTO
 {
     public DateTime PostingDate { get; set; }
     public DateTime DeliveryDate { get; set; }
