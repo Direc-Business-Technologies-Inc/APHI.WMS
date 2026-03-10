@@ -1,6 +1,6 @@
 ﻿namespace Application.DataTransferObjects.Transactions.Delivery;
 
-internal class SalesOrderDTO
+public class SalesOrderDTO
 {
     public int DocEntry { get; set; }
     public int DocNum { get; set; }

@@ -3,7 +3,7 @@ using Application.DataTransferObjects.Transactions.Commons;
 
 namespace Application.DataTransferObjects.Transactions.Delivery;
 
-internal class SalesOrderLineDTO:ItemDTO
+public class SalesOrderLineDTO:ItemDTO
 {
     public WarehouseDTO Warehouse { get; set; }
 
