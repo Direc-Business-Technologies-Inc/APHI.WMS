@@ -1,6 +1,6 @@
 ﻿namespace Application.DataTransferObjects.Transactions.Delivery.SAP;
 
-internal class DeliveryLineSAPDTO
+public class DeliveryLineSAPDTO
 {
     public int DocEntry { get; set; }
     public int DocNum { get; set; }
