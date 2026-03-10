@@ -129,7 +129,7 @@ public class GoodsReturnIntegration(
         List<object> payloadLines = [];
 
         foreach (GoodsReturnLineDTO line in data.DocumentLines.Where(dl => dl.Quantity > 0))
-            payloadLines.Add(new PurchaseReturnLinesPayload(data.SapReference.BaseEntry, 234000032, line.LineNum, data.DocumentLines.IndexOf(line), line.ItemCode, line.Quantity, line.Warehouse.WhsCode));
+            payloadLines.Add(new PurchaseReturnLinesPayload(data.SapReference.BaseEntry, 234000032, line.LineNum, data.DocumentLines.IndexOf(line), line.ItemCode, line.UoMCode, line.Quantity, line.Warehouse.WhsCode));
 
         PurchaseReturnPayload payload = new(data.DocDate,
                                             data.DocDueDate,
@@ -158,7 +158,7 @@ public class GoodsReturnIntegration(
         List<object> payloadLines = [];
 
         foreach (GoodsReturnLineDTO line in data.DocumentLines.Where(dl => dl.Quantity > 0))
-            payloadLines.Add(new PurchaseReturnLinesPayload(data.GRPODocEntry, 20, line.LineNum, data.DocumentLines.IndexOf(line), line.ItemCode, line.Quantity, line.Warehouse.WhsCode));
+            payloadLines.Add(new PurchaseReturnLinesPayload(data.GRPODocEntry, 20, line.LineNum, data.DocumentLines.IndexOf(line), line.ItemCode, line.UoMCode, line.Quantity, line.Warehouse.WhsCode));
 
         PurchaseReturnPayload payload = new(data.DocDate,
                                             data.DocDueDate,
@@ -188,7 +188,7 @@ public class GoodsReturnIntegration(
         List<object> payloadLines = [];
 
         foreach (GoodsReturnLineDTO line in data.DocumentLines.Where(dl => dl.Quantity > 0))
-            payloadLines.Add(new StandalonePurchaseReturnLinesPayload(data.DocumentLines.IndexOf(line), line.ItemCode, line.Quantity, line.Warehouse.WhsCode));
+            payloadLines.Add(new StandalonePurchaseReturnLinesPayload(data.DocumentLines.IndexOf(line), line.ItemCode, line.UoMCode, line.Quantity, line.Warehouse.WhsCode));
 
         PurchaseReturnPayload payload = new(data.DocDate,
                                             data.DocDueDate,
