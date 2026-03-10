@@ -8,4 +8,5 @@ public class SalesOrderLinesSAPDTO : ItemDTO
     public string WhsName { get; set; }
     public string TargetQty { get; set; }
     public string OpenQty { get; set; }
+
 }
