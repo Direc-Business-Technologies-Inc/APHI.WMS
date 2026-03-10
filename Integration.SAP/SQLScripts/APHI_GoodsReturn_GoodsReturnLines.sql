@@ -25,7 +25,5 @@ LEFT JOIN OPOR T5 ON T5.DocEntry = T4.DocEntry
 INNER JOIN OITM T6 ON T6.ItemCode = T1.ItemCode
 LEFT JOIN OUOM AS T7 ON T7.UomEntry = T1.UomEntry
 INNER JOIN OWHS T8 ON T8.WhsCode = T1.WhsCode
-WHERE 
-	T0.DocStatus = 'O'
-	AND T0.DocEntry = @DocEntry
+WHERE T0.DocEntry = @DocEntry
 ORDER BY T1.LineNum

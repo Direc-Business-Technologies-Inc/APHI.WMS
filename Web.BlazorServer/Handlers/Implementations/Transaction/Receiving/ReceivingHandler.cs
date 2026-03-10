@@ -52,4 +52,12 @@ public class ReceivingHandler(
 
         return result;
     }
+
+    public async Task<IEnumerable<PurchaseTypeVM>> GetPurchaseTypesAsync()
+    {
+        GetPurchaseTypesQry qry = new();
+        IEnumerable<PurchaseTypeDTO> response = await Sender.Send(qry);
+
+        return response.Adapt<IEnumerable<PurchaseTypeVM>>();
+    }
 }

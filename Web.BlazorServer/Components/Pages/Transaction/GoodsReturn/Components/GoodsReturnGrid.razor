@@ -5,7 +5,7 @@
 
 @inherits BaseComponent
 
-<AppDataGrid @ref="@GoodsReturnDataGrid" Id="purchase_order_grid" TItem="GoodsReturnDataGridVM" DataGetter="@LoadDataAsync" GridSettings="@GoodsReturnDataGridSettings" @bind-GridSettingsLoaded="@GridSettingsLoaded" ActionName="@ActionGetGoodsReturns">
+<AppDataGrid @ref="@GoodsReturnDataGrid" Id="goods_return_grid" TItem="GoodsReturnDataGridVM" DataGetter="@LoadDataAsync" GridSettings="@GoodsReturnDataGridSettings" @bind-GridSettingsLoaded="@GridSettingsLoaded" ActionName="@ActionGetGoodsReturns">
     <HeaderTemplate>
         <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
             <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />

@@ -120,6 +120,11 @@ public class MappingRegistration : IRegister
                     AcctName = s.AcctName,
                 }
             })
+            .Map(d => d.BusinessPartner, s => s.CardCode == null ? null : new BusinessPartnerDTO()
+            {
+                CardCode = s.CardCode,
+                CardName = s.CardName ?? s.CardCode,
+            })
             .Map(d => d.DocDate, s => s.DocDate);
 
         config.NewConfig<GoodsIssueLineSAPDTO, GoodsIssueLineDTO>()
@@ -141,8 +146,8 @@ public class MappingRegistration : IRegister
         #region Goods Receipt
 
         config.NewConfig<GoodsReceiptHeaderSAPDTO, GoodsReceiptDTO>()
-            .Map(d => d.SapReference, s => new SapDocumentReferenceDTO() 
-            { 
+            .Map(d => d.SapReference, s => new SapDocumentReferenceDTO()
+            {
                 DocEntry = s.DocEntry,
                 DocNum = s.DocNum,
             })
@@ -253,6 +258,11 @@ public class MappingRegistration : IRegister
             .Map(d => d.PODocEntry, s => s.PODocEntry)
             .Map(d => d.PODocNum, s => s.PODocNum)
             .Map(d => d.DocDueDate, s => s.DocDueDate)
+            .Map(d => d.Warehouse, s => new WarehouseDTO()
+            {
+                WhsCode = s.WhsCode,
+                WhsName = s.WhsName,
+            })
             .Map(d => d.BusinessPartner, s => new BusinessPartnerDTO()
             {
                 CardCode = s.CardCode,
@@ -325,6 +335,7 @@ public class MappingRegistration : IRegister
                 CardCode = s.CardCode,
                 CardName = s.CardName,
             })
+            .Map(d => d.ItemGroupCodes, s => SplitAndTrim(s.ItemGroupCodes))
             .Map(d => d.SupplierContactPerson, s => s.SupplierContactPerson)
             .Map(d => d.Remarks, s => s.Remarks);
 
@@ -390,6 +401,11 @@ public class MappingRegistration : IRegister
             .Map(d => d.UoMCode, s => s.UoMCode)
             .Map(d => d.UoMValue, s => s.UoMValue)
             .Map(d => d.UoMName, s => s.UoMName)
+            .Map(d => d.Warehouse, s => new WarehouseDTO()
+            {
+                WhsCode = s.WhsCode,
+                WhsName = s.WhsName,
+            })
             .Map(d => d.InputType, s => EnumHelper.ParseStringToEnum<InputType>(s.InputType));
 
         config.NewConfig<PurchaseOrderDTO, PurchaseDeliveryNoteDTO>()
@@ -412,12 +428,22 @@ public class MappingRegistration : IRegister
             .Map(d => d.ItemName, s => s.ItemName)
             .Map(d => d.TaxCode, s => s.VatGroup)
             .Map(d => d.Quantity, s => s.Quantity)
+            .Map(d => d.Price, s => s.Price)
             .Map(d => d.Warehouse, s => s.Warehouse)
+            .Map(d => d.Free, s => s.Free)
             .Map(d => d.InputType, s => s.InputType);
 
         #endregion Receiving
 
         #endregion SAP DTO to DTO
     }
+    private static List<string> SplitAndTrim(string value)
+    {
+        return string.IsNullOrEmpty(value)
+            ? []
+            : [.. value.Split(',').Select(g => g.Trim())];
+    }
 }
+
+
 

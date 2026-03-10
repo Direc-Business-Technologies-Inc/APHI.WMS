@@ -5,6 +5,7 @@ using Shared.Entities;
 using Shared.Kernel;
 using Web.BlazorServer.Components.Shared.Abstraction;
 using Web.BlazorServer.Defaults;
+using Web.BlazorServer.Handlers.Implementations.Others;
 using Web.BlazorServer.Handlers.Repositories.Others;
 using Web.BlazorServer.Handlers.Repositories.Transaction.GoodsReceipt;
 using Web.BlazorServer.Helpers;
@@ -12,7 +13,9 @@ using Web.BlazorServer.Services.Implementation;
 using Web.BlazorServer.Services.Repositories;
 using Web.BlazorServer.ViewModels.Enums;
 using Web.BlazorServer.ViewModels.Others;
+using Web.BlazorServer.ViewModels.Transaction.Commons;
 using Web.BlazorServer.ViewModels.Transaction.GoodsReceipt;
+using Web.BlazorServer.ViewModels.Transaction.GoodsReturn;
 
 namespace Web.BlazorServer.Components.Pages.Transaction.GoodsReceipt;
 
@@ -41,6 +44,8 @@ public partial class GoodsReceiptCVUPage
     [Inject] ITransactionTypeHandler TransTypeHandler { get; set; } = default!;
     [Inject] IWarehouseMasterDataHandler WarehouseHandler { get; set; } = default!;
     [Inject] IGridSettingsService GridSettingsService { get; set; } = default!;
+    [Inject] IBusinessPartnerHandler BusinessPartnerHandler { get; set; } = default!;
+    [Inject] IItemMasterDataHandler ItemMasterDataHandler { get; set; } = default!;
     #endregion Injects
 
     #region Primitives
@@ -54,6 +59,8 @@ public partial class GoodsReceiptCVUPage
     readonly string ActionGetGoodsReceipt = EnumHelper.GetEnumDescription(AppActions.ViewGoodsReceipt);
     readonly string ActionGetTransactionTypes = EnumHelper.GetEnumDescription(AppActions.GetVendors);
     readonly string ActionGetWarehouses = EnumHelper.GetEnumDescription(AppActions.GetWarehouses);
+    readonly string ActionGetItems = EnumHelper.GetEnumDescription(AppActions.GetAllItems);
+    readonly string ActionGetBusinessPartners = EnumHelper.GetEnumDescription(AppActions.GetBusinessPartners);
     readonly string ActionCreateGoodsReceipt = EnumHelper.GetEnumDescription(AppActions.CreateGoodsReceipt);
 
     int BusinessPartnersCount { get; set; } = 0;
@@ -110,6 +117,12 @@ public partial class GoodsReceiptCVUPage
             return;
         }
 
+        if (FormData.DocumentLines.All(x => x.Quantity <= 0))
+        {
+            ToastService.Warning("Please provide Quantities to the selected Items");
+            return;
+        }
+
         if (FormData.DocumentLines.Any(x => x.Quantity <= 0))
         {
             if (!await AlertService.PromptAsync("Some Items in the Goods Receipt has no Quantity. These Items will be removed in the transaction. Are you sure wou want to proceed?"))
@@ -153,6 +166,7 @@ public partial class GoodsReceiptCVUPage
         await Task.WhenAll(
             GetGoodsReceipt(),
             LoadTransactionTypes(),
+            LoadBusinessPartners(new()),
             LoadWarehouses(new()));
 
         FormData.PreparedBy = AuthenticationService.GetUserName();
@@ -279,6 +293,64 @@ public partial class GoodsReceiptCVUPage
 
         if (transType is null)
             return;
+    }
+
+    void RemoveLine(GoodsReceiptLineVM item) => FormData.DocumentLines = [.. FormData.DocumentLines.Except([item])];
+
+    async Task LoadBusinessPartners(LoadDataArgs args)
+    {
+
+        var action = await AppActionFactory.RunAsync(async () =>
+        {
+            await Task.Yield();
+
+            AppBusyService.SetBusy(ActionGetBusinessPartners, true);
+
+            DatagridAdapter = new DataGridIntentAdapter(args);
+            DatagridAdapter.AdaptToPagination();
+            if (DatagridAdapter.QueryIntent.Take <= 0)
+                DatagridAdapter.QueryIntent.Take = 5;
+
+            if (!string.IsNullOrEmpty(args.Filter))
+                DatagridAdapter.QueryIntent.Filters.Add(new()
+                {
+                    LogicalOperator = LogicalOperatorEnum.AND,
+                    Property = nameof(BusinessPartnerVM.CardName),
+                    Value = args.Filter,
+                    ComparisonOperator = ComparisonOperatorEnum.Contains
+                });
+
+            (IEnumerable<BusinessPartnerVM> Data, int Count) = await BusinessPartnerHandler.GetAllAsync(DatagridAdapter.QueryIntent);
+
+            BusinessPartners = [.. Data];
+            BusinessPartnersCount = Count;
+
+            AppBusyService.SetBusy(ActionGetBusinessPartners, false);
+
+            await InvokeAsync(StateHasChanged);
+        }, AppActionOptionPresets.Loading(ActionGetBusinessPartners));
+    }
+
+    async Task UpdateItemWarehouse(GoodsReceiptLineVM item)
+    {
+        var action = await AppActionFactory.RunAsync(async () =>
+        {
+            await Task.Yield();
+
+            DatagridAdapter = new DataGridIntentAdapter(new());
+            DatagridAdapter.AdaptToPagination();
+            if (DatagridAdapter.QueryIntent.Take <= 0)
+                DatagridAdapter.QueryIntent.Take = 5;
+
+            (IEnumerable<ItemVM> Data, int Count) = await ItemMasterDataHandler.GetItemsInWarehouseAsync(DatagridAdapter.QueryIntent, item.Warehouse.WhsCode, [item.ItemCode]);
+
+            if (Count > 0)
+                item.OnHandQty = Data.First().Quantity;
+
+            await GoodsReceiptTable.DataGrid.RefreshDataAsync();
+
+            await InvokeAsync(StateHasChanged);
+        }, AppActionOptionPresets.Loading(ActionGetItems));
     }
 
     #endregion Custom Functions

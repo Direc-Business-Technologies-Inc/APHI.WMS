@@ -1,4 +1,5 @@
-﻿using Mapster;
+﻿using Domain.Entities.Enums.Transaction.GoodsReturn;
+using Mapster;
 using Microsoft.AspNetCore.Components;
 using Radzen;
 using Shared.Entities;
@@ -36,6 +37,7 @@ public partial class GoodsReturnRequestCVUPage
     [Inject] IBusinessPartnerHandler BpHandler { get; set; } = default!;
     [Inject] IWarehouseMasterDataHandler WarehouseHandler { get; set; } = default!;
     [Inject] IGridSettingsService GridSettingsService { get; set; } = default!;
+    [Inject] ISchoolYearHandler SchoolYearHandler { get; set; } = default!;
     #endregion Injects
 
     #region Primitives
@@ -50,9 +52,12 @@ public partial class GoodsReturnRequestCVUPage
     readonly string ActionGetVendors = EnumHelper.GetEnumDescription(AppActions.GetVendors);
     readonly string ActionGetWarehouses = EnumHelper.GetEnumDescription(AppActions.GetWarehouses);
     readonly string ActionCreateGoodsReturn = EnumHelper.GetEnumDescription(AppActions.CreateGoodsReturn);
+    readonly string ActionGetReturnTypes = EnumHelper.GetEnumDescription(AppActions.GetReturnTypes);
+    readonly string ActionGetSchoolYears = EnumHelper.GetEnumDescription(AppActions.GetSchoolYears);
 
     int BusinessPartnersCount { get; set; } = 0;
     int WarehousesCount { get; set; } = 0;
+    int SchoolYearsCount { get; set; } = 0;
 
     #endregion Primitives
 
@@ -61,6 +66,9 @@ public partial class GoodsReturnRequestCVUPage
     DataGridSettings GoodsReturnTableSettings { get; set; } = new();
     List<BusinessPartnerVM> BusinessPartners { get; set; } = [];
     List<WarehouseVM> Warehouses { get; set; } = [];
+    List<SchoolYearVM> SchoolYears { get; set; } = [];
+    List<ReturnTypeVM> ReturnTypes { get; set; } = [];
+
     public IDataGridIntentAdapter DatagridAdapter { get; set; } = default!;
     #endregion Data Structures
 
@@ -108,6 +116,12 @@ public partial class GoodsReturnRequestCVUPage
             return;
         }
 
+        if (FormData.DocumentLines.All(x => x.Quantity <= 0))
+        {
+            ToastService.Warning("Please provide Quantities to the selected Items");
+            return;
+        }
+
         if (FormData.DocumentLines.Any(x => x.Quantity <= 0))
         {
             if (!await AlertService.PromptAsync("Some Items in the Goods Return has no Quantity. These Items will be removed in the transaction. Are you sure wou want to proceed?"))
@@ -119,20 +133,20 @@ public partial class GoodsReturnRequestCVUPage
         {
             AppBusyService.SetBusy(ActionCreateGoodsReturn, true);
 
-            bool response = await GoodsReturnHandler.PostGoodsReturnAsync(FormData);
+            bool response = await GoodsReturnHandler.PostGoodsReturnAsync(FormData, GoodsReturnPostingSource.GRR);
 
             return response;
         }, AppActionOptionPresets.Confirmed(ActionCreateGoodsReturn));
 
         action.OnSuccess(async (args) =>
         {
-            NavManager.NavigateTo("/transactions/purchasing/goods-return?t=gr");
+            NavManager.NavigateTo("/transactions/purchasing/goods-return?t=grr");
         });
     }
 
     protected override async Task InitializeEditing()
     {
-        NavManager.NavigateTo($"/transactions/purchasing/goods-return/request/create?Ref={FormData.SapReference.DocEntry}", true);
+        NavManager.NavigateTo($"/transactions/purchasing/goods-return/request/create?ref={FormData.SapReference.DocEntry}", true);
     }
 
     #endregion Overrides
@@ -151,6 +165,8 @@ public partial class GoodsReturnRequestCVUPage
         await Task.WhenAll(
             GetGoodsReturn(),
             LoadVendors(new()),
+            LoadReturnTypes(),
+            LoadSchoolYears(new()),
             LoadWarehouses(new()));
 
         FormData.PreparedBy = AuthenticationService.GetUserName();
@@ -165,13 +181,9 @@ public partial class GoodsReturnRequestCVUPage
 
     async Task GetGoodsReturn()
     {
-        if (Creating)
-            return;
-
         var action = await AppActionFactory.RunAsync(async () =>
         {
-
-            var result = await GoodsReturnHandler.GetGoodsReturnAsync(Ref);
+            var result = await GoodsReturnHandler.GetGoodsReturnRequestAsync(Ref);
 
             AppBusyService.SetBusy(ActionGetGoodsReturn, false);
             return result;
@@ -206,7 +218,7 @@ public partial class GoodsReturnRequestCVUPage
             if (!await AlertService.HasUnsavedChangesAsync(header: "Cancel Goods Return Creation"))
                 return;
 
-        NavManager.NavigateTo($"/transactions/purchasing/goods-return?t=gr", true);
+        NavManager.NavigateTo($"/transactions/purchasing/goods-return?t=grr", true);
     }
 
     async Task LoadVendors(LoadDataArgs args)
@@ -271,6 +283,54 @@ public partial class GoodsReturnRequestCVUPage
 
             await InvokeAsync(StateHasChanged);
         }, AppActionOptionPresets.Loading(ActionGetWarehouses));
+    }
+
+    async Task LoadSchoolYears(LoadDataArgs args)
+    {
+
+        var action = await AppActionFactory.RunAsync(async () =>
+        {
+            await Task.Yield();
+
+            AppBusyService.SetBusy(ActionGetSchoolYears, true);
+
+            DatagridAdapter = new DataGridIntentAdapter(args);
+            DatagridAdapter.AdaptToPagination();
+            if (DatagridAdapter.QueryIntent.Take <= 0)
+                DatagridAdapter.QueryIntent.Take = 5;
+
+            if (!string.IsNullOrEmpty(args.Filter))
+                DatagridAdapter.QueryIntent.Filters.Add(new()
+                {
+                    LogicalOperator = LogicalOperatorEnum.AND,
+                    Property = nameof(SchoolYearVM.Code),
+                    Value = args.Filter,
+                    ComparisonOperator = ComparisonOperatorEnum.Contains
+                });
+
+            (IEnumerable<SchoolYearVM> Data, int Count) = await SchoolYearHandler.GetSchoolYearsAsync(DatagridAdapter.QueryIntent);
+
+            SchoolYears = [.. Data];
+            SchoolYearsCount = Count;
+
+            AppBusyService.SetBusy(ActionGetSchoolYears, false);
+
+            await InvokeAsync(StateHasChanged);
+        }, AppActionOptionPresets.Loading(ActionGetSchoolYears));
+    }
+
+    async Task LoadReturnTypes()
+    {
+
+        var action = await AppActionFactory.RunAsync(async () =>
+        {
+            AppBusyService.SetBusy(ActionGetReturnTypes, true);
+
+
+            ReturnTypes = [.. await GoodsReturnHandler.GetReturnTypesAsync()];
+
+            AppBusyService.SetBusy(ActionGetReturnTypes, false);
+        }, AppActionOptionPresets.Loading(ActionGetReturnTypes));
     }
 
     #endregion Custom Functions

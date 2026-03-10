@@ -12,6 +12,11 @@
 
     <HeadOutlet @rendermode="InteractiveServer" />
     <RadzenTheme Theme="standard" @rendermode="InteractiveServer" />
+    <style>
+            .remove-form-input-margin .rz-form-field-content {
+                margin: 0px !important;
+            }
+    </style>
 </head>
 
 <body>
@@ -21,5 +26,6 @@
     <script src="js/custom-scripts/logout.js"></script>
     <script src="_content/Radzen.Blazor/Radzen.Blazor.js?v=@(typeof(Radzen.Colors).Assembly.GetName().Version)"></script>
 </body>
+
 
 </html>

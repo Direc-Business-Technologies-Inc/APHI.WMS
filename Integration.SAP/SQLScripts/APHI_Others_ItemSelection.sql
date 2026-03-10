@@ -12,8 +12,6 @@ LEFT JOIN OUGP T3 ON T0.UgpEntry = T3.UgpEntry
 LEFT JOIN UGP1 T4 ON T3.UgpEntry = T4.UgpEntry 
                   AND T4.UomEntry = T2.UomEntry
 WHERE 
-    T0.SellItem = 'Y'
-    AND T0.ItmsGrpCod = 100
-    AND T0.ItemType = 'I'
+    T0.ItemType = 'I'
     AND T0.Canceled = 'N'
     AND T0.validFor = 'Y'

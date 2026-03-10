@@ -57,6 +57,6 @@ public partial class RejectedDataGrid
         return DataGridResultVM<GoodsReceiptDataGridVM>.New(action.Result.Data ?? [], action.Result.Count);
     }
 
-    void ViewGoodsReceipt(GoodsReceiptDataGridVM purchaseOrder) => NavManager.NavigateTo($"/transactions/inventory/goods-receipt/view?ref={purchaseOrder.DocEntry}}}&draft=1", true);
+    void ViewGoodsReceipt(GoodsReceiptDataGridVM purchaseOrder) => NavManager.NavigateTo($"/transactions/inventory/goods-receipt/view?ref={purchaseOrder.DocEntry}&draft=1", true);
     void CreateGoodsReceipt() => NavManager.NavigateTo($"/transactions/inventory/goods-receipt/create", true);
 }

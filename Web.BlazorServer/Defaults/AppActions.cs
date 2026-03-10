@@ -20,12 +20,18 @@ public enum AppActions
     GetWarehouses,
     [Description("Get Vendor")]
     GetVendor,
+    [Description("Get BusinessPartners")]
+    GetBusinessPartners,
     [Description("Get Revenue Streams")]
     GetRevenueStreams,
     [Description("Get Delivery Types")]
     GetDeliveryTypes,
     [Description("Get Items")]
     GetAllItems,
+    [Description("Get School Years")]
+    GetSchoolYears,
+    [Description("Get Purchase Type")]
+    GetPurchaseType,
     [Description("Login")]
     Login,
     [Description("Logout")]
@@ -86,6 +92,8 @@ public enum AppActions
     #endregion Transaction - Receiving
 
     #region Transaction - Goods Return
+    [Description("Get Return Types")]
+    GetReturnTypes,
     [Description("Get All Goods Return Requests")]
     GetAllGoodsReturnRequests,
     [Description("Get All Goods Returns")]

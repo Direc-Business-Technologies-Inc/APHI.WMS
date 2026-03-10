@@ -15,11 +15,11 @@
 <AppContent>
     <RadzenTabs @bind-SelectedIndex="@SelectedTab" @bind-SelectedIndex:after="@TabChanged">
         <Tabs>
-            <RadzenTabsItem Text="Approved">
-                <ApprovedDataGrid />
-            </RadzenTabsItem>
             <RadzenTabsItem Text="Pending">
                 <PendingDataGrid />
+            </RadzenTabsItem>
+            <RadzenTabsItem Text="Approved">
+                <ApprovedDataGrid />
             </RadzenTabsItem>
             <RadzenTabsItem Text="Rejected">
                 <RejectedDataGrid />

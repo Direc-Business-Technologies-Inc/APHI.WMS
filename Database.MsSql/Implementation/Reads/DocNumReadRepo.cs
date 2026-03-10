@@ -18,7 +18,7 @@ public class DocNumReadRepo(IDbContextFactory<AppDbContext> dbContextFactory) : 
 
             DocumentTypeDEM? documentType = await context.Set<DocumentTypeDEM>().FirstOrDefaultAsync(x => x.Id == documentTypeId) ?? throw new KeyNotFoundException($"Document type not found for Id: {documentTypeId}");
 
-            DocumentNumberDEM? series = (await context.Set<DocumentNumberDEM>().FromSqlInterpolated($@"EXEC SP_GetNextDocumentNumber @DocumentTypeId = {documentTypeId}").ToListAsync()).FirstOrDefault() ?? throw new KeyNotFoundException($"Document number series not found for DocumentTypeId: {documentTypeId}");
+            DocumentNumberDEM? series = (await context.Set<DocumentNumberDEM>().FromSqlInterpolated($@"EXEC APP_SP_GetNextDocumentNumber @DocumentTypeId = {documentTypeId}").ToListAsync()).FirstOrDefault() ?? throw new KeyNotFoundException($"Document number series not found for DocumentTypeId: {documentTypeId}");
 
             return series;
         });

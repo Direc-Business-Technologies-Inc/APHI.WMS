@@ -4,7 +4,7 @@ using Web.BlazorServer.ViewModels.Others;
 
 namespace Web.BlazorServer.ViewModels.Transaction.Commons;
 
-public class MarketingDocumentVM : TransactionalDocumentVM
+public abstract class MarketingDocumentVM : TransactionalDocumentVM
 {
     public DateTime DocDate { get; set; } = DateTimeProvider.Now;
     public DateTime DocDueDate { get; set; } = DateTimeProvider.Now;

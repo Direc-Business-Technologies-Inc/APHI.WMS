@@ -5,6 +5,7 @@ using Shared.Entities;
 using Shared.Kernel;
 using Web.BlazorServer.Components.Shared.Abstraction;
 using Web.BlazorServer.Defaults;
+using Web.BlazorServer.Handlers.Implementations.Others;
 using Web.BlazorServer.Handlers.Repositories.Others;
 using Web.BlazorServer.Handlers.Repositories.Transaction.GoodsIssue;
 using Web.BlazorServer.Helpers;
@@ -12,7 +13,9 @@ using Web.BlazorServer.Services.Implementation;
 using Web.BlazorServer.Services.Repositories;
 using Web.BlazorServer.ViewModels.Enums;
 using Web.BlazorServer.ViewModels.Others;
+using Web.BlazorServer.ViewModels.Transaction.Commons;
 using Web.BlazorServer.ViewModels.Transaction.GoodsIssue;
+using Web.BlazorServer.ViewModels.Transaction.GoodsReceipt;
 
 namespace Web.BlazorServer.Components.Pages.Transaction.GoodsIssue;
 
@@ -37,10 +40,13 @@ public partial class GoodsIssueCVUPage
 
     #region Injects
     [Inject] IGoodsIssueHandler GoodsIssueHandler { get; set; } = default!;
-    [Inject] IBusinessPartnerHandler BpHandler { get; set; } = default!;
     [Inject] ITransactionTypeHandler TransTypeHandler { get; set; } = default!;
     [Inject] IWarehouseMasterDataHandler WarehouseHandler { get; set; } = default!;
+    [Inject] ISchoolYearHandler SchoolYearHandler { get; set; } = default!;
+    [Inject] IBusinessPartnerHandler BusinessPartnerHandler { get; set; } = default!;
     [Inject] IGridSettingsService GridSettingsService { get; set; } = default!;
+    [Inject] IItemMasterDataHandler ItemMasterDataHandler { get; set; } = default!;
+
     #endregion Injects
 
     #region Primitives
@@ -52,12 +58,16 @@ public partial class GoodsIssueCVUPage
     bool IsLoadingData => AppBusyService.IsBusy(ActionGetGoodsIssue);
 
     readonly string ActionGetGoodsIssue = EnumHelper.GetEnumDescription(AppActions.ViewGoodsIssue);
-    readonly string ActionGetTransactionTypes = EnumHelper.GetEnumDescription(AppActions.GetVendors);
+    readonly string ActionGetTransactionTypes = EnumHelper.GetEnumDescription(AppActions.GetTransactionTypes);
     readonly string ActionGetWarehouses = EnumHelper.GetEnumDescription(AppActions.GetWarehouses);
+    readonly string ActionGetItems = EnumHelper.GetEnumDescription(AppActions.GetAllItems);
+    readonly string ActionGetSchoolYears = EnumHelper.GetEnumDescription(AppActions.GetSchoolYears);
+    readonly string ActionGetBusinessPartners = EnumHelper.GetEnumDescription(AppActions.GetBusinessPartners);
     readonly string ActionCreateGoodsIssue = EnumHelper.GetEnumDescription(AppActions.CreateGoodsIssue);
 
     int BusinessPartnersCount { get; set; } = 0;
     int WarehousesCount { get; set; } = 0;
+    int SchoolYearsCount { get; set; } = 0;
 
     #endregion Primitives
 
@@ -66,6 +76,7 @@ public partial class GoodsIssueCVUPage
     DataGridSettings GoodsIssueTableSettings { get; set; } = new();
     List<BusinessPartnerVM> BusinessPartners { get; set; } = [];
     List<WarehouseVM> Warehouses { get; set; } = [];
+    List<SchoolYearVM> SchoolYears { get; set; } = [];
     List<TransactionTypeVM> TransactionTypes { get; set; } = [];
 
     public IDataGridIntentAdapter DatagridAdapter { get; set; } = default!;
@@ -110,7 +121,13 @@ public partial class GoodsIssueCVUPage
             return;
         }
 
-        if (FormData.DocumentLines.Any(x => x.Quantity <= 0))
+        if (FormData.DocumentLines.All(x => x.Quantity <= 0))
+        {
+            ToastService.Warning("Please provide Quantities to the selected Items");
+            return;
+        }
+
+            if (FormData.DocumentLines.Any(x => x.Quantity <= 0))
         {
             if (!await AlertService.PromptAsync("Some Items in the Goods Issue has no Quantity. These Items will be removed in the transaction. Are you sure wou want to proceed?"))
                 return;
@@ -153,7 +170,9 @@ public partial class GoodsIssueCVUPage
         await Task.WhenAll(
             GetGoodsIssue(),
             LoadTransactionTypes(),
-            LoadWarehouses(new()));
+            LoadWarehouses(new()),
+            LoadBusinessPartners(new()),
+            LoadSchoolYears(new()));
 
         FormData.PreparedBy = AuthenticationService.GetUserName();
 
@@ -211,7 +230,7 @@ public partial class GoodsIssueCVUPage
             if (!await AlertService.HasUnsavedChangesAsync(header: "Cancel Goods Issue Creation"))
                 return;
 
-        NavManager.NavigateTo($"/transactions/inventory/goods-issue/?t=pndng", true);
+        NavManager.NavigateTo($"/transactions/inventory/goods-issue/?T={(Draft == 1 ? "pndng" : "aprvd")}", true);
     }
 
     async Task LoadTransactionTypes()
@@ -279,6 +298,98 @@ public partial class GoodsIssueCVUPage
 
         if (transType is null)
             return;
+    }
+
+    void RemoveLine(GoodsIssueLineVM item) => FormData.DocumentLines = [.. FormData.DocumentLines.Except([item])];
+
+    async Task LoadSchoolYears(LoadDataArgs args)
+    {
+
+        var action = await AppActionFactory.RunAsync(async () =>
+        {
+            await Task.Yield();
+
+            AppBusyService.SetBusy(ActionGetSchoolYears, true);
+
+            DatagridAdapter = new DataGridIntentAdapter(args);
+            DatagridAdapter.AdaptToPagination();
+            if (DatagridAdapter.QueryIntent.Take <= 0)
+                DatagridAdapter.QueryIntent.Take = 5;
+
+            if (!string.IsNullOrEmpty(args.Filter))
+                DatagridAdapter.QueryIntent.Filters.Add(new()
+                {
+                    LogicalOperator = LogicalOperatorEnum.AND,
+                    Property = nameof(SchoolYearVM.Code),
+                    Value = args.Filter,
+                    ComparisonOperator = ComparisonOperatorEnum.Contains
+                });
+
+            (IEnumerable<SchoolYearVM> Data, int Count) = await SchoolYearHandler.GetSchoolYearsAsync(DatagridAdapter.QueryIntent);
+
+            SchoolYears = [.. Data];
+            SchoolYearsCount = Count;
+
+            AppBusyService.SetBusy(ActionGetSchoolYears, false);
+
+            await InvokeAsync(StateHasChanged);
+        }, AppActionOptionPresets.Loading(ActionGetSchoolYears));
+    }
+
+    async Task LoadBusinessPartners(LoadDataArgs args)
+    {
+
+        var action = await AppActionFactory.RunAsync(async () =>
+        {
+            await Task.Yield();
+
+            AppBusyService.SetBusy(ActionGetBusinessPartners, true);
+
+            DatagridAdapter = new DataGridIntentAdapter(args);
+            DatagridAdapter.AdaptToPagination();
+            if (DatagridAdapter.QueryIntent.Take <= 0)
+                DatagridAdapter.QueryIntent.Take = 5;
+
+            if (!string.IsNullOrEmpty(args.Filter))
+                DatagridAdapter.QueryIntent.Filters.Add(new()
+                {
+                    LogicalOperator = LogicalOperatorEnum.AND,
+                    Property = nameof(BusinessPartnerVM.CardName),
+                    Value = args.Filter,
+                    ComparisonOperator = ComparisonOperatorEnum.Contains
+                });
+
+            (IEnumerable<BusinessPartnerVM> Data, int Count) = await BusinessPartnerHandler.GetAllAsync(DatagridAdapter.QueryIntent);
+
+            BusinessPartners = [.. Data];
+            BusinessPartnersCount = Count;
+
+            AppBusyService.SetBusy(ActionGetBusinessPartners, false);
+
+            await InvokeAsync(StateHasChanged);
+        }, AppActionOptionPresets.Loading(ActionGetBusinessPartners));
+    }
+
+    async Task UpdateItemWarehouse(GoodsIssueLineVM item)
+    {
+        var action = await AppActionFactory.RunAsync(async () =>
+        {
+            await Task.Yield();
+
+            DatagridAdapter = new DataGridIntentAdapter(new());
+            DatagridAdapter.AdaptToPagination();
+            if (DatagridAdapter.QueryIntent.Take <= 0)
+                DatagridAdapter.QueryIntent.Take = 5;
+
+            (IEnumerable<ItemVM> Data, int Count) = await ItemMasterDataHandler.GetItemsInWarehouseAsync(DatagridAdapter.QueryIntent, item.Warehouse.WhsCode, [item.ItemCode]);
+
+            if (Count > 0)
+                item.OnHandQty = Data.First().Quantity;
+
+            await GoodsIssueTable.DataGrid.RefreshDataAsync();
+
+            await InvokeAsync(StateHasChanged);
+        }, AppActionOptionPresets.Loading(ActionGetItems));
     }
 
     #endregion Custom Functions

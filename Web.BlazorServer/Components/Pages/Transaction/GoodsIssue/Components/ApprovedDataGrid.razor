@@ -14,11 +14,11 @@
         <RadzenDataGridColumn TItem="GoodsIssueDataGridVM"
                               Property="@nameof(GoodsIssueDataGridVM.DocNum)"
                               Type="@typeof(int)"
-                              Title="PO Doc No." />
+                              Title="Doc No." />
         <RadzenDataGridColumn TItem="GoodsIssueDataGridVM"
                               Property="@nameof(GoodsIssueDataGridVM.DocDate)"
                               Type="@typeof(DateTime)"
-                              Title="PO Date">
+                              Title="Doc Date">
             <Template>
                 @context.DocDate.ToString("MM/dd/yyyy")
             </Template>
@@ -26,16 +26,16 @@
         <RadzenDataGridColumn TItem="GoodsIssueDataGridVM"
                               Property="@nameof(GoodsIssueDataGridVM.PreparedBy)"
                               Type="@typeof(string)"
-                              Title="Supplier Name" />
-        
+                              Title="Prepared By" />
         <RadzenDataGridColumn TItem="GoodsIssueDataGridVM"
                               Property="@nameof(GoodsIssueDataGridVM.TransTypeName)"
                               Type="@typeof(string)"
-                              Title="Remarks" />
+                              Title="Trans. Type" />
         <RadzenDataGridColumn TItem="GoodsIssueDataGridVM"
                               Frozen
                               FrozenPosition="FrozenColumnPosition.Right"
-                              Width="35px">
+                              Width="35px"
+                              Filterable="false" Sortable="false" Pickable="false">
             <Template>
                 <RadzenButton Icon="arrow_right_alt" Size="ButtonSize.ExtraSmall" Click="() => ViewGoodsIssue(context)" />
             </Template>

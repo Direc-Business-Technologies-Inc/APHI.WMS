@@ -1,15 +1,20 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Components;
 using Radzen;
+using Shared.Entities;
 using Shared.Kernel;
 using Web.BlazorServer.Components.Shared.Abstraction;
 using Web.BlazorServer.Defaults;
+using Web.BlazorServer.Handlers.Implementations.Transaction.GoodsReturn;
+using Web.BlazorServer.Handlers.Repositories.Others;
 using Web.BlazorServer.Handlers.Repositories.Transaction.Receiving;
 using Web.BlazorServer.Helpers;
 using Web.BlazorServer.Services.Implementation;
 using Web.BlazorServer.Services.Repositories;
 using Web.BlazorServer.ViewModels.Enums;
+using Web.BlazorServer.ViewModels.Others;
 using Web.BlazorServer.ViewModels.System;
+using Web.BlazorServer.ViewModels.Transaction.GoodsReturn;
 using Web.BlazorServer.ViewModels.Transaction.Receiving;
 
 namespace Web.BlazorServer.Components.Pages.Transaction.Receiving;
@@ -32,6 +37,7 @@ public partial class PurchaseOrderCVUPage
     #region Injects
     [Inject] IReceivingHandler ReceivingHandler { get; set; } = default!;
     [Inject] IGridSettingsService GridSettingsService { get; set; } = default!;
+    [Inject] ISchoolYearHandler SchoolYearHandler { get; set; } = default!;
     #endregion Injects
 
     #region Primitives
@@ -45,17 +51,27 @@ public partial class PurchaseOrderCVUPage
 
     readonly string ActionGetPurchaseOrder = EnumHelper.GetEnumDescription(AppActions.ViewPurchaseOrder);
     readonly string ActionCreateGoodsReceiptPO = EnumHelper.GetEnumDescription(AppActions.CreateGoodsReceiptPO);
+    readonly string ActionGetSchoolYears = EnumHelper.GetEnumDescription(AppActions.GetSchoolYears);
+    readonly string ActionGetPurchaseTypes = EnumHelper.GetEnumDescription(AppActions.GetPurchaseType);
 
+    int SchoolYearsCount { get; set; } = 0;
     #endregion Primitives
 
     #region Data Structures
+    TimeOnly? Time { get; set; }
+
     AppTable<PurchaseOrderLineVM> PurchaseOrderTable { get; set; } = default!;
     DataGridSettings PurchaseOrderTableSettings { get; set; } = new();
+
+    List<PurchaseTypeVM> PurchaseTypes { get; set; } = [];
+    List<SchoolYearVM> SchoolYears { get; set; } = [];
     List<NavigationRouteVM> AdditionalRoutes { get; set; } = [new() {
         Name = "Purchase Order",
         Position = 0,
         Icon = "receipt_long",
     }];
+
+    public IDataGridIntentAdapter DatagridAdapter { get; set; } = default!;
     #endregion Data Structures
 
     #region Overrides
@@ -122,6 +138,7 @@ public partial class PurchaseOrderCVUPage
         action.OnSuccess(async (args) =>
         {
             await LoadDataAsync();
+            NavManager.NavigateTo($"/transactions/purchasing/receiving/purchase-order/view?ref={FormData.SapReference.DocEntry}");
         });
 
     }
@@ -132,7 +149,7 @@ public partial class PurchaseOrderCVUPage
 
     async Task LoadDataAsync()
     {
-        if(!AppBusyService.IsBusy(ActionGetPurchaseOrder))
+        if (!AppBusyService.IsBusy(ActionGetPurchaseOrder))
         {
             AppBusyService.SetBusy(ActionGetPurchaseOrder, true);
             await InvokeAsync(StateHasChanged);
@@ -140,7 +157,9 @@ public partial class PurchaseOrderCVUPage
         }
 
         await Task.WhenAll(
-            GetPurchaseOrder());
+            GetPurchaseOrder(),
+            LoadReturnTypes(),
+            LoadSchoolYears(new()));
 
         await InvokeAsync(StateHasChanged);
         await Task.Yield();
@@ -169,7 +188,11 @@ public partial class PurchaseOrderCVUPage
             {
                 action.Result.Adapt(FormData);
 
-                FormData.ReceivedBy = AuthenticationService.GetUserName();
+                if (Creating)
+                {
+                    FormData.ReceivedBy = AuthenticationService.GetUserName();
+                    FormData.PreparedBy = AuthenticationService.GetUserName();
+                }
             }
         });
     }
@@ -190,6 +213,89 @@ public partial class PurchaseOrderCVUPage
                 return;
 
         NavManager.NavigateTo($"/transactions/purchasing/receiving?t=po", true);
+    }
+
+    async Task RemoveLine(PurchaseOrderLineVM line)
+    {
+        if (!await AlertService.PromptAsync())
+            return;
+
+        FormData.DocumentLines.Remove(line);
+        await PurchaseOrderTable.DataGrid.RefreshDataAsync();
+    }
+
+    async Task AddFreeLine(PurchaseOrderLineVM line)
+    {
+        if (!await AlertService.PromptAsync())
+            return;
+
+        PurchaseOrderLineVM freeLine = line.Adapt<PurchaseOrderLineVM>();
+        freeLine.TargetQuantity = 0;
+        freeLine.OpenQuantity = 0;
+        freeLine.Quantity = 0;
+        freeLine.Price = 0;
+        freeLine.Free = true;
+        freeLine.DocEntry = 0;
+        freeLine.LineNum = 0;
+
+        FormData.DocumentLines.Insert(FormData.DocumentLines.IndexOf(line) + 1, freeLine);
+        await PurchaseOrderTable.DataGrid.RefreshDataAsync();
+    }
+
+    async Task LoadSchoolYears(LoadDataArgs args)
+    {
+
+        var action = await AppActionFactory.RunAsync(async () =>
+        {
+            await Task.Yield();
+
+            AppBusyService.SetBusy(ActionGetSchoolYears, true);
+
+            DatagridAdapter = new DataGridIntentAdapter(args);
+            DatagridAdapter.AdaptToPagination();
+            if (DatagridAdapter.QueryIntent.Take <= 0)
+                DatagridAdapter.QueryIntent.Take = 5;
+
+            if (!string.IsNullOrEmpty(args.Filter))
+                DatagridAdapter.QueryIntent.Filters.Add(new()
+                {
+                    LogicalOperator = LogicalOperatorEnum.AND,
+                    Property = nameof(SchoolYearVM.Code),
+                    Value = args.Filter,
+                    ComparisonOperator = ComparisonOperatorEnum.Contains
+                });
+
+            (IEnumerable<SchoolYearVM> Data, int Count) = await SchoolYearHandler.GetSchoolYearsAsync(DatagridAdapter.QueryIntent);
+
+            SchoolYears = [.. Data];
+            SchoolYearsCount = Count;
+
+            AppBusyService.SetBusy(ActionGetSchoolYears, false);
+
+            await InvokeAsync(StateHasChanged);
+        }, AppActionOptionPresets.Loading(ActionGetSchoolYears));
+    }
+
+    async Task LoadReturnTypes()
+    {
+
+        var action = await AppActionFactory.RunAsync(async () =>
+        {
+            AppBusyService.SetBusy(ActionGetPurchaseTypes, true);
+
+
+            PurchaseTypes = [.. await ReceivingHandler.GetPurchaseTypesAsync()];
+
+            AppBusyService.SetBusy(ActionGetPurchaseTypes, false);
+        }, AppActionOptionPresets.Loading(ActionGetPurchaseTypes));
+    }
+
+    void ParseIntTime()
+    {
+        if (Time is null)
+            return;
+
+        FormData.Time = Time.Value.Hour * 100 + Time.Value.Minute;
     }
 
     #endregion Custom Function

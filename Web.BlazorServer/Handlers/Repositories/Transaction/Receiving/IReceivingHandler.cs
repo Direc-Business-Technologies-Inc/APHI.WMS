@@ -10,4 +10,5 @@ public interface IReceivingHandler
     Task<(IEnumerable<PurchaseDeliveryNoteDataGridVM> Data, int Count)> GetPurchaseDeliveryNoteDataGridAsync(DataGridIntent intent);
     Task<PurchaseDeliveryNoteVM?> GetPurchaseDeliveryNoteAsync(int docEntry);
     Task<bool> PostGoodsReceiptPOAsync(PurchaseOrderVM data);
+    Task<IEnumerable<PurchaseTypeVM>> GetPurchaseTypesAsync();
 }

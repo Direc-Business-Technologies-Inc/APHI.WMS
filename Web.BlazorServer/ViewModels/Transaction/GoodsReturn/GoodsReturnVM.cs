@@ -12,8 +12,19 @@ public class GoodsReturnVM : MarketingDocumentVM
     public int GRPODocNum { get; set; }
     public int PODocEntry { get; set; }
     public int PODocNum { get; set; }
-    public string PreparedBy { get; set; }
-    public WarehouseVM Warehouse { get; set; } = new();
+    public string PreparedBy { get; set; } = string.Empty;
+    public string? ReturnType { get; set; }
+    public string? SchoolYear { get; set; }
+    public string? DRNo { get; set; }
+    public string? SINo { get; set; }
+    public string? DeliveredBy { get; set; }
+    public string? ReceivedBy { get; set; }
+    public string? DocRemarks { get; set; }
+    public string? ReviewedBy { get; set; }
+    public string? ApprovedBy { get; set; }
+    public string? CheckedBy { get; set; }
+    public bool Standalone { get; set; } = true;
+    public WarehouseVM? Warehouse { get; set; } = null;
 
     public List<GoodsReturnLineVM> DocumentLines { get; set; } = [];
 

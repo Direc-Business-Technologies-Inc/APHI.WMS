@@ -25,6 +25,7 @@ public static class SAPImplementationsDI
         services.TryAddTransient<ITransactionTypeIntegration, TransactionTypeIntegration>();
         services.TryAddTransient<IGoodsIssueIntegration, GoodsIssueIntegration>();
         services.TryAddTransient<IGoodsReceiptIntegration, GoodsReceiptIntegration>();
+        services.TryAddTransient<ISchoolYearIntegration, SchoolYearIntegration>();
 
         return services;
     }

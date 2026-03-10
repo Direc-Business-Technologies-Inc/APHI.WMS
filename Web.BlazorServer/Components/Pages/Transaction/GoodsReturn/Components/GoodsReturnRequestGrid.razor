@@ -5,7 +5,7 @@
 
 @inherits BaseComponent
 
-<AppDataGrid @ref="@GoodsReturnRequestDataGrid" Id="purchase_order_grid" TItem="GRRDataGridVM" DataGetter="@LoadDataAsync" GridSettings="@GoodsReturnRequestDataGridSettings" @bind-GridSettingsLoaded="@GridSettingsLoaded" ActionName="@ActionGetGoodsReturnRequests">
+<AppDataGrid @ref="@GoodsReturnRequestDataGrid" Id="goods_return_request_grid" TItem="GRRDataGridVM" DataGetter="@LoadDataAsync" GridSettings="@GoodsReturnRequestDataGridSettings" @bind-GridSettingsLoaded="@GridSettingsLoaded" ActionName="@ActionGetGoodsReturnRequests">
     <HeaderTemplate>
         <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
             <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />
@@ -16,11 +16,11 @@
         <RadzenDataGridColumn TItem="GRRDataGridVM"
                               Property="@nameof(GRRDataGridVM.DocNum)"
                               Type="@typeof(int)"
-                              Title="PO Doc No." />
+                              Title="GRR Doc No." />
         <RadzenDataGridColumn TItem="GRRDataGridVM"
                               Property="@nameof(GRRDataGridVM.DocDate)"
                               Type="@typeof(DateTime)"
-                              Title="PO Date">
+                              Title="GRPO Date">
             <Template>
                 @context.DocDate.ToString("MM/dd/yyyy")
             </Template>

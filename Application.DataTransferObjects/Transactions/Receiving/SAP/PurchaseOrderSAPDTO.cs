@@ -11,4 +11,5 @@ public class PurchaseOrderSAPDTO
     public string SupplierContactPerson { get; set; }
     public string Remarks { get; set; }
     public string DocStatus { get; set; }
+    public int Time { get; set; }
 }

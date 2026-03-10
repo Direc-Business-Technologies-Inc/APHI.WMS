@@ -49,10 +49,6 @@ public partial class UserManagementCVU
     readonly string ActionGetRoles = KernelEnumHelper.GetEnumDescription(AppActions.GetAllRoles);
     #endregion Primitives
 
-    #region Custom Classes
-    RoleVM? SelectedRole { get; set; } = null;
-    #endregion Custom Classes
-
     #region Data Structures
     IEnumerable<RoleVM> Roles { get; set; } = [];
     #endregion Data Structures
@@ -123,7 +119,6 @@ public partial class UserManagementCVU
 
         await Task.Yield();
         
-        SelectedRole = FormData.Role;
         AppBusyService.SetBusy(ActionGetUser, false);
         await InvokeAsync(StateHasChanged);
 
@@ -156,14 +151,6 @@ public partial class UserManagementCVU
             Roles = roles.Data;
 
         }, AppActionOptionPresets.Loading(ActionGetRoles));
-    }
-
-    async Task OnRoleSelect()
-    {
-        if (SelectedRole is null)
-            return;
-
-        SelectedRole.Adapt(FormData.Role);
     }
 
     async Task Create()
