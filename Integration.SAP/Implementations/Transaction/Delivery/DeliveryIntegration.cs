@@ -1,5 +1,5 @@
-﻿using Application.DataTransferObjects.Transactions.Delivery.SAP;
-using Application.DataTransferObjects.Transactions.GoodsIssue;
+﻿using Application.DataTransferObjects.Transactions.Delivery;
+using Application.DataTransferObjects.Transactions.Delivery.SAP;
 using Application.UseCases.Repositories.Integration.Transaction.Delivery;
 using Database.Libraries.Repositories;
 using Integration.Sap.Entities;
@@ -117,5 +117,10 @@ public class DeliveryIntegration(
         TotalRows? rowCount = await SLActions.RawQueryOneAsync<TotalRows>(countQuery);
 
         return (docs, rowCount?.Count ?? docs.Count);
+    }
+
+    public Task<bool> PostDeliveryDocument(DeliveryDTO document)
+    {
+        throw new NotImplementedException();
     }
 }
