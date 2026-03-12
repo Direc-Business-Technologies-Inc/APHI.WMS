@@ -1,5 +1,6 @@
 ﻿using Application.DataTransferObjects.Transactions.Delivery;
 using Application.DataTransferObjects.Transactions.Delivery.SAP;
+using Integration.SAP.Entities.Transactional.Delivery;
 using Application.UseCases.Repositories.Integration.Transaction.Delivery;
 using Database.Libraries.Repositories;
 using Integration.Sap.Entities;
@@ -119,8 +120,52 @@ public class DeliveryIntegration(
         return (docs, rowCount?.Count ?? docs.Count);
     }
 
-    public Task<bool> PostDeliveryDocument(DeliveryDTO document)
+    public async Task<bool> PostDeliveryDocument(DeliveryDTO document)
     {
-        throw new NotImplementedException();
+        List<DeliveryNotesLinesPayload> payloadLines = [];
+        List<DeliveryLineDTO> validLines = [.. document.DocumentLines.Where(dl => dl.Quantity > 0)];
+
+        for (int i = 0; i < validLines.Count; i++)
+        {
+            var line = validLines[i];
+
+            payloadLines.Add(new DeliveryNotesLinesPayload(
+                document.SapReference.BaseEntry,
+                17,
+                line.LineNum,
+                i,
+                line.ItemCode,
+                line.Quantity,
+                line.Warehouse.WhsCode));
+        }
+
+        DateTime? actualDelivDate = null;
+        if (DateTime.TryParse(document.ActualDelivDate, out DateTime parsedDate))
+            actualDelivDate = parsedDate;
+
+        DeliveryNotesPayload payload = new(
+            document.BusinessPartner.CardCode,
+            document.DocDate,
+            document.DocDueDate,
+            document.PreparedBy,
+            payloadLines,
+            document.SchoolYear,
+            document.DRNo,
+            document.DeliveryMeans,
+            document.Courier,
+            document.CourierName,
+            actualDelivDate,
+            document.Designation,
+            document.WayBillNo,
+            document.PlateNo,
+            document.Driver,
+            document.DocRemarks,
+            document.ReceivedBy,
+            document.ApprovedBy,
+            document.NotedBy);
+
+        await SLActions.PostAsync<object, DeliveryNotesPayload>("DeliveryNotes", payload);
+
+        return true;
     }
 }
