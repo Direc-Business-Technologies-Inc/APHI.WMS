@@ -117,6 +117,21 @@ public enum AppActions
     ViewGoodsReceipt,
     #endregion Transaction - Goods Receipt
 
+    #region Transaction - Delivery
+    [Description("Get All Sales Orders")]
+    GetAllSalesOrders,
+    [Description("Get All Deliveries")]
+    GetAllDeliveries,
+    [Description("View Sales Order")]
+    ViewSalesOrder,
+    [Description("View Delivery")]
+    ViewDelivery,
+    [Description("Create Delivery")]
+    CreateDelivery,
+    [Description("Get Delivery Means")]
+    GetDeliveryMeans,
+    #endregion Transaction - Delivery
+
     #region Transaction - Goods Issue
     [Description("Get All Goods Issues")]
     GetAllGoodsIssues,
