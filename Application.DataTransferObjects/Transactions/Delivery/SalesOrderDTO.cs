@@ -23,6 +23,6 @@ public class SalesOrderDTO
     public string? ReviewedBy { get; set; } = null;
     public string? ApprovedBy { get; set; } = null;
     public string? NotedBy { get; set; }
-    public IEnumerable<SalesOrderDTO> DocumentLine{ get; set; } = [];
+    public IEnumerable<SalesOrderLineDTO> DocumentLines{ get; set; } = [];
 
 }
