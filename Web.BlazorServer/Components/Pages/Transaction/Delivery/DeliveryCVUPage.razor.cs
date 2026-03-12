@@ -92,9 +92,15 @@ public partial class DeliveryCVUPage
 
     protected override async Task HandleSubmit()
     {
-        if (Creating && !SalesOrderData.DocumentLines.Any())
+        if (Creating && !SalesOrderData.DocumentLines.Any(l => l.Quantity > 0))
         {
-            ToastService.Warning("Sales Order has no items to deliver");
+            ToastService.Warning("Please enter a delivery quantity for at least one item");
+            return;
+        }
+
+        if (Creating && SalesOrderData.DocumentLines.Any(l => l.Quantity > l.OpenQty))
+        {
+            ToastService.Warning("Delivery quantity cannot exceed the open quantity for one or more items");
             return;
         }
 
@@ -158,6 +164,7 @@ public partial class DeliveryCVUPage
             else
             {
                 SalesOrderData = action.Result;
+                FormData.SapReference.BaseEntry = action.Result.SapReference.DocEntry;
                 FormData.BusinessPartner = action.Result.BusinessPartner;
                 FormData.ContactPerson = action.Result.ContactPerson;
                 FormData.SchoolYear = action.Result.SchoolYear;

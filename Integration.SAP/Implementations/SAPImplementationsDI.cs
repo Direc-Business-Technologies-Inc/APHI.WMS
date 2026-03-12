@@ -4,12 +4,14 @@ using Application.UseCases.Repositories.Integration.Transaction.GoodsIssue;
 using Application.UseCases.Repositories.Integration.Transaction.GoodsReceipt;
 using Application.UseCases.Repositories.Integration.Transaction.GoodsReturn;
 using Application.UseCases.Repositories.Integration.Transaction.Receiving;
+using Application.UseCases.Repositories.Integration.Transaction.SalesReturn;
 using Integration.SAP.Implementations.Others;
 using Integration.SAP.Implementations.Transaction.Delivery;
 using Integration.SAP.Implementations.Transaction.GoodsIssue;
 using Integration.SAP.Implementations.Transaction.GoodsReceipt;
 using Integration.SAP.Implementations.Transaction.GoodsReturn;
 using Integration.SAP.Implementations.Transaction.Receiving;
+using Integration.SAP.Implementations.Transaction.SalesReturn;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
@@ -29,6 +31,7 @@ public static class SAPImplementationsDI
         services.TryAddTransient<IGoodsReceiptIntegration, GoodsReceiptIntegration>();
         services.TryAddTransient<ISchoolYearIntegration, SchoolYearIntegration>();
         services.TryAddTransient<IDeliveryIntegration, DeliveryIntegration>();
+        services.TryAddTransient<ISalesReturnIntegration, SalesReturnIntegration>();
 
         return services;
     }

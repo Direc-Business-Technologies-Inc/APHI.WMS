@@ -215,6 +215,15 @@
                                                 @data.OpenQty.ToString("N0")
                                             </Template>
                                         </RadzenDataGridColumn>
+                                        <RadzenDataGridColumn TItem="SalesOrderLineVM"
+                                                              Title="Deliver Qty" Width="140px">
+                                            <Template Context="data">
+                                                <RadzenNumeric @bind-Value="@data.Quantity"
+                                                               Min="0"
+                                                               Max="@((double)data.OpenQty)"
+                                                               class="rz-w-100" />
+                                            </Template>
+                                        </RadzenDataGridColumn>
                                     </Columns>
                                 </AppTable>
                             }
