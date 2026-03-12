@@ -1,5 +1,4 @@
-﻿using Application.DataTransferObjects.Transactions.Delivery;
-using Web.BlazorServer.ViewModels.Transaction.Commons;
+﻿using Web.BlazorServer.ViewModels.Transaction.Commons;
 
 namespace Web.BlazorServer.ViewModels.Transaction.Delivery;
 
@@ -9,6 +8,7 @@ public class DeliveryVM : MarketingDocumentVM
     public DateTime DeliveryDate { get; set; }
     public DateTime DocumentDate { get; set; }
 
+    public string? NumAtCard { get; set; } = null;
     public string? ContactPerson { get; set; } = null;
     public string? SchoolYear { get; set; } = null;
     public string? ActualDelivDate { get; set; } = null;
