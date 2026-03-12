@@ -17,7 +17,7 @@ SELECT
 	,ODLN.U_WBNo [WaybillNo]
 	,ODLN.U_PlateNo [PlateNo]
 	,ODLN.U_Driver [Driver]
-	,ODLN.U_Remarks [DocRemarksa]
+	,ODLN.U_Remarks [DocRemarks]
 	,ODLN.U_RecBy [ReceivedBy]
 	,ODLN.U_PrepBy [PreparedBy]
 	,ODLN.U_AppBy [ApprovedBy]
