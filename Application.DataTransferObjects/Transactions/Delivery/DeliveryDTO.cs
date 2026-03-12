@@ -10,6 +10,7 @@ public class DeliveryDTO : MarketingDocumentDTO
     public DateTime DeliveryDate { get; set; }
     public DateTime DocumentDate { get; set; }
 
+    public string? NumAtCard { get; set; } = null;
     public string? ContactPerson { get; set; } = null;
     public string? SchoolYear { get; set; } = null;
     public string? ActualDelivDate { get; set; } = null;

@@ -10,7 +10,7 @@ public class DeliveryHeaderSAPDTO
     public string CardCode { get; set; }
     public string CardName { get; set; }
     public string ContactPerson { get; set; }
-    public int NumAtCard { get; set; }
+    public string NumAtCard { get; set; }
 
     public string? SchoolYear { get; set; }
     public string? DRNo { get; set; }
