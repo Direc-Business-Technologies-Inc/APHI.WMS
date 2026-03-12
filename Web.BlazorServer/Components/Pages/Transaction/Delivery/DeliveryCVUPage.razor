@@ -26,6 +26,7 @@
                  class="rz-mb-2">
         <AppContentBadge Visible="@Viewing" Title="Doc" Content="@FormData.SapReference.DocNum.ToString()" />
         <AppContentBadge Title="Doc Date" Content="@FormData.DocDate.ToString("MM-dd-yy")" ChildBadgeStyle="BadgeStyle.Secondary" ChildShade="Shade.Default" />
+        <AppContentBadge Title="Delivery Date" Content="@FormData.DocDueDate.ToString("MM-dd-yy")" ChildBadgeStyle="BadgeStyle.Secondary" ChildShade="Shade.Default" />
     </RadzenStack>
 
     <RadzenTemplateForm Visible="@(!IsLoadingData)" @ref="@TemplateForm" TItem="DeliveryVM" @bind-Data="@FormData" EditContext="@EditContext" Submit="@HandleSubmit">
@@ -61,33 +62,6 @@
 
                         <RadzenRow Gap="1rem">
                             <RadzenColumn Size="12" SizeMD="4">
-                                <RadzenFormField Text="Posting Date" class="rz-w-100" AllowFloatingLabel="false">
-                                    <ChildContent>
-                                        <RadzenTextBox Visible="@Viewing" ReadOnly Value="@FormData.PostingDate.ToString("MM/dd/yyyy")" Name="dlv_posting_date_view" Disabled="@IsBusy" class="rz-w-100" />
-                                        <RadzenDatePicker Visible="@Creating" @bind-Value="@FormData.PostingDate" Name="dlv_posting_date" DateFormat="MM/dd/yyyy" Disabled="@IsBusy" class="rz-w-100" />
-                                    </ChildContent>
-                                </RadzenFormField>
-                            </RadzenColumn>
-                            <RadzenColumn Size="12" SizeMD="4">
-                                <RadzenFormField Text="Delivery Date" class="rz-w-100" AllowFloatingLabel="false">
-                                    <ChildContent>
-                                        <RadzenTextBox Visible="@Viewing" ReadOnly Value="@FormData.DeliveryDate.ToString("MM/dd/yyyy")" Name="dlv_delivery_date_view" Disabled="@IsBusy" class="rz-w-100" />
-                                        <RadzenDatePicker Visible="@Creating" @bind-Value="@FormData.DeliveryDate" Name="dlv_delivery_date" DateFormat="MM/dd/yyyy" Disabled="@IsBusy" class="rz-w-100" />
-                                    </ChildContent>
-                                </RadzenFormField>
-                            </RadzenColumn>
-                            <RadzenColumn Size="12" SizeMD="4">
-                                <RadzenFormField Text="Document Date" class="rz-w-100" AllowFloatingLabel="false">
-                                    <ChildContent>
-                                        <RadzenTextBox Visible="@Viewing" ReadOnly Value="@FormData.DocumentDate.ToString("MM/dd/yyyy")" Name="dlv_document_date_view" Disabled="@IsBusy" class="rz-w-100" />
-                                        <RadzenDatePicker Visible="@Creating" @bind-Value="@FormData.DocumentDate" Name="dlv_document_date" DateFormat="MM/dd/yyyy" Disabled="@IsBusy" class="rz-w-100" />
-                                    </ChildContent>
-                                </RadzenFormField>
-                            </RadzenColumn>
-                        </RadzenRow>
-
-                        <RadzenRow Gap="1rem">
-                            <RadzenColumn Size="12" SizeMD="4">
                                 <RadzenFormField Text="DR No." class="rz-w-100" AllowFloatingLabel="false">
                                     <ChildContent>
                                         <RadzenTextBox ReadOnly="@Viewing" @bind-Value="@FormData.DRNo" Placeholder="DR-001" Name="dlv_dr_no" Disabled="@IsBusy" class="rz-w-100" />
@@ -97,7 +71,8 @@
                             <RadzenColumn Size="12" SizeMD="4">
                                 <RadzenFormField Text="Actual Delivery Date" class="rz-w-100" AllowFloatingLabel="false">
                                     <ChildContent>
-                                        <RadzenTextBox ReadOnly="@Viewing" @bind-Value="@FormData.ActualDelivDate" Placeholder="N/A" Name="dlv_actual_date" Disabled="@IsBusy" class="rz-w-100" />
+                                        <RadzenTextBox Visible="@Viewing" Value="@(DateTime.TryParse(FormData.ActualDelivDate, out DateTime actualDeliveryDate) ? actualDeliveryDate.ToString("MM-dd-yy") : "N/A")" Placeholder="N/A" Name="dlv_actual_date" Disabled="@IsBusy" class="rz-w-100" />
+                                        <RadzenDatePicker Visible="@Creating" ShowTime="true" DateFormat="MM-dd-yy" Name="dlv_actual_date" Placeholder="1400" @bind-Value="@ActualDeliveryDate" @bind-Value:after="@ParseActualDeliveryDate" />
                                     </ChildContent>
                                 </RadzenFormField>
                             </RadzenColumn>
@@ -179,7 +154,7 @@
                         <RadzenColumn>
                             @if (Creating)
                             {
-                                <AppTable @ref="@SalesOrderLinesTable" Id="dlv_so_items" TItem="SalesOrderLineVM" @bind-GridSettingsLoaded="@GridSettingsLoaded" Data="[..SalesOrderData.DocumentLines]">
+                                <AppTable @ref="@SalesOrderLinesTable" Id="dlv_so_items" TItem="SalesOrderLineVM" @bind-GridSettingsLoaded="@GridSettingsLoaded" Data="[.. SalesOrderData.DocumentLines]">
                                     <HeaderTemplate>
                                         <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
                                             <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenSalesOrderTableSettings" />
@@ -218,9 +193,9 @@
                                         <RadzenDataGridColumn TItem="SalesOrderLineVM"
                                                               Title="Deliver Qty" Width="140px">
                                             <Template Context="data">
-                                                <RadzenNumeric @bind-Value="@data.Quantity"
+                                                <RadzenNumeric Format="N0" @bind-Value="@data.Quantity"
                                                                Min="0"
-                                                               Max="@((double)data.OpenQty)"
+                                                               Max="@(data.OpenQty)"
                                                                class="rz-w-100" />
                                             </Template>
                                         </RadzenDataGridColumn>
@@ -229,7 +204,7 @@
                             }
                             else
                             {
-                                <AppTable @ref="@DeliveryLinesTable" Id="dlv_items" TItem="DeliveryLineVM" @bind-GridSettingsLoaded="@GridSettingsLoaded" Data="[..FormData.DocumentLines]">
+                                <AppTable @ref="@DeliveryLinesTable" Id="dlv_items" TItem="DeliveryLineVM" @bind-GridSettingsLoaded="@GridSettingsLoaded" Data="[.. FormData.DocumentLines]">
                                     <HeaderTemplate>
                                         <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
                                             <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenDeliveryTableSettings" />
@@ -246,8 +221,12 @@
                                                               Property="@nameof(DeliveryLineVM.ItemName)"
                                                               Title="Item Name" />
                                         <RadzenDataGridColumn TItem="DeliveryLineVM"
-                                                              Property="@nameof(DeliveryLineVM.Warehouse.WhsName)"
-                                                              Title="Warehouse" Width="150px" />
+                                                              Property="@nameof(DeliveryLineVM.Warehouse)"
+                                                              Title="Warehouse" Width="150px">
+                                            <Template Context="data">
+                                                @(data.Warehouse?.WhsName ?? "-")
+                                            </Template>
+                                        </RadzenDataGridColumn>
                                         <RadzenDataGridColumn TItem="DeliveryLineVM"
                                                               Property="@nameof(DeliveryLineVM.UoMName)"
                                                               Title="UoM" Width="100px" />

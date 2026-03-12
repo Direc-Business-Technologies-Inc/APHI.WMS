@@ -1,3 +1,4 @@
+using Domain.Providers;
 using Mapster;
 using Microsoft.AspNetCore.Components;
 using Radzen;
@@ -34,6 +35,8 @@ public partial class DeliveryCVUPage
     bool Viewing => PageAction == PageActionTypeEnum.View;
     bool IsBusy => AppBusyService.IsBusy(ActionGetDelivery) || AppBusyService.IsBusy(ActionCreateDelivery);
     bool IsLoadingData => AppBusyService.IsBusy(ActionGetDelivery);
+
+    DateTime ActualDeliveryDate { get; set; } = DateTimeProvider.Now;
 
     readonly string ActionGetDelivery = EnumHelper.GetEnumDescription(AppActions.ViewDelivery);
     readonly string ActionCreateDelivery = EnumHelper.GetEnumDescription(AppActions.CreateDelivery);
@@ -118,7 +121,7 @@ public partial class DeliveryCVUPage
 
         action.OnSuccess(async (args) =>
         {
-            NavManager.NavigateTo("/transactions/sales/delivery?T=dlv");
+            NavManager.NavigateTo("/transactions/sales/delivery?T=dlv", true);
         });
     }
     #endregion Overrides
@@ -234,5 +237,12 @@ public partial class DeliveryCVUPage
         string tab = Creating ? "so" : "dlv";
         NavManager.NavigateTo($"/transactions/sales/delivery?T={tab}", true);
     }
+
+
+    void ParseActualDeliveryDate()
+    {
+        FormData.ActualDelivDate = ActualDeliveryDate.ToString("MM-dd-yy");
+    }
+
     #endregion Custom Functions
 }
