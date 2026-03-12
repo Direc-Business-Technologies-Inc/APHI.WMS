@@ -3,6 +3,7 @@ SELECT
 	,ORDR.DocNum
 	,ORDR.DocDate
 	,ORDR.DocDueDate
+	,ORDR.DocStatus
 	,OCRD.CardCode
 	,OCRD.CardName
 	,OCRD.CntctPrsn [ContactPerson]

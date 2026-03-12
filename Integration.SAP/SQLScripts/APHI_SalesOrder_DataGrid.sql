@@ -11,3 +11,9 @@ INNER JOIN OCRD ON OCRD.CardCode = ORDR.CardCode
 WHERE 
 	ORDR.DocStatus = 'O'
 	AND ORDR.CANCELED = 'N'
+	AND ORDR.DocType = 'I'
+	AND EXISTS (
+		SELECT 1 FROM RDR1
+		WHERE RDR1.DocEntry = ORDR.DocEntry
+		AND RDR1.LineStatus = 'O'
+	)
