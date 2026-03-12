@@ -1,12 +1,13 @@
 ﻿using Application.DataTransferObjects.Transactions.Delivery;
 using Application.DataTransferObjects.Transactions.Delivery.SAP;
-using Integration.SAP.Entities.Transactional.Delivery;
 using Application.UseCases.Repositories.Integration.Transaction.Delivery;
 using Database.Libraries.Repositories;
 using Integration.Sap.Entities;
 using Integration.Sap.Helpers;
 using Integration.Sap.Repositories;
+using Integration.SAP.Entities.Transactional.Delivery;
 using Shared.Entities;
+using System.Text.Json;
 
 namespace Integration.SAP.Implementations.Transaction.Delivery;
 
@@ -163,6 +164,11 @@ public class DeliveryIntegration(
             document.ReceivedBy,
             document.ApprovedBy,
             document.NotedBy);
+
+        string jsonString = JsonSerializer.Serialize(payload, new JsonSerializerOptions
+        {
+            WriteIndented = true
+        });
 
         await SLActions.PostAsync<object, DeliveryNotesPayload>("DeliveryNotes", payload);
 
