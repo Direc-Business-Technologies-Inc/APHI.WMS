@@ -22,7 +22,7 @@ public class DeliveryNotesLinesPayload
     {
         BaseEntry = Guard.Against.Negative(baseEntry, nameof(BaseEntry), "Base Entry cannot be negative");
         BaseType = Guard.Against.Negative(baseType, nameof(BaseType), "Base Type cannot be negative");
-        BaseLine = Guard.Against.Negative(baseLine, nameof(BaseLine), "Base Line cannot be negative");
+        BaseLine = Guard.Against.Negative(baseLine - 1, nameof(BaseLine), "Base Line cannot be negative");
         LineNum = Guard.Against.Negative(lineNum, nameof(LineNum), "Line Num cannot be negative");
         ItemCode = Guard.Against.NullOrEmpty(itemCode, nameof(ItemCode), "Item Code cannot be null or empty");
         Quantity = Guard.Against.NegativeOrZero(quantity, nameof(Quantity), "Quantity cannot be negative or zero");

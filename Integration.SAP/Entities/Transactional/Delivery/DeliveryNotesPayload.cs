@@ -19,7 +19,7 @@ public class DeliveryNotesPayload
     public string? U_WBNo { get; private set; }
     public string? U_PlateNo { get; private set; }
     public string? U_Driver { get; private set; }
-    public string? U_DocRemarks { get; private set; }
+    public string? U_Remarks { get; private set; }
     public string? U_RecBy { get; private set; }
     public string? U_AppBy { get; private set; }
     public string? U_NotedBy { get; private set; }
@@ -61,7 +61,7 @@ public class DeliveryNotesPayload
         U_WBNo = wbNo;
         U_PlateNo = plateNo;
         U_Driver = driver;
-        U_DocRemarks = docRemarks;
+        U_Remarks = docRemarks;
         U_RecBy = recBy;
         U_AppBy = appBy;
         U_NotedBy = notedBy;
