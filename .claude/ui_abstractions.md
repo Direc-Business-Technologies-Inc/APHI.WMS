@@ -166,6 +166,94 @@ result
 
 ---
 
+## AppActionFactory — Preset Selection Rules
+
+Always choose the preset based on the **nature of the operation**, not personal preference.
+
+| Situation | Preset | Behaviour |
+|---|---|---|
+| Fetching data (page load, dropdowns, grids) | `AppActionOptionPresets.Loading(actionName)` | No confirm dialog · error toast on failure only |
+| Posting a form (create / update / delete) | `AppActionOptionPresets.Confirmed(actionName)` | Confirm dialog required · success + failure toasts |
+| Background refresh / silent side-effect | `AppActionOptionPresets.Silent(actionName)` | No confirm dialog · success + failure toasts |
+
+### Busy-State Convention Inside Delegates
+
+- Call `AppBusyService.SetBusy(actionName, true)` **inside** the delegate immediately before the handler call
+- Clear it (`false`) **after** `AppActionFactory.RunAsync()` returns in the outer scope — not inside the delegate — so the factory's `finally` block can still observe it
+- Always derive the key from `AppActions` via `EnumHelper.GetEnumDescription(AppActions.XxxAction)` — never use raw strings
+
+```csharp
+// DATA FETCH — Loading preset
+readonly string ActionGetFoo = EnumHelper.GetEnumDescription(AppActions.GetFoo);
+
+var action = await AppActionFactory.RunAsync(async () =>
+{
+    AppBusyService.SetBusy(ActionGetFoo, true);
+    return await FooHandler.GetFooAsync(id);
+}, AppActionOptionPresets.Loading(ActionGetFoo));
+
+AppBusyService.SetBusy(ActionGetFoo, false);          // clear in outer scope
+
+action.OnSuccess(async (result) =>
+{
+    if (result is null) ToastService.Error("Not found");
+    else result.Adapt(FormData);
+});
+
+// FORM POST — Confirmed preset
+readonly string ActionCreateFoo = EnumHelper.GetEnumDescription(AppActions.CreateFoo);
+
+var action = await AppActionFactory.RunAsync(async () =>
+{
+    AppBusyService.SetBusy(ActionCreateFoo, true);
+    return await FooHandler.PostFooAsync(FormData);
+}, AppActionOptionPresets.Confirmed(ActionCreateFoo));
+
+AppBusyService.SetBusy(ActionCreateFoo, false);        // clear in outer scope
+
+action.OnSuccess(async (_) =>
+{
+    NavManager.NavigateTo("/target/path");
+});
+```
+
+---
+
+## Navigation Guard — HasUnsavedChanges
+
+All CVU pages that allow editing (Create or Update mode) **must** guard every navigation
+function that exits the page with an unsaved-changes confirmation prompt.
+
+### Rules
+
+- Navigation functions that include the guard must be `async Task` — not `void`
+- Apply the guard only for modes where the form is editable; skip in View-only mode
+- `UnsavedChangesService` is already wired by `BaseForm<T>` — do not call `MarkDirty()` manually unless a field is not bound to the `EditContext`
+- Call `UnsavedChangesService.MarkClean()` on successful submit before navigating away
+- View-only pages (no form mutations possible) do not require a guard
+
+### Standard Pattern
+
+```csharp
+// Navigation function on a Create/Update CVU page
+async Task Back()
+{
+    if (UnsavedChangesService.HasChanges && Creating)   // replace Creating with Editing as appropriate
+        if (!await AlertService.HasUnsavedChangesAsync(header: "Cancel <Document> Creation"))
+            return;
+
+    NavManager.NavigateTo("/target/path", true);
+}
+```
+
+### When the guard is NOT needed
+
+- List / data-grid pages (no form)
+- Tab-switcher pages (no form)
+- View-only CVU pages (fields are read-only; no edits can be made)
+
+---
+
 ## AppDataGrid<TItem> — Data Grid Wrapper
 
 Wraps Radzen's `RadzenDataGrid` with server-side loading, grid settings persistence,
