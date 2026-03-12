@@ -41,7 +41,7 @@ public class DeliveryHandler(
         return response.Adapt<DeliveryVM?>();
     }
 
-    public async Task<bool> PostDeliveryAsync(SalesOrderVM data)
+    public async Task<bool> PostDeliveryAsync(DeliveryVM data)
     {
         PostDeliveryCmd cmd = new(data.Adapt<DeliveryDTO>());
         bool result = await Sender.Send(cmd);

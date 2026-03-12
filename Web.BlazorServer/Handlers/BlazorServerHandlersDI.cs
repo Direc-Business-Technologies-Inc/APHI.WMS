@@ -4,6 +4,7 @@ using Web.BlazorServer.Handlers.Implementations.Administration.Role;
 using Web.BlazorServer.Handlers.Implementations.Administration.User;
 using Web.BlazorServer.Handlers.Implementations.Others;
 using Web.BlazorServer.Handlers.Implementations.System;
+using Web.BlazorServer.Handlers.Implementations.Transaction.Delivery;
 using Web.BlazorServer.Handlers.Implementations.Transaction.GoodsIssue;
 using Web.BlazorServer.Handlers.Implementations.Transaction.GoodsReceipt;
 using Web.BlazorServer.Handlers.Implementations.Transaction.GoodsReturn;
@@ -13,6 +14,7 @@ using Web.BlazorServer.Handlers.Repositories.Administration.Role;
 using Web.BlazorServer.Handlers.Repositories.Administration.User;
 using Web.BlazorServer.Handlers.Repositories.Others;
 using Web.BlazorServer.Handlers.Repositories.System;
+using Web.BlazorServer.Handlers.Repositories.Transaction.Delivery;
 using Web.BlazorServer.Handlers.Repositories.Transaction.GoodsIssue;
 using Web.BlazorServer.Handlers.Repositories.Transaction.GoodsReceipt;
 using Web.BlazorServer.Handlers.Repositories.Transaction.GoodsReturn;
@@ -25,6 +27,7 @@ public static class BlazorServerHandlersDI
     public static IServiceCollection AddBlazorServerHandlers(this IServiceCollection services)
     {
         services.TryAddTransient<INavigationRouteHandler, NavigationRouteHandler>();
+        services.TryAddTransient<IDeliveryHandler, DeliveryHandler>();
 
         services.TryAddTransient<IUserManagementHandler, UserManagementHandler>();
         services.TryAddTransient<IRoleManagementHandler, RoleManagementHandler>();

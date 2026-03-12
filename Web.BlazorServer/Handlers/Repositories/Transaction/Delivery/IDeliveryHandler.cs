@@ -9,6 +9,6 @@ public interface IDeliveryHandler
     Task<SalesOrderVM?> GetSalesOrderAsync(int docEntry);
     Task<(IEnumerable<DeliveryDataGridVM> Data, int Count)> GetDeliveryDataGridAsync(DataGridIntent intent);
     Task<DeliveryVM?> GetDeliveryAsync(int docEntry);
-    Task<bool> PostDeliveryAsync(SalesOrderVM data);
+    Task<bool> PostDeliveryAsync(DeliveryVM data);
     Task<IEnumerable<DeliveryMeansVM>> GetDeliveryMeansAsync();
 }
