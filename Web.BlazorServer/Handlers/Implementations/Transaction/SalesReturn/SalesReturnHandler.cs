@@ -1,5 +1,7 @@
 using Application.DataTransferObjects.Transactions.SalesReturn;
+using Application.UseCases.Commands.Transaction.SalesReturn;
 using Application.UseCases.Queries.Transaction.SalesReturn;
+using Domain.Entities.Enums.Transaction.SalesReturn;
 using Mapster;
 using MediatR;
 using Shared.Entities;
@@ -38,15 +40,25 @@ public class SalesReturnHandler(ISender Sender) : ISalesReturnHandler
         return response.Adapt<SalesReturnRequestVM?>();
     }
 
-    public async Task<IEnumerable<ReturnTypeVM>> GetReturnTypesAsync(int docEntry)
+    public async Task<IEnumerable<ReturnTypeVM>> GetReturnTypesAsync()
     {
         GetReturnTypesQry qry = new();
         IEnumerable<ReturnTypeDTO> response = await Sender.Send(qry);
         return response.Adapt<IEnumerable<ReturnTypeVM>>();
     }
 
-    public Task<bool> PostSalesReturnAsync(SalesReturnVM data)
+    public async Task<bool> PostSalesReturnAsync(SalesReturnVM data, SalesReturnPostingSource source)
     {
-        throw new NotImplementedException();
+        PostSalesReturnCmd cmd = new(data.Adapt<SalesReturnDTO>(), source);
+        return await Sender.Send(cmd);
+    }
+
+    public async Task<bool> PostSalesReturnFromRequestAsync(SalesReturnRequestVM data)
+    {
+        SalesReturnRequestDTO requestDto = data.Adapt<SalesReturnRequestDTO>();
+        SalesReturnDTO dto = requestDto.Adapt<SalesReturnDTO>();
+        dto.DocumentLines = [.. requestDto.DocumentLines.Adapt<IEnumerable<SalesReturnLineDTO>>()];
+        PostSalesReturnCmd cmd = new(dto, SalesReturnPostingSource.Request);
+        return await Sender.Send(cmd);
     }
 }
