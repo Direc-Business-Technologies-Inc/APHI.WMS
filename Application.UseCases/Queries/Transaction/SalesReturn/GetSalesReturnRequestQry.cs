@@ -22,7 +22,7 @@ public class GetSalesReturnRequestQryHandler(
         IEnumerable<SalesReturnRequestLinesSAPDTO> lines = await salesReturnIntegration.GetSalesReturnRequestLinesAsync(request.DocEntry);
 
         SalesReturnRequestDTO dto = header.Adapt<SalesReturnRequestDTO>();
-        dto.DocumentLines = lines.Adapt<IEnumerable<SalesReturnRequestLineDTO>>();
+        dto.DocumentLines = lines.Adapt<List<SalesReturnRequestLineDTO>>();
 
         return dto;
     }
