@@ -1,9 +1,11 @@
-﻿using Application.DataTransferObjects.Transactions.SalesReturn.SAP;
+﻿using Application.DataTransferObjects.Transactions.SalesReturn;
+using Application.DataTransferObjects.Transactions.SalesReturn.SAP;
 using Application.UseCases.Repositories.Integration.Transaction.SalesReturn;
 using Database.Libraries.Repositories;
 using Integration.Sap.Entities;
 using Integration.Sap.Helpers;
 using Integration.Sap.Repositories;
+using Integration.SAP.Entities.Transactional.SalesReturn;
 using Shared.Entities;
 
 namespace Integration.SAP.Implementations.Transaction.SalesReturn;
@@ -114,5 +116,124 @@ public class SalesReturnIntegration(
         IEnumerable<ReturnTypeSAPDTO> returnTypes = await SLActions.QueryAsync<ReturnTypeSAPDTO, object>("APHI_SalesReturn_ReturnTypes", new { });
 
         return returnTypes;
+    }
+
+    public async Task<bool> PostSalesReturnAsync(SalesReturnDTO data)
+    {
+        List<object> payloadLines = [];
+
+        foreach (SalesReturnLineDTO line in data.DocumentLines.Where(dl => dl.Quantity > 0))
+            payloadLines.Add(new StandaloneSalesReturnLinesPayload(
+                data.DocumentLines.IndexOf(line),
+                line.ItemCode,
+                line.UoMCode,
+                line.Quantity,
+                line.Warehouse?.WhsCode ?? string.Empty));
+
+        SalesReturnPayload payload = new(
+            data.DocDate,
+            data.DocDueDate,
+            data.BusinessPartner.CardCode,
+            data.PreparedBy,
+            payloadLines,
+            data.ReturnType,
+            data.SchoolYear,
+            data.DRNo,
+            data.SINo,
+            data.PURNo,
+            data.SONo,
+            data.Designation,
+            data.ReturnedBy,
+            data.PickBy,
+            data.DocRemarks,
+            data.CheckedBy,
+            data.NotedBy,
+            data.ApprovedBy);
+
+        await SLActions.PostAsync<object, SalesReturnPayload>("Returns", payload);
+
+        return true;
+    }
+
+    public async Task<bool> PostSalesReturnFromDeliveryAsync(SalesReturnDTO data)
+    {
+        List<object> payloadLines = [];
+
+        // BaseType 15 = A/R Delivery
+        foreach (SalesReturnLineDTO line in data.DocumentLines.Where(dl => dl.Quantity > 0))
+            payloadLines.Add(new SalesReturnLinesPayload(
+                data.DeliveryDocEntry,
+                15,
+                line.BaseLine,
+                data.DocumentLines.IndexOf(line),
+                line.ItemCode,
+                line.UoMCode,
+                line.Quantity,
+                line.Warehouse?.WhsCode ?? string.Empty));
+
+        SalesReturnPayload payload = new(
+            data.DocDate,
+            data.DocDueDate,
+            data.BusinessPartner.CardCode,
+            data.PreparedBy,
+            payloadLines,
+            data.ReturnType,
+            data.SchoolYear,
+            data.DRNo,
+            data.SINo,
+            data.PURNo,
+            data.SONo,
+            data.Designation,
+            data.ReturnedBy,
+            data.PickBy,
+            data.DocRemarks,
+            data.CheckedBy,
+            data.NotedBy,
+            data.ApprovedBy);
+
+        await SLActions.PostAsync<object, SalesReturnPayload>("Returns", payload);
+
+        return true;
+    }
+
+    public async Task<bool> PostSalesReturnFromRequestAsync(SalesReturnDTO data)
+    {
+        List<object> payloadLines = [];
+
+        // BaseType for Sales Return Request — update with the correct SAP object type when known
+        foreach (SalesReturnLineDTO line in data.DocumentLines.Where(dl => dl.Quantity > 0))
+            payloadLines.Add(new SalesReturnLinesPayload(
+                data.SalesReturnRequestDocEntry,
+                data.SapReference.BaseEntry,
+                line.BaseLine,
+                data.DocumentLines.IndexOf(line),
+                line.ItemCode,
+                line.UoMCode,
+                line.Quantity,
+                line.Warehouse?.WhsCode ?? string.Empty));
+
+        SalesReturnPayload payload = new(
+            data.DocDate,
+            data.DocDueDate,
+            data.BusinessPartner.CardCode,
+            data.PreparedBy,
+            payloadLines,
+            data.ReturnType,
+            data.SchoolYear,
+            data.DRNo,
+            data.SINo,
+            data.PURNo,
+            data.SONo,
+            data.Designation,
+            data.ReturnedBy,
+            data.PickBy,
+            data.DocRemarks,
+            data.CheckedBy,
+            data.NotedBy,
+            data.ApprovedBy);
+
+        await SLActions.PostAsync<object, SalesReturnPayload>("Returns", payload);
+
+        return true;
     }
 }
