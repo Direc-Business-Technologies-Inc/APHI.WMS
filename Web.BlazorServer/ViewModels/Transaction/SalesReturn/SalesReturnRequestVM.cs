@@ -1,8 +1,8 @@
-﻿using Web.BlazorServer.ViewModels.Transaction.Commons;
+using Web.BlazorServer.ViewModels.Transaction.Commons;
 
 namespace Web.BlazorServer.ViewModels.Transaction.SalesReturn;
 
-public class SalesReturnRequestVM : MarketingDocumentVM 
+public class SalesReturnRequestVM : MarketingDocumentVM
 {
     public string? ContactPerson { get; set; }
     public string? NumAtCard { get; set; }
@@ -21,5 +21,5 @@ public class SalesReturnRequestVM : MarketingDocumentVM
     public string? NotedBy { get; set; }
     public string? ApprovedBy { get; set; }
 
-    public IEnumerable<SalesReturnLineVM> DocumentLines { get; set; } = [];
+    public List<SalesReturnRequestLineVM> DocumentLines { get; set; } = [];
 }

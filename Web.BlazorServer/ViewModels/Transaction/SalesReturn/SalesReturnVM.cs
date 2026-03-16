@@ -1,4 +1,5 @@
-﻿using Web.BlazorServer.ViewModels.Transaction.Commons;
+using Web.BlazorServer.ViewModels.Others;
+using Web.BlazorServer.ViewModels.Transaction.Commons;
 
 namespace Web.BlazorServer.ViewModels.Transaction.SalesReturn;
 
@@ -21,5 +22,15 @@ public class SalesReturnVM : MarketingDocumentVM
     public string? NotedBy { get; set; }
     public string? ApprovedBy { get; set; }
 
-    public IEnumerable<SalesReturnLineVM> DocumentLines { get; set; } = [];
+    public bool Standalone { get; set; } = true;
+    public WarehouseVM? Warehouse { get; set; } = null;
+    public int DeliveryDocEntry { get; set; }
+    public int DeliveryDocNum { get; set; }
+    public int SalesReturnRequestDocEntry { get; set; }
+    public int SalesReturnRequestDocNum { get; set; }
+
+    public List<SalesReturnLineVM> DocumentLines { get; set; } = [];
+
+    public bool ValidateWarehouse() => !string.IsNullOrEmpty(Warehouse?.WhsCode);
+    public bool ValidateBusinessPartner() => !string.IsNullOrEmpty(BusinessPartner?.CardCode);
 }
