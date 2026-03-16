@@ -21,5 +21,5 @@ public class SalesReturnRequestDTO : MarketingDocumentDTO
     public string? NotedBy { get; set; }
     public string? ApprovedBy { get; set; }
 
-    public IEnumerable<SalesReturnRequestLineDTO> DocumentLines { get; set; } = [];
+    public List<SalesReturnRequestLineDTO> DocumentLines { get; set; } = [];
 }
