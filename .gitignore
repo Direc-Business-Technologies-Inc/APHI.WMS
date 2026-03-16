@@ -483,6 +483,7 @@ $RECYCLE.BIN/
 
 # Claude local files
 .claude/*.local.*
+.claude/settings.local.json
 
 # Exclusions
 !Integration.SAP/
