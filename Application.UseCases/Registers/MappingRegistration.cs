@@ -531,11 +531,39 @@ public class MappingRegistration : IRegister
 
         #region Sales Return
 
+        config.NewConfig<SalesReturnRequestDTO, SalesReturnDTO>()
+            .Map(d => d.SapReference, s => new SapDocumentReferenceDTO()
+            {
+                BaseEntry = s.SapReference.DocEntry,
+                BaseDocNum = s.SapReference.DocNum,
+            })
+            .Map(d => d.SalesReturnRequestDocEntry, s => s.SapReference.DocEntry)
+            .Map(d => d.SalesReturnRequestDocNum, s => s.SapReference.DocNum)
+            .Map(d => d.BusinessPartner, s => s.BusinessPartner)
+            .Map(d => d.DocDate, s => s.DocDate)
+            .Map(d => d.DocDueDate, s => s.DocDueDate)
+            .Map(d => d.PreparedBy, s => s.PreparedBy);
+
+        config.NewConfig<SalesReturnRequestLineDTO, SalesReturnLineDTO>()
+            .Map(d => d.BaseEntry, s => s.DocEntry)
+            .Map(d => d.BaseDocNum, s => s.DocNum)
+            .Map(d => d.LineNum, s => s.LineNum)
+            .Map(d => d.BaseLine, s => s.LineNum)
+            .Map(d => d.ItemCode, s => s.ItemCode)
+            .Map(d => d.ItemName, s => s.ItemName)
+            .Map(d => d.Quantity, s => s.Quantity)
+            .Map(d => d.TargetQuantity, s => s.TargetQuantity)
+            .Map(d => d.OpenQuantity, s => s.OpenQuantity)
+            .Map(d => d.UoMCode, s => s.UoMCode)
+            .Map(d => d.UoMValue, s => s.UoMValue)
+            .Map(d => d.UoMName, s => s.UoMName)
+            .Map(d => d.Warehouse, s => s.Warehouse);
+
         config.NewConfig<SalesReturnDataGridSAPDTO, SalesReturnDataGridDTO>();
 
         config.NewConfig<SalesReturnRequestDataGridSAPDTO, SalesReturnRequestDataGridDTO>();
 
-        config.NewConfig<ReturnTypeSAPDTO, ReturnTypeDTO>();
+        config.NewConfig<DataTransferObjects.Transactions.GoodsReturn.SAP.ReturnTypeSAPDTO, DataTransferObjects.Transactions.GoodsReturn.ReturnTypeDTO>();
 
         config.NewConfig<SalesReturnHeaderSAPDTO, SalesReturnDTO>()
             .Map(d => d.SapReference, s => new SapDocumentReferenceDTO
