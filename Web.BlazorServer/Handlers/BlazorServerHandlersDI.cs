@@ -7,6 +7,7 @@ using Web.BlazorServer.Handlers.Implementations.System;
 using Web.BlazorServer.Handlers.Implementations.Transaction.GoodsIssue;
 using Web.BlazorServer.Handlers.Implementations.Transaction.GoodsReceipt;
 using Web.BlazorServer.Handlers.Implementations.Transaction.GoodsReturn;
+using Web.BlazorServer.Handlers.Implementations.Transaction.InventoryTransfer;
 using Web.BlazorServer.Handlers.Implementations.Transaction.Receiving;
 using Web.BlazorServer.Handlers.Repositories.Administration.Authorization;
 using Web.BlazorServer.Handlers.Repositories.Administration.Role;
@@ -16,6 +17,7 @@ using Web.BlazorServer.Handlers.Repositories.System;
 using Web.BlazorServer.Handlers.Repositories.Transaction.GoodsIssue;
 using Web.BlazorServer.Handlers.Repositories.Transaction.GoodsReceipt;
 using Web.BlazorServer.Handlers.Repositories.Transaction.GoodsReturn;
+using Web.BlazorServer.Handlers.Repositories.Transaction.InventoryTransfer;
 using Web.BlazorServer.Handlers.Repositories.Transaction.Receiving;
 
 namespace Web.BlazorServer.Handlers;
@@ -32,6 +34,7 @@ public static class BlazorServerHandlersDI
         services.TryAddTransient<IDocumentNumberHandler, DocumentNumberHandler>();
         services.TryAddTransient<IAuthorizationHandler, AuthorizationHandler>();
         services.TryAddTransient<IReceivingHandler, ReceivingHandler>();
+        services.TryAddTransient<IInventoryTransferHandler, InventoryTransferHandler>();
         services.TryAddTransient<IGoodsReturnHandler, GoodsReturnHandler>();
         services.TryAddTransient<IBusinessPartnerHandler, BusinessPartnerHandler>();
         services.TryAddTransient<IItemMasterDataHandler, ItemMasterDataHandler>();
@@ -39,6 +42,7 @@ public static class BlazorServerHandlersDI
         services.TryAddTransient<IGoodsReceiptHandler, GoodsReceiptHandler>();
         services.TryAddTransient<IGoodsIssueHandler, GoodsIssueHandler>();
         services.TryAddTransient<ITransactionTypeHandler, TransactionTypeHandler>();
+        services.TryAddTransient<ITransferTypeHandler, TransferTypeHandler>();
         services.TryAddTransient<ISchoolYearHandler, SchoolYearHandler>();
 
         return services;
