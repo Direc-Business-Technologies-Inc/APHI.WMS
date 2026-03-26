@@ -13,7 +13,7 @@ namespace Web.BlazorServer.Handlers.Repositories.Transaction.InventoryTransfer
         Task<InventoryTransferCVUVM> GetPostedInventoryTransferRequestAsync(int id);
         Task<InventoryTransferCVUVM> GetPendingInventoryTransferRequestAsync(int id);
         Task<InventoryTransferCVUVM> GetRejectedInventoryTransferRequestAsync(int id);
-        Task<bool> PostInventoryTransferRequestAsync(InventoryTransferRequestVM data);
+        Task<int> PostInventoryTransferRequestAsync(InventoryTransferRequestVM data);
 
     }
 }

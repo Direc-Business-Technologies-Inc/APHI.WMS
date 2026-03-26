@@ -57,10 +57,10 @@ public class InventoryTransferHandler(ISender Sender) : IInventoryTransferHandle
         return response.Adapt<InventoryTransferCVUVM>();
     }
 
-    public async Task<bool> PostInventoryTransferRequestAsync(InventoryTransferRequestVM data)
+    public async Task<int> PostInventoryTransferRequestAsync(InventoryTransferRequestVM data)
     {
         PostInventoryTransferRequestCmd cmd = new(data.Adapt<InventoryTransferRequestDTO>());
-        bool response = await Sender.Send(cmd);
+        int response = await Sender.Send(cmd);
 
         return response;
     }

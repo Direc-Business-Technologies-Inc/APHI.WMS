@@ -8,10 +8,11 @@ using Integration.Sap.Repositories;
 using Integration.SAP.Entities.Transactional.InventoryTransfer;
 using Shared.Entities;
 using System.Text.Json;
+using System.Text.RegularExpressions;
 
 namespace Integration.SAP.Implementations.Transaction.InventoryTransfer;
 
-public class InventoryTransferIntegration(
+public partial class InventoryTransferIntegration(
     ISqlQueryManager qryManager,
     IServiceLayerActions SLActions) : IInventoryTransferIntegration
 {
@@ -24,6 +25,7 @@ public class InventoryTransferIntegration(
     const string PENDING_ITR_NOT_FOUND_MSG = "Could not find pending inventory transfer with DraftEntry={0}";
     const string REJECTED_ITR_NOT_FOUND_MSG = "Could not find rejected inventory transfer with DraftEntry={0}";
     const string POSTED_ITR_NOT_FOUND_MSG = "Could not find posted inventory transfer with DocEntry={0}";
+    const string ITR_NOT_POSTED_MSG = "The inventory transfer request could not be created";
 
     #region Lists
     public async Task<(IEnumerable<InventoryTransferDataGridSAPDTO>, int)> GetInventoryTransferRequestListAsync(DataGridIntent intent)
@@ -229,7 +231,7 @@ public class InventoryTransferIntegration(
     }
 
     #endregion
-    public async Task<bool> PostInventoryTransferRequest(InventoryTransferRequestDTO data)
+    public async Task<int> PostInventoryTransferRequest(InventoryTransferRequestDTO data)
     {
         List<InventoryTransferLinesPayload> linesPayload = [];
         foreach (var line in data.Lines.Where(line => line.AllotedQuantity > 0))
@@ -264,27 +266,45 @@ public class InventoryTransferIntegration(
         }
         catch (SLException ex) when (ex.InnerException is Flurl.Http.FlurlHttpException httpException)
         {
-            try
+            if (ex.Message.Contains("-2028"))
             {
-                // /StockTransfers sends a 404 error because OWTR entry is NOT created
-                // OWTR entry is not created because of confirmation process, instead it creates ODRF,OWDD
-                // ODRF entry is returned on the httpResponse header under "Location". this is expected behaviour
-                // this checks if "Location" is present in the header and if it has a value then
-                // it assumes that the draft was created.
-                // assumed instead of checking /Drafts because a GET call may be costly
-                var location = httpException.Call.Response.Headers.First(x => x.Name == "Location");
-                if (location.Value is null) // if a valid location exists, assume draft was created
-                    throw;
+                try
+                {
+                    // /StockTransfers sends a 404 error because OWTR entry is NOT created
+                    // OWTR entry is not created because of confirmation process, instead it creates ODRF,OWDD
+                    // ODRF entry is returned on the httpResponse header under "Location". this is expected behaviour
+                    // this checks if "Location" is present in the header and if it has a value then
+                    // it assumes that the draft was created.
+                    // assumed instead of checking /Drafts because a GET call may be costly
+                    var location = httpException.Call.Response.Headers.First(x => x.Name == "Location");
+                    int? draftId = _getDraftEntryFromURI(location.Value);
+                    return draftId == null ? throw new InvalidOperationException(ITR_NOT_POSTED_MSG, ex) : (int)draftId;
+                }
+                catch (Exception ex2)
+                {
+                    throw new InvalidOperationException(ITR_NOT_POSTED_MSG, ex2);
+                }
             }
-            catch
+            else
             {
                 throw;
             }
         }
-        catch (Exception)
-        {
-            throw; //unexpected exception
-        }
-        return true;
+
+        throw new InvalidOperationException("Something went wrong");
     }
+
+    private int? _getDraftEntryFromURI(string uri)
+    {
+        string last = uri.Split("/").Last();
+        var match = DraftsRegex().Match(last);
+        if (match.Success && int.TryParse(match.Groups[1].Value, out int value))
+        {
+            return value;
+        }
+        return null;
+    }
+
+    [GeneratedRegex(@"^Drafts\((\d+)\)$")]
+    public static partial Regex DraftsRegex();
 }

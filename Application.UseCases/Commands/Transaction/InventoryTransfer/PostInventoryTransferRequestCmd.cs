@@ -8,13 +8,13 @@ using System.Text;
 
 namespace Application.UseCases.Commands.Transaction.InventoryTransfer;
 
-public record PostInventoryTransferRequestCmd(InventoryTransferRequestDTO Data) : IRequest<bool>;
+public record PostInventoryTransferRequestCmd(InventoryTransferRequestDTO Data) : IRequest<int>;
 
 public class PostInventoryTransferRequestCmdHandler(
     IInventoryTransferIntegration inventoryTransferIntegration
-) : IRequestHandler<PostInventoryTransferRequestCmd, bool>
+) : IRequestHandler<PostInventoryTransferRequestCmd, int>
 {
-    public async Task<bool> Handle(PostInventoryTransferRequestCmd request, CancellationToken cancellationToken)
+    public async Task<int> Handle(PostInventoryTransferRequestCmd request, CancellationToken cancellationToken)
     {
         return await inventoryTransferIntegration.PostInventoryTransferRequest(request.Data);
     }

@@ -26,6 +26,6 @@ public interface IInventoryTransferIntegration
     #endregion
     public Task<InventoryTransferHeaderSAPDTO?> GetInventoryTransferRequestDraftHeaderAsync(int docEntry, string status);
     public Task<IEnumerable<InventoryTransferLineSAPDTO>> GetInventoryTransferRequestDraftLinesAsync(int docEntry);
-    public Task<bool> PostInventoryTransferRequest(InventoryTransferRequestDTO dto);
+    public Task<int> PostInventoryTransferRequest(InventoryTransferRequestDTO dto);
 }
 

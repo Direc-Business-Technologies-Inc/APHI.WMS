@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Components.Routing;
 using Radzen;
 using Shared.Entities;
 using Shared.Kernel;
+using Sprache;
+using System.Text.RegularExpressions;
 using Web.BlazorServer.Components.Shared.Abstraction;
 using Web.BlazorServer.Defaults;
 using Web.BlazorServer.Handlers.Repositories.Others;
@@ -60,6 +62,7 @@ public partial class InventoryTransferRequestCVUPage
     const string VIEW_ITR_URI = VIEW_LIST_URI + "/inventory-transfer-request/view?ref={0}";
     const string CREATE_ITR_URI = VIEW_LIST_URI + "/inventory-transfer-request/create?ref={0}";
     const string VIEW_LIST_ITR_TAB_URI = VIEW_LIST_URI + "/?T=request";
+    const string VIEW_PENDING_ITR_URI = VIEW_LIST_URI + "/pending-inventory-transfer-request/view?ref={0}";
 
     const string NO_ITEMS_ALERT = "No Items Selected";
     const string NO_ALLOTED_ITEMS_ALERT = "No Items Alloted";
@@ -138,14 +141,14 @@ public partial class InventoryTransferRequestCVUPage
         {
             AppBusyService.SetBusy(ActionCreateInventoryTransferRequest, true);
 
-            bool response = await InventoryTransferHandler.PostInventoryTransferRequestAsync(FormData);
+            int response = await InventoryTransferHandler.PostInventoryTransferRequestAsync(FormData);
 
             return response;
         }, AppActionOptionPresets.Confirmed(ActionCreateInventoryTransferRequest));
 
         action.OnSuccess(async (args) =>
         {
-            NavManager.NavigateTo(VIEW_LIST_ITR_TAB_URI);
+            NavManager.NavigateTo(string.Format(VIEW_PENDING_ITR_URI, action.Result), true);
         });
     }
 
