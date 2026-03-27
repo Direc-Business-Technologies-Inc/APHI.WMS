@@ -51,15 +51,21 @@ partial class ReadOnlyForm
     #region Custom Functions
     async Task LoadGridSettings()
     {
-        await GridSettingsService.SetGridSettings(
-            LinesTable.DataGrid,
-            settings => LinesTableSettings = settings ?? new()
-        );
+        try
+        {
+            await GridSettingsService.SetGridSettings(
+                LinesTable.DataGrid,
+                settings => LinesTableSettings = settings ?? new()
+            );
 
-        GridSettingsLoaded = true;
+            GridSettingsLoaded = true;
 
-        await LinesTable.DataGrid.ReloadSettings();
-        await LinesTable.DataGrid.Reload();
+            await LinesTable.DataGrid.ReloadSettings();
+            await LinesTable.DataGrid.Reload();
+        }
+        catch (Exception ex) {
+            ToastService.Warning(ex.Message, "An error happened while loading the settings");
+        }
     }
     async Task LoadDataAsync()
     {

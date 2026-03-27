@@ -1,14 +1,10 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Radzen;
 using Shared.Entities;
 using Web.BlazorServer.Components.Shared.Abstraction;
 using Web.BlazorServer.Defaults;
-using Web.BlazorServer.Handlers.Implementations.Transaction.InventoryTransfer;
-using Web.BlazorServer.Handlers.Repositories.Transaction.InventoryTransfer;
 using Web.BlazorServer.Services.Repositories;
 using Web.BlazorServer.ViewModels.Abstraction;
-using Web.BlazorServer.ViewModels.Transaction.Commons;
 using Web.BlazorServer.ViewModels.Transaction.InventoryTransfer;
 
 namespace Web.BlazorServer.Components.Pages.Transaction.InventoryTransfer.Components;
@@ -29,14 +25,21 @@ partial class DataGrid
 
     async Task LoadGridSettings()
     {
-        await GridSettingsService.SetGridSettings(
-            InventoryTransferRequestDataGrid.DataGrid,
-            settings => InventoryTransferRequestDataGridSettings = settings ?? new()
-            );
-        GridSettingsLoaded = true;
+        try
+        {
+            await GridSettingsService.SetGridSettings(
+                InventoryTransferRequestDataGrid.DataGrid,
+                settings => InventoryTransferRequestDataGridSettings = settings ?? new()
+                );
+            GridSettingsLoaded = true;
 
-        await InventoryTransferRequestDataGrid.DataGrid.ReloadSettings();
-        await InventoryTransferRequestDataGrid.DataGrid.Reload();
+            await InventoryTransferRequestDataGrid.DataGrid.ReloadSettings();
+            await InventoryTransferRequestDataGrid.DataGrid.Reload();
+        }
+        catch (Exception ex)
+        {
+            ToastService.Warning(ex.Message, "An error happened while loading the settings");
+        }
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

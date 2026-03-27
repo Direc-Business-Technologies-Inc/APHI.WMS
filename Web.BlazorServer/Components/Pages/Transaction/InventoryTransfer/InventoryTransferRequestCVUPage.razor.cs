@@ -199,7 +199,7 @@ public partial class InventoryTransferRequestCVUPage
             return result;
 
         }, AppActionOptionPresets.Loading(ActionGetInventoryTransferRequest));
-        
+
         action.OnSuccess(async (args) =>
         {
             if (action.Result is null)
@@ -305,15 +305,22 @@ public partial class InventoryTransferRequestCVUPage
 
     async Task LoadGridSettings()
     {
-        await GridSettingsService.SetGridSettings(
-            InventoryTransferRequestTable.DataGrid,
-            settings => InventoryTransferRequestTableSettings = settings ?? new()
-        );
+        try
+        {
+            await GridSettingsService.SetGridSettings(
+                InventoryTransferRequestTable.DataGrid,
+                settings => InventoryTransferRequestTableSettings = settings ?? new()
+            );
 
-        GridSettingsLoaded = true;
+            GridSettingsLoaded = true;
 
-        await InventoryTransferRequestTable.DataGrid.ReloadSettings();
-        await InventoryTransferRequestTable.DataGrid.Reload();
+            await InventoryTransferRequestTable.DataGrid.ReloadSettings();
+            await InventoryTransferRequestTable.DataGrid.Reload();
+        }
+        catch (Exception ex)
+        {
+            ToastService.Warning(ex.Message, "An error happened while loading the settings");
+        }
     }
 
     async Task Return()
