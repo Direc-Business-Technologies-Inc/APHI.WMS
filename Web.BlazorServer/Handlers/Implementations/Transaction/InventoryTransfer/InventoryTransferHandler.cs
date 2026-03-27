@@ -44,7 +44,7 @@ public class InventoryTransferHandler(ISender Sender) : IInventoryTransferHandle
     public async Task<InventoryTransferCVUVM> GetPostedInventoryTransferRequestAsync(int id)
     {
         GetInventoryTransferPostedRequestQry qry = new(id);
-        InventoryTransferHeaderDTO? response = await Sender.Send(qry);
+        InventoryTransferDTO? response = await Sender.Send(qry);
 
         return response.Adapt<InventoryTransferCVUVM>();
     }
@@ -52,7 +52,7 @@ public class InventoryTransferHandler(ISender Sender) : IInventoryTransferHandle
     public async Task<InventoryTransferCVUVM> GetPendingInventoryTransferRequestAsync(int id)
     {
         GetInventoryTransferPendingRequestQry qry = new(id);
-        InventoryTransferHeaderDTO? response = await Sender.Send(qry);
+        InventoryTransferDTO? response = await Sender.Send(qry);
 
         return response.Adapt<InventoryTransferCVUVM>();
     }
@@ -76,7 +76,7 @@ public class InventoryTransferHandler(ISender Sender) : IInventoryTransferHandle
     public async Task<InventoryTransferCVUVM> GetRejectedInventoryTransferRequestAsync(int id)
     {
         GetInventoryTransferRejectedRequestQry qry = new(id);
-        InventoryTransferHeaderDTO? response = await Sender.Send(qry);
+        InventoryTransferDTO? response = await Sender.Send(qry);
 
         return response.Adapt<InventoryTransferCVUVM>();
     }

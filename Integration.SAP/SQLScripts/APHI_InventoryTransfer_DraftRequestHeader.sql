@@ -11,7 +11,18 @@
     , T1.WhsName [FrmWhsName]
     , T2.WhsName [ToWhsName]
     , T0.U_SchlYear [SchoolYear]
-    , T0.U_TransferType [TransferType]
+    , T0.U_TransferType [TransferTypeCode]
+    , ISNULL(
+        (SELECT _T1.Descr
+         FROM CUFD _T0
+         INNER JOIN UFD1 _T1 
+            ON _T0.TableID = _T1.TableID
+            AND _T0.FieldID = _T1.FieldID
+         WHERE 
+            _T0.TableID = 'OWTQ' 
+            AND _T0.FieldID = 31
+            AND _T1.FldValue = T0.U_TransferType
+        ), '') [TransferTypeName]
 FROM ODRF T0
 INNER JOIN OWDD T3 ON T0.DocEntry = T3.DraftEntry AND T0.ObjType = T3.ObjType
 LEFT JOIN OWHS T1 ON T1.WhsCode = T0.Filler

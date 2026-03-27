@@ -10,7 +10,8 @@ public class InventoryTransferHeaderSAPDTO
     public string ToWhsCode { get; set; }
     public string FrmWhsName { get; set; }
     public string ToWhsName { get; set; }
-    public string TransferType { get; set; }
+    public string TransferTypeName { get; set; }
+    public string TransferTypeCode { get; set; }
     public string SchoolYear { get; set; }
     public string Remarks { get; set; }
     public string PreparedBy { get; set; }

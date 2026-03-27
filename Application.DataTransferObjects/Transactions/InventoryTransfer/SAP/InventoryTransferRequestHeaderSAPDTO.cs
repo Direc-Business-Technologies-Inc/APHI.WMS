@@ -11,6 +11,7 @@ public class InventoryTransferRequestHeaderSAPDTO
     public string FrmWhsName { get; set; }
     public string ToWhsName { get; set; }
     public string TransferTypeCode { get; set; }
+    public string TransferTypeName { get; set; }
     public string SchlYearCode{ get; set; }
     public string SchlYearName { get; set; }
     public string U_YearFrom { get; set; }

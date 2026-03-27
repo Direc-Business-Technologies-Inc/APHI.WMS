@@ -88,7 +88,7 @@
                                 <RadzenFormField Text="Transfer Type" class="rz-w-100" AllowFloatingLabel="false">
                                     <ChildContent>
                                         <RadzenTextBox ReadOnly
-                                                       Value="@FormData.TransferType"
+                                                       Value="@FormData.TransferType?.Name"
                                                        Placeholder="Transfer Type"
                                                        Name="transfer_type"
                                                        Disabled="@IsBusy"

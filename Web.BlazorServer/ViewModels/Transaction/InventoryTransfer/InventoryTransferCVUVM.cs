@@ -9,7 +9,7 @@ public class InventoryTransferCVUVM
     public DateTime DocDate { get; set; }
     public WarehouseVM FromWarehouse { get; set; }
     public WarehouseVM ToWarehouse { get; set; }
-    public string TransferType { get; set; }
+    public TransferTypeVM TransferType { get; set; }
     public string Remarks { get; set; }
     public string PreparedBy { get; set; }
     public string ApprovedBy { get; set; }

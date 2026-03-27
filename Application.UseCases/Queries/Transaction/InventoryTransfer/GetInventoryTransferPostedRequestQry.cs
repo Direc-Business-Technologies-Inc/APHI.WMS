@@ -6,19 +6,19 @@ using MediatR;
 
 namespace Application.UseCases.Queries.Transaction.InventoryTransfer
 {
-    public record GetInventoryTransferPostedRequestQry(int DocEntry) : IRequest<InventoryTransferHeaderDTO>;
+    public record GetInventoryTransferPostedRequestQry(int DocEntry) : IRequest<InventoryTransferDTO>;
     public class GetPostedInventoryTransferRequestQryHandler(
         IInventoryTransferIntegration inventoryTransferIntegration
-    ): IRequestHandler<GetInventoryTransferPostedRequestQry, InventoryTransferHeaderDTO?>
+    ): IRequestHandler<GetInventoryTransferPostedRequestQry, InventoryTransferDTO?>
     {
-        public async Task<InventoryTransferHeaderDTO?> Handle(GetInventoryTransferPostedRequestQry request, CancellationToken cancellationToken)
+        public async Task<InventoryTransferDTO?> Handle(GetInventoryTransferPostedRequestQry request, CancellationToken cancellationToken)
         {
             InventoryTransferHeaderSAPDTO? headerResponse = await inventoryTransferIntegration.GetPostedInventoryTransferRequestHeaderAsync(request.DocEntry);
             if (headerResponse is null)
                 return null;
             IEnumerable<InventoryTransferLineSAPDTO> linesResponse = await inventoryTransferIntegration.GetPostedInventoryTransferRequestLinesAsync(request.DocEntry);
 
-            InventoryTransferHeaderDTO inventoryTransferRequestDTO = headerResponse.Adapt<InventoryTransferHeaderDTO>();
+            InventoryTransferDTO inventoryTransferRequestDTO = headerResponse.Adapt<InventoryTransferDTO>();
             IEnumerable<InventoryTransferLineDTO> inventoryTransferRequestLinesDTO = linesResponse.Adapt<IEnumerable<InventoryTransferLineDTO>>();
 
             inventoryTransferRequestDTO.Lines = [.. inventoryTransferRequestLinesDTO];

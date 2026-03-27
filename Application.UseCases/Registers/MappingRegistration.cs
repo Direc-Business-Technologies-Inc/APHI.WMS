@@ -461,13 +461,14 @@ public class MappingRegistration : IRegister
             })
             .Map(d => d.TransferType, s => new TransferTypeDTO()
             {
-                Code = s.TransferTypeCode
+                Code = s.TransferTypeCode,
+                Name = s.TransferTypeName
             })
             .Map(d => d.ApprovedBy, s => s.ApprovedBy)
             .Map(d => d.NotedBy, s => s.NotedBy)
             .Map(d => d.PreparedBy, s => s.PreparedBy);
 
-        config.NewConfig<InventoryTransferHeaderSAPDTO, InventoryTransferHeaderDTO>()
+        config.NewConfig<InventoryTransferHeaderSAPDTO, InventoryTransferDTO>()
             .Map(d => d.DocNum, s => s.DocNum)
             .Map(d => d.DocEntry, s => s.DocEntry)
             .Map(d => d.DocDate, s => s.DocDate)
@@ -482,7 +483,12 @@ public class MappingRegistration : IRegister
                 WhsCode = s.ToWhsCode,
                 WhsName = s.ToWhsName
             })
-            .Map(d => d.TransferType, s => s.TransferType)
+            .Map(d => d.TransferType, s => new TransferTypeDTO()
+            {
+                Code = s.TransferTypeCode,
+                Name = s.TransferTypeName
+            }
+            )
             .Map(d => d.ApprovedBy, s => s.ApprovedBy)
             .Map(d => d.NotedBy, s => s.NotedBy)
             .Map(d => d.PreparedBy, s => s.PreparedBy);

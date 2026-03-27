@@ -11,19 +11,19 @@ using System.Threading.Tasks;
 
 namespace Application.UseCases.Queries.Transaction.InventoryTransfer;
 
-public record GetInventoryTransferRejectedRequestQry(int DocEntry) : IRequest<InventoryTransferHeaderDTO?>;
+public record GetInventoryTransferRejectedRequestQry(int DocEntry) : IRequest<InventoryTransferDTO?>;
 public class GetRejectedInventoryTransferRequestQryHandler(
         IInventoryTransferIntegration inventoryTransferIntegration
-    ) : IRequestHandler<GetInventoryTransferRejectedRequestQry, InventoryTransferHeaderDTO?>
+    ) : IRequestHandler<GetInventoryTransferRejectedRequestQry, InventoryTransferDTO?>
 {
-    public async Task<InventoryTransferHeaderDTO?> Handle(GetInventoryTransferRejectedRequestQry request, CancellationToken cancellationToken)
+    public async Task<InventoryTransferDTO?> Handle(GetInventoryTransferRejectedRequestQry request, CancellationToken cancellationToken)
     {
         InventoryTransferHeaderSAPDTO? headerResponse = await inventoryTransferIntegration.GetInventoryTransferRequestDraftHeaderAsync(request.DocEntry, "N");
         if (headerResponse is null)
             return null;
         IEnumerable<InventoryTransferLineSAPDTO> linesResponse = await inventoryTransferIntegration.GetInventoryTransferRequestDraftLinesAsync(request.DocEntry);
 
-        InventoryTransferHeaderDTO inventoryTransferRequestDTO = headerResponse.Adapt<InventoryTransferHeaderDTO>();
+        InventoryTransferDTO inventoryTransferRequestDTO = headerResponse.Adapt<InventoryTransferDTO>();
         IEnumerable<InventoryTransferLineDTO> inventoryTransferRequestLinesDTO = linesResponse.Adapt<IEnumerable<InventoryTransferLineDTO>>();
 
         inventoryTransferRequestDTO.Lines = [.. inventoryTransferRequestLinesDTO];

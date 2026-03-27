@@ -71,8 +71,8 @@ public partial class InventoryTransferRequestCVUPage
     List<WarehouseVM> Warehouses { get; set; } = [];
     List<TransferTypeVM> TransferTypes { get; set; } = [];
     List<SchoolYearVM> SchoolYears { get; set; } = [];
-    int WarehousesCount { get; set; } = 0;
-    int SchoolYearsCount { get; set; } = 0;
+    int WarehousesCount { get; set; }
+    int SchoolYearsCount { get; set; }
 
     AppTable<InventoryTransferRequestLineVM> InventoryTransferRequestTable { get; set; } = default!;
     DataGridSettings InventoryTransferRequestTableSettings { get; set; } = new();
@@ -208,9 +208,6 @@ public partial class InventoryTransferRequestCVUPage
             {
                 action.Result.Adapt(FormData);
 
-                FormData.TransferType = TransferTypes.First(
-                    t => t.Code == FormData.TransferType.Code
-                );
                 if (Creating)
                     FormData.PreparedBy = AuthenticationService.GetUserName();
             }

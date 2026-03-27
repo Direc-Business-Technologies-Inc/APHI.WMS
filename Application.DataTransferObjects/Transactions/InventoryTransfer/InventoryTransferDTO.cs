@@ -4,7 +4,7 @@ using Application.DataTransferObjects.Others;
 
 namespace Application.DataTransferObjects.Transactions.InventoryTransfer;
 
-public class InventoryTransferHeaderDTO
+public class InventoryTransferDTO
 {
     public int DocEntry { get; set; }
     public int DocNum { get; set; }
@@ -12,7 +12,7 @@ public class InventoryTransferHeaderDTO
     public string Status { get; set; }
     public WarehouseDTO FromWarehouse { get; set; }
     public WarehouseDTO ToWarehouse { get; set; }
-    public string TransferType { get; set; }
+    public TransferTypeDTO TransferType { get; set; }  
     public string SchoolYear { get; set; }
     public string Remarks { get; set; }
     public string PreparedBy { get; set; }
