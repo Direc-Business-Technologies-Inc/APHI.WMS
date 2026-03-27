@@ -138,7 +138,7 @@
                                                       Filterable="false" Sortable="false" Pickable="false"
                                                       TextAlign="TextAlign.Center">
                                     <Template Context="data">
-                                        @(FormData.Lines.IndexOf(data) + 1)
+                                        @(data.LineNum + 1)
                                     </Template>
                                 </RadzenDataGridColumn>
                                 <RadzenDataGridColumn TItem="InventoryTransferCVULineVM"
@@ -150,7 +150,7 @@
                                                       Type="@typeof(string)"
                                                       Title="Description" />
                                 <RadzenDataGridColumn TItem="InventoryTransferCVULineVM"
-                                                      Property="@nameof(InventoryTransferCVULineVM.UoM)"
+                                                      Property="@nameof(InventoryTransferCVULineVM.UoMName)"
                                                       Type="@typeof(string)"
                                                       Title="UoM" />
                                 <RadzenDataGridColumn TItem="InventoryTransferCVULineVM"
@@ -237,7 +237,6 @@
             </RadzenRow>
         </RadzenStack>
     </RadzenTemplateForm>
-    
 </AppContent>
                                      
 @code {

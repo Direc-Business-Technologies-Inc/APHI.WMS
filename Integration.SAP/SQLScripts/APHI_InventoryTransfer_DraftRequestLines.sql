@@ -5,7 +5,7 @@
 	,T1.ItemCode
 	,T1.Dscription [ItemDescription]
 	,T1.Quantity
-	,ISNULL(T1.unitMsr, 'Manual') [UoM]
+	,ISNULL(T1.unitMsr, 'Manual') [UoMName]
 FROM ODRF T0
 INNER JOIN DRF1 T1 ON T1.DocEntry = T0.DocEntry
 WHERE 

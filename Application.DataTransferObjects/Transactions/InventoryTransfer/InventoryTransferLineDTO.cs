@@ -1,6 +1,8 @@
-﻿namespace Application.DataTransferObjects.Transactions.InventoryTransfer;
+﻿using Application.DataTransferObjects.Transactions.Commons;
 
-public class InventoryTransferLineDTO
+namespace Application.DataTransferObjects.Transactions.InventoryTransfer;
+
+public class InventoryTransferLineDTO: ItemDTO
 {
     public string ItemCode { get; set; }
     public string ItemDescription { get; set; }

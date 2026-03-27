@@ -1,9 +1,9 @@
-﻿namespace Web.BlazorServer.ViewModels.Transaction.InventoryTransfer;
+﻿using Web.BlazorServer.ViewModels.Transaction.Commons;
 
-public class InventoryTransferCVULineVM
+namespace Web.BlazorServer.ViewModels.Transaction.InventoryTransfer;
+
+public class InventoryTransferCVULineVM : ItemVM
 {
-    public string ItemCode { get; set; }
     public string ItemDescription { get; set; }
-    public string UoM { get; set; }
     public Decimal Quantity { get; set; }
 }
