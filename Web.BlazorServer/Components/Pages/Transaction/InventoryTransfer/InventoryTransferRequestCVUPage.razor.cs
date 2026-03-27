@@ -327,13 +327,9 @@ public partial class InventoryTransferRequestCVUPage
                 return;
 
             if (CreatingNew)
-            {
                 NavManager.NavigateTo(VIEW_LIST_URI);
-            }
             else
-            {
                 NavManager.NavigateTo(string.Format(VIEW_ITR_URI, Ref), true);
-            }
         }
         else
             NavManager.NavigateTo(VIEW_LIST_URI);
@@ -348,6 +344,11 @@ public partial class InventoryTransferRequestCVUPage
     async Task RemoveLine(InventoryTransferRequestLineVM item)
     {
         FormData.Lines = [.. FormData.Lines.Except([item])];
+    }
+
+    void OnSourceWarehouseChanged()
+    {
+        if (CreatingNew) FormData.Lines.Clear();
     }
     #endregion Custom Functions
 }

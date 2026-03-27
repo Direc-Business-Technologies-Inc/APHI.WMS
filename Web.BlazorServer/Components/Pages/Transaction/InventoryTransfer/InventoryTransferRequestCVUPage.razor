@@ -65,6 +65,7 @@
                                                         AllowClear
                                                         Name="itr_from_whs_dropdown"
                                                         AllowFiltering
+                                                        Change="@OnSourceWarehouseChanged"
                                                         TextProperty="@(nameof(WarehouseVM.WhsName))"
                                                         Placeholder="No Warehouse Selected"
                                                         class="rz-w-100" />
@@ -291,6 +292,22 @@
                                                            Min="0"
                                                            ReadOnly
                                                            ShowUpDown="false" />
+                                        </Template>
+                                    </RadzenDataGridColumn>
+                                }
+                                @if (CreatingNew)
+                                {
+                                    <RadzenDataGridColumn TItem="InventoryTransferRequestLineVM"
+                                                          Property="@nameof(InventoryTransferRequestLineVM.OnHandQuantity)"
+                                                          Type="@typeof(decimal)"
+                                                          Title="On-hand Quantity"
+                                                          Width="150px">
+                                        <Template Context="data">
+                                            <RadzenNumeric Format="N0"
+                                                           ReadOnly
+                                                           ShowUpDown="false"
+                                                           @bind-Value="@data.OnHandQuantity"
+                                                           Type="@typeof(decimal)" />
                                         </Template>
                                     </RadzenDataGridColumn>
                                 }

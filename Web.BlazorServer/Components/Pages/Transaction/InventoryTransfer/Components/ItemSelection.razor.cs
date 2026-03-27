@@ -85,6 +85,7 @@ public partial class ItemSelection
                 ItemCode = data.ItemCode,
                 ItemName = data.ItemName,
                 Quantity = 0,
+                OnHandQuantity = data.Quantity,
                 UoMCode = data.UoMCode,
                 UoMName = data.UoMName,
                 UoMValue = data.UoMValue,
