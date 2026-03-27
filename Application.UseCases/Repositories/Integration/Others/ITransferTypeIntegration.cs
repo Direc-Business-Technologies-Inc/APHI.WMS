@@ -1,4 +1,4 @@
-﻿using Application.DataTransferObjects.Others.SAP;
+﻿using Application.DataTransferObjects.Transactions.InventoryTransfer.SAP;
 using Shared.Entities;
 using System;
 using System.Collections.Generic;

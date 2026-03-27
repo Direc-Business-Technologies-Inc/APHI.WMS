@@ -1,10 +1,10 @@
-﻿using Application.DataTransferObjects.Others;
+﻿using Application.DataTransferObjects.Transactions.InventoryTransfer;
 using Application.UseCases.Queries.Others;
 using Mapster;
 using MediatR;
 using Shared.Entities;
 using Web.BlazorServer.Handlers.Repositories.Transaction.InventoryTransfer;
-using Web.BlazorServer.ViewModels.Others;
+using Web.BlazorServer.ViewModels.Transaction.InventoryTransfer;
 
 namespace Web.BlazorServer.Handlers.Implementations.Transaction.InventoryTransfer;
 

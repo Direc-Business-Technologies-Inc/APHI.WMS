@@ -1,4 +1,4 @@
-﻿using Application.DataTransferObjects.Others.SAP;
+﻿using Application.DataTransferObjects.Transactions.InventoryTransfer.SAP;
 using Application.UseCases.Repositories.Integration.Others;
 using Database.Libraries.Repositories;
 using Integration.Sap.Entities;
@@ -19,7 +19,7 @@ public class TransferTypeIntegration(
 {
     public async Task<IEnumerable<TransferTypeSAPDTO>> GetTransferTypesAsync()
     {
-        var qryDetails = qryManager.GetSqlScriptWithMetadata("APHI_Others_TransferTypes", out string qry, out bool found);
+        var qryDetails = qryManager.GetSqlScriptWithMetadata("APHI_InventoryTransfer_TransferTypes", out string qry, out bool found);
         if (!found)
             throw new Exception("Query for Transaction Types not found.");
 

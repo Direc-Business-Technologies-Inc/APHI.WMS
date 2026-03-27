@@ -1,4 +1,4 @@
-﻿namespace Application.DataTransferObjects.Others.SAP;
+﻿namespace Application.DataTransferObjects.Transactions.InventoryTransfer.SAP;
 
 public class TransferTypeSAPDTO
 {

@@ -1,4 +1,4 @@
-﻿namespace Web.BlazorServer.ViewModels.Others;
+﻿namespace Web.BlazorServer.ViewModels.Transaction.InventoryTransfer;
 
 public class TransferTypeVM
 {

@@ -1,4 +1,4 @@
-﻿namespace Application.DataTransferObjects.Others;
+﻿namespace Application.DataTransferObjects.Transactions.InventoryTransfer;
 
 public class TransferTypeDTO
 {

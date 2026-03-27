@@ -1,5 +1,5 @@
-﻿using Application.DataTransferObjects.Others;
-using Application.DataTransferObjects.Others.SAP;
+﻿using Application.DataTransferObjects.Transactions.InventoryTransfer;
+using Application.DataTransferObjects.Transactions.InventoryTransfer.SAP;
 using Application.UseCases.Repositories.Integration.Others;
 using Mapster;
 using MediatR;

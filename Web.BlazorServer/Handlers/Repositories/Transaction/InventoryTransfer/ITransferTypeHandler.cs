@@ -1,5 +1,5 @@
 ﻿using Shared.Entities;
-using Web.BlazorServer.ViewModels.Others;
+using Web.BlazorServer.ViewModels.Transaction.InventoryTransfer;
 
 namespace Web.BlazorServer.Handlers.Repositories.Transaction.InventoryTransfer;
 
