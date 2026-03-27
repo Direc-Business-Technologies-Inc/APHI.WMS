@@ -297,14 +297,12 @@ public partial class InventoryTransferIntegration(
     private int? _getDraftEntryFromURI(string uri)
     {
         string last = uri.Split("/").Last();
-        var match = DraftsRegex().Match(last);
-        if (match.Success && int.TryParse(match.Groups[1].Value, out int value))
-        {
+        string prefix = "Drafts(";
+        string suffix = ")";
+        if (!(last.StartsWith(prefix) && last.EndsWith(suffix))) return null;
+        string mid = last.Substring(prefix.Length, last.Length - prefix.Length - suffix.Length);
+        if (int.TryParse(mid, out int value))
             return value;
-        }
         return null;
     }
-
-    [GeneratedRegex(@"^Drafts\((\d+)\)$")]
-    public static partial Regex DraftsRegex();
 }
