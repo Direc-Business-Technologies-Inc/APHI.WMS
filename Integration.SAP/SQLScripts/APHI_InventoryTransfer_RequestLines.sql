@@ -11,6 +11,7 @@ SELECT T0.ItemCode
          LEFT JOIN DRF1 _T2 ON _T0.DocEntry = _T2.DocEntry
          WHERE _T0.ObjType = 67 
            AND _T2.BaseEntry = T0.DocEntry
+           AND _T0.DocStatus = 'O' -- Open Drafts only
            AND _T2.ItemCode = T0.ItemCode  -- Ensure matching item
         ), 0
     ) AS "PendingQuantity"

@@ -53,6 +53,14 @@ public partial class ItemSelection
         var action = await AppActionFactory.RunAsync(async () =>
         {
             AppBusyService.SetBusy(ActionGetItems, true);
+            intent.Filters.Add(new AppFilterDescriptor()
+            {
+                LogicalOperator = LogicalOperatorEnum.AND,
+                Property = "Quantity",
+                ComparisonOperator = ComparisonOperatorEnum.GreaterThan,
+                Value = 0,
+                FilterValueType = FilterValueTypeEnum.Number
+            });
 
             var response = await ItemsHandler.GetWarehouseItemsAsync(intent, Request.FromWarehouse?.WhsCode ?? string.Empty);
             return response;
