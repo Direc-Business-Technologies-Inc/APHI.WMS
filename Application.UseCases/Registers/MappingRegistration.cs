@@ -2,12 +2,16 @@
 using Application.DataTransferObjects.Others;
 using Application.DataTransferObjects.Others.SAP;
 using Application.DataTransferObjects.Transactions.Commons;
+using Application.DataTransferObjects.Transactions.Delivery;
+using Application.DataTransferObjects.Transactions.Delivery.SAP;
 using Application.DataTransferObjects.Transactions.Goodsissue;
 using Application.DataTransferObjects.Transactions.GoodsIssue;
 using Application.DataTransferObjects.Transactions.GoodsReceipt;
 using Application.DataTransferObjects.Transactions.GoodsReturn;
 using Application.DataTransferObjects.Transactions.GoodsReturn.SAP;
 using Application.DataTransferObjects.Transactions.InventoryTransfer;
+using Application.DataTransferObjects.Transactions.SalesReturn;
+using Application.DataTransferObjects.Transactions.SalesReturn.SAP;
 using Application.DataTransferObjects.Transactions.Procurement.Order;
 using Application.DataTransferObjects.Transactions.Receiving;
 using Domain.Entities.Administration.User.Management;
@@ -102,6 +106,96 @@ public class MappingRegistration : IRegister
             });
 
         #endregion Others
+
+        #region Delivery
+
+        config.NewConfig<SalesOrderHeaderSAPDTO, SalesOrderDTO>()
+            .Map(d => d.SapReference, s => new SapDocumentReferenceDTO()
+            {
+                DocEntry = s.DocEntry,
+                DocNum   = s.DocNum,
+            })
+            .Map(d => d.BusinessPartner, s => new BusinessPartnerDTO()
+            {
+                CardCode = s.CardCode,
+                CardName = s.CardName,
+            })
+            .Map(d => d.DocDate,       s => s.DocDate)
+            .Map(d => d.DocDueDate,    s => s.DocDueDate)
+            .Map(d => d.ContactPerson, s => s.ContactPerson)
+            .Map(d => d.SchoolYear,    s => s.SchoolYear)
+            .Map(d => d.PONo,          s => s.PONo)
+            .Map(d => d.Area,          s => s.Area)
+            .Map(d => d.Designation,   s => s.Designation)
+            .Map(d => d.OrderedBy,     s => s.OrderBy)       // name mismatch in source
+            .Map(d => d.DocRemarks,    s => s.DocRemarks)
+            .Map(d => d.PreparedBy,    s => s.PreparedBy)
+            .Map(d => d.ReviewedBy,    s => s.ReviewedBy)
+            .Map(d => d.ApprovedBy,    s => s.AppprovedBy)   // typo in source
+            .Map(d => d.NotedBy,       s => s.NotedBy);
+
+        config.NewConfig<SalesOrderLineSAPDTO, SalesOrderLineDTO>()
+            .Map(d => d.LineNum,   s => s.LineNum + 1)       // 0-indexed → 1-indexed
+            .Map(d => d.ItemCode,  s => s.ItemCode)
+            .Map(d => d.ItemName,  s => s.ItemName)
+            .Map(d => d.Quantity,  s => s.Quantity)
+            .Map(d => d.UoMCode,   s => s.UoMCode)
+            .Map(d => d.UoMValue,  s => s.UoMValue)
+            .Map(d => d.UoMName,   s => s.UoMName)
+            .Map(d => d.TargetQty, s => s.TargetQty)
+            .Map(d => d.OpenQty,   s => s.OpenQty)
+            .Map(d => d.Warehouse, s => new WarehouseDTO()
+            {
+                WhsCode = s.WhsCode,
+                WhsName = s.WhsName,
+            });
+
+        config.NewConfig<DeliveryHeaderSAPDTO, DeliveryDTO>()
+            .Map(d => d.SapReference, s => new SapDocumentReferenceDTO()
+            {
+                DocEntry = s.DocEntry,
+                DocNum   = s.DocNum,
+            })
+            .Map(d => d.BusinessPartner, s => new BusinessPartnerDTO()
+            {
+                CardCode = s.CardCode,
+                CardName = s.CardName,
+            })
+            .Map(d => d.DocDate,         s => s.DocDate)
+            .Map(d => d.DocDueDate,      s => s.DocDueDate)
+            .Map(d => d.NumAtCard,       s => s.NumAtCard)
+            .Map(d => d.ContactPerson,   s => s.ContactPerson)
+            .Map(d => d.SchoolYear,      s => s.SchoolYear)
+            .Map(d => d.DRNo,            s => s.DRNo)
+            .Map(d => d.ActualDelivDate, s => s.ActualDeliveryDate)  // name mismatch
+            .Map(d => d.DeliveryMeans,   s => s.DeliveryMeans)
+            .Map(d => d.Courier,         s => s.Courier)
+            .Map(d => d.CourierName,     s => s.CourierName)
+            .Map(d => d.Designation,     s => s.Designation)
+            .Map(d => d.WayBillNo,       s => s.WaybillNo)           // case mismatch
+            .Map(d => d.PlateNo,         s => s.PlateNo)
+            .Map(d => d.Driver,          s => s.Driver)
+            .Map(d => d.DocRemarks,      s => s.DocRemarks)
+            .Map(d => d.ReceivedBy,      s => s.ReceivedBy)
+            .Map(d => d.PreparedBy,      s => s.PreparedBy)
+            .Map(d => d.ApprovedBy,      s => s.ApprovedBy)
+            .Map(d => d.NotedBy,         s => s.NotedBy);
+
+        config.NewConfig<DeliveryLineSAPDTO, DeliveryLineDTO>()
+            .Map(d => d.LineNum,   s => s.LineNum + 1)   // 0-indexed → 1-indexed
+            .Map(d => d.ItemCode,  s => s.ItemCode)
+            .Map(d => d.ItemName,  s => s.ItemName)
+            .Map(d => d.Quantity,  s => s.Quantity)
+            .Map(d => d.UoMCode,   s => s.UoMCode)
+            .Map(d => d.UoMValue,  s => s.UoMValue)
+            .Map(d => d.UoMName,   s => s.UoMName)
+            .Map(d => d.Warehouse, s => new WarehouseDTO()
+            {
+                WhsCode = s.WhsCode,
+                WhsName = s.WhsName,
+            });
+
+        #endregion Delivery
 
         #region Goods Issue
 
@@ -493,6 +587,128 @@ public class MappingRegistration : IRegister
             .Map(d => d.NotedBy, s => s.NotedBy)
             .Map(d => d.PreparedBy, s => s.PreparedBy);
         #endregion
+        #region Sales Return
+
+        config.NewConfig<SalesReturnRequestDTO, SalesReturnDTO>()
+            .Map(d => d.SapReference, s => new SapDocumentReferenceDTO()
+            {
+                BaseEntry = s.SapReference.DocEntry,
+                BaseDocNum = s.SapReference.DocNum,
+            })
+            .Map(d => d.SalesReturnRequestDocEntry, s => s.SapReference.DocEntry)
+            .Map(d => d.SalesReturnRequestDocNum, s => s.SapReference.DocNum)
+            .Map(d => d.BusinessPartner, s => s.BusinessPartner)
+            .Map(d => d.DocDate, s => s.DocDate)
+            .Map(d => d.DocDueDate, s => s.DocDueDate)
+            .Map(d => d.PreparedBy, s => s.PreparedBy);
+
+        config.NewConfig<SalesReturnRequestLineDTO, SalesReturnLineDTO>()
+            .Map(d => d.BaseEntry, s => s.DocEntry)
+            .Map(d => d.BaseDocNum, s => s.DocNum)
+            .Map(d => d.LineNum, s => s.LineNum)
+            .Map(d => d.BaseLine, s => s.LineNum)
+            .Map(d => d.ItemCode, s => s.ItemCode)
+            .Map(d => d.ItemName, s => s.ItemName)
+            .Map(d => d.Quantity, s => s.Quantity)
+            .Map(d => d.TargetQuantity, s => s.TargetQuantity)
+            .Map(d => d.OpenQuantity, s => s.OpenQuantity)
+            .Map(d => d.UoMCode, s => s.UoMCode)
+            .Map(d => d.UoMValue, s => s.UoMValue)
+            .Map(d => d.UoMName, s => s.UoMName)
+            .Map(d => d.Warehouse, s => s.Warehouse);
+
+        config.NewConfig<SalesReturnDataGridSAPDTO, SalesReturnDataGridDTO>();
+
+        config.NewConfig<SalesReturnRequestDataGridSAPDTO, SalesReturnRequestDataGridDTO>();
+
+        config.NewConfig<DataTransferObjects.Transactions.GoodsReturn.SAP.ReturnTypeSAPDTO, DataTransferObjects.Transactions.GoodsReturn.ReturnTypeDTO>();
+
+        config.NewConfig<SalesReturnHeaderSAPDTO, SalesReturnDTO>()
+            .Map(d => d.SapReference, s => new SapDocumentReferenceDTO
+            {
+                DocEntry = s.DocEntry,
+                DocNum   = s.DocNum,
+            })
+            .Map(d => d.BusinessPartner, s => new BusinessPartnerDTO
+            {
+                CardCode = s.CardCode,
+                CardName = s.CardName,
+            })
+            .Map(d => d.DocDate,       s => s.DocDate)
+            .Map(d => d.DocDueDate,    s => s.DocDueDate)
+            .Map(d => d.ContactPerson, s => s.ContactPerson)
+            .Map(d => d.NumAtCard,     s => s.NumAtCard)
+            .Map(d => d.SchoolYear,    s => s.SchoolYear)
+            .Map(d => d.ReturnType,    s => s.ReturnType)
+            .Map(d => d.PURNo,         s => s.PURNo)
+            .Map(d => d.DRNo,          s => s.DRNo)
+            .Map(d => d.SONo,          s => s.SONo)
+            .Map(d => d.SINo,          s => s.SINo)
+            .Map(d => d.Designation,   s => s.Designation)
+            .Map(d => d.DocRemarks,    s => s.DocRemarks)
+            .Map(d => d.ReturnedBy,    s => s.ReturnedBy)
+            .Map(d => d.PickBy,        s => s.PickBy)
+            .Map(d => d.PreparedBy,    s => s.PreparedBy)
+            .Map(d => d.CheckedBy,     s => s.CheckedBy)
+            .Map(d => d.NotedBy,       s => s.NotedBy)
+            .Map(d => d.ApprovedBy,    s => s.ApprovedBy);
+
+        config.NewConfig<SalesReturnLinesSAPDTO, SalesReturnLineDTO>()
+            .Map(d => d.LineNum,  s => s.LineNum + 1)
+            .Map(d => d.DocEntry, s => s.DocEntry)
+            .Map(d => d.DocNum,   s => s.DocNum)
+            .Map(d => d.ItemCode, s => s.ItemCode)
+            .Map(d => d.ItemName, s => s.ItemName)
+            .Map(d => d.Quantity, s => s.Quantity)
+            .Map(d => d.UoMCode,  s => s.UoMCode)
+            .Map(d => d.UoMValue, s => s.UoMValue)
+            .Map(d => d.UoMName,  s => s.UoMName);
+
+        config.NewConfig<SalesReturnRequestHeaderSAPDTO, SalesReturnRequestDTO>()
+            .Map(d => d.SapReference, s => new SapDocumentReferenceDTO
+            {
+                DocEntry = s.DocEntry,
+                DocNum   = s.DocNum,
+            })
+            .Map(d => d.BusinessPartner, s => new BusinessPartnerDTO
+            {
+                CardCode = s.CardCode,
+                CardName = s.CardName,
+            })
+            .Map(d => d.DocDate,       s => s.DocDate)
+            .Map(d => d.DocDueDate,    s => s.DocDueDate)
+            .Map(d => d.ContactPerson, s => s.ContactPerson)
+            .Map(d => d.NumAtCard,     s => s.NumAtCard)
+            .Map(d => d.SchoolYear,    s => s.SchoolYear)
+            .Map(d => d.ReturnType,    s => s.ReturnType)
+            .Map(d => d.PURNo,         s => s.PURNo)
+            .Map(d => d.DRNo,          s => s.DRNo)
+            .Map(d => d.SONo,          s => s.SONo)
+            .Map(d => d.SINo,          s => s.SINo)
+            .Map(d => d.Designation,   s => s.Designation)
+            .Map(d => d.DocRemarks,    s => s.DocRemarks)
+            .Map(d => d.ReturnedBy,    s => s.ReturnedBy)
+            .Map(d => d.PickBy,        s => s.PickBy)
+            .Map(d => d.PreparedBy,    s => s.PreparedBy)
+            .Map(d => d.CheckedBy,     s => s.CheckedBy)
+            .Map(d => d.NotedBy,       s => s.NotedBy)
+            .Map(d => d.ApprovedBy,    s => s.ApprovedBy);
+
+        config.NewConfig<SalesReturnRequestLinesSAPDTO, SalesReturnRequestLineDTO>()
+            .Map(d => d.LineNum,         s => s.LineNum + 1)
+            .Map(d => d.DocEntry,        s => s.DocEntry)
+            .Map(d => d.DocNum,          s => s.DocNum)
+            .Map(d => d.ItemCode,        s => s.ItemCode)
+            .Map(d => d.ItemName,        s => s.ItemName)
+            .Map(d => d.Quantity,        s => s.Quantity)
+            .Map(d => d.UoMCode,         s => s.UoMCode)
+            .Map(d => d.UoMValue,        s => s.UoMValue)
+            .Map(d => d.UoMName,         s => s.UoMName)
+            .Map(d => d.TargetQuantity,  s => s.TargetQuantity)
+            .Map(d => d.OpenQuantity,    s => s.OpenQuantity);
+
+        #endregion Sales Return
+
         #endregion SAP DTO to DTO
     }
     private static List<string> SplitAndTrim(string value)

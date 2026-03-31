@@ -4,21 +4,25 @@ using Web.BlazorServer.Handlers.Implementations.Administration.Role;
 using Web.BlazorServer.Handlers.Implementations.Administration.User;
 using Web.BlazorServer.Handlers.Implementations.Others;
 using Web.BlazorServer.Handlers.Implementations.System;
+using Web.BlazorServer.Handlers.Implementations.Transaction.Delivery;
 using Web.BlazorServer.Handlers.Implementations.Transaction.GoodsIssue;
 using Web.BlazorServer.Handlers.Implementations.Transaction.GoodsReceipt;
 using Web.BlazorServer.Handlers.Implementations.Transaction.GoodsReturn;
 using Web.BlazorServer.Handlers.Implementations.Transaction.InventoryTransfer;
 using Web.BlazorServer.Handlers.Implementations.Transaction.Receiving;
+using Web.BlazorServer.Handlers.Implementations.Transaction.SalesReturn;
 using Web.BlazorServer.Handlers.Repositories.Administration.Authorization;
 using Web.BlazorServer.Handlers.Repositories.Administration.Role;
 using Web.BlazorServer.Handlers.Repositories.Administration.User;
 using Web.BlazorServer.Handlers.Repositories.Others;
 using Web.BlazorServer.Handlers.Repositories.System;
+using Web.BlazorServer.Handlers.Repositories.Transaction.Delivery;
 using Web.BlazorServer.Handlers.Repositories.Transaction.GoodsIssue;
 using Web.BlazorServer.Handlers.Repositories.Transaction.GoodsReceipt;
 using Web.BlazorServer.Handlers.Repositories.Transaction.GoodsReturn;
 using Web.BlazorServer.Handlers.Repositories.Transaction.InventoryTransfer;
 using Web.BlazorServer.Handlers.Repositories.Transaction.Receiving;
+using Web.BlazorServer.Handlers.Repositories.Transaction.SalesReturn;
 
 namespace Web.BlazorServer.Handlers;
 
@@ -44,6 +48,8 @@ public static class BlazorServerHandlersDI
         services.TryAddTransient<ITransactionTypeHandler, TransactionTypeHandler>();
         services.TryAddTransient<ITransferTypeHandler, TransferTypeHandler>();
         services.TryAddTransient<ISchoolYearHandler, SchoolYearHandler>();
+        services.TryAddTransient<IDeliveryHandler, DeliveryHandler>();
+        services.TryAddTransient<ISalesReturnHandler, SalesReturnHandler>();
 
         return services;
     }

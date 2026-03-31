@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(git ls-tree:*)",
+      "Bash(dotnet build:*)",
+      "Bash(cd \"C:/Users/antonio_ian/Documents/GitHub/APHI.WMS\" && dotnet build \"Integration.SAP/Integration.SAP.csproj\" 2>&1; echo \"EXIT_CODE: $?\")",
+      "Bash(powershell -Command \"dotnet build 'C:/Users/antonio_ian/Documents/GitHub/APHI.WMS/Integration.SAP/Integration.SAP.csproj' 2>&1\")",
+      "Bash(powershell -Command \"& { dotnet build 'C:/Users/antonio_ian/Documents/GitHub/APHI.WMS/Integration.SAP/Integration.SAP.csproj'; Write-Host 'Exit:' $LASTEXITCODE }\" 2>&1; echo done)",
+      "Bash(powershell -Command \"dotnet build 'C:/Users/antonio_ian/Documents/GitHub/APHI.WMS/Integration.SAP/Integration.SAP.csproj' *> 'C:/Users/antonio_ian/Documents/GitHub/APHI.WMS/build_output.txt'; Get-Content 'C:/Users/antonio_ian/Documents/GitHub/APHI.WMS/build_output.txt'\")",
+      "Bash(cmd //c \"dotnet build C:/Users/antonio_ian/Documents/GitHub/APHI.WMS/Integration.SAP/Integration.SAP.csproj > C:/Users/antonio_ian/Documents/GitHub/APHI.WMS/build_output.txt 2>&1 & type C:/Users/antonio_ian/Documents/GitHub/APHI.WMS/build_output.txt\")",
+      "Bash(dotnet --version)"
+    ]
+  }
+}
