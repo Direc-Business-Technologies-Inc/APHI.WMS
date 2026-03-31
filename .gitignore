@@ -481,5 +481,8 @@ $RECYCLE.BIN/
 # Vim temporary swap files
 *.swp
 
+# Claude local files
+.claude/*.local.*
+
 # Exclusions
 !Integration.SAP/

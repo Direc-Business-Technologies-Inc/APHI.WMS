@@ -24,4 +24,5 @@
 			<Link>Scripts\%(RecursiveDir)%(Filename)%(Extension)</Link>
 		</Content>
 	</ItemGroup>
+	
 </Project>
