@@ -107,7 +107,7 @@ public class ItemMasterDataIntegration (
             {
                 { "ItemCode", "T0.ItemCode" },
                 { "ItemName", "T0.ItemName" },
-                { "Quantity", "T0.OnHand" },
+                { "Quantity", "T5.OnHand" },
                 { "UoMCode", "T0.InvntryUom" },
                 { "UoMValue", "T4.BaseQty" },
                 { "UoMName", "T2.UomName" },

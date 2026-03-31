@@ -9,6 +9,7 @@ using Application.DataTransferObjects.Transactions.GoodsIssue;
 using Application.DataTransferObjects.Transactions.GoodsReceipt;
 using Application.DataTransferObjects.Transactions.GoodsReturn;
 using Application.DataTransferObjects.Transactions.GoodsReturn.SAP;
+using Application.DataTransferObjects.Transactions.InventoryTransfer;
 using Application.DataTransferObjects.Transactions.SalesReturn;
 using Application.DataTransferObjects.Transactions.SalesReturn.SAP;
 using Application.DataTransferObjects.Transactions.Procurement.Order;
@@ -18,6 +19,7 @@ using Domain.Entities.Enums.Transaction.Commons;
 using Domain.Entities.Enums.Transaction.Receiving;
 using Domain.ValueObjects.Others;
 using Domain.ValueObjects.Transaction;
+using Integration.SAP.Entities.Transactional.InventoryTransfer;
 using Integration.SAP.Entities.Transactional.Receiving;
 using Mapster;
 using Shared.Kernel;
@@ -529,6 +531,62 @@ public class MappingRegistration : IRegister
 
         #endregion Receiving
 
+        #region InventoryTransferRequest
+        config.NewConfig<InventoryTransferRequestHeaderSAPDTO, InventoryTransferRequestDTO>()
+            .Map(d => d.DocNum, s => s.DocNum)
+            .Map(d => d.DocDate, s => s.DocDate)
+            .Map(d => d.Remarks, s => s.Remarks)
+            .Map(d => d.SchoolYear, s => new SchoolYearDTO()
+            {
+                Code = s.SchlYearCode,
+                Name = s.SchlYearName,
+                U_YearFrom = s.U_YearFrom,
+                U_YearTo = s.U_YearTo
+            })
+            .Map(d => d.FromWarehouse, s => new WarehouseDTO()
+            {
+                WhsCode = s.FrmWhsCode,
+                WhsName = s.FrmWhsName
+            })
+            .Map(d => d.ToWarehouse, s => new WarehouseDTO()
+            {
+                WhsCode = s.ToWhsCode,
+                WhsName = s.ToWhsName
+            })
+            .Map(d => d.TransferType, s => new TransferTypeDTO()
+            {
+                Code = s.TransferTypeCode,
+                Name = s.TransferTypeName
+            })
+            .Map(d => d.ApprovedBy, s => s.ApprovedBy)
+            .Map(d => d.NotedBy, s => s.NotedBy)
+            .Map(d => d.PreparedBy, s => s.PreparedBy);
+
+        config.NewConfig<InventoryTransferHeaderSAPDTO, InventoryTransferDTO>()
+            .Map(d => d.DocNum, s => s.DocNum)
+            .Map(d => d.DocEntry, s => s.DocEntry)
+            .Map(d => d.DocDate, s => s.DocDate)
+            .Map(d => d.Remarks, s => s.Remarks)
+            .Map(d => d.FromWarehouse, s => new WarehouseDTO()
+            {
+                WhsCode = s.FrmWhsCode,
+                WhsName = s.FrmWhsName
+            })
+            .Map(d => d.ToWarehouse, s => new WarehouseDTO()
+            {
+                WhsCode = s.ToWhsCode,
+                WhsName = s.ToWhsName
+            })
+            .Map(d => d.TransferType, s => new TransferTypeDTO()
+            {
+                Code = s.TransferTypeCode,
+                Name = s.TransferTypeName
+            }
+            )
+            .Map(d => d.ApprovedBy, s => s.ApprovedBy)
+            .Map(d => d.NotedBy, s => s.NotedBy)
+            .Map(d => d.PreparedBy, s => s.PreparedBy);
+        #endregion
         #region Sales Return
 
         config.NewConfig<SalesReturnRequestDTO, SalesReturnDTO>()

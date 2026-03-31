@@ -158,4 +158,27 @@ public enum AppActions
     ViewGoodsIssue,
     #endregion Transaction - Goods Issue
 
+    #region Inventory Transfer
+    [Description("Get All Inventory Transfer Requests")]
+    GetAllInventoryTransferRequests,
+    [Description("View Inventory Transfer Request")]
+    ViewInventoryTransferRequest,
+    [Description("Get All Posted Inventory Transfer Requests")]
+    GetAllPostedInventoryTransferRequests,
+    [Description("View Posted Inventory Transfer Request")]
+    ViewPostedInventoryTransferRequest,
+    [Description("Get All Pending Inventory Transfer Requests")]
+    GetAllPendingInventoryTransferRequests,
+    [Description("View Pending Inventory Transfer Request")]
+    ViewPendingInventoryTransferRequest,
+    [Description("Get All Rejected Inventory Transfer Requests")]
+    GetAllRejectedInventoryTransferRequests,
+    [Description("View Rejected Inventory Transfer Request")]
+    ViewRejectedInventoryTransferRequest,
+    [Description("Get Transfer Types")]
+    GetTransferTypes,
+    [Description("Create Inventory Transfer Request")]
+    CreateInventoryTransferRequest,
+
+    #endregion Inventory Transfer
 }
