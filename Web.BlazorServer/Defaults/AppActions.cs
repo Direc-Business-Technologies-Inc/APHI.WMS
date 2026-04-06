@@ -181,4 +181,23 @@ public enum AppActions
     CreateInventoryTransferRequest,
 
     #endregion Inventory Transfer
+
+    #region Transaction - Inventory Counting
+    [Description("Get All Inventory Counting Documents")]
+    GetAllInventoryCountingDocuments,
+    [Description("Create Inventory Counting Document")]
+    CreateInventoryCountingDocument,
+    [Description("View Inventory Counting Document")]
+    ViewInventoryCountingDocument,
+    [Description("Save Inventory Counting Document")]
+    SaveInventoryCountingDocument,
+    [Description("Post Inventory Counting Document")]
+    PostInventoryCountingDocument,
+    [Description("Recount Inventory Counting Document")]
+    RecountInventoryCountingDocument,
+    [Description("Create Inventory Counting Sheet")]
+    CreateInventoryCountingSheet,
+    [Description("Ignore Inventory Counting Sheet")]
+    IgnoreInventoryCountingSheet,
+    #endregion Transaction - Inventory Counting
 }
