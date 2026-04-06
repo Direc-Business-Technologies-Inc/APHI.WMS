@@ -1,0 +1,43 @@
+@using Web.BlazorServer.Components.Shared.Integration
+
+@inherits BaseComponent
+
+<RadzenStack Gap="1rem" AlignItems="AlignItems.Center">
+    <RadzenText Text="Point the camera at an EAN-13 barcode to scan." TextStyle="TextStyle.Body2" />
+
+    @if (IsScanning)
+    {
+        <CameraScannerReaderCanvas UpdateScannedDataEvent="@OnScannedDataReceived"
+                                   UpdateStateEvent="@OnStateUpdated"
+                                   ScannedData="@ScannedData" />
+    }
+
+    <RadzenStack Orientation="Orientation.Horizontal" Gap="8px">
+        <RadzenButton Text="@(IsScanning ? "Stop" : "Start Camera")"
+                      Icon="@(IsScanning ? "stop" : "qr_code_scanner")"
+                      ButtonStyle="@(IsScanning ? ButtonStyle.Danger : ButtonStyle.Primary)"
+                      Click="@ToggleScanning" />
+        <RadzenButton Text="Cancel" ButtonStyle="ButtonStyle.Base"
+                      Click="@Cancel" />
+    </RadzenStack>
+</RadzenStack>
+
+@code {
+    bool IsScanning { get; set; } = true;
+    string ScannedData { get; set; } = string.Empty;
+
+    void ToggleScanning() => IsScanning = !IsScanning;
+
+    async Task OnScannedDataReceived(string data)
+    {
+        IsScanning = false;
+        DialogService.Close(data);
+    }
+
+    async Task OnStateUpdated(int state)
+    {
+        await InvokeAsync(StateHasChanged);
+    }
+
+    void Cancel() => DialogService.Close(string.Empty);
+}
