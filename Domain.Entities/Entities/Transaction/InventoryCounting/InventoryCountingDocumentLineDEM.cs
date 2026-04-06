@@ -5,7 +5,7 @@ namespace Domain.Entities.Entities.Transaction.InventoryCounting;
 
 public class InventoryCountingDocumentLineDEM : ItemDEM
 {
-    public decimal InStockQuantity { get; private set; }
+    public decimal ActualQuantity { get; private set; }
     public Guid InventoryCountingDocumentId { get; private set; }
 
     public InventoryCountingDocumentLineDEM() { }
@@ -14,18 +14,25 @@ public class InventoryCountingDocumentLineDEM : ItemDEM
         Guid inventoryCountingDocumentId,
         string itemCode,
         string itemName,
-        decimal inStockQuantity,
+        decimal actualQuantity,
         string uomCode,
         decimal uomValue,
-        string uomName) : base(itemCode, itemName, inStockQuantity, uomCode, uomValue, uomName)
+        string uomName) : base(itemCode, itemName, actualQuantity, uomCode, uomValue, uomName)
     {
         InventoryCountingDocumentId = Guard.Against.NullOrEmpty(inventoryCountingDocumentId, nameof(InventoryCountingDocumentId), "Document Id cannot be empty");
-        InStockQuantity = Guard.Against.Negative(inStockQuantity, nameof(InStockQuantity), "In Stock Quantity cannot be negative");
+        ActualQuantity = Guard.Against.Negative(actualQuantity, nameof(ActualQuantity), "Actual Quantity cannot be negative");
     }
 
-    public InventoryCountingDocumentLineDEM UpdateInStockQuantity(decimal inStockQuantity)
+    public InventoryCountingDocumentLineDEM UpdateActualQuantity(decimal actualQuantity)
     {
-        InStockQuantity = Guard.Against.Negative(inStockQuantity, nameof(InStockQuantity), "In Stock Quantity cannot be negative");
+        ActualQuantity = Guard.Against.Negative(actualQuantity, nameof(ActualQuantity), "Actual Quantity cannot be negative");
+        return this;
+    }
+
+
+    public InventoryCountingDocumentLineDEM SetReference(Guid id)
+    {
+        InventoryCountingDocumentId = Guard.Against.NullOrEmpty(id, nameof(InventoryCountingDocumentId), "Reference Document cannot be null or empty");
         return this;
     }
 }
