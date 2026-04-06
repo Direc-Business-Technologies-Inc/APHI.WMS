@@ -1,3 +1,4 @@
+using Application.DataTransferObjects.Others.SAP;
 using Application.DataTransferObjects.Transactions.InventoryCounting;
 using Application.UseCases.Commands.Transaction.InventoryCounting;
 using Application.UseCases.Queries.Transaction.InventoryCounting;
@@ -61,5 +62,13 @@ public class InventoryCountingHandler(ISender Sender) : IInventoryCountingHandle
     {
         IgnoreInventoryCountingSheetCmd cmd = new(documentId, sheetNo);
         return await Sender.Send(cmd);
+    }
+
+    public async Task<IEnumerable<InventoryCountingLineVM>> GetWarehouseItemsForCountingAsync(string whsCode)
+    {
+        GetWarehouseItemsForCountingQry qry = new(whsCode);
+        IEnumerable<InventoryCountingItemSAPDTO> response = await Sender.Send(qry);
+
+        return response.Adapt<IEnumerable<InventoryCountingLineVM>>();
     }
 }

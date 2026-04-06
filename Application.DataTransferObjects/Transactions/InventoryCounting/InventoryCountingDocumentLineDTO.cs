@@ -1,10 +1,11 @@
-namespace Web.BlazorServer.ViewModels.Transaction.InventoryCounting;
+namespace Application.DataTransferObjects.Transactions.InventoryCounting;
 
-public class InventoryCountingSheetLineVM
+public class InventoryCountingDocumentLineDTO
 {
-    public string SheetNo { get; set; } = string.Empty;
+    public Guid InventoryCountingDocumentId { get; set; }
     public string ItemCode { get; set; } = string.Empty;
     public string ItemName { get; set; } = string.Empty;
+    public decimal ActualQuantity { get; set; }
     public decimal Quantity { get; set; }
     public string UoMCode { get; set; } = string.Empty;
     public decimal UoMValue { get; set; }

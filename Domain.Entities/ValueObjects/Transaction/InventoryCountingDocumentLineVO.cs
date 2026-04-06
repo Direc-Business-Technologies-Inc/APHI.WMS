@@ -15,6 +15,7 @@ public class InventoryCountingDocumentLineVO : ValueObject
     public string UoMCode { get; private set; }
     public decimal UoMValue { get; private set; }
     public string UoMName { get; private set; }
+    public string? ISBN { get; private set; }
 
 
     public InventoryCountingDocumentLineVO() { }
@@ -48,6 +49,12 @@ public class InventoryCountingDocumentLineVO : ValueObject
     public InventoryCountingDocumentLineVO SetReference(Guid id)
     {
         InventoryCountingDocumentId = Guard.Against.NullOrEmpty(id, nameof(InventoryCountingDocumentId), "Reference Document cannot be null or empty");
+        return this;
+    }
+
+    public InventoryCountingDocumentLineVO SetISBN(string? isbn)
+    {
+        ISBN = isbn;
         return this;
     }
 

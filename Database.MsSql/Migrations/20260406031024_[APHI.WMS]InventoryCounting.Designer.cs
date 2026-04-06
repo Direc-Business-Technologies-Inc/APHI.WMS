@@ -4,6 +4,7 @@ using Database.MsSql.Core;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Database.MsSql.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20260406031024_[APHI.WMS]InventoryCounting")]
+    partial class APHIWMSInventoryCounting
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -195,9 +198,8 @@ namespace Database.MsSql.Migrations
                     b.Property<DateTime>("CreatedDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("CycleType")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("CycleType")
+                        .HasColumnType("int");
 
                     b.Property<Guid>("DocumentTypeId")
                         .HasColumnType("uniqueidentifier");
@@ -206,9 +208,8 @@ namespace Database.MsSql.Migrations
                         .HasMaxLength(500)
                         .HasColumnType("nvarchar(500)");
 
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
 
                     b.Property<Guid?>("UpdatedBy")
                         .HasColumnType("uniqueidentifier");
@@ -579,11 +580,6 @@ namespace Database.MsSql.Migrations
                             b1.Property<decimal>("ActualQuantity")
                                 .HasColumnType("decimal(18,2)");
 
-                            b1.Property<string>("ISBN")
-                                .HasMaxLength(50)
-                                .HasColumnType("nvarchar(50)")
-                                .HasColumnName("ISBN");
-
                             b1.Property<Guid>("InventoryCountingDocumentId")
                                 .HasColumnType("uniqueidentifier");
 
@@ -637,9 +633,8 @@ namespace Database.MsSql.Migrations
                             b1.Property<Guid>("InventoryCountingDocumentId")
                                 .HasColumnType("uniqueidentifier");
 
-                            b1.Property<string>("Status")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
+                            b1.Property<int>("Status")
+                                .HasColumnType("int");
 
                             b1.Property<DateTime>("SubmittedDate")
                                 .HasColumnType("datetime2");
@@ -681,10 +676,6 @@ namespace Database.MsSql.Migrations
                                         .IsRequired()
                                         .HasMaxLength(50)
                                         .HasColumnType("nvarchar(50)");
-
-                                    b2.Property<string>("Status")
-                                        .IsRequired()
-                                        .HasColumnType("nvarchar(max)");
 
                                     b2.Property<string>("UoMCode")
                                         .IsRequired()

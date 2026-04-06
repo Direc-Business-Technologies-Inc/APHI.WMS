@@ -27,9 +27,11 @@ internal class InventoryCountingDocumentCfg : IEntityTypeConfiguration<Inventory
             .IsRequired();
 
         builder.Property(d => d.CycleType)
+            .HasConversion<string>()
             .IsRequired();
 
         builder.Property(d => d.Status)
+            .HasConversion<string>()
             .IsRequired();
 
         builder.Property(d => d.Remarks)
@@ -83,6 +85,7 @@ internal class InventoryCountingDocumentCfg : IEntityTypeConfiguration<Inventory
             line.Property(l => l.UoMCode).HasMaxLength(20).IsRequired();
             line.Property(l => l.UoMValue).IsRequired();
             line.Property(l => l.UoMName).HasMaxLength(100).IsRequired();
+            line.Property(l => l.ISBN).HasColumnName("ISBN").HasMaxLength(50);
         });
         builder.Navigation(d => d.DocumentLines)
             .HasField("_documentLines")
@@ -97,7 +100,7 @@ internal class InventoryCountingDocumentCfg : IEntityTypeConfiguration<Inventory
             sheet.Property(s => s.InventoryCountingDocumentId).IsRequired();
             sheet.Property(s => s.CounterId).IsRequired();
             sheet.Property(s => s.SubmittedDate).IsRequired();
-            sheet.Property(s => s.Status).IsRequired();
+            sheet.Property(s => s.Status).HasConversion<string>().IsRequired();
 
             sheet.OwnsOne(s => s.SheetNo, sheetNo =>
             {
@@ -119,6 +122,7 @@ internal class InventoryCountingDocumentCfg : IEntityTypeConfiguration<Inventory
                 sheetLine.Property(l => l.UoMCode).HasMaxLength(20).IsRequired();
                 sheetLine.Property(l => l.UoMValue).IsRequired();
                 sheetLine.Property(l => l.UoMName).HasMaxLength(100).IsRequired();
+                sheetLine.Property(l => l.Status).HasConversion<string>().IsRequired();
             });
         });
         builder.Navigation(d => d.Sheets)

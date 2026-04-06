@@ -1,6 +1,7 @@
 ﻿using Application.UseCases.Repositories.Bases;
 using Application.UseCases.Repositories.Domain.Administration.User;
 using Application.UseCases.Repositories.Domain.System;
+using Application.UseCases.Repositories.Domain.Transaction.InventoryCounting;
 using Database.MsSql.Core;
 using Database.MsSql.Implementation.Bases;
 using Database.MsSql.Implementation.Reads;
@@ -32,6 +33,7 @@ public static class DatabaseMsSqlDI
         services.TryAddTransient<INavigationRouteReadRepo, NavigationRouteReadRepo>();
         services.TryAddTransient<IUserReadRepo, UserReadRepo>();
         services.TryAddTransient<IRoleReadRepo, RoleReadRepo>();
+        services.TryAddTransient<IInventoryCountingReadRepo, InventoryCountingReadRepo>();
 
         return services;
     }
