@@ -1,0 +1,30 @@
+using Application.UseCases.Repositories.Bases;
+using Domain.Entities.Entities.Transaction.InventoryCounting;
+using Domain.Entities.Enums.Transaction.InventoryCounting;
+using MediatR;
+
+namespace Application.UseCases.Commands.Transaction.InventoryCounting;
+
+public record PostInventoryCountingDocumentCmd(Guid DocumentId) : ITransactionalRequest<bool>;
+
+public class PostInventoryCountingDocumentCmdHandler(
+    IAppCommandRepository appCommandRepo,
+    IAppReadRepository appReadRepo)
+    : IRequestHandler<PostInventoryCountingDocumentCmd, bool>
+{
+    public async Task<bool> Handle(PostInventoryCountingDocumentCmd request, CancellationToken cancellationToken)
+    {
+        var dem = await appReadRepo.FirstOrDefaultAsync<InventoryCountingDocumentDEM>(d => d.Id == request.DocumentId);
+        if (dem == null)
+            throw new Exception("Inventory Counting Document not found.");
+
+        if (dem.Status != InventoryCountingDocumentStatus.Saved)
+            throw new Exception("Inventory Counting Document is not in SAVED state.");
+
+        dem.UpdateStatus(InventoryCountingDocumentStatus.Posted);
+
+        appCommandRepo.Update(dem);
+
+        return true;
+    }
+}
