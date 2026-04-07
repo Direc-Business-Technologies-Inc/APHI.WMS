@@ -10,5 +10,6 @@
       "Bash(cmd //c \"dotnet build C:/Users/antonio_ian/Documents/GitHub/APHI.WMS/Integration.SAP/Integration.SAP.csproj > C:/Users/antonio_ian/Documents/GitHub/APHI.WMS/build_output.txt 2>&1 & type C:/Users/antonio_ian/Documents/GitHub/APHI.WMS/build_output.txt\")",
       "Bash(dotnet --version)"
     ]
-  }
+  },
+  "outputStyle": "Explanatory"
 }
