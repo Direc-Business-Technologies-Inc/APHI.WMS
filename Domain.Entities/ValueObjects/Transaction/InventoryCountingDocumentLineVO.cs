@@ -7,7 +7,6 @@ namespace Domain.Entities.ValueObjects.Transaction;
 
 public class InventoryCountingDocumentLineVO : ValueObject
 {
-    public Guid InventoryCountingDocumentId { get; private set; }
     public string ItemCode { get; private set; }
     public string ItemName { get; private set; }
     public decimal ActualQuantity { get; private set; }
@@ -20,8 +19,7 @@ public class InventoryCountingDocumentLineVO : ValueObject
 
     public InventoryCountingDocumentLineVO() { }
 
-    public InventoryCountingDocumentLineVO(Guid documentId,
-                                           string itemCode,
+    public InventoryCountingDocumentLineVO(string itemCode,
                                            string itemName,
                                            decimal actualQuantity,
                                            decimal quantity,
@@ -29,7 +27,6 @@ public class InventoryCountingDocumentLineVO : ValueObject
                                            decimal uomValue,
                                            string uomName)
     {
-        documentId = Guard.Against.NullOrEmpty(documentId, nameof(InventoryCountingDocumentId), "Reference Document cannot be null or empty");
         ItemCode = Guard.Against.NullOrEmpty(itemCode, nameof(ItemCode), "Item Code cannot be null or empty");
         ItemName = Guard.Against.NullOrEmpty(itemName, nameof(ItemName), "Item Name cannot be null or empty");
         Quantity = Guard.Against.Null(quantity, nameof(Quantity), "Item Quantity cannot be null");
@@ -45,13 +42,6 @@ public class InventoryCountingDocumentLineVO : ValueObject
         return this;
     }
 
-
-    public InventoryCountingDocumentLineVO SetReference(Guid id)
-    {
-        InventoryCountingDocumentId = Guard.Against.NullOrEmpty(id, nameof(InventoryCountingDocumentId), "Reference Document cannot be null or empty");
-        return this;
-    }
-
     public InventoryCountingDocumentLineVO SetISBN(string? isbn)
     {
         ISBN = isbn;
@@ -60,7 +50,6 @@ public class InventoryCountingDocumentLineVO : ValueObject
 
     protected override IEnumerable<object> GetEqualityComponents()
     {
-        yield return InventoryCountingDocumentId;
         yield return ItemCode;
         yield return ItemCode;
         yield return ActualQuantity;

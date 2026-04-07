@@ -41,7 +41,7 @@ public class InventoryCountingDocumentDEM : TransactionalDocumentDEM
         Remarks = remarks;
 
         foreach (var line in documentLines)
-            _documentLines.Add(line.SetReference(Id));
+            _documentLines.Add(line);
     }
 
     public InventoryCountingDocumentDEM UpdateStatus(InventoryCountingDocumentStatus status)
@@ -65,6 +65,7 @@ public class InventoryCountingDocumentDEM : TransactionalDocumentDEM
     public InventoryCountingDocumentDEM AddSheet(InventoryCountingSheetVO sheet)
     {
         _sheets.Add(sheet);
+        DomainEvents.Add(new Domain.Entities.Events.Transaction.InventoryCounting.InventoryCountingSheetCreatedEvent(Id, sheet.SheetNo.Value));
         return this;
     }
 }

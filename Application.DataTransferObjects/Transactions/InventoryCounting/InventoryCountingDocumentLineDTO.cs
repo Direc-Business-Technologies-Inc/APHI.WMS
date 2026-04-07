@@ -2,7 +2,6 @@ namespace Application.DataTransferObjects.Transactions.InventoryCounting;
 
 public class InventoryCountingDocumentLineDTO
 {
-    public Guid InventoryCountingDocumentId { get; set; }
     public string ItemCode { get; set; } = string.Empty;
     public string ItemName { get; set; } = string.Empty;
     public decimal ActualQuantity { get; set; }

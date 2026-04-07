@@ -19,7 +19,6 @@ public class CreateInventoryCountingDocumentCmdHandler(
         var data = request.Data;
 
         var documentLines = data.DocumentLines.Select(line => new InventoryCountingDocumentLineVO(
-            Guid.Empty, 
             line.ItemCode,
             line.ItemName,
             0, // Initial actual quantity

@@ -79,7 +79,6 @@ public class InventoryCountingReadRepo(IDbContextFactory<AppDbContext> dbContext
                 Warehouse = new() { WhsCode = dem.Warehouse.WhsCode, WhsName = dem.Warehouse.WhsName },
                 DocumentLines = dem.DocumentLines.Select(dl => new InventoryCountingDocumentLineDTO
                 {
-                    InventoryCountingDocumentId = dl.InventoryCountingDocumentId,
                     ItemCode = dl.ItemCode,
                     ItemName = dl.ItemName,
                     ActualQuantity = dl.ActualQuantity,
@@ -102,7 +101,6 @@ public class InventoryCountingReadRepo(IDbContextFactory<AppDbContext> dbContext
                     },
                     SheetLines = s.SheetLines.Select(sl => new InventoryCountingSheetLineDTO
                     {
-                        SheetNo = sl.SheetNo,
                         ItemCode = sl.ItemCode,
                         ItemName = sl.ItemName,
                         Quantity = sl.Quantity,

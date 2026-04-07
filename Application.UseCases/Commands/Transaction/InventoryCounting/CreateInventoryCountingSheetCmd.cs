@@ -22,7 +22,6 @@ public class CreateInventoryCountingSheetCmdHandler(
             throw new Exception("Inventory Counting Document not found.");
 
         var sheetLines = request.Data.SheetLines.Select(sl => new InventoryCountingSheetLineVO(
-            request.Data.SheetNo.Value,
             sl.ItemCode,
             sl.ItemName,
             sl.Quantity,

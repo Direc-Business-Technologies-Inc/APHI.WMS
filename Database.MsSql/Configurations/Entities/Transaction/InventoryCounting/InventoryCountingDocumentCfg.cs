@@ -76,8 +76,7 @@ internal class InventoryCountingDocumentCfg : IEntityTypeConfiguration<Inventory
             line.ToTable("ICD1");
             line.Property<int>("Id").ValueGeneratedOnAdd();
             line.HasKey("Id");
-            line.WithOwner().HasForeignKey(l => l.InventoryCountingDocumentId);
-            line.Property(l => l.InventoryCountingDocumentId).IsRequired();
+            line.WithOwner().HasForeignKey("InventoryCountingDocumentId");
             line.Property(l => l.ItemCode).HasMaxLength(50).IsRequired();
             line.Property(l => l.ItemName).HasMaxLength(200).IsRequired();
             line.Property(l => l.ActualQuantity).IsRequired();
@@ -115,7 +114,6 @@ internal class InventoryCountingDocumentCfg : IEntityTypeConfiguration<Inventory
                 sheetLine.ToTable("ICD3");
                 sheetLine.Property<int>("Id").ValueGeneratedOnAdd();
                 sheetLine.HasKey("Id");
-                sheetLine.Property(l => l.SheetNo).HasMaxLength(50).IsRequired();
                 sheetLine.Property(l => l.ItemCode).HasMaxLength(50).IsRequired();
                 sheetLine.Property(l => l.ItemName).HasMaxLength(200).IsRequired();
                 sheetLine.Property(l => l.Quantity).IsRequired();
