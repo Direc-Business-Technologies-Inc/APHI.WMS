@@ -309,7 +309,7 @@
     {
         await DialogService.OpenAsync(
             "Sheets",
-            ds => @<InventoryCountingSheetListModal Sheets="@FormData.Sheets.Where(s => s.Status != InventoryCountingSheetStatus.Synced)" DocumentId="@FormData.Id" />,
+            ds => @<InventoryCountingSheetListModal Sheets="@FormData.Sheets" DocumentId="@FormData.Id" />,
             options: GridSettingsService.GetDialogOptions().MaximizedMode());
     }
 }

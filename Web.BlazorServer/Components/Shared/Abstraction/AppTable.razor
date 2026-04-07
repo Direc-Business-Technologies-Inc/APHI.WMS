@@ -6,7 +6,7 @@
 
 <AppDataGridSkeleton TItem="TItem" Loading="@(!GridSettingsLoaded && !IsBusy)" />
 <RadzenDataGrid TItem="TItem"
-                Visible="@GridSettingsLoaded"
+                Visible="@(GridSettingsLoaded && Visible && !IsBusy)"
                 @ref=@(DataGrid)
                 Count="@(Data.Count)"
                 IsLoading="@(IsBusy)"

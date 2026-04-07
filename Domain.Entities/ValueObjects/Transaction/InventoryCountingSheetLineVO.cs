@@ -41,6 +41,11 @@ public class InventoryCountingSheetLineVO : ValueObject
 
     protected override IEnumerable<object> GetEqualityComponents()
     {
-        throw new NotImplementedException();
+        yield return ItemCode;
+        yield return ItemName;
+        yield return Quantity;
+        yield return UoMCode;
+        yield return UoMValue;
+        yield return UoMName;
     }
 }

@@ -31,6 +31,7 @@
         @* Sheet header badges *@
         <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" class="rz-mb-2" Wrap="FlexWrap.Wrap" JustifyContent="JustifyContent.End">
             <AppContentBadge Title="Sheet #" Content="@Sheet?.SheetNo.Value" />
+            <AppContentBadge Title="Counter" Content="@Sheet?.Counter.Name" />
             <AppContentBadge Title="Submitted Date" Content="@Sheet?.SubmittedDate.ToString("MM/dd/yyyy")" />
             <AppContentBadge Title="Status" Content="@Sheet?.Status.ToString()"
                              ChildBadgeStyle="@(Sheet?.Status switch {
@@ -72,14 +73,14 @@
             @if (Sheet?.Status == InventoryCountingSheetStatus.Async)
             {
                 <RadzenStack Orientation="Orientation.Horizontal" Gap="8px">
-                    <RadzenButton Text="Sync Sheet" Icon="sync"
-                                  ButtonStyle="ButtonStyle.Info"
-                                  IsBusy="@AppBusyService.IsBusy(ActionSync)"
-                                  Click="@SyncSheet" />
                     <RadzenButton Text="Ignore Sheet" Icon="block"
                                   ButtonStyle="ButtonStyle.Danger"
                                   IsBusy="@AppBusyService.IsBusy(ActionIgnore)"
                                   Click="@IgnoreSheet" />
+                    <RadzenButton Text="Sync Sheet" Icon="sync"
+                                  ButtonStyle="ButtonStyle.Info"
+                                  IsBusy="@AppBusyService.IsBusy(ActionSync)"
+                                  Click="@SyncSheet" />
                 </RadzenStack>
             }
         </RadzenStack>

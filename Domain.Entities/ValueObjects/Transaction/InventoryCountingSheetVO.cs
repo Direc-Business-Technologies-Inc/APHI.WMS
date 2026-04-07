@@ -32,6 +32,12 @@ public class InventoryCountingSheetVO : ValueObject
         SheetLines = [.. sheetLines];
     }
 
+    public InventoryCountingSheetVO SetStatus(InventoryCountingSheetStatus status)
+    {
+        Status = Guard.Against.EnumOutOfRange<InventoryCountingSheetStatus>(status, nameof(Status), "Inventory Counting Sheet Status must be a valid status state");
+        return this;
+    }
+
     protected override IEnumerable<object> GetEqualityComponents()
     {
         yield return SheetNo;

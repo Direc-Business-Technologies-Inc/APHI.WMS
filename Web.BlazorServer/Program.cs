@@ -5,6 +5,7 @@ using Database.MsSql.Core;
 using Integration.SAP;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Components.Authorization;
 using Radzen;
 using Shared.Services;
 using Web.BlazorServer.Components;
@@ -57,6 +58,8 @@ builder.Services.AddScoped<AppAuthenticationService>();
 builder.Services.AddSingleton<IAuthorizationPolicyProvider, AppPolicyProvider>();
 builder.Services.AddScoped<IAuthorizationHandler, AuthorizationController>();
 builder.Services.AddScoped<AppAuthenticationStateProvider>();
+builder.Services.AddScoped<AuthenticationStateProvider>(sp =>
+    sp.GetRequiredService<AppAuthenticationStateProvider>());
 #endregion Security
 
 builder.Services.AddRazorComponents()

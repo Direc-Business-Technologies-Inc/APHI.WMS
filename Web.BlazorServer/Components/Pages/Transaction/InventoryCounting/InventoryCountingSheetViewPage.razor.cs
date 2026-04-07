@@ -70,6 +70,8 @@ public partial class InventoryCountingSheetViewPage
             return;
         }
 
+        GridSettingsLoaded = true;
+
         var action = await AppActionFactory.RunAsync(async () =>
         {
             AppBusyService.SetBusy(ActionView, true);
