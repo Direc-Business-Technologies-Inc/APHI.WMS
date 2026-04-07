@@ -14,29 +14,25 @@ const SCANNER_STATES = {
 
 class Scanner {
     constructor() {
-
         this.state = {
             currentState: SCANNER_STATES.IDLE,
             scanBuffer: '',
             scanTimeout: null
         };
 
+        this._html5QrCode = null;
+        this._processed = false;
+
         this.handleKeyPress = this.handleKeyPress.bind(this);
     }
 
-    initialize() {
-        this.resetToIdle();
-        console.log("[INITIALIZED][IDLE] SCANNER is IDLE");
-    }
-
     handleKeyPress(event) {
-        
         if (this.state.currentState !== SCANNER_STATES.SCAN) return;
-        
+
         if (this.state.scanTimeout) {
             clearTimeout(this.state.scanTimeout);
         }
-        
+
         this.state.scanBuffer += event.key;
         console.log("[SCAN] SCANNER: scanned ", this.state.scanBuffer);
 
@@ -50,39 +46,72 @@ class Scanner {
 
     processScan(scannedData) {
         console.log("[SCAN] DISPLAY: ", scannedData);
-        dotnetInstance.invokeMethodAsync('UpdateScannedData', scannedData)
-        
+        dotnetInstance.invokeMethodAsync('UpdateScannedData', scannedData);
+
         this.state.currentState = SCANNER_STATES.DISPLAY;
-        dotnetInstance.invokeMethodAsync('UpdateState', SCANNER_STATES.DISPLAY)
+        dotnetInstance.invokeMethodAsync('UpdateState', SCANNER_STATES.DISPLAY);
     }
 
-    startScan() {
+    async startScan() {
+        this._processed = false;
+        this._html5QrCode = new Html5Qrcode("reader");
+
+        try {
+            await this._html5QrCode.start(
+                { facingMode: "environment" },
+                { fps: 10, qrbox: { width: 220, height: 220 } },
+                (decodedText) => {
+                    if (!this._processed) {
+                        this._processed = true;
+                        this.processScan(decodedText);
+                    }
+                },
+                (_errorMessage) => { /* ignore per-frame scan misses */ }
+            );
+            this.state.currentState = SCANNER_STATES.SCAN;
+            dotnetInstance.invokeMethodAsync('UpdateState', SCANNER_STATES.SCAN);
+        } catch (err) {
+            console.error("[SCAN] Camera error:", err);
+            dotnetInstance.invokeMethodAsync('UpdateState', SCANNER_STATES.IDLE);
+        }
+
+        // Also keep USB/keyboard scanner support
         this._boundKeyPress = (e) => this.handleKeyPress(e);
         document.addEventListener('keypress', this._boundKeyPress);
-        this.state.currentState = SCANNER_STATES.SCAN;
-        dotnetInstance.invokeMethodAsync('UpdateState', SCANNER_STATES.SCAN)
     }
 
     restartScan() {
+        this._processed = false;
         this.state.scanBuffer = '';
         this.state.currentState = SCANNER_STATES.SCAN;
-        dotnetInstance.invokeMethodAsync('UpdateState', SCANNER_STATES.SCAN)
+        dotnetInstance.invokeMethodAsync('UpdateState', SCANNER_STATES.SCAN);
     }
 
     promptNextScan() {
         this.state.currentState = SCANNER_STATES.PROMPT;
-        dotnetInstance.invokeMethodAsync('UpdateState', SCANNER_STATES.PROMPT)
+        dotnetInstance.invokeMethodAsync('UpdateState', SCANNER_STATES.PROMPT);
     }
 
     resetToIdle() {
         this.state.currentState = SCANNER_STATES.IDLE;
-        dotnetInstance.invokeMethodAsync('UpdateState', SCANNER_STATES.IDLE)
+        dotnetInstance.invokeMethodAsync('UpdateState', SCANNER_STATES.IDLE);
     }
 
-    destroy() {
+    async destroy() {
         if (this._boundKeyPress) {
             document.removeEventListener('keypress', this._boundKeyPress);
             this._boundKeyPress = null;
+        }
+        if (this._html5QrCode) {
+            try {
+                if (this._html5QrCode.isScanning) {
+                    await this._html5QrCode.stop();
+                }
+                this._html5QrCode.clear();
+            } catch (e) {
+                console.warn("[DESTROY] Error stopping camera:", e);
+            }
+            this._html5QrCode = null;
         }
     }
 }
@@ -91,46 +120,27 @@ let scanner = null;
 
 export function initializeScanner() {
     scanner = new Scanner();
-};
-
-export function startScan()
-{
-    if(scanner) {
-        scanner.startScan();
-    }
 }
 
-export function promptNextScan()
-{
-    if(scanner) {
-        scanner.promptNextScan();
-    }
+export async function startScan() {
+    if (scanner) await scanner.startScan();
 }
 
-export function restartScan()
-{
-    if(scanner) {
-        scanner.restartScan();
-    }
+export function promptNextScan() {
+    if (scanner) scanner.promptNextScan();
 }
 
-
-export function resetToIdle()
-{
-    if(scanner) {
-        scanner.resetToIdle();
-    }
+export function restartScan() {
+    if (scanner) scanner.restartScan();
 }
 
-export function destroyScanner()
-{
-    if(scanner) {
-        scanner.destroy();
+export function resetToIdle() {
+    if (scanner) scanner.resetToIdle();
+}
+
+export async function destroyScanner() {
+    if (scanner) {
+        await scanner.destroy();
         scanner = null;
     }
 }
-
-export function test() {
-    const scanner = new Scanner();
-    scanner.initialize();
-};
