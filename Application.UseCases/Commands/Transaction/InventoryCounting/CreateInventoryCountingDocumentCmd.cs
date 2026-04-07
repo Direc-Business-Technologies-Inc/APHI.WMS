@@ -36,15 +36,16 @@ public class CreateInventoryCountingDocumentCmdHandler(
 
         DocumentNumberDEM docNum = await docNumReadRepository.GetDocumentNumberEntityWithLockingAsync(docType.Id, appCommandRepo.GetDbContext());
 
-        List<InventoryCountingDocumentLineVO> documentLines = [.. data.DocumentLines.Select(line => new InventoryCountingDocumentLineVO(
-            line.ItemCode,
-            line.ItemName,
-            0, // Initial actual quantity
-            line.Quantity,
-            line.UoMCode,
-            line.UoMValue,
-            line.UoMName
-        ))];
+        List<InventoryCountingDocumentLineVO> documentLines = [.. data.DocumentLines.Select(line =>
+            new InventoryCountingDocumentLineVO(
+                line.ItemCode,
+                line.ItemName,
+                0, // Initial actual quantity
+                line.Quantity,
+                line.UoMCode,
+                line.UoMValue,
+                line.UoMName
+            ).SetISBN(line.ISBN))];
 
         SapDocumentReferenceVO? sapRef = data.SapReference.DocNum == 0 
             ? null 

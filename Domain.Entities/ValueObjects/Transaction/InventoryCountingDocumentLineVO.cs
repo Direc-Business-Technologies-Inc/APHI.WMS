@@ -51,7 +51,7 @@ public class InventoryCountingDocumentLineVO : ValueObject
     protected override IEnumerable<object> GetEqualityComponents()
     {
         yield return ItemCode;
-        yield return ItemCode;
+        yield return ItemName;
         yield return ActualQuantity;
         yield return Quantity;
         yield return UoMCode;
