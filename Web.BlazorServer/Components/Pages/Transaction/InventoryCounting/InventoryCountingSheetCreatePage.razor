@@ -19,8 +19,7 @@
     <AppFormSkeleton TItem="InventoryCountingSheetVM" Loading="@IsLoadingData" />
 
     @* Parent document info badges *@
-    <RadzenStack Visible="@(!IsLoadingData)"
-                 Orientation="Orientation.Horizontal" Gap="0.5rem" class="rz-mb-2">
+    <RadzenStack Visible="@(!IsLoadingData)" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End" Gap="0.5rem" class="rz-mb-2 rz-w-100">
         <AppContentBadge Title="Doc #" Content="@ParentDocument?.AppDocNum.Value" />
         <AppContentBadge Title="Warehouse" Content="@ParentDocument?.Warehouse.WhsName" />
         <AppContentBadge Title="Counting Date" Content="@ParentDocument?.CountingDate.ToString("MM/dd/yyyy")" />
@@ -70,6 +69,20 @@
                             <RadzenDataGridColumn TItem="InventoryCountingSheetLineVM"
                                                   Property="@nameof(InventoryCountingSheetLineVM.ItemName)"
                                                   Title="Item Name" Type="@typeof(string)" />
+                            <RadzenDataGridColumn TItem="InventoryCountingSheetLineVM"
+                                                  Title="ISBN" Width="60px" Sortable="false" Filterable="false">
+                                <Template Context="line">
+                                    @if (!string.IsNullOrWhiteSpace(line.ISBN))
+                                    {
+                                        <RadzenButton Icon="info_outline"
+                                                      Variant="Variant.Text"
+                                                      Size="ButtonSize.ExtraSmall"
+                                                      ButtonStyle="ButtonStyle.Info"
+                                                      MouseEnter="@(el => ShowISBNTooltip(el, line.ISBN))"
+                                                      MouseLeave="@(_ => TooltipService.Close())" />
+                                    }
+                                </Template>
+                            </RadzenDataGridColumn>
                             <RadzenDataGridColumn TItem="InventoryCountingSheetLineVM"
                                                   Property="@nameof(InventoryCountingSheetLineVM.UoMName)"
                                                   Title="UoM" Width="100px" Type="@typeof(string)" />

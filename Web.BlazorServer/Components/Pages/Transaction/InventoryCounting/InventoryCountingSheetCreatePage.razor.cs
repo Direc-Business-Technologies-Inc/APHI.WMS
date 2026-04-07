@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Radzen;
+using Radzen.Blazor;
 using Shared.Entities;
 using Shared.Kernel;
 using Web.BlazorServer.Components.Pages.Transaction.InventoryCounting.Components;
@@ -22,6 +23,7 @@ public partial class InventoryCountingSheetCreatePage
     #region Injects
     [Inject] IInventoryCountingHandler InventoryCountingHandler { get; set; } = default!;
     [Inject] IGridSettingsService GridSettingsService { get; set; } = default!;
+    [Inject] TooltipService TooltipService { get; set; } = default!;
     #endregion Injects
 
     #region Primitives
@@ -93,6 +95,8 @@ public partial class InventoryCountingSheetCreatePage
             AppBusyService.SetBusy(ActionView, false);
             return;
         }
+
+        GridSettingsLoaded = true;
 
         var action = await AppActionFactory.RunAsync(async () =>
         {
@@ -167,6 +171,12 @@ public partial class InventoryCountingSheetCreatePage
         line.Quantity += 1;
         _ = SheetLinesTable.DataGrid.Reload();
         InvokeAsync(StateHasChanged);
+    }
+
+    void ShowISBNTooltip(ElementReference el, string? isbn)
+    {
+        if (string.IsNullOrWhiteSpace(isbn)) return;
+        TooltipService.Open(el, isbn, new TooltipOptions { Position = TooltipPosition.Left, Duration = null });
     }
 
     async Task GoBack()
