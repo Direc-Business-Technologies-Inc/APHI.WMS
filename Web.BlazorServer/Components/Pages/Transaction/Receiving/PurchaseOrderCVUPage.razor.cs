@@ -1,4 +1,4 @@
-﻿using Mapster;
+using Mapster;
 using Microsoft.AspNetCore.Components;
 using Radzen;
 using Shared.Entities;
@@ -16,10 +16,8 @@ using Web.BlazorServer.ViewModels.Others;
 using Web.BlazorServer.ViewModels.System;
 using Web.BlazorServer.ViewModels.Transaction.GoodsReturn;
 using Web.BlazorServer.ViewModels.Transaction.Receiving;
-
 using Web.BlazorServer.Components.Pages.Transaction.InventoryCounting.Components;
 using Web.BlazorServer.Components.Pages.Transaction.Receiving.Components;
-using Web.BlazorServer.ViewModels.Enums;
 
 namespace Web.BlazorServer.Components.Pages.Transaction.Receiving;
 
@@ -304,17 +302,17 @@ public partial class PurchaseOrderCVUPage
 
     async Task OpenScannerDialog()
     {
-        var result = await DialogService.OpenAsync<InventoryCountingScanner>(
+        await DialogService.OpenAsync<InventoryCountingScanner>(
             "Scan Barcode",
+            new Dictionary<string, object>
+            {
+                { "OnScan", EventCallback.Factory.Create<string>(this, HandleScanResult) }
+            },
             options: new Radzen.DialogOptions
             {
                 Width = "400px",
                 CloseDialogOnOverlayClick = false,
             });
-
-        string? scanned = result as string;
-        if (!string.IsNullOrWhiteSpace(scanned))
-            await HandleScanResult(scanned);
     }
 
     async Task HandleScanResult(string isbn)
