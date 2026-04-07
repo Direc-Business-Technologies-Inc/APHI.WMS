@@ -13,7 +13,7 @@ public partial class InventoryCountingSheetViewPage
     [Parameter] public string? SheetNo { get; set; }
 
     [SupplyParameterFromQuery]
-    [Parameter] public Guid? Document { get; set; }
+    [Parameter] public string? Document { get; set; }
     #endregion Parameters
 
     #region Injects
@@ -21,10 +21,14 @@ public partial class InventoryCountingSheetViewPage
     #endregion Injects
 
     #region Primitives
-    bool IsLoadingData => AppBusyService.IsBusy(ActionView);
+    Guid DocumentId { get; set; }
 
-    readonly string ActionView = EnumHelper.GetEnumDescription(AppActions.ViewInventoryCountingDocument);
+    bool IsLoadingData => AppBusyService.IsBusy(ActionView);
+    bool GridSettingsLoaded { get; set; }
+
+    readonly string ActionView   = EnumHelper.GetEnumDescription(AppActions.ViewInventoryCountingDocument);
     readonly string ActionIgnore = EnumHelper.GetEnumDescription(AppActions.IgnoreInventoryCountingSheet);
+    readonly string ActionSync   = EnumHelper.GetEnumDescription(AppActions.SyncInventoryCountingSheet);
     #endregion Primitives
 
     #region Data Structures
@@ -32,6 +36,14 @@ public partial class InventoryCountingSheetViewPage
     #endregion Data Structures
 
     #region Overrides
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        if (Guid.TryParse(Document, out Guid parsed))
+            DocumentId = parsed;
+    }
+
     protected override void OnInitialized()
     {
         base.OnInitialized();
@@ -52,7 +64,7 @@ public partial class InventoryCountingSheetViewPage
     #region Custom Functions
     async Task LoadSheetAsync()
     {
-        if (!Document.HasValue || string.IsNullOrWhiteSpace(SheetNo))
+        if (string.IsNullOrEmpty(Document) || string.IsNullOrWhiteSpace(SheetNo))
         {
             AppBusyService.SetBusy(ActionView, false);
             return;
@@ -61,7 +73,7 @@ public partial class InventoryCountingSheetViewPage
         var action = await AppActionFactory.RunAsync(async () =>
         {
             AppBusyService.SetBusy(ActionView, true);
-            return await InventoryCountingHandler.GetInventoryCountingDocumentAsync(Document.Value);
+            return await InventoryCountingHandler.GetInventoryCountingDocumentAsync(DocumentId);
         }, AppActionOptionPresets.Loading(ActionView));
 
         AppBusyService.SetBusy(ActionView, false);
@@ -83,14 +95,29 @@ public partial class InventoryCountingSheetViewPage
         });
     }
 
+    async Task SyncSheet()
+    {
+        if (Sheet is null || string.IsNullOrEmpty(Document)) return;
+
+        var action = await AppActionFactory.RunAsync(async () =>
+        {
+            AppBusyService.SetBusy(ActionSync, true);
+            return await InventoryCountingHandler.SyncInventoryCountingSheetAsync(DocumentId, SheetNo!);
+        }, AppActionOptionPresets.Confirmed(ActionSync));
+
+        AppBusyService.SetBusy(ActionSync, false);
+
+        action.OnSuccess(async _ => await LoadSheetAsync());
+    }
+
     async Task IgnoreSheet()
     {
-        if (Sheet is null || !Document.HasValue) return;
+        if (Sheet is null || string.IsNullOrEmpty(Document)) return;
 
         var action = await AppActionFactory.RunAsync(async () =>
         {
             AppBusyService.SetBusy(ActionIgnore, true);
-            return await InventoryCountingHandler.IgnoreInventoryCountingSheetAsync(Document.Value, SheetNo!);
+            return await InventoryCountingHandler.IgnoreInventoryCountingSheetAsync(DocumentId, SheetNo!);
         }, AppActionOptionPresets.Confirmed(ActionIgnore));
 
         AppBusyService.SetBusy(ActionIgnore, false);

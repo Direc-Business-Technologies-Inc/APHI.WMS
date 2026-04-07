@@ -64,6 +64,12 @@ public class InventoryCountingHandler(ISender Sender) : IInventoryCountingHandle
         return await Sender.Send(cmd);
     }
 
+    public async Task<bool> SyncInventoryCountingSheetAsync(Guid documentId, string sheetNo)
+    {
+        SyncInventoryCountingSheetCmd cmd = new(documentId, sheetNo);
+        return await Sender.Send(cmd);
+    }
+
     public async Task<IEnumerable<InventoryCountingLineVM>> GetWarehouseItemsForCountingAsync(string whsCode)
     {
         GetWarehouseItemsForCountingQry qry = new(whsCode);

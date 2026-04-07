@@ -13,5 +13,6 @@ public interface IInventoryCountingHandler
     Task<bool> RecountInventoryCountingDocumentAsync(Guid id);
     Task<bool> CreateInventoryCountingSheetAsync(InventoryCountingSheetVM sheet);
     Task<bool> IgnoreInventoryCountingSheetAsync(Guid documentId, string sheetNo);
+    Task<bool> SyncInventoryCountingSheetAsync(Guid documentId, string sheetNo);
     Task<IEnumerable<InventoryCountingLineVM>> GetWarehouseItemsForCountingAsync(string whsCode);
 }

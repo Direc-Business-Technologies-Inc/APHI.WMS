@@ -11,6 +11,13 @@
 
 <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween" class="rz-mb-4">
     <AppBreadCrumbs ModuleCode="OICT" />
+    @if (!IsLoadingData && Sheet is not null)
+    {
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0.25rem">
+            <RadzenText TextStyle="TextStyle.Body2" Text="Counter:" style="color: var(--rz-text-secondary-color);" />
+            <RadzenText TextStyle="TextStyle.Subtitle2" Text="@Sheet.Counter.Name" />
+        </RadzenStack>
+    }
 </RadzenStack>
 
 <AppContent>
@@ -21,10 +28,9 @@
     }
     else
     {
-        @* Sheet info badges *@
-        <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" class="rz-mb-2" Wrap="FlexWrap.Wrap">
+        @* Sheet header badges *@
+        <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" class="rz-mb-2" Wrap="FlexWrap.Wrap" JustifyContent="JustifyContent.End">
             <AppContentBadge Title="Sheet #" Content="@Sheet?.SheetNo.Value" />
-            <AppContentBadge Title="Counter" Content="@Sheet?.Counter.Name" />
             <AppContentBadge Title="Submitted Date" Content="@Sheet?.SubmittedDate.ToString("MM/dd/yyyy")" />
             <AppContentBadge Title="Status" Content="@Sheet?.Status.ToString()"
                              ChildBadgeStyle="@(Sheet?.Status switch {
@@ -35,10 +41,11 @@
                              })" />
         </RadzenStack>
 
-        <RadzenDataGrid TItem="InventoryCountingSheetLineVM"
-                        Data="@(Sheet?.SheetLines ?? [])"
-                        AllowPaging ShowPagingSummary AllowSorting AllowFiltering
-                        FilterMode="FilterMode.SimpleWithMenu">
+        <AppTable TItem="InventoryCountingSheetLineVM"
+                  Id="ict_sheet_lines"
+                  ActionName="@ActionView"
+                  @bind-GridSettingsLoaded="@GridSettingsLoaded"
+                  Data="@([.. Sheet?.SheetLines ?? []])">
             <Columns>
                 <RadzenDataGridColumn TItem="InventoryCountingSheetLineVM"
                                       Property="@nameof(InventoryCountingSheetLineVM.ItemCode)"
@@ -57,17 +64,23 @@
                     </Template>
                 </RadzenDataGridColumn>
             </Columns>
-        </RadzenDataGrid>
+        </AppTable>
 
         <RadzenStack class="rz-mt-4" Orientation="Orientation.Horizontal"
                      AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
             <RadzenButton Text="Back" ButtonStyle="ButtonStyle.Base" Click="@GoBack" />
             @if (Sheet?.Status == InventoryCountingSheetStatus.Async)
             {
-                <RadzenButton Text="Ignore Sheet" Icon="block"
-                              ButtonStyle="ButtonStyle.Danger"
-                              IsBusy="@AppBusyService.IsBusy(ActionIgnore)"
-                              Click="@IgnoreSheet" />
+                <RadzenStack Orientation="Orientation.Horizontal" Gap="8px">
+                    <RadzenButton Text="Sync Sheet" Icon="sync"
+                                  ButtonStyle="ButtonStyle.Info"
+                                  IsBusy="@AppBusyService.IsBusy(ActionSync)"
+                                  Click="@SyncSheet" />
+                    <RadzenButton Text="Ignore Sheet" Icon="block"
+                                  ButtonStyle="ButtonStyle.Danger"
+                                  IsBusy="@AppBusyService.IsBusy(ActionIgnore)"
+                                  Click="@IgnoreSheet" />
+                </RadzenStack>
             }
         </RadzenStack>
     }

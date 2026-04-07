@@ -199,6 +199,8 @@ public enum AppActions
     CreateInventoryCountingSheet,
     [Description("Ignore Inventory Counting Sheet")]
     IgnoreInventoryCountingSheet,
+    [Description("Sync Inventory Counting Sheet")]
+    SyncInventoryCountingSheet,
     [Description("Get Warehouse Items for Counting")]
     GetWarehouseItemsForCounting,
     #endregion Transaction - Inventory Counting
