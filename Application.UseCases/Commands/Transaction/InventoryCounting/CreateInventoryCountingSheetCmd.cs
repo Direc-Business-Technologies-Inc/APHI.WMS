@@ -20,7 +20,7 @@ public class CreateInventoryCountingSheetCmdHandler(
 {
     public async Task<bool> Handle(CreateInventoryCountingSheetCmd request, CancellationToken cancellationToken)
     {
-        DocumentTypeDEM docType = await appReadRepo.FirstOrDefaultAsync<DocumentTypeDEM>(x => x.Name.ToLower().Equals("inventory counting")) ?? throw new Exception("Document Type not found.");
+        DocumentTypeDEM docType = await appReadRepo.FirstOrDefaultAsync<DocumentTypeDEM>(x => x.Name.ToLower().Equals("counting sheet")) ?? throw new Exception("Document Type not found.");
         DocumentNumberDEM docNum = await docNumReadRepository.GetDocumentNumberEntityWithLockingAsync(docType.Id, appCommandRepo.GetDbContext());
 
         var dem = await appReadRepo.FirstOrDefaultAsync<InventoryCountingDocumentDEM>(d => d.Id == request.Data.InventoryCountingDocumentId, track: true, local: false);

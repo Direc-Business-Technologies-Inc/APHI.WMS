@@ -17,18 +17,20 @@ public static class AppDocuments
         DocumentTypeDEM.Create(++DocCode , "Goods Receipt"),
         DocumentTypeDEM.Create(++DocCode , "Inventory Transfer"),
         DocumentTypeDEM.Create(++DocCode , "Inventory Counting"),
+        DocumentTypeDEM.Create(++DocCode , "Counting Sheet"),
     ];
 
     public static readonly IEnumerable<DocumentNumberDEM> Series =
     [
         DocumentNumberDEM.Create(List.ElementAt(0).Id, "WM", "S"),
-        DocumentNumberDEM.Create(List.ElementAt(1).Id, "WMS", "Receiving#"),
-        DocumentNumberDEM.Create(List.ElementAt(2).Id, "WMS", "GoodsReturn#"),
-        DocumentNumberDEM.Create(List.ElementAt(3).Id, "WMS", "Delivery#"),
-        DocumentNumberDEM.Create(List.ElementAt(4).Id, "WMS", "SalesReturn#"),
-        DocumentNumberDEM.Create(List.ElementAt(5).Id, "WMS", "GoodsIssue#"),
-        DocumentNumberDEM.Create(List.ElementAt(6).Id, "WMS", "GoodsReceipt#"),
-        DocumentNumberDEM.Create(List.ElementAt(7).Id, "WMS", "InventoryTransfer#"),
-        DocumentNumberDEM.Create(List.ElementAt(8).Id, "WMS", "InventoryCounting#"),
+        DocumentNumberDEM.Create(List.ElementAt(1).Id, "WMS-", "Receiving#"),
+        DocumentNumberDEM.Create(List.ElementAt(2).Id, "WMS-", "GoodsReturn#"),
+        DocumentNumberDEM.Create(List.ElementAt(3).Id, "WMS-", "Delivery#"),
+        DocumentNumberDEM.Create(List.ElementAt(4).Id, "WMS-", "SalesReturn#"),
+        DocumentNumberDEM.Create(List.ElementAt(5).Id, "WMS-", "GoodsIssue#"),
+        DocumentNumberDEM.Create(List.ElementAt(6).Id, "WMS-", "GoodsReceipt#"),
+        DocumentNumberDEM.Create(List.ElementAt(7).Id, "WMS-", "InventoryTransfer#"),
+        DocumentNumberDEM.Create(List.ElementAt(8).Id, "WMS-", "InventoryCount#"),
+        DocumentNumberDEM.Create(List.ElementAt(9).Id, "WMS-", "CountSheet#"),
     ];
 }
