@@ -87,7 +87,7 @@ public class InventoryCountingReadRepo(IDbContextFactory<AppDbContext> dbContext
                     UoMCode = dl.UoMCode,
                     UoMValue = dl.UoMValue,
                     UoMName = dl.UoMName,
-                    ISBN = dl.ISBN
+                    ISBN = dl.ISBN?.Replace("-", "")
                 }).ToList(),
                 Sheets = dem.Sheets.Select(s => new InventoryCountingSheetDTO
                 {

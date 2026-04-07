@@ -8,7 +8,7 @@ SELECT
     ,ISNULL(T4.BaseQty, 1) [UoMValue]
     ,ISNULL(T5.OnHand, 0) [OnHand]
     ,ISNULL(T5.OnHand, 0) - ISNULL(T5.IsCommited, 0) [Available]
-    ,T0.U_ISBN [ISBN]
+    ,REPLACE(ISNULL(T0.U_ISBN, ''), '-', '') [ISBN]
 FROM OITM T0
 INNER JOIN OITB T1 ON T0.ItmsGrpCod = T1.ItmsGrpCod
 LEFT JOIN OUOM T2 ON T0.InvntryUom = T2.UomCode
