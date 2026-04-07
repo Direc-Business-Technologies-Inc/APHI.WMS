@@ -139,6 +139,8 @@ public partial class InventoryCountingCVUPage
     #region Custom Functions
     async Task LoadDataAsync()
     {
+        GridSettingsLoaded = true;
+
         await LoadWarehouses(new());
 
         if (Viewing)
@@ -199,8 +201,10 @@ public partial class InventoryCountingCVUPage
         action.OnSuccess(async result =>
         {
             FormData.DocumentLines = [.. (result ?? []).Where(x => x.Quantity > 0)];
+            
             if (DocumentLinesTable is not null)
                 await DocumentLinesTable.DataGrid.Reload();
+
             await InvokeAsync(StateHasChanged);
         });
     }
@@ -256,7 +260,20 @@ public partial class InventoryCountingCVUPage
         NavManager.NavigateTo("/transactions/inventory/inventory-counting?T=open", true);
     }
 
-    void ExpandAllRows(RowRenderEventArgs<InventoryCountingLineVM> args) =>
+    void ExpandAllRows(RowRenderEventArgs<InventoryCountingLineVM> args)
+    {
         args.Expandable = Viewing;
+
+        if (args.Data.ActualQuantity == 0)
+            return;
+
+        var style = args.Data.ActualQuantity == args.Data.Quantity
+            ? "background-color: rgba(40, 167, 69, 0.12);"
+            : args.Data.ActualQuantity > args.Data.Quantity
+                ? "background-color: rgba(255, 193, 7, 0.2);"
+                : "background-color: rgba(220, 53, 69, 0.12);";
+
+        args.Attributes["style"] = style;
+    }
     #endregion Custom Functions
 }

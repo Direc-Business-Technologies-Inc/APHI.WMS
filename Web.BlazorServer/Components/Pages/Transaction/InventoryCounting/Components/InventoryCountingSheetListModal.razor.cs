@@ -10,6 +10,6 @@ public partial class InventoryCountingSheetListModal
 
     void ViewSheet(InventoryCountingSheetVM sheet) =>
         NavManager.NavigateTo(
-            $"/transactions/inventory/inventory-counting/sheet/view?SheetNo={sheet.SheetNo.Value}&Document={DocumentId}",
+            $"/transactions/inventory/inventory-counting/sheet/view?SheetNo={Uri.EscapeDataString(sheet.SheetNo.Value)}&Document={DocumentId}",
             true);
 }

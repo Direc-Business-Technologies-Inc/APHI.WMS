@@ -64,8 +64,19 @@ public class InventoryCountingDocumentDEM : TransactionalDocumentDEM
 
     public InventoryCountingDocumentDEM AddSheet(InventoryCountingSheetVO sheet)
     {
+        foreach (var sheetLine in sheet.SheetLines)
+        {
+            var docLine = _documentLines.FirstOrDefault(dl =>
+                dl.ItemCode == sheetLine.ItemCode && dl.UoMCode == sheetLine.UoMCode);
+
+            if (docLine is not null)
+                docLine.UpdateActualQuantity(docLine.ActualQuantity + sheetLine.Quantity);
+
+            sheetLine.SetStatus(InventoryCountingSheetStatus.Synced);
+        }
+
+        sheet.SetStatus(InventoryCountingSheetStatus.Synced);
         _sheets.Add(sheet);
-        DomainEvents.Add(new Domain.Entities.Events.Transaction.InventoryCounting.InventoryCountingSheetCreatedEvent(Id, sheet.SheetNo.Value));
         return this;
     }
 }
