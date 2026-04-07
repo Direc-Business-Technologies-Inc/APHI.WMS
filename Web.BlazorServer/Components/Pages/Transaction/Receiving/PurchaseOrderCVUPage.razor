@@ -172,6 +172,12 @@
                                                       Size="ButtonSize.Small"
                                                       ButtonStyle="ButtonStyle.Light"
                                                       Click="@OpenTableSettings" />
+                                        <RadzenButton Icon="qr_code_scanner"
+                                                      Text="Scan"
+                                                      Size="ButtonSize.Small"
+                                                      ButtonStyle="ButtonStyle.Primary"
+                                                      Visible="@Creating"
+                                                      Click="@OpenScannerDialog" />
                                     </RadzenStack>
                                 </HeaderTemplate>
                                 <Columns>

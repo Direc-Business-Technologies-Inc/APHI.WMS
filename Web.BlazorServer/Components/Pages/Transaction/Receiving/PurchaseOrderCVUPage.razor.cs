@@ -17,6 +17,10 @@ using Web.BlazorServer.ViewModels.System;
 using Web.BlazorServer.ViewModels.Transaction.GoodsReturn;
 using Web.BlazorServer.ViewModels.Transaction.Receiving;
 
+using Web.BlazorServer.Components.Pages.Transaction.InventoryCounting.Components;
+using Web.BlazorServer.Components.Pages.Transaction.Receiving.Components;
+using Web.BlazorServer.ViewModels.Enums;
+
 namespace Web.BlazorServer.Components.Pages.Transaction.Receiving;
 
 public partial class PurchaseOrderCVUPage
@@ -296,6 +300,63 @@ public partial class PurchaseOrderCVUPage
             return;
 
         FormData.Time = Time.Value.Hour * 100 + Time.Value.Minute;
+    }
+
+    async Task OpenScannerDialog()
+    {
+        var result = await DialogService.OpenAsync<InventoryCountingScanner>(
+            "Scan Barcode",
+            options: new Radzen.DialogOptions
+            {
+                Width = "400px",
+                CloseDialogOnOverlayClick = false,
+            });
+
+        string? scanned = result as string;
+        if (!string.IsNullOrWhiteSpace(scanned))
+            await HandleScanResult(scanned);
+    }
+
+    async Task HandleScanResult(string isbn)
+    {
+        var matchingLines = FormData.DocumentLines.Where(l =>
+            !string.IsNullOrWhiteSpace(l.ISBN) &&
+            l.ISBN.Equals(isbn, StringComparison.OrdinalIgnoreCase)).ToList();
+
+        if (matchingLines.Count == 0)
+        {
+            ToastService.Warning($"No item found for barcode: {isbn}");
+            return;
+        }
+
+        PurchaseOrderLineVM? selectedLine = null;
+
+        if (matchingLines.Count == 1)
+        {
+            selectedLine = matchingLines.First();
+        }
+        else
+        {
+            selectedLine = await DialogService.OpenAsync<ItemSelectionDialog>(
+                "Select Item",
+                new Dictionary<string, object> { { "Items", matchingLines } },
+                new Radzen.DialogOptions { Width = "600px" });
+        }
+
+        if (selectedLine != null)
+        {
+            if (selectedLine.Free == false && selectedLine.Quantity >= selectedLine.TargetQuantity)
+            {
+                ToastService.Warning($"Item {selectedLine.ItemCode} has already reached its planned quantity.");
+                return;
+            }
+
+            selectedLine.Quantity += 1;
+            await PurchaseOrderTable.DataGrid.Reload();
+            await InvokeAsync(StateHasChanged);
+            
+            ToastService.Success($"Incremented quantity for {selectedLine.ItemCode}");
+        }
     }
 
     #endregion Custom Function
