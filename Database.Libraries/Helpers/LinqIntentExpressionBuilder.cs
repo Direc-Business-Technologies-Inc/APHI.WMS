@@ -158,10 +158,13 @@ public static class LinqIntentExpressionBuilder
         var propertyType = Nullable.GetUnderlyingType(property.Type) ?? property.Type;
 
         // Convert the list values to the correct type
-        var valuesList = ((IEnumerable<object>)value!).ToList();
+        List<object> valuesList = [];
+
 
         if (propertyType.IsEnum)
         {
+            valuesList = [.. ((System.Collections.IEnumerable)value!).Cast<object>()];
+
             // Create a typed list for enums
             var enumListType = typeof(List<>).MakeGenericType(propertyType);
             var typedList = Activator.CreateInstance(enumListType);
@@ -187,6 +190,8 @@ public static class LinqIntentExpressionBuilder
         }
         else
         {
+            valuesList = [.. ((IEnumerable<object>)value!)];
+
             // Original implementation for non-enum types
             var constant = Expression.Constant(valuesList);
             var containsMethod = typeof(List<object>).GetMethod("Contains")!;
