@@ -55,10 +55,10 @@ internal class InventoryCountingDocumentCfg : IEntityTypeConfiguration<Inventory
                 .IsRequired();
         });
 
-        builder.OwnsOne(d => d.LsmsDocNum, docNum =>
+        builder.OwnsOne(d => d.AppDocNum, docNum =>
         {
             docNum.Property(n => n.Value)
-                .HasColumnName("LsmsDocNum")
+                .HasColumnName("AppDocNum")
                 .HasMaxLength(50)
                 .IsRequired();
         });
