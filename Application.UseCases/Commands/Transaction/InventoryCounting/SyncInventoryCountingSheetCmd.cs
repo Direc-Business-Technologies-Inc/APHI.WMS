@@ -14,7 +14,7 @@ public class SyncInventoryCountingSheetCmdHandler(
 {
     public async Task<bool> Handle(SyncInventoryCountingSheetCmd request, CancellationToken cancellationToken)
     {
-        var dem = await appReadRepo.FirstOrDefaultAsync<InventoryCountingDocumentDEM>(d => d.Id == request.DocumentId);
+        var dem = await appReadRepo.FirstOrDefaultAsync<InventoryCountingDocumentDEM>(d => d.Id == request.DocumentId, track: true, local: false);
         if (dem == null)
             throw new Exception("Inventory Counting Document not found.");
 

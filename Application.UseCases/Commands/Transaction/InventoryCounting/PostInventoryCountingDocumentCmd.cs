@@ -14,7 +14,7 @@ public class PostInventoryCountingDocumentCmdHandler(
 {
     public async Task<bool> Handle(PostInventoryCountingDocumentCmd request, CancellationToken cancellationToken)
     {
-        var dem = await appReadRepo.FirstOrDefaultAsync<InventoryCountingDocumentDEM>(d => d.Id == request.DocumentId);
+        var dem = await appReadRepo.FirstOrDefaultAsync<InventoryCountingDocumentDEM>(d => d.Id == request.DocumentId, track: true, local: false);
         if (dem == null)
             throw new Exception("Inventory Counting Document not found.");
 
@@ -22,8 +22,6 @@ public class PostInventoryCountingDocumentCmdHandler(
             throw new Exception("Inventory Counting Document is not in SAVED state.");
 
         dem.UpdateStatus(InventoryCountingDocumentStatus.Posted);
-
-        appCommandRepo.Update(dem);
 
         return true;
     }
