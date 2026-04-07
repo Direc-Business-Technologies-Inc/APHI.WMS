@@ -3,7 +3,10 @@ SELECT
     ,T0.ItemName
     ,T5.WhsCode
     ,T5.OnHand [Quantity]
-    ,ISNULL(T0.InvntryUom, 'Manual') [UoMCode]
+    ,CASE 
+        WHEN ISNULL(T0.InvntryUom, '') = '' THEN 'Manual'
+        ELSE T0.InvntryUom
+     END AS [UoMCode]
     ,ISNULL(T2.UomName, 'Manual') [UoMName]
     ,ISNULL(T4.BaseQty, 1) [UoMValue]
     ,ISNULL(T5.OnHand, 0) [OnHand]
@@ -20,5 +23,5 @@ WHERE
     T0.ItemType = 'I'
     AND T0.Canceled = 'N'
     AND T0.validFor = 'Y'
-    AND T5.WhsCode = '{WhsCode}'
+    AND T5.WhsCode = 'MAIN'
     AND ISNULL(T5.OnHand, 0) > 0

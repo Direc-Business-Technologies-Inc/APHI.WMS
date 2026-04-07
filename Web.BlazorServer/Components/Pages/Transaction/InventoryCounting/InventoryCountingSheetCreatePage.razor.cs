@@ -143,17 +143,17 @@ public partial class InventoryCountingSheetCreatePage
 
     async Task OpenScannerDialog()
     {
-        var result = await DialogService.OpenAsync<InventoryCountingScanner>(
+        await DialogService.OpenAsync<InventoryCountingScanner>(
             "Scan Barcode",
+            new Dictionary<string, object>
+            {
+                { "OnScan", EventCallback.Factory.Create<string>(this, HandleScanResult) }
+            },
             options: new Radzen.DialogOptions
             {
                 Width = "400px",
                 CloseDialogOnOverlayClick = false,
             });
-
-        string? scanned = result as string;
-        if (!string.IsNullOrWhiteSpace(scanned))
-            HandleScanResult(scanned);
     }
 
     void HandleScanResult(string isbn)
