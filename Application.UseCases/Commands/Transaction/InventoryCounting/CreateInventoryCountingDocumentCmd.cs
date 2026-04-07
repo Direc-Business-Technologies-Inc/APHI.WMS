@@ -1,6 +1,10 @@
 using Application.DataTransferObjects.Transactions.InventoryCounting;
 using Application.UseCases.Repositories.Bases;
+using Application.UseCases.Repositories.Domain.System;
+using Application.UseCases.Repositories.Domain.Transaction.InventoryCounting;
 using Domain.Entities.Entities.Transaction.InventoryCounting;
+using Domain.Entities.System;
+using Domain.Entities.Transaction.Common;
 using Domain.Entities.ValueObjects.Others;
 using Domain.Entities.ValueObjects.Transaction;
 using Domain.ValueObjects.Transaction;
@@ -11,14 +15,28 @@ namespace Application.UseCases.Commands.Transaction.InventoryCounting;
 public record CreateInventoryCountingDocumentCmd(InventoryCountingDocumentDTO Data) : ITransactionalRequest<bool>;
 
 public class CreateInventoryCountingDocumentCmdHandler(
-    IAppCommandRepository appCommandRepo) 
+    IAppCommandRepository appCommandRepo,
+    IAppReadRepository appReadRepo,
+    IDocNumReadRepo docNumReadRepository,
+    IInventoryCountingReadRepo inventoryCountingReadRepo)
     : IRequestHandler<CreateInventoryCountingDocumentCmd, bool>
 {
     public async Task<bool> Handle(CreateInventoryCountingDocumentCmd request, CancellationToken cancellationToken)
     {
-        var data = request.Data;
+        DocumentTypeDEM docType = await appReadRepo.FirstOrDefaultAsync<DocumentTypeDEM>(x => x.Name.ToLower().Equals("inventory counting")) ?? throw new Exception("Document Type not found.");
 
-        var documentLines = data.DocumentLines.Select(line => new InventoryCountingDocumentLineVO(
+        InventoryCountingDocumentDTO data = request.Data;
+
+        bool duplicate = await inventoryCountingReadRepo
+            .ExistsDocumentForWarehouseAndCycleInPeriodAsync(data.Warehouse.WhsCode, data.CycleType, data.CountingDate);
+
+        if (duplicate)
+            throw new InvalidOperationException(
+                $"An inventory counting document already exists for warehouse '{data.Warehouse.WhsName}' with cycle type '{data.CycleType}' in the same period.");
+
+        DocumentNumberDEM docNum = await docNumReadRepository.GetDocumentNumberEntityWithLockingAsync(docType.Id, appCommandRepo.GetDbContext());
+
+        List<InventoryCountingDocumentLineVO> documentLines = [.. data.DocumentLines.Select(line => new InventoryCountingDocumentLineVO(
             line.ItemCode,
             line.ItemName,
             0, // Initial actual quantity
@@ -26,7 +44,7 @@ public class CreateInventoryCountingDocumentCmdHandler(
             line.UoMCode,
             line.UoMValue,
             line.UoMName
-        )).ToList();
+        ))];
 
         SapDocumentReferenceVO? sapRef = data.SapReference.DocNum == 0 
             ? null 
@@ -34,7 +52,7 @@ public class CreateInventoryCountingDocumentCmdHandler(
 
         var dem = new InventoryCountingDocumentDEM(
             data.DocumentType.Id,
-            new AppDocNumVO(data.LsmsDocNum.Value),
+            new AppDocNumVO(docNum.GenerateNextDocNum()),
             new WarehouseVO(data.Warehouse.WhsCode, data.Warehouse.WhsName),
             data.CountingDate,
             data.CycleType,

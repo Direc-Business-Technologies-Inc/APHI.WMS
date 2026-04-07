@@ -4,6 +4,7 @@ using Database.Libraries.Helpers;
 using Database.MsSql.Core;
 using Domain.Entities.Administration.User.Management;
 using Domain.Entities.Entities.Transaction.InventoryCounting;
+using Domain.Entities.Enums.Transaction.InventoryCounting;
 using Microsoft.EntityFrameworkCore;
 using Shared.Entities;
 
@@ -22,7 +23,7 @@ public class InventoryCountingReadRepo(IDbContextFactory<AppDbContext> dbContext
                         select new InventoryCountingDataGridDTO
                         {
                             Id = d.Id,
-                            AppDocNum = d.LsmsDocNum.Value,
+                            AppDocNum = d.AppDocNum.Value,
                             Warehouse = d.Warehouse.WhsName,
                             CycleType = d.CycleType,
                             Status = d.Status,
@@ -74,7 +75,7 @@ public class InventoryCountingReadRepo(IDbContextFactory<AppDbContext> dbContext
                 CycleType = dem.CycleType,
                 Status = dem.Status,
                 Remarks = dem.Remarks,
-                LsmsDocNum = new() { Value = dem.LsmsDocNum.Value },
+                AppDocNum = new() { Value = dem.AppDocNum.Value },
                 SapReference = dem.SapReference != null ? new() { DocEntry = dem.SapReference.DocEntry ?? 0, DocNum = dem.SapReference.DocNum ?? 0 } : new(),
                 Warehouse = new() { WhsCode = dem.Warehouse.WhsCode, WhsName = dem.Warehouse.WhsName },
                 DocumentLines = dem.DocumentLines.Select(dl => new InventoryCountingDocumentLineDTO
@@ -112,6 +113,47 @@ public class InventoryCountingReadRepo(IDbContextFactory<AppDbContext> dbContext
             };
 
             return dto;
+        });
+    }
+
+    public Task<bool> ExistsDocumentForWarehouseAndCycleInPeriodAsync(string whsCode, CycleType cycleType, DateTime countingDate)
+    {
+        return ExecuteAppDbWork<bool>(async () =>
+        {
+            await using var ctx = await dbContextFactory.CreateDbContextAsync();
+
+            DateTime periodStart, periodEnd;
+
+            switch (cycleType)
+            {
+                case CycleType.Daily:
+                    periodStart = countingDate.Date;
+                    periodEnd   = periodStart.AddDays(1);
+                    break;
+                case CycleType.Weekly:
+                    int daysFromMonday = ((int)countingDate.DayOfWeek + 6) % 7;
+                    periodStart = countingDate.Date.AddDays(-daysFromMonday);
+                    periodEnd   = periodStart.AddDays(7);
+                    break;
+                case CycleType.Monthly:
+                    periodStart = new DateTime(countingDate.Year, countingDate.Month, 1);
+                    periodEnd   = periodStart.AddMonths(1);
+                    break;
+                case CycleType.Quarterly:
+                    int quarter = (countingDate.Month - 1) / 3;
+                    periodStart = new DateTime(countingDate.Year, quarter * 3 + 1, 1);
+                    periodEnd   = periodStart.AddMonths(3);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(cycleType));
+            }
+
+            return await ctx.Set<InventoryCountingDocumentDEM>()
+                .AsNoTracking()
+                .AnyAsync(d => d.Warehouse.WhsCode == whsCode
+                            && d.CycleType == cycleType
+                            && d.CountingDate >= periodStart
+                            && d.CountingDate < periodEnd);
         });
     }
 }
