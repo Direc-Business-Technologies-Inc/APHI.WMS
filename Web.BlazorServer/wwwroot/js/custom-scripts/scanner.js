@@ -57,7 +57,8 @@ class Scanner {
     }
 
     startScan() {
-        document.addEventListener('keypress', (e) => this.handleKeyPress(e));
+        this._boundKeyPress = (e) => this.handleKeyPress(e);
+        document.addEventListener('keypress', this._boundKeyPress);
         this.state.currentState = SCANNER_STATES.SCAN;
         dotnetInstance.invokeMethodAsync('UpdateState', SCANNER_STATES.SCAN)
     }
@@ -79,7 +80,10 @@ class Scanner {
     }
 
     destroy() {
-        document.removeEventListener('keypress', this.handleKeyPress);
+        if (this._boundKeyPress) {
+            document.removeEventListener('keypress', this._boundKeyPress);
+            this._boundKeyPress = null;
+        }
     }
 }
 
@@ -115,6 +119,14 @@ export function resetToIdle()
 {
     if(scanner) {
         scanner.resetToIdle();
+    }
+}
+
+export function destroyScanner()
+{
+    if(scanner) {
+        scanner.destroy();
+        scanner = null;
     }
 }
 

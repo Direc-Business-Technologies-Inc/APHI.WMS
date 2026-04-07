@@ -3,7 +3,7 @@ using Microsoft.JSInterop;
 
 namespace Web.BlazorServer.Components.Shared.Integration;
 
-public partial class CameraScannerReaderCanvas
+public partial class CameraScannerReaderCanvas : IAsyncDisposable
 {
     [Parameter] required public string ScannedData { get; set; } = string.Empty;
     [Parameter] public EventCallback<string> ScannedDataChanged { get; set; }
@@ -18,7 +18,7 @@ public partial class CameraScannerReaderCanvas
     {
         if (firstRender)
         {
-            _js = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "../scripts/CustomScripts/MobileScanner.js");
+            _js = await JSRuntime.InvokeAsync<IJSObjectReference>("import", "../js/custom-scripts/scanner.js");
 
             try
             {
@@ -45,5 +45,14 @@ public partial class CameraScannerReaderCanvas
     public async Task UpdateScannedData(string data)
     {
         await UpdateScannedDataEvent.InvokeAsync(data);
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (_js is not null)
+        {
+            await _js.InvokeVoidAsync("destroyScanner");
+            await _js.DisposeAsync();
+        }
     }
 }
