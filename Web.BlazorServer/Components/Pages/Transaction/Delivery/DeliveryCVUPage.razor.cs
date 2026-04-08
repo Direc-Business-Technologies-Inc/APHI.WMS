@@ -113,8 +113,12 @@ public partial class DeliveryCVUPage
         var action = await AppActionFactory.RunAsync(async () =>
         {
             AppBusyService.SetBusy(ActionCreateDelivery, true);
+            await InvokeAsync(StateHasChanged);
 
             bool response = await DeliveryHandler.PostDeliveryAsync(FormData);
+
+            AppBusyService.SetBusy(ActionCreateDelivery, false);
+            await InvokeAsync(StateHasChanged);
 
             return response;
         }, AppActionOptionPresets.Confirmed(ActionCreateDelivery));
