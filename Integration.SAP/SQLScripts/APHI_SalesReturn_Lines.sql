@@ -7,7 +7,10 @@ SELECT
 	,RDN1.WhsCode
 	,OWHS.WhsName
 	,0 [Quantity]
-	,ISNULL(RDN1.unitMsr, 'Manual') [UoMCode]
+	,CASE 
+        WHEN ISNULL(RDN1.InvntryUom, '') = '' THEN 'Manual'
+        ELSE RDN1.InvntryUom
+     END AS [UoMCode]
 	,RDN1.NumPerMsr [UoMValue]
 	,OUOM.UomName [UoMName]
 FROM ORDN

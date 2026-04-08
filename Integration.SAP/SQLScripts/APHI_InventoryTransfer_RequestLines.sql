@@ -1,6 +1,10 @@
 SELECT T0.ItemCode
     ,T0.LineNum
 	,T0.Dscription [ItemName]
+    ,CASE 
+        WHEN ISNULL(T0.InvntryUom, '') = '' THEN 'Manual'
+        ELSE T0.InvntryUom
+     END AS [UoMCode]
 	,T0.unitMsr [UoMName]
 	,T0.U_SBAPlan [AllotedQuantity]
 	,T0.Quantity

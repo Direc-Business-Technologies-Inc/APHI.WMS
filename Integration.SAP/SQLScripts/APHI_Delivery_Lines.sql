@@ -7,7 +7,10 @@
 	,DLN1.WhsCode
 	,OWHS.WhsName
 	,DLN1.Quantity
-	,ISNULL(DLN1.unitMsr, 'Manual') [UoMCode]
+	,CASE 
+        WHEN ISNULL(T1.InvntryUom, '') = '' THEN 'Manual'
+        ELSE T1.InvntryUom
+     END AS [UoMCode]
 	,DLN1.NumPerMsr [UoMValue]
 	,OUOM.UomName [UoMName]
 FROM ODLN

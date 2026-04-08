@@ -6,7 +6,10 @@ SELECT
 	,T3.WhsName
 	,T1.ItemCode
 	,T2.ItemName
-	,REPLACE(ISNULL(T2.U_ISBN, ''), '-', '') [ISBN]
+	,CASE 
+        WHEN ISNULL(T1.InvntryUom, '') = '' THEN 'Manual'
+        ELSE T1.InvntryUom
+     END AS [UoMCode]
 	,T1.OpenQty
 	,T1.Quantity
 	,ISNULL(T1.unitMsr, 'Manual') [UoMCode]

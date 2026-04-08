@@ -2,7 +2,10 @@
      T0.ItemCode
     ,T0.ItemName
     ,T0.OnHand [Quantity]
-    ,ISNULL(T0.InvntryUom, 'Manual') [UoMCode]
+    ,CASE 
+        WHEN ISNULL(T0.InvntryUom, '') = '' THEN 'Manual'
+        ELSE T0.InvntryUom
+     END AS [UoMCode]
     ,ISNULL(T2.UomName, 'Manual') [UoMName]
     ,ISNULL(T4.BaseQty, 1) [UoMValue]
 FROM OITM T0

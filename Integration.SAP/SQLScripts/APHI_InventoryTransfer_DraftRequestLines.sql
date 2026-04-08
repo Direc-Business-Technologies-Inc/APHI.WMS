@@ -5,6 +5,10 @@
 	,T1.ItemCode
 	,T1.Dscription [ItemDescription]
 	,T1.Quantity
+	,CASE 
+        WHEN ISNULL(T1.InvntryUom, '') = '' THEN 'Manual'
+        ELSE T1.InvntryUom
+     END AS [UoMCode]
 	,ISNULL(T1.unitMsr, 'Manual') [UoMName]
 FROM ODRF T0
 INNER JOIN DRF1 T1 ON T1.DocEntry = T0.DocEntry

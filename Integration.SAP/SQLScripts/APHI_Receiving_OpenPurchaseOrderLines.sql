@@ -6,7 +6,10 @@ SELECT
 	,T1.Price
 	,T1.Quantity [TargetQuantity]
 	,T1.OpenQty [OpenQuantity]
-	,ISNULL(T1.unitMsr, 'Manual') [UoMCode]
+	,CASE 
+        WHEN ISNULL(T1.InvntryUom, '') = '' THEN 'Manual'
+        ELSE T1.InvntryUom
+     END AS [UoMCode]
 	,T1.NumPerMsr [UoMValue]
 	,T4.UomName [UoMName]
 	,T2.ItemName

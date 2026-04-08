@@ -7,7 +7,10 @@ SELECT
 	,T1.ItemCode
 	,T2.ItemName
 	,T1.Quantity
-	,ISNULL(T1.unitMsr, 'Manual') [UoMCode]
+	,CASE 
+        WHEN ISNULL(T1.InvntryUom, '') = '' THEN 'Manual'
+        ELSE T1.InvntryUom
+     END AS [UoMCode]
 	,T1.NumPerMsr [UoMValue]
 	,T3.UomName [UoMName]
 FROM OIGE T0
