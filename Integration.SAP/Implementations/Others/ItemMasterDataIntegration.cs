@@ -101,6 +101,17 @@ public class ItemMasterDataIntegration (
         return (items, rowCount?.Count ?? items.Count);
     }
 
+    public async Task<IEnumerable<InventoryCountingItemSAPDTO>> GetWarehouseItemsForCounting(string whsCode)
+    {
+        var qryDetails = qryManager.GetSqlScriptWithMetadata("APHI_Others_WhsItemsForCounting", out string qry, out bool found);
+        if (!found)
+            throw new Exception("Query for getting warehouse items for counting was not found.");
+
+        string query = qry.Replace("{WhsCode}", whsCode);
+
+        return await SLActions.RawQueryAsync<InventoryCountingItemSAPDTO>(query);
+    }
+
     public async Task<(IEnumerable<ItemSelectionSAPDTO> Data, int Count)> GetWarehouseItems(DataGridIntent intent, string whsCode)
     {
         Dictionary<string, string> columnMap = new()

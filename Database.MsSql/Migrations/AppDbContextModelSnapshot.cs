@@ -174,6 +174,54 @@ namespace Database.MsSql.Migrations
                     b.ToTable("ROL1", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Entities.Entities.Transaction.InventoryCounting.InventoryCountingDocumentDEM", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("ApprovalStatus")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Archived")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime>("CountingDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("CycleType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("DocumentTypeId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Remarks")
+                        .HasMaxLength(500)
+                        .HasColumnType("nvarchar(500)");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id")
+                        .HasName("PK_OICD");
+
+                    b.ToTable("OICD", (string)null);
+                });
+
             modelBuilder.Entity("Domain.Entities.System.DocumentNumberDEM", b =>
                 {
                     b.Property<Guid>("Id")
@@ -442,6 +490,255 @@ namespace Database.MsSql.Migrations
                         .WithMany("Permissions")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Domain.Entities.Entities.Transaction.InventoryCounting.InventoryCountingDocumentDEM", b =>
+                {
+                    b.OwnsOne("Domain.ValueObjects.Transaction.AppDocNumVO", "AppDocNum", b1 =>
+                        {
+                            b1.Property<Guid>("InventoryCountingDocumentDEMId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Value")
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)")
+                                .HasColumnName("AppDocNum");
+
+                            b1.HasKey("InventoryCountingDocumentDEMId");
+
+                            b1.ToTable("OICD");
+
+                            b1.WithOwner()
+                                .HasForeignKey("InventoryCountingDocumentDEMId");
+                        });
+
+                    b.OwnsOne("Domain.Entities.ValueObjects.Others.WarehouseVO", "Warehouse", b1 =>
+                        {
+                            b1.Property<Guid>("InventoryCountingDocumentDEMId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("WhsCode")
+                                .IsRequired()
+                                .HasMaxLength(20)
+                                .HasColumnType("nvarchar(20)")
+                                .HasColumnName("WhsCode");
+
+                            b1.Property<string>("WhsName")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("nvarchar(100)")
+                                .HasColumnName("WhsName");
+
+                            b1.HasKey("InventoryCountingDocumentDEMId");
+
+                            b1.ToTable("OICD");
+
+                            b1.WithOwner()
+                                .HasForeignKey("InventoryCountingDocumentDEMId");
+                        });
+
+                    b.OwnsOne("Domain.ValueObjects.Transaction.SapDocumentReferenceVO", "SapReference", b1 =>
+                        {
+                            b1.Property<Guid>("InventoryCountingDocumentDEMId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<int?>("BaseDocEntry")
+                                .HasColumnType("int")
+                                .HasColumnName("SapBaseDocEntry");
+
+                            b1.Property<int?>("BaseDocNum")
+                                .HasColumnType("int")
+                                .HasColumnName("SapBaseDocNum");
+
+                            b1.Property<int?>("DocEntry")
+                                .HasColumnType("int")
+                                .HasColumnName("SapDocEntry");
+
+                            b1.Property<int?>("DocNum")
+                                .HasColumnType("int")
+                                .HasColumnName("SapDocNum");
+
+                            b1.HasKey("InventoryCountingDocumentDEMId");
+
+                            b1.ToTable("OICD");
+
+                            b1.WithOwner()
+                                .HasForeignKey("InventoryCountingDocumentDEMId");
+                        });
+
+                    b.OwnsMany("Domain.Entities.ValueObjects.Transaction.InventoryCountingDocumentLineVO", "DocumentLines", b1 =>
+                        {
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int");
+
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
+
+                            b1.Property<decimal>("ActualQuantity")
+                                .HasColumnType("decimal(18,2)");
+
+                            b1.Property<string>("ISBN")
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)")
+                                .HasColumnName("ISBN");
+
+                            b1.Property<Guid>("InventoryCountingDocumentId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("ItemCode")
+                                .IsRequired()
+                                .HasMaxLength(50)
+                                .HasColumnType("nvarchar(50)");
+
+                            b1.Property<string>("ItemName")
+                                .IsRequired()
+                                .HasMaxLength(200)
+                                .HasColumnType("nvarchar(200)");
+
+                            b1.Property<decimal>("Quantity")
+                                .HasColumnType("decimal(18,2)");
+
+                            b1.Property<string>("UoMCode")
+                                .IsRequired()
+                                .HasMaxLength(20)
+                                .HasColumnType("nvarchar(20)");
+
+                            b1.Property<string>("UoMName")
+                                .IsRequired()
+                                .HasMaxLength(100)
+                                .HasColumnType("nvarchar(100)");
+
+                            b1.Property<decimal>("UoMValue")
+                                .HasColumnType("decimal(18,2)");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("InventoryCountingDocumentId");
+
+                            b1.ToTable("ICD1", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("InventoryCountingDocumentId");
+                        });
+
+                    b.OwnsMany("Domain.Entities.ValueObjects.Transaction.InventoryCountingSheetVO", "Sheets", b1 =>
+                        {
+                            b1.Property<int>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("int");
+
+                            SqlServerPropertyBuilderExtensions.UseIdentityColumn(b1.Property<int>("Id"));
+
+                            b1.Property<Guid>("CounterId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<Guid>("InventoryCountingDocumentId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Status")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<DateTime>("SubmittedDate")
+                                .HasColumnType("datetime2");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("InventoryCountingDocumentId");
+
+                            b1.ToTable("ICD2", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("InventoryCountingDocumentId");
+
+                            b1.OwnsMany("Domain.Entities.ValueObjects.Transaction.InventoryCountingSheetLineVO", "SheetLines", b2 =>
+                                {
+                                    b2.Property<int>("Id")
+                                        .ValueGeneratedOnAdd()
+                                        .HasColumnType("int");
+
+                                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b2.Property<int>("Id"));
+
+                                    b2.Property<int>("InventoryCountingSheetVOId")
+                                        .HasColumnType("int");
+
+                                    b2.Property<string>("ItemCode")
+                                        .IsRequired()
+                                        .HasMaxLength(50)
+                                        .HasColumnType("nvarchar(50)");
+
+                                    b2.Property<string>("ItemName")
+                                        .IsRequired()
+                                        .HasMaxLength(200)
+                                        .HasColumnType("nvarchar(200)");
+
+                                    b2.Property<decimal>("Quantity")
+                                        .HasColumnType("decimal(18,2)");
+
+                                    b2.Property<string>("Status")
+                                        .IsRequired()
+                                        .HasColumnType("nvarchar(max)");
+
+                                    b2.Property<string>("UoMCode")
+                                        .IsRequired()
+                                        .HasMaxLength(20)
+                                        .HasColumnType("nvarchar(20)");
+
+                                    b2.Property<string>("UoMName")
+                                        .IsRequired()
+                                        .HasMaxLength(100)
+                                        .HasColumnType("nvarchar(100)");
+
+                                    b2.Property<decimal>("UoMValue")
+                                        .HasColumnType("decimal(18,2)");
+
+                                    b2.HasKey("Id");
+
+                                    b2.HasIndex("InventoryCountingSheetVOId");
+
+                                    b2.ToTable("ICD3", (string)null);
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("InventoryCountingSheetVOId");
+                                });
+
+                            b1.OwnsOne("Domain.ValueObjects.Transaction.AppDocNumVO", "SheetNo", b2 =>
+                                {
+                                    b2.Property<int>("InventoryCountingSheetVOId")
+                                        .HasColumnType("int");
+
+                                    b2.Property<string>("Value")
+                                        .IsRequired()
+                                        .HasMaxLength(50)
+                                        .HasColumnType("nvarchar(50)")
+                                        .HasColumnName("SheetNo");
+
+                                    b2.HasKey("InventoryCountingSheetVOId");
+
+                                    b2.ToTable("ICD2");
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("InventoryCountingSheetVOId");
+                                });
+
+                            b1.Navigation("SheetLines");
+
+                            b1.Navigation("SheetNo")
+                                .IsRequired();
+                        });
+
+                    b.Navigation("AppDocNum")
+                        .IsRequired();
+
+                    b.Navigation("DocumentLines");
+
+                    b.Navigation("SapReference");
+
+                    b.Navigation("Sheets");
+
+                    b.Navigation("Warehouse")
                         .IsRequired();
                 });
 

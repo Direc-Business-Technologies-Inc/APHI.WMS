@@ -9,7 +9,7 @@ namespace Domain.Entities.Transaction.Common;
 public abstract class TransactionalDocumentDEM : AuditableDEM, ITransactionalDocument
 {
     public ApprovalStatus ApprovalStatus { get; private set; }
-    public AppDocNumVO LsmsDocNum { get; private set; }
+    public AppDocNumVO AppDocNum { get; private set; }
     public SapDocumentReferenceVO? SapReference { get; private set; } = null;
 
     public Guid DocumentTypeId { get; private set; }
@@ -27,7 +27,7 @@ public abstract class TransactionalDocumentDEM : AuditableDEM, ITransactionalDoc
     )
     {
         DocumentTypeId = Guard.Against.NullOrEmpty(documentType, nameof(documentType), "Document type cannot be null");
-        LsmsDocNum = Guard.Against.Null(appDocNums, nameof(appDocNums), "LSMS Document Series cannot be null");
+        AppDocNum = Guard.Against.Null(appDocNums, nameof(appDocNums), "LSMS Document Series cannot be null");
         ApprovalStatus = ApprovalStatus.None;
     }
 
@@ -51,7 +51,7 @@ public abstract class TransactionalDocumentDEM : AuditableDEM, ITransactionalDoc
 
     public TransactionalDocumentDEM UpdateAppDocNum(AppDocNumVO lsmsDocNum)
     {
-        LsmsDocNum = Guard.Against.Null(lsmsDocNum, nameof(lsmsDocNum), "LSMS Document Series cannot be null");
+        AppDocNum = Guard.Against.Null(lsmsDocNum, nameof(lsmsDocNum), "LSMS Document Series cannot be null");
         return this;
     }
 

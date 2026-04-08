@@ -31,6 +31,7 @@ public partial class AppTable<TItem> : BaseComponent where TItem : class
     [Parameter] public EventCallback<TItem> OnRowSelect { get; set; }
     [Parameter] public EventCallback<TItem> OnRowDeselect { get; set; }
     [Parameter] public DataGridSelectionMode DataGridSelectionMode { get; set; } = DataGridSelectionMode.Single;
+    [Parameter] public bool Visible { get; set; } = true;
     [Parameter] public bool GridSettingsLoaded { get; set; } = false;
     [Parameter] public EventCallback<bool> GridSettingsLoadedChanged { get; set; }
     [Parameter] public IList<TItem> SelectedItems { get; set; } = new List<TItem>();

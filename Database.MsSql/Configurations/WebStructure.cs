@@ -137,6 +137,6 @@ public static class WebStructure
             position: 3,
             parentId: SubRouteList1!.First(x => x.Name.Equals("Inventory")).Id,
             icon: "home_storage",
-            uri: "/transactions/inventory/inventory-transfer"),
+            uri: "/transactions/inventory/inventory-counting"),
     ];
 }

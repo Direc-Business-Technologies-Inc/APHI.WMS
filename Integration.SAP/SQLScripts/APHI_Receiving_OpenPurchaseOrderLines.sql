@@ -10,6 +10,7 @@ SELECT
 	,T1.NumPerMsr [UoMValue]
 	,T4.UomName [UoMName]
 	,T2.ItemName
+	,REPLACE(ISNULL(T2.U_ISBN, ''), '-', '') [ISBN]
 	,T1.WhsCode
 	,T3.WhsName
 	,T1.VatGroup

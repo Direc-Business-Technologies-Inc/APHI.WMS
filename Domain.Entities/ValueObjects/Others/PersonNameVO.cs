@@ -36,7 +36,7 @@ public class PersonNameVO : ValueObject
     string GetFull() => $"{FirstName}{(string.IsNullOrEmpty(MiddleName) ? "" : $"{MiddleName}")}{(string.IsNullOrEmpty(LastName) ? "" : $" {LastName}")}";
     string GetFormal() => $"{FirstName}{(string.IsNullOrEmpty(MiddleName) ? "" : $" {MiddleName.ToUpperInvariant()[0]}.")}{(string.IsNullOrEmpty(LastName) ? "" : $" {LastName}")}";
     string GetLastFirst() => $"{(string.IsNullOrEmpty(LastName) ? "" : $"{LastName}, ")}{FirstName}";
-    string GetFirstLast() => $"{FirstName}{(string.IsNullOrEmpty(LastName) ? "" : $" {LastName}")}";
+    public string GetFirstLast() => $"{FirstName}{(string.IsNullOrEmpty(LastName) ? "" : $" {LastName}")}";
     string GetFirstOnly() => FirstName;
     string GetLastOnly() => LastName ?? string.Empty;
     string GetInitials() => 

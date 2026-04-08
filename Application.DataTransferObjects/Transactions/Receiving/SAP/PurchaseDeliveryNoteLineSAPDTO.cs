@@ -7,6 +7,7 @@ public class PurchaseDeliveryNoteLineSAPDTO
     public int LineNum { get; set; }
     public string ItemCode { get; set; }
     public string ItemName { get; set; }
+    public string? ISBN { get; set; }
     public string WhsCode { get; set; }
     public string WhsName { get; set; }
     public decimal Quantity { get; set; }
