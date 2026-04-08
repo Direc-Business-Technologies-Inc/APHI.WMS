@@ -10,8 +10,8 @@ SELECT
 	,0 [Quantity]
 	,RDR1.OpenQty [OpenQty]
 	,CASE 
-        WHEN ISNULL(RDR1.InvntryUom, '') = '' THEN 'Manual'
-        ELSE RDR1.InvntryUom
+        WHEN ISNULL(RDR1.UomCode, '') = '' THEN 'Manual'
+        ELSE RDR1.UomCode
      END AS [UoMCode]
 	,RDR1.NumPerMsr [UoMValue]
 	,OUOM.UomName [UoMName]

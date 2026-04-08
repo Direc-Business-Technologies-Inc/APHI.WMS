@@ -8,8 +8,8 @@ SELECT
 	,OWHS.WhsName
 	,0 [Quantity]
 	,CASE 
-        WHEN ISNULL(RDN1.InvntryUom, '') = '' THEN 'Manual'
-        ELSE RDN1.InvntryUom
+        WHEN ISNULL(RDN1.UomCode, '') = '' THEN 'Manual'
+        ELSE RDN1.UomCode
      END AS [UoMCode]
 	,RDN1.NumPerMsr [UoMValue]
 	,OUOM.UomName [UoMName]

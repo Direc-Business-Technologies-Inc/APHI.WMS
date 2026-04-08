@@ -8,8 +8,8 @@ SELECT
 	,T1.WhsCode
 	,T3.WhsName
 	,CASE 
-        WHEN ISNULL(T1.InvntryUom, '') = '' THEN 'Manual'
-        ELSE T1.InvntryUom
+        WHEN ISNULL(T1.UomCode, '') = '' THEN 'Manual'
+        ELSE T1.UomCode
      END AS [UoMCode]
 	,T1.NumPerMsr [UoMValue]
 	,T4.UomName [UoMName]

@@ -2,8 +2,8 @@ SELECT T0.ItemCode
     ,T0.LineNum
 	,T0.Dscription [ItemName]
     ,CASE 
-        WHEN ISNULL(T0.InvntryUom, '') = '' THEN 'Manual'
-        ELSE T0.InvntryUom
+        WHEN ISNULL(T0.UomCode, '') = '' THEN 'Manual'
+        ELSE T0.UomCode
      END AS [UoMCode]
 	,T0.unitMsr [UoMName]
 	,T0.U_SBAPlan [AllotedQuantity]

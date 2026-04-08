@@ -7,8 +7,8 @@ SELECT
 	,T1.ItemCode
 	,T2.ItemName
 	,CASE 
-        WHEN ISNULL(T1.InvntryUom, '') = '' THEN 'Manual'
-        ELSE T1.InvntryUom
+        WHEN ISNULL(T1.UomCode, '') = '' THEN 'Manual'
+        ELSE T1.UomCode
      END AS [UoMCode]
 	,T1.OpenQty
 	,T1.Quantity

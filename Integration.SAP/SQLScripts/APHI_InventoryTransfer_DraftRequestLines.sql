@@ -6,8 +6,8 @@
 	,T1.Dscription [ItemDescription]
 	,T1.Quantity
 	,CASE 
-        WHEN ISNULL(T1.InvntryUom, '') = '' THEN 'Manual'
-        ELSE T1.InvntryUom
+        WHEN ISNULL(T1.UomCode, '') = '' THEN 'Manual'
+        ELSE T1.UomCode
      END AS [UoMCode]
 	,ISNULL(T1.unitMsr, 'Manual') [UoMName]
 FROM ODRF T0
