@@ -266,13 +266,13 @@
                                           Text="Save" ButtonStyle="ButtonStyle.Info"
                                           IsBusy="@AppBusyService.IsBusy(ActionSave)"
                                           Click="@SaveDocument" />
-                            <RadzenButton Visible="@(Viewing && IsEditableStatus)"
+                            <RadzenButton Visible="@(Viewing && FormData.Status.Equals(InventoryCountingDocumentStatus.Saved))"
                                           Text="Post" ButtonStyle="ButtonStyle.Success"
                                           IsBusy="@AppBusyService.IsBusy(ActionPost)"
                                           Click="@PostDocument" />
-                            <RadzenButton Visible="@(Viewing && IsEditableStatus)"
+                            <RadzenButton Visible="@(Viewing && FormData.Status.Equals(InventoryCountingDocumentStatus.Saved))"
                                           Text="Recount" ButtonStyle="ButtonStyle.Warning"
-                                          IsBusy="@AppBusyService.IsBusy(ActionRecount)"
+                                          IsBusy="@(AppBusyService.IsBusy(ActionRecount))"
                                           Click="@RecountDocument" />
                         </RadzenStack>
                     </RadzenStack>
