@@ -15,6 +15,7 @@ using Web.BlazorServer.ViewModels.Enums;
 using Web.BlazorServer.ViewModels.Others;
 using Web.BlazorServer.ViewModels.System;
 using Web.BlazorServer.ViewModels.Transaction.GoodsReturn;
+using Web.BlazorServer.ViewModels.Transaction.Commons;
 using Web.BlazorServer.ViewModels.Transaction.Receiving;
 using Web.BlazorServer.Components.Pages.Transaction.InventoryCounting.Components;
 using Web.BlazorServer.Components.Pages.Transaction.Receiving.Components;
@@ -306,7 +307,8 @@ public partial class PurchaseOrderCVUPage
             "Scan Barcode",
             new Dictionary<string, object>
             {
-                { "OnScan", EventCallback.Factory.Create<string>(this, HandleScanResult) }
+                { "OnScan", EventCallback.Factory.Create<string>(this, HandleScanResult) },
+                { "Items", FormData.DocumentLines.Cast<ItemVM>() }
             },
             options: new Radzen.DialogOptions
             {

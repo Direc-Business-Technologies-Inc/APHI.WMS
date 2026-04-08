@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Shared.Kernel;
+using Web.BlazorServer.Defaults;
 
 namespace Web.BlazorServer.Components.Pages.Transaction.Receiving;
 
@@ -11,6 +13,8 @@ public partial class ReceivingPage
 
     #region Primitives
     int SelectedTab { get; set; } = 0;
+    string ActionGetPurchaseOrders { get; } = EnumHelper.GetEnumDescription(AppActions.GetAllPurchaseOrders);
+
     #endregion Primitives
 
     #region Overrides
