@@ -34,6 +34,10 @@ internal class InventoryCountingDocumentCfg : IEntityTypeConfiguration<Inventory
             .HasConversion<string>()
             .IsRequired();
 
+        builder.Property(d => d.PrepBy)
+            .HasMaxLength(250)
+            .IsRequired();
+
         builder.Property(d => d.Remarks)
             .HasMaxLength(500);
 

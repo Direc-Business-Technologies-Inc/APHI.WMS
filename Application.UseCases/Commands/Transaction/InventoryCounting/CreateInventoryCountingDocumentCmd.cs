@@ -57,6 +57,7 @@ public class CreateInventoryCountingDocumentCmdHandler(
             new WarehouseVO(data.Warehouse.WhsCode, data.Warehouse.WhsName),
             data.CountingDate,
             data.CycleType,
+            data.PrepBy,
             documentLines,
             data.Remarks,
             sapRef

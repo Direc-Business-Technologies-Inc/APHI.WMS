@@ -19,7 +19,7 @@ public class InventoryCountingIntegration(
             payloadLines.Add(new(line.ItemCode, data.Warehouse.WhsCode, line.UoMCode, line.ActualQuantity));
 
         InventoryCountingsPayload payload = new(data.CountingDate,
-                                                data.AppDocNum.Value,
+                                                data.PrepBy,
                                                 data.Remarks ?? "WMS User",
                                                 payloadLines);
 
