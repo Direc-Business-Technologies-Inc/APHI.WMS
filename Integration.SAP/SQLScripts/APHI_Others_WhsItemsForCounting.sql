@@ -23,5 +23,5 @@ WHERE
     T0.ItemType = 'I'
     AND T0.Canceled = 'N'
     AND T0.validFor = 'Y'
-    AND T5.WhsCode = 'MAIN'
+    AND T5.WhsCode = '{WhsCode}'
     AND ISNULL(T5.OnHand, 0) > 0

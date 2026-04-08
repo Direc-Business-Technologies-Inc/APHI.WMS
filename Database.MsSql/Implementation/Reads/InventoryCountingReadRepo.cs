@@ -74,6 +74,7 @@ public class InventoryCountingReadRepo(IDbContextFactory<AppDbContext> dbContext
                 CountingDate = dem.CountingDate,
                 CycleType = dem.CycleType,
                 Status = dem.Status,
+                PrepBy = dem.PrepBy,
                 Remarks = dem.Remarks,
                 AppDocNum = new() { Value = dem.AppDocNum.Value },
                 SapReference = dem.SapReference != null ? new() { DocEntry = dem.SapReference.DocEntry ?? 0, DocNum = dem.SapReference.DocNum ?? 0 } : new(),

@@ -7,12 +7,12 @@
 @page "/transactions/sales/sales-return/request/create"
 @page "/transactions/sales/sales-return/request/view"
 @layout ProtectedLayout
-@attribute [AppAuthorizationAttribute("VIEW", "ORDN")]
+@attribute [AppAuthorizationAttribute("VIEW", "OSRN")]
 
 <PageTitle>@(Creating ? "New Sales Return Document" : string.Empty)@(Viewing ? $"Sales Return Request {FormData.SapReference.DocNum}" : string.Empty)</PageTitle>
 
 <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween" class="rz-mb-4">
-    <AppBreadCrumbs ModuleCode="ORDN" />
+    <AppBreadCrumbs ModuleCode="OSRN" />
 </RadzenStack>
 
 <AppContent>
@@ -216,8 +216,8 @@
                 <RadzenColumn>
                     <RadzenStack class="rz-mt-8" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
                         <RadzenButton IsBusy="@IsBusy" Text="Back" Disabled="@(IsBusy && Creating)" ButtonStyle="ButtonStyle.Base" Click="@Back" />
-                        <RadzenButton IsBusy="@IsBusy" Text="Create Sales Return" Visible="@(Can.Create("ORDN") && Viewing)" ButtonStyle="ButtonStyle.Base" Click="@InitializeEditing" />
-                        <RadzenStack Visible="@(Can.Create("ORDN") && Creating)" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="16px">
+                        <RadzenButton IsBusy="@IsBusy" Text="Create Sales Return" Visible="@(Can.Create("OSRN") && Viewing)" ButtonStyle="ButtonStyle.Base" Click="@InitializeEditing" />
+                        <RadzenStack Visible="@(Can.Create("OSRN") && Creating)" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="16px">
                             <RadzenButton IsBusy="@IsBusy" ButtonStyle="ButtonStyle.Base" Click="@CancelEditing">
                                 Cancel
                             </RadzenButton>

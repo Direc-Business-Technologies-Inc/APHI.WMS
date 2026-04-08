@@ -13,6 +13,7 @@ public class InventoryCountingDocumentDEM : TransactionalDocumentDEM
     public DateTime CountingDate { get; private set; }
     public CycleType CycleType { get; private set; }
     public InventoryCountingDocumentStatus Status { get; private set; }
+    public string PrepBy { get; private set; }
     public string? Remarks { get; private set; }
 
     public List<InventoryCountingDocumentLineVO> _documentLines = [];
@@ -29,6 +30,7 @@ public class InventoryCountingDocumentDEM : TransactionalDocumentDEM
         WarehouseVO warehouse,
         DateTime countingDate,
         CycleType cycleType,
+        string prepBy,
         List<InventoryCountingDocumentLineVO> documentLines,
         string? remarks = null,
         SapDocumentReferenceVO? sapReference = null) 
@@ -37,6 +39,7 @@ public class InventoryCountingDocumentDEM : TransactionalDocumentDEM
         Warehouse = Guard.Against.Null(warehouse, nameof(WarehouseVO), "Warehouse Code cannot be null or empty");
         CountingDate = Guard.Against.NullOrOutOfSQLDateRange(countingDate, nameof(CountingDate), "Counting Date cannot be null or out of range");
         CycleType = Guard.Against.EnumOutOfRange<CycleType>(cycleType,  nameof(CycleType), "Cycle Type must be a valid Cycle");
+        PrepBy = Guard.Against.NullOrEmpty(prepBy, nameof(PrepBy), "Prepared By cannot be null or empty");
         Status = InventoryCountingDocumentStatus.Open;
         Remarks = remarks;
 

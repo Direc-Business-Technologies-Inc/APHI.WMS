@@ -1,3 +1,4 @@
+using Mapster;
 using Microsoft.AspNetCore.Components;
 using Radzen;
 using Radzen.Blazor;
@@ -9,6 +10,7 @@ using Web.BlazorServer.Defaults;
 using Web.BlazorServer.Handlers.Repositories.Transaction.InventoryCounting;
 using Web.BlazorServer.Services.Repositories;
 using Web.BlazorServer.ViewModels.Others;
+using Web.BlazorServer.ViewModels.Transaction.Commons;
 using Web.BlazorServer.ViewModels.Transaction.InventoryCounting;
 
 namespace Web.BlazorServer.Components.Pages.Transaction.InventoryCounting;
@@ -147,7 +149,8 @@ public partial class InventoryCountingSheetCreatePage
             "Scan Barcode",
             new Dictionary<string, object>
             {
-                { "OnScan", EventCallback.Factory.Create<string>(this, HandleScanResult) }
+                { "OnScan", EventCallback.Factory.Create<string>(this, HandleScanResult) },
+                { "Items", FormData.SheetLines.Cast<ItemVM>() }
             },
             options: new Radzen.DialogOptions
             {

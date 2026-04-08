@@ -48,7 +48,6 @@ public partial class AppBreadCrumbs
 
                 var response = await NavigationRouteHandler.GetModuleNavigationRoutesAsync(ModuleCode);
 
-                AppBusyService.SetBusy(ActionGetNavigationRoutes, false);
                 return response;
 
             }, AppActionOptionPresets.Loading(ActionGetNavigationRoutes));

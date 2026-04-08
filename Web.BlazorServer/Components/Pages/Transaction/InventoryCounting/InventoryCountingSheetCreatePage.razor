@@ -73,6 +73,7 @@
                                                   Property="@nameof(InventoryCountingSheetLineVM.UoMName)"
                                                   Title="UoM" Width="100px" Type="@typeof(string)" />
                             <RadzenDataGridColumn TItem="InventoryCountingSheetLineVM"
+                                                  Property="@nameof(InventoryCountingSheetLineVM.Quantity)"
                                                   Title="Count Qty" Width="160px">
                                 <Template Context="line">
                                     <RadzenNumeric Format="N0" @bind-Value="@line.Quantity" Min="0" ShowUpDown />

@@ -18,8 +18,8 @@ public class SaveInventoryCountingDocumentCmdHandler(
         if (dem == null)
             throw new Exception("Inventory Counting Document not found.");
 
-        if (dem.Status != InventoryCountingDocumentStatus.Open)
-            throw new Exception("Inventory Counting Document is not in OPEN state.");
+        if (!(dem.Status == InventoryCountingDocumentStatus.Open || dem.Status == InventoryCountingDocumentStatus.Recount))
+            throw new Exception("Inventory Counting Document is not in OPEN or RECOUNT state.");
 
         dem.UpdateStatus(InventoryCountingDocumentStatus.Saved);
 

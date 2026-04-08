@@ -69,6 +69,8 @@ public partial class InventoryCountingCVUPage
         base.OnInitialized();
         if (Viewing)
             AppBusyService.SetBusy(ActionView, true);
+        if (Creating)
+            FormData.PrepBy = AuthenticationService.GetUserName();
     }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
@@ -92,6 +94,7 @@ public partial class InventoryCountingCVUPage
         }, AppActionOptionPresets.Loading(ActionView));
 
         AppBusyService.SetBusy(ActionView, false);
+        await InvokeAsync(StateHasChanged);
 
         action.OnSuccess(result =>
         {
@@ -127,6 +130,7 @@ public partial class InventoryCountingCVUPage
         }, AppActionOptionPresets.Confirmed(ActionCreate));
 
         AppBusyService.SetBusy(ActionCreate, false);
+        await InvokeAsync(StateHasChanged);
 
         action.OnSuccess(async result =>
         {
@@ -176,6 +180,7 @@ public partial class InventoryCountingCVUPage
 
             AppBusyService.SetBusy(ActionGetWarehouses, false);
             await InvokeAsync(StateHasChanged);
+
         }, AppActionOptionPresets.Loading(ActionGetWarehouses));
     }
 
@@ -197,6 +202,7 @@ public partial class InventoryCountingCVUPage
         }, AppActionOptionPresets.Loading(ActionGetItems));
 
         AppBusyService.SetBusy(ActionGetItems, false);
+        await InvokeAsync(StateHasChanged);
 
         action.OnSuccess(async result =>
         {
@@ -221,6 +227,8 @@ public partial class InventoryCountingCVUPage
         }, AppActionOptionPresets.Confirmed(ActionSave));
 
         AppBusyService.SetBusy(ActionSave, false);
+        await InvokeAsync(StateHasChanged);
+
         action.OnSuccess(async _ => await InitializeEditing());
     }
 
@@ -233,6 +241,8 @@ public partial class InventoryCountingCVUPage
         }, AppActionOptionPresets.Confirmed(ActionPost));
 
         AppBusyService.SetBusy(ActionPost, false);
+        await InvokeAsync(StateHasChanged);
+
         action.OnSuccess(async _ => await InitializeEditing());
     }
 
@@ -245,6 +255,8 @@ public partial class InventoryCountingCVUPage
         }, AppActionOptionPresets.Confirmed(ActionRecount));
 
         AppBusyService.SetBusy(ActionRecount, false);
+        await InvokeAsync(StateHasChanged);
+
         action.OnSuccess(async _ => await InitializeEditing());
     }
 
