@@ -1,4 +1,4 @@
-﻿using Application.DataTransferObjects.Others.SAP;
+using Application.DataTransferObjects.Others.SAP;
 using Application.DataTransferObjects.Transactions.GoodsReturn.SAP;
 using Application.UseCases.Repositories.Integration.Others;
 using Database.Libraries.Repositories;
@@ -14,8 +14,7 @@ public class ItemMasterDataIntegration (
     IServiceLayerActions SLActions)
     : IItemMasterDataIntegration
 {
-    public async Task<(IEnumerable<ItemSelectionSAPDTO> Data, int Count)> GetItemWarehouseLevel(DataGridIntent intent, string whsCode, List<string> itemCodes)
-    {
+    public async Task<(IEnumerable<ItemSelectionSAPDTO> Data, int Count)> GetItemWarehouseLevel(DataGridIntent intent, string whsCode, List<string> itemCodes)    {
         Dictionary<string, string> columnMap = new()
             {
                 { "ItemCode", "T0.ItemCode" },

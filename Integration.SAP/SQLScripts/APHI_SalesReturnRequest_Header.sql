@@ -8,7 +8,7 @@ SELECT
 	,OCRD.CntctPrsn [ContactPerson]
 	,ORRR.NumAtCard
 	,ORRR.U_SchlYear [SchoolYear]
-	,ORDN.U_RetType [ReturnType]
+	,ORRR.U_RetType [ReturnType]
 	,ORRR.U_PURNo [PURNo]
 	,ORRR.U_DRNo [DRNo]
 	,ORRR.U_SONo [SONo]

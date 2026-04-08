@@ -31,13 +31,21 @@ public partial class NavigationMenu : BaseComponent
             {
 
                 var response = await NavigationRouteHandler.GetAllowedRoutesAsync(userId);
+                AppBusyService.SetBusy(GetNavigationRoutes, false);
+                await InvokeAsync(StateHasChanged);
+
                 return response;
             }
             else
             {
                 var response = await NavigationRouteHandler.GetAllRoutesAsync();
+                AppBusyService.SetBusy(GetNavigationRoutes, false);
+                await InvokeAsync(StateHasChanged);
+
                 return response;
             }
+
+
         },
         AppActionOptionPresets.Loading(GetNavigationRoutes));
 
