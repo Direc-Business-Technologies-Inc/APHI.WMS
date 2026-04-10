@@ -5,6 +5,7 @@ using Application.UseCases.Repositories.Integration.Transaction.InventoryCountin
 using Domain.Entities.Entities.Transaction.InventoryCounting;
 using Domain.Entities.Enums.Transaction.InventoryCounting;
 using MediatR;
+using Shared.Services.Repository;
 
 namespace Application.UseCases.Commands.Transaction.InventoryCounting;
 
@@ -13,6 +14,7 @@ public record PostInventoryCountingDocumentCmd(Guid DocumentId) : ITransactional
 public class PostInventoryCountingDocumentCmdHandler(
     IAppReadRepository appReadRepo,
     IAppCommandRepository appCommandRepo,
+    ICurrentUserService currentUserService,
     IInventoryCountingIntegration inventoryCountingIntegration,
     IInventoryCountingReadRepo readRepo)
     : IRequestHandler<PostInventoryCountingDocumentCmd, bool>
@@ -20,6 +22,9 @@ public class PostInventoryCountingDocumentCmdHandler(
     public async Task<bool> Handle(PostInventoryCountingDocumentCmd request, CancellationToken cancellationToken)
     {
         InventoryCountingDocumentDTO? dto = await readRepo.GetInventoryCountingDocument(request.DocumentId) ?? throw new Exception("Inventory Counting Document not found.");
+
+        if (string.IsNullOrEmpty(dto.PrepBy))
+            dto.PrepBy = currentUserService.UserName;
 
         if (dto.Status != InventoryCountingDocumentStatus.Saved)
             throw new Exception("Inventory Counting Document is not in SAVED state.");

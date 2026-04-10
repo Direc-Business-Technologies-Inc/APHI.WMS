@@ -104,6 +104,10 @@ public partial class InventoryCountingCVUPage
                 return Task.CompletedTask;
             }
             result.Adapt(FormData);
+
+            if (string.IsNullOrEmpty(FormData.PrepBy))
+                FormData.PrepBy = AuthenticationService.GetUserName();
+
             AdaptToClone();
             return Task.CompletedTask;
         });
@@ -112,7 +116,7 @@ public partial class InventoryCountingCVUPage
     protected override async Task CancelEditing()
     {
         AdaptToForm();
-        GoBack();
+        await GoBack();
     }
 
     protected override async Task HandleSubmit()
@@ -207,7 +211,7 @@ public partial class InventoryCountingCVUPage
         action.OnSuccess(async result =>
         {
             FormData.DocumentLines = [.. (result ?? []).Where(x => x.Quantity > 0)];
-            
+
             if (DocumentLinesTable is not null)
                 await DocumentLinesTable.DataGrid.Reload();
 
