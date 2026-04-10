@@ -3,8 +3,9 @@ SELECT
     ,T0.ItemName
     ,T5.WhsCode
     ,T5.OnHand [Quantity]
-    ,CASE 
+    ,CASE
         WHEN ISNULL(T0.InvntryUom, '') = '' THEN 'Manual'
+        WHEN T2.UomEntry IS NOT NULL THEN T2.UomCode
         ELSE T0.InvntryUom
      END AS [UoMCode]
     ,ISNULL(T2.UomName, 'Manual') [UoMName]
@@ -14,7 +15,7 @@ SELECT
     ,REPLACE(ISNULL(T0.U_ISBN, ''), '-', '') [ISBN]
 FROM OITM T0
 INNER JOIN OITB T1 ON T0.ItmsGrpCod = T1.ItmsGrpCod
-LEFT JOIN OUOM T2 ON T0.InvntryUom = T2.UomCode
+LEFT JOIN OUOM T2 ON T0.InvntryUom = T2.UomName
 LEFT JOIN OUGP T3 ON T0.UgpEntry = T3.UgpEntry
 LEFT JOIN UGP1 T4 ON T3.UgpEntry = T4.UgpEntry
                   AND T4.UomEntry = T2.UomEntry
