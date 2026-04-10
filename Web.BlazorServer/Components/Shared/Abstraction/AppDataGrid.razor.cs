@@ -9,7 +9,7 @@ using Web.BlazorServer.ViewModels.Abstraction;
 
 namespace Web.BlazorServer.Components.Shared.Abstraction;
 
-public partial class AppDataGrid<TItem> : BaseComponent where TItem : class
+public partial class AppDataGrid<TItem> : BaseComponent, IAsyncDisposable where TItem : class
 {
     #region Injects
     [Inject] IGridSettingsService GridSettingsService { get; set; } = default!;
@@ -41,6 +41,7 @@ public partial class AppDataGrid<TItem> : BaseComponent where TItem : class
     [Parameter] public string ActionName { get; set; } = string.Empty;
     [Parameter] public bool ClientSide { get; set; }
     [Parameter] public IEnumerable<AppFilterDescriptor> DefaultFilters { get; set; } = [];
+    [Parameter] public bool ClearOnDispose { get; set; } = false;
     #endregion Parameter
 
     bool _isFirstLoad { get; set; } = true;
@@ -138,6 +139,12 @@ public partial class AppDataGrid<TItem> : BaseComponent where TItem : class
 
         await DataGrid.ReloadSettings();
         await DataGrid.Reload();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        if (ClearOnDispose)
+            await GridSettingsService.ClearTransientStateAsync(DataGrid);
     }
 
 }

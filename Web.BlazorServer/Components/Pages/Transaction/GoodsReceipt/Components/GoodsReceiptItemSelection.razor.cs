@@ -110,8 +110,4 @@ public partial class GoodsReceiptItemSelection
         await InvokeAsync(StateHasChanged);
     }
 
-    public async ValueTask DisposeAsync()
-    {
-        await GridSettingsService.UnsetGridSettings(ReceiptItemsDataGrid.DataGrid);
-    }
 }

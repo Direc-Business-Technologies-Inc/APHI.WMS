@@ -102,8 +102,4 @@ public partial class InventoryCountingItemSelection
         await InvokeAsync(StateHasChanged);
     }
 
-    public async ValueTask DisposeAsync()
-    {
-        await GridSettingsService.UnsetGridSettings(ItemsDataGrid.DataGrid);
-    }
 }

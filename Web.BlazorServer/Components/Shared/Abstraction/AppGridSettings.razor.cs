@@ -102,6 +102,12 @@ public partial class AppGridSettings<TItem>
         NavigationManager.Refresh(true);
         DialogService.Close();
     }
+
+    async Task ClearSettingsAsync()
+    {
+        await GridSettingsService.UnsetGridSettings(Grid);
+        RefreshPage();
+    }
     #endregion Custom Functions
 
     #region Implements

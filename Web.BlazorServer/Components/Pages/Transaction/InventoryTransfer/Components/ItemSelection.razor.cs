@@ -118,8 +118,4 @@ public partial class ItemSelection
         await InvokeAsync(StateHasChanged);
     }
 
-    public async ValueTask DisposeAsync()
-    {
-        await GridSettingsService.UnsetGridSettings(ItemsDataGrid.DataGrid);
-    }
 }

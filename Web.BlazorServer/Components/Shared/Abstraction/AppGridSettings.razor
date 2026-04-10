@@ -46,7 +46,8 @@
             <RadzenLabel Component="table_settings_allow_sotring" Text="Allow Sorting" />
         </RadzenStack>
     </RadzenStack>
-    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End" class="rz-mt-8">
+    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End" Gap="8px" class="rz-mt-8">
+        <RadzenButton Text="Clear Settings" ButtonStyle="ButtonStyle.Danger" Variant="Variant.Outlined" Click="@ClearSettingsAsync" />
         <RadzenButton Text="Save" ButtonStyle="ButtonStyle.Info" Click="@RefreshPage" />
     </RadzenStack>
 </RadzenStack>

@@ -23,6 +23,8 @@
                 Settings=@(GridSettings)
                 SettingsChanged=@(async args => GridSettings = await GridSettingsService.GridSettingsChanged(DataGrid, args))
                 AllowPaging
+                AllowFiltering
+                AllowSorting
                 ShowPagingSummary
                 PagerHorizontalAlign="@HorizontalAlign.Right">
 

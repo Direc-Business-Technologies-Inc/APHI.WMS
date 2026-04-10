@@ -14,7 +14,7 @@ using Web.BlazorServer.ViewModels.Transaction.GoodsReturn;
 
 namespace Web.BlazorServer.Components.Pages.Transaction.GoodsReturn.Components;
 
-public partial class GoodsReturnItemSelection : IAsyncDisposable
+public partial class GoodsReturnItemSelection
 {
     [Inject] IItemMasterDataHandler ItemsHandler { get; set; }
 
@@ -111,8 +111,4 @@ public partial class GoodsReturnItemSelection : IAsyncDisposable
         await InvokeAsync(StateHasChanged);
     }
 
-    public async ValueTask DisposeAsync()
-    {
-        await GridSettingsService.UnsetGridSettings(ReturnItemsDataGrid.DataGrid);
-    }
 }
