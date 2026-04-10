@@ -41,6 +41,7 @@ public partial class AppDataGrid<TItem> : BaseComponent, IAsyncDisposable where 
     [Parameter] public string ActionName { get; set; } = string.Empty;
     [Parameter] public bool ClientSide { get; set; }
     [Parameter] public IEnumerable<AppFilterDescriptor> DefaultFilters { get; set; } = [];
+    [Parameter] public AppFilterDescriptor? SearchFilter { get; set; }
     [Parameter] public bool ClearOnDispose { get; set; } = false;
     #endregion Parameter
 
@@ -95,6 +96,9 @@ public partial class AppDataGrid<TItem> : BaseComponent, IAsyncDisposable where 
             DatagridAdapter.AdaptToPagination();
 
             DatagridAdapter.AddFilters([.. DefaultFilters]);
+
+            if (SearchFilter is not null)
+                DatagridAdapter.AddFilter(SearchFilter);
 
             DGResult = await DataGetter!(DatagridAdapter.QueryIntent);
         }

@@ -29,7 +29,8 @@ public partial class InventoryCountingSheetCreatePage
     #endregion Injects
 
     #region Primitives
-    bool IsLoadingData => AppBusyService.IsBusy(ActionView);
+    bool _isInitialLoading = true;
+    bool IsLoadingData => _isInitialLoading || AppBusyService.IsBusy(ActionView);
 
     readonly string ActionView = EnumHelper.GetEnumDescription(AppActions.ViewInventoryCountingDocument);
     readonly string ActionCreate = EnumHelper.GetEnumDescription(AppActions.CreateInventoryCountingSheet);
@@ -92,55 +93,65 @@ public partial class InventoryCountingSheetCreatePage
     #region Custom Functions
     async Task LoadDataAsync()
     {
-        if (!Document.HasValue)
+        if (loadingScreenProvider is not null) loadingScreenProvider.IsLoading = true;
+        try
         {
-            AppBusyService.SetBusy(ActionView, false);
-            return;
-        }
-
-        GridSettingsLoaded = true;
-
-        var action = await AppActionFactory.RunAsync(async () =>
-        {
-            AppBusyService.SetBusy(ActionView, true);
-            return await InventoryCountingHandler.GetInventoryCountingDocumentAsync(Document.Value);
-        }, AppActionOptionPresets.Loading(ActionView));
-
-        AppBusyService.SetBusy(ActionView, false);
-
-        action.OnSuccess(result =>
-        {
-            if (result is null)
+            if (!Document.HasValue)
             {
-                ToastService.Error("Inventory Counting document not found.");
-                return Task.CompletedTask;
+                return;
             }
 
-            ParentDocument = result;
+            GridSettingsLoaded = true;
 
-            // Map document lines → sheet lines (ISBN carried over, count starts at 0)
-            FormData.InventoryCountingDocumentId = result.Id;
-            FormData.SheetLines = [.. result.DocumentLines.Select(dl => new InventoryCountingSheetLineVM
+            var action = await AppActionFactory.RunAsync(async () =>
             {
-                ItemCode = dl.ItemCode,
-                ItemName = dl.ItemName,
-                Quantity = 0,
-                UoMCode = dl.UoMCode,
-                UoMValue = dl.UoMValue,
-                UoMName = dl.UoMName,
-                ISBN = dl.ISBN,
-            })];
+                AppBusyService.SetBusy(ActionView, true);
+                return await InventoryCountingHandler.GetInventoryCountingDocumentAsync(Document.Value);
+            }, AppActionOptionPresets.Loading(ActionView));
 
-            FormData.Counter = new UserDetailVM
+            AppBusyService.SetBusy(ActionView, false);
+
+            action.OnSuccess(result =>
             {
-                UserId = CurrentUserService.UserId,
-                Name = CurrentUserService.UserName,
-            };
-            FormData.SubmittedDate = DateTime.Today;
+                if (result is null)
+                {
+                    ToastService.Error("Inventory Counting document not found.");
+                    return Task.CompletedTask;
+                }
 
-            AdaptToClone();
-            return Task.CompletedTask;
-        });
+                ParentDocument = result;
+
+                // Map document lines → sheet lines (ISBN carried over, count starts at 0)
+                FormData.InventoryCountingDocumentId = result.Id;
+                FormData.SheetLines = [.. result.DocumentLines.Select(dl => new InventoryCountingSheetLineVM
+                {
+                    ItemCode = dl.ItemCode,
+                    ItemName = dl.ItemName,
+                    Quantity = 0,
+                    UoMCode = dl.UoMCode,
+                    UoMValue = dl.UoMValue,
+                    UoMName = dl.UoMName,
+                    ISBN = dl.ISBN,
+                })];
+
+                FormData.Counter = new UserDetailVM
+                {
+                    UserId = CurrentUserService.UserId,
+                    Name = CurrentUserService.UserName,
+                };
+                FormData.SubmittedDate = DateTime.Today;
+
+                AdaptToClone();
+                return Task.CompletedTask;
+            });
+        }
+        finally
+        {
+            _isInitialLoading = false;
+            if (loadingScreenProvider is not null) loadingScreenProvider.IsLoading = false;
+            AppBusyService.SetBusy(ActionView, false);
+            await InvokeAsync(StateHasChanged);
+        }
     }
 
     async Task OpenScannerDialog()

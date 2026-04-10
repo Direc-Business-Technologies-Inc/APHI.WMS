@@ -23,7 +23,8 @@ public partial class InventoryCountingSheetViewPage
     #region Primitives
     Guid DocumentId { get; set; }
 
-    bool IsLoadingData => AppBusyService.IsBusy(ActionView);
+    bool _isInitialLoading = true;
+    bool IsLoadingData => _isInitialLoading || AppBusyService.IsBusy(ActionView);
     bool GridSettingsLoaded { get; set; }
 
     readonly string ActionView   = EnumHelper.GetEnumDescription(AppActions.ViewInventoryCountingDocument);
@@ -64,37 +65,47 @@ public partial class InventoryCountingSheetViewPage
     #region Custom Functions
     async Task LoadSheetAsync()
     {
-        if (string.IsNullOrEmpty(Document) || string.IsNullOrWhiteSpace(SheetNo))
+        if (loadingScreenProvider is not null) loadingScreenProvider.IsLoading = true;
+        try
         {
-            AppBusyService.SetBusy(ActionView, false);
-            return;
-        }
-
-        GridSettingsLoaded = true;
-
-        var action = await AppActionFactory.RunAsync(async () =>
-        {
-            AppBusyService.SetBusy(ActionView, true);
-            return await InventoryCountingHandler.GetInventoryCountingDocumentAsync(DocumentId);
-        }, AppActionOptionPresets.Loading(ActionView));
-
-        AppBusyService.SetBusy(ActionView, false);
-
-        action.OnSuccess(result =>
-        {
-            if (result is null)
+            if (string.IsNullOrEmpty(Document) || string.IsNullOrWhiteSpace(SheetNo))
             {
-                ToastService.Error("Inventory Counting document not found.");
-                return Task.CompletedTask;
+                return;
             }
 
-            Sheet = result.Sheets.FirstOrDefault(s => s.SheetNo.Value == SheetNo);
+            GridSettingsLoaded = true;
 
-            if (Sheet is null)
-                ToastService.Error($"Sheet {SheetNo} was not found in this document.");
+            var action = await AppActionFactory.RunAsync(async () =>
+            {
+                AppBusyService.SetBusy(ActionView, true);
+                return await InventoryCountingHandler.GetInventoryCountingDocumentAsync(DocumentId);
+            }, AppActionOptionPresets.Loading(ActionView));
 
-            return Task.CompletedTask;
-        });
+            AppBusyService.SetBusy(ActionView, false);
+
+            action.OnSuccess(result =>
+            {
+                if (result is null)
+                {
+                    ToastService.Error("Inventory Counting document not found.");
+                    return Task.CompletedTask;
+                }
+
+                Sheet = result.Sheets.FirstOrDefault(s => s.SheetNo.Value == SheetNo);
+
+                if (Sheet is null)
+                    ToastService.Error($"Sheet {SheetNo} was not found in this document.");
+
+                return Task.CompletedTask;
+            });
+        }
+        finally
+        {
+            _isInitialLoading = false;
+            if (loadingScreenProvider is not null) loadingScreenProvider.IsLoading = false;
+            AppBusyService.SetBusy(ActionView, false);
+            await InvokeAsync(StateHasChanged);
+        }
     }
 
     async Task SyncSheet()

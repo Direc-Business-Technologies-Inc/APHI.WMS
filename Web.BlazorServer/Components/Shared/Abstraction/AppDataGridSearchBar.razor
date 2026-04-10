@@ -1,0 +1,20 @@
+@inherits BaseComponent
+@typeparam TItem where TItem : class
+
+<RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0.25rem">
+    <RadzenTextBox @bind-Value="_searchValue"
+                   @oninput="OnInputChanged"
+                   @onkeydown="OnKeyDownAsync"
+                   Placeholder="@Placeholder"
+                   Style="min-width: 220px;" />
+    @if (!string.IsNullOrEmpty(_searchValue))
+    {
+        <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light"
+                      Size="ButtonSize.Small" Variant="Variant.Text"
+                      Click="@ClearSearchAsync" title="Clear search" />
+    }
+    else
+    {
+        <RadzenIcon Icon="search" Style="color: var(--rz-text-secondary-color);" />
+    }
+</RadzenStack>
