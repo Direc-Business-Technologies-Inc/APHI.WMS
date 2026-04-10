@@ -13,7 +13,8 @@
                  SelectedItems="@SelectedItems"
                  DataGridSelectionMode="DataGridSelectionMode.Multiple"
                  OnRowSelect="@OnRowSelect"
-                 OnRowDeselect="@OnRowDeselect">
+                 OnRowDeselect="@OnRowDeselect"
+                 ClearOnDispose="true">
         <HeaderTemplate>
             <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
                 <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />

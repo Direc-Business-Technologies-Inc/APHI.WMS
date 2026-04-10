@@ -41,6 +41,7 @@ public partial class AppDataGrid<TItem> : BaseComponent, IAsyncDisposable where 
     [Parameter] public string ActionName { get; set; } = string.Empty;
     [Parameter] public bool ClientSide { get; set; }
     [Parameter] public IEnumerable<AppFilterDescriptor> DefaultFilters { get; set; } = [];
+    [Parameter] public bool ClearOnDispose { get; set; } = false;
     #endregion Parameter
 
     bool _isFirstLoad { get; set; } = true;
@@ -142,7 +143,8 @@ public partial class AppDataGrid<TItem> : BaseComponent, IAsyncDisposable where 
 
     public async ValueTask DisposeAsync()
     {
-        await GridSettingsService.ClearTransientStateAsync(DataGrid);
+        if (ClearOnDispose)
+            await GridSettingsService.ClearTransientStateAsync(DataGrid);
     }
 
 }

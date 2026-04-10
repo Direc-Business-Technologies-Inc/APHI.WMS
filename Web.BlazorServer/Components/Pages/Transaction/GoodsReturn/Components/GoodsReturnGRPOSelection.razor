@@ -1,7 +1,7 @@
 ﻿@using Web.BlazorServer.ViewModels.Transaction.Receiving
 @inherits BaseComponent
 
-<AppDataGrid @ref="@PurchaseDeliveryNoteDataGrid" Id="goods_return_grpo_selection_grid" TItem="PurchaseDeliveryNoteDataGridVM" DataGetter="@LoadDataAsync" GridSettings="@PurchaseDeliveryNoteDataGridSettings" @bind-GridSettingsLoaded="@GridSettingsLoaded" ActionName="@ActionGetPurchaseDeliveryNotes">
+<AppDataGrid @ref="@PurchaseDeliveryNoteDataGrid" Id="goods_return_grpo_selection_grid" TItem="PurchaseDeliveryNoteDataGridVM" DataGetter="@LoadDataAsync" GridSettings="@PurchaseDeliveryNoteDataGridSettings" @bind-GridSettingsLoaded="@GridSettingsLoaded" ActionName="@ActionGetPurchaseDeliveryNotes" ClearOnDispose="true">
     <HeaderTemplate>
         <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
             <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />
