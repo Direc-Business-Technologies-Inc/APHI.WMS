@@ -35,7 +35,7 @@ public class GridSettingsService(
             if (!string.IsNullOrEmpty(gridOtherSettings))
             {
                 OtherTableSettings? ots = JsonSerializer.Deserialize<OtherTableSettings>(gridOtherSettings);
-                if (ots is not null)
+                if (ots is not null && (DateTime.UtcNow - ots.SavedAt).TotalDays <= 30)
                 {
                     grid.FilterMode = ots.FilterMode;
                     grid.AllowPaging = ots.AllowPaging;
@@ -46,6 +46,10 @@ public class GridSettingsService(
                     grid.GridLines = ots.GridLines;
                     grid.UpdatePickableColumns();
                     PagingChanged(grid, ots.AllowPaging);
+                }
+                else if (ots is not null)
+                {
+                    await JSRuntime.InvokeVoidAsync("window.localStorage.removeItem", $"{value}-OTSET");
                 }
             }
         }
@@ -110,6 +114,38 @@ public class GridSettingsService(
         assignSetting(setting);
     }
 
+    public async Task ClearTransientStateAsync<TItem>(RadzenDataGrid<TItem> grid)
+    {
+        if (grid is null || !grid.Attributes.TryGetValue("id", out var value)) return;
+
+        string? raw = null;
+        await LoadSettingAsync($"{value}-TSET", s => raw = s);
+
+        DataGridSettings settings = string.IsNullOrEmpty(raw)
+            ? new DataGridSettings()
+            : JsonSerializer.Deserialize<DataGridSettings>(raw) ?? new DataGridSettings();
+
+        settings.CurrentPage = 0;
+
+        if (settings.Columns is not null)
+        {
+            foreach (var col in settings.Columns)
+            {
+                col.FilterValue = null;
+                col.SecondFilterValue = null;
+                col.FilterOperator = default;
+                col.SecondFilterOperator = default;
+                col.LogicalFilterOperator = default;
+                col.CustomFilterExpression = null;
+                col.SortOrder = null;
+                col.SortIndex = null;
+            }
+        }
+
+        await JSRuntime.InvokeVoidAsync("window.localStorage.setItem",
+            $"{value}-TSET", JsonSerializer.Serialize(settings));
+    }
+
     public async Task UnsetGridSettings<TItem>(RadzenDataGrid<TItem> grid)
     {
         await Task.CompletedTask;
@@ -146,4 +182,5 @@ class OtherTableSettings(
     public bool AllowFiltering { get; set; } = allowFiltering;
     public bool AllowSorting { get; set; } = allowSorting;
     public DataGridGridLines GridLines { get; set; } = gridLines;
+    public DateTime SavedAt { get; set; } = DateTime.UtcNow;
 }

@@ -9,7 +9,7 @@ using Web.BlazorServer.ViewModels.Abstraction;
 
 namespace Web.BlazorServer.Components.Shared.Abstraction;
 
-public partial class AppDataGrid<TItem> : BaseComponent where TItem : class
+public partial class AppDataGrid<TItem> : BaseComponent, IAsyncDisposable where TItem : class
 {
     #region Injects
     [Inject] IGridSettingsService GridSettingsService { get; set; } = default!;
@@ -138,6 +138,11 @@ public partial class AppDataGrid<TItem> : BaseComponent where TItem : class
 
         await DataGrid.ReloadSettings();
         await DataGrid.Reload();
+    }
+
+    public async ValueTask DisposeAsync()
+    {
+        await GridSettingsService.ClearTransientStateAsync(DataGrid);
     }
 
 }
