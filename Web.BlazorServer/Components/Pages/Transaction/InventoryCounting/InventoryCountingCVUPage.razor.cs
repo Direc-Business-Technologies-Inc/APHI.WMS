@@ -34,7 +34,8 @@ public partial class InventoryCountingCVUPage
     PageActionTypeEnum PageAction { get; set; }
     bool Creating => PageAction == PageActionTypeEnum.Create;
     bool Viewing => PageAction == PageActionTypeEnum.View;
-    bool IsLoadingData => AppBusyService.IsBusy(ActionView);
+    bool _isInitialLoading = true;
+    bool IsLoadingData => _isInitialLoading || AppBusyService.IsBusy(ActionView);
     bool IsLoadingWarehouseItems => AppBusyService.IsBusy(ActionGetItems);
     bool IsEditableStatus => FormData.Status is InventoryCountingDocumentStatus.Open
                                              or InventoryCountingDocumentStatus.Recount;
@@ -147,15 +148,23 @@ public partial class InventoryCountingCVUPage
     #region Custom Functions
     async Task LoadDataAsync()
     {
-        GridSettingsLoaded = true;
+        if (loadingScreenProvider is not null) loadingScreenProvider.IsLoading = true;
+        try
+        {
+            GridSettingsLoaded = true;
 
-        await LoadWarehouses(new());
+            await LoadWarehouses(new());
 
-        if (Viewing)
-            await InitializeEditing();
-
-        AppBusyService.SetBusy(ActionView, false);
-        await InvokeAsync(StateHasChanged);
+            if (Viewing)
+                await InitializeEditing();
+        }
+        finally
+        {
+            _isInitialLoading = false;
+            if (loadingScreenProvider is not null) loadingScreenProvider.IsLoading = false;
+            AppBusyService.SetBusy(ActionView, false);
+            await InvokeAsync(StateHasChanged);
+        }
     }
 
     async Task LoadWarehouses(LoadDataArgs args)

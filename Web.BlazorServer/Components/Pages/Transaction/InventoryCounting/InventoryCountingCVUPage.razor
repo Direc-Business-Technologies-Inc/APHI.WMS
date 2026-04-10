@@ -16,7 +16,7 @@
 
 <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween" class="rz-mb-4">
     <AppBreadCrumbs ModuleCode="OICT" />
-        <RadzenStack Visible="@Viewing" Orientation="Orientation.Horizontal" Gap="0.5rem">
+        <RadzenStack Visible="@(Viewing && !IsLoadingData)" Orientation="Orientation.Horizontal" Gap="0.5rem">
             <RadzenButton Text="View Sheets" Icon="list"
                           ButtonStyle="ButtonStyle.Info"
                           Visible="@(FormData.Sheets.Any())"
