@@ -3,11 +3,17 @@
 
 @inherits BaseComponent
 
-<AppDataGrid @ref="@SalesOrderGrid" Id="sales_order_delivery_grid" TItem="SalesOrderDataGridVM" DataGetter="@LoadDataAsync" GridSettings="@SalesOrderDataGridSettings" @bind-GridSettingsLoaded="@GridSettingsLoaded" ActionName="@ActionGetAllSalesOrders">
+<AppDataGrid @ref="@SalesOrderGrid" Id="sales_order_delivery_grid" TItem="SalesOrderDataGridVM" DataGetter="@LoadDataAsync" GridSettings="@SalesOrderDataGridSettings" @bind-GridSettingsLoaded="@GridSettingsLoaded" ActionName="@ActionGetAllSalesOrders" SearchFilter="@_searchFilter">
     <HeaderTemplate>
-        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
-            <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />
-            <RadzenButton Icon="sync" Size="ButtonSize.Small" Click="SalesOrderGrid.ReloadDataAsync" />
+        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center">
+            <AppDataGridSearchBar TItem="SalesOrderDataGridVM"
+                                  @bind-SearchFilter="_searchFilter"
+                                  OnSearch="OnSearchAsync"
+                                  Properties="@(new[] { nameof(SalesOrderDataGridVM.CardCode), nameof(SalesOrderDataGridVM.CardName), nameof(SalesOrderDataGridVM.Remarks) })" />
+            <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
+                <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />
+                <RadzenButton Icon="sync" Size="ButtonSize.Small" Click="SalesOrderGrid.ReloadDataAsync" />
+            </RadzenStack>
         </RadzenStack>
     </HeaderTemplate>
     <GridColumns>

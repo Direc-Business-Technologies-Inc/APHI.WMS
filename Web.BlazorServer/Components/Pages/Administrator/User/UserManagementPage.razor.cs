@@ -20,6 +20,7 @@ public partial class UserManagementPage
     DataGridSettings UsersDataGridSettings { get; set; }
 
     string ActionGetUsers { get; } = EnumHelper.GetEnumDescription(AppActions.GetAllUsers);
+    AppFilterDescriptor? _searchFilter;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -56,6 +57,8 @@ public partial class UserManagementPage
         AppBusyService.SetBusy(ActionGetUsers, false);
         return DataGridResultVM<UserDataGridVM>.New(action.Result.data ?? [], action.Result.count);
     }
+
+    async Task OnSearchAsync() => await UsersDataGrid.DataGrid.Reload();
 
     void CreateUser() => NavManager.NavigateTo("/administration/user/user-management/create", true);
     void ViewUser(UserDataGridVM user) => NavManager.NavigateTo($"/administration/user/user-management/view?ref={user.Id}", true);

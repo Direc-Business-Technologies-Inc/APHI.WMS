@@ -3,12 +3,18 @@
 
 @inherits BaseComponent
 
-<AppDataGrid @ref="@SalesReturnDataGrid" Id="sales_return_grid" TItem="SalesReturnDataGridVM" DataGetter="@LoadDataAsync" GridSettings="@SalesReturnDataGridSettings" @bind-GridSettingsLoaded="@GridSettingsLoaded" ActionName="@ActionGetSalesReturns">
+<AppDataGrid @ref="@SalesReturnDataGrid" Id="sales_return_grid" TItem="SalesReturnDataGridVM" DataGetter="@LoadDataAsync" GridSettings="@SalesReturnDataGridSettings" @bind-GridSettingsLoaded="@GridSettingsLoaded" ActionName="@ActionGetSalesReturns" SearchFilter="@_searchFilter">
     <HeaderTemplate>
-        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
-            <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />
-            <RadzenButton Icon="sync" Size="ButtonSize.Small" Click="SalesReturnDataGrid.ReloadDataAsync" />
-            <RadzenButton Icon="add" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@CreateSalesReturn" />
+        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center">
+            <AppDataGridSearchBar TItem="SalesReturnDataGridVM"
+                                  @bind-SearchFilter="_searchFilter"
+                                  OnSearch="OnSearchAsync"
+                                  Properties="@(new[] { nameof(SalesReturnDataGridVM.CardCode), nameof(SalesReturnDataGridVM.CardName), nameof(SalesReturnDataGridVM.Remarks) })" />
+            <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
+                <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />
+                <RadzenButton Icon="sync" Size="ButtonSize.Small" Click="SalesReturnDataGrid.ReloadDataAsync" />
+                <RadzenButton Icon="add" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@CreateSalesReturn" />
+            </RadzenStack>
         </RadzenStack>
     </HeaderTemplate>
     <GridColumns>

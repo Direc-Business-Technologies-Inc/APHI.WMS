@@ -20,6 +20,7 @@ public partial class PurchaseDeliveryNoteGrid
     DataGridSettings PurchaseDeliveryNoteDataGridSettings { get; set; }
 
     string ActionGetPurchaseDeliveryNotes { get; } = EnumHelper.GetEnumDescription(AppActions.GetAllPurchaseDeliveryNotes);
+    AppFilterDescriptor? _searchFilter;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -56,6 +57,8 @@ public partial class PurchaseDeliveryNoteGrid
         AppBusyService.SetBusy(ActionGetPurchaseDeliveryNotes, false);
         return DataGridResultVM<PurchaseDeliveryNoteDataGridVM>.New(action.Result.Data ?? [], action.Result.Count);
     }
+
+    async Task OnSearchAsync() => await PurchaseDeliveryNoteDataGrid.DataGrid.Reload();
 
     void ViewPurchaseDeliveryNote(PurchaseDeliveryNoteDataGridVM purchaseOrder) => NavManager.NavigateTo($"/transactions/purchasing/receiving/goods-receipt-po/view?ref={purchaseOrder.DocEntry}", true);
 }

@@ -26,6 +26,7 @@ public partial class ItemSelection
     DataGridSettings ItemsDataGridSettings { get; set; } = new();
 
     string ActionGetItems { get; } = EnumHelper.GetEnumDescription(AppActions.GetAllItems);
+    AppFilterDescriptor? _searchFilter;
 
     IList<ItemVM> SelectedItems { get; set; } = [];
     List<ItemVM> Items { get; set; } = [];
@@ -47,6 +48,8 @@ public partial class ItemSelection
         await ItemsDataGrid.DataGrid.ReloadSettings();
         await ItemsDataGrid.DataGrid.Reload();
     }
+
+    async Task OnSearchAsync() => await ItemsDataGrid.DataGrid.Reload();
 
     async Task<DataGridResultVM<ItemVM>> LoadDataAsync(DataGridIntent intent)
     {

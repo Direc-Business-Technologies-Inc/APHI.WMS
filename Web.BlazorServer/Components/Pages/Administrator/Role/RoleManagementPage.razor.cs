@@ -20,6 +20,7 @@ public partial class RoleManagementPage
     DataGridSettings RolesDataGridSettings { get; set; }
 
     string ActionGetRoles { get; } = EnumHelper.GetEnumDescription(AppActions.GetAllRoles);
+    AppFilterDescriptor? _searchFilter;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -56,6 +57,8 @@ public partial class RoleManagementPage
         AppBusyService.SetBusy(ActionGetRoles, false);
         return DataGridResultVM<RoleVM>.New(action.Result.Data ?? [], action.Result.Count);
     }
+
+    async Task OnSearchAsync() => await RolesDataGrid.DataGrid.Reload();
 
     void CreateRole() => NavManager.NavigateTo("/administration/user/role-management/create", true);
     void ViewRole(RoleVM user) => NavManager.NavigateTo($"/administration/user/role-management/view?ref={user.Id}", true);

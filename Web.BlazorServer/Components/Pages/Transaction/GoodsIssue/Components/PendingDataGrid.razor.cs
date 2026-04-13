@@ -20,6 +20,7 @@ public partial class PendingDataGrid
     DataGridSettings GoodsIssueDataGridSettings { get; set; }
 
     string ActionGetGoodsIssues { get; } = EnumHelper.GetEnumDescription(AppActions.GetAllGoodsIssues);
+    AppFilterDescriptor? _searchFilter;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -56,6 +57,8 @@ public partial class PendingDataGrid
         AppBusyService.SetBusy(ActionGetGoodsIssues, false);
         return DataGridResultVM<GoodsIssueDataGridVM>.New(action.Result.Data ?? [], action.Result.Count);
     }
+
+    async Task OnSearchAsync() => await GoodsIssueDataGrid.DataGrid.Reload();
 
     void ViewGoodsIssue(GoodsIssueDataGridVM purchaseOrder) => NavManager.NavigateTo($"/transactions/inventory/goods-issue/view?ref={purchaseOrder.DocEntry}&draft=1", true);
     void CreateGoodsIssue() => NavManager.NavigateTo($"/transactions/inventory/goods-issue/create", true);

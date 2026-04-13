@@ -3,11 +3,17 @@
 
 @inherits BaseComponent
 
-<AppDataGrid @ref="@DeliveryGrid" Id="delivery_grid" TItem="DeliveryDataGridVM" DataGetter="@LoadDataAsync" GridSettings="@DeliveryDataGridSettings" @bind-GridSettingsLoaded="@GridSettingsLoaded" ActionName="@ActionGetAllDeliveries">
+<AppDataGrid @ref="@DeliveryGrid" Id="delivery_grid" TItem="DeliveryDataGridVM" DataGetter="@LoadDataAsync" GridSettings="@DeliveryDataGridSettings" @bind-GridSettingsLoaded="@GridSettingsLoaded" ActionName="@ActionGetAllDeliveries" SearchFilter="@_searchFilter">
     <HeaderTemplate>
-        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
-            <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />
-            <RadzenButton Icon="sync" Size="ButtonSize.Small" Click="DeliveryGrid.ReloadDataAsync" />
+        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center">
+            <AppDataGridSearchBar TItem="DeliveryDataGridVM"
+                                  @bind-SearchFilter="_searchFilter"
+                                  OnSearch="OnSearchAsync"
+                                  Properties="@(new[] { nameof(DeliveryDataGridVM.CardCode), nameof(DeliveryDataGridVM.CardName), nameof(DeliveryDataGridVM.Remarks) })" />
+            <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
+                <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />
+                <RadzenButton Icon="sync" Size="ButtonSize.Small" Click="DeliveryGrid.ReloadDataAsync" />
+            </RadzenStack>
         </RadzenStack>
     </HeaderTemplate>
     <GridColumns>

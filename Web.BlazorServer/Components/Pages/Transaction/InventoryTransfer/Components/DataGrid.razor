@@ -9,12 +9,19 @@
              DataGetter="@LoadDataAsync"
              GridSettings="@InventoryTransferRequestDataGridSettings"
              @bind-GridSettingsLoaded="@GridSettingsLoaded"
-             ActionName="@ActionName">
+             ActionName="@ActionName"
+             SearchFilter="@_searchFilter">
     <HeaderTemplate>
-        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
-            <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />
-            <RadzenButton Icon="sync" Size="ButtonSize.Small" Click="InventoryTransferRequestDataGrid.ReloadDataAsync" />
-            <RadzenButton Visible="@(CreateItemURI is not null)" Icon="add" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@CreateItem" />
+        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center">
+            <AppDataGridSearchBar TItem="InventoryTransferRequestDataGridVM"
+                                  @bind-SearchFilter="_searchFilter"
+                                  OnSearch="OnSearchAsync"
+                                  Properties="@(new[] { nameof(InventoryTransferRequestDataGridVM.FromWhsName), nameof(InventoryTransferRequestDataGridVM.ToWhsName), nameof(InventoryTransferRequestDataGridVM.Remarks), nameof(InventoryTransferRequestDataGridVM.PreparedBy) })" />
+            <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
+                <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />
+                <RadzenButton Icon="sync" Size="ButtonSize.Small" Click="InventoryTransferRequestDataGrid.ReloadDataAsync" />
+                <RadzenButton Visible="@(CreateItemURI is not null)" Icon="add" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@CreateItem" />
+            </RadzenStack>
         </RadzenStack>
     </HeaderTemplate>
     <GridColumns>

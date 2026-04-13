@@ -20,6 +20,7 @@ public partial class ApprovedDataGrid
     DataGridSettings GoodsReceiptDataGridSettings { get; set; }
 
     string ActionGetGoodsReceipts { get; } = EnumHelper.GetEnumDescription(AppActions.GetAllGoodsReceipts);
+    AppFilterDescriptor? _searchFilter;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -56,6 +57,8 @@ public partial class ApprovedDataGrid
         AppBusyService.SetBusy(ActionGetGoodsReceipts, false);
         return DataGridResultVM<GoodsReceiptDataGridVM>.New(action.Result.Data ?? [], action.Result.Count);
     }
+
+    async Task OnSearchAsync() => await GoodsReceiptDataGrid.DataGrid.Reload();
 
     void ViewGoodsReceipt(GoodsReceiptDataGridVM purchaseOrder) => NavManager.NavigateTo($"/transactions/inventory/goods-receipt/view?ref={purchaseOrder.DocEntry}", true);
     void CreateGoodsReceipt() => NavManager.NavigateTo($"/transactions/inventory/goods-receipt/create", true);

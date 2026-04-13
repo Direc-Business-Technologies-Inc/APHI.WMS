@@ -26,6 +26,7 @@ public partial class GoodsReturnGRPOSelection
     DataGridSettings PurchaseDeliveryNoteDataGridSettings { get; set; }
 
     string ActionGetPurchaseDeliveryNotes { get; } = EnumHelper.GetEnumDescription(AppActions.GetAllPurchaseDeliveryNotes);
+    AppFilterDescriptor? _searchFilter;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -62,6 +63,8 @@ public partial class GoodsReturnGRPOSelection
         AppBusyService.SetBusy(ActionGetPurchaseDeliveryNotes, false);
         return DataGridResultVM<PurchaseDeliveryNoteDataGridVM>.New(action.Result.Data ?? [], action.Result.Count);
     }
+
+    async Task OnSearchAsync() => await PurchaseDeliveryNoteDataGrid.DataGrid.Reload();
 
     async Task SelectSource(PurchaseDeliveryNoteDataGridVM purchaseOrder)
     {

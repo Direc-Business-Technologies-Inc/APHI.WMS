@@ -24,6 +24,7 @@ public partial class SalesReturnDeliverySelection
     DataGridSettings DeliveryDataGridSettings { get; set; } = new();
 
     string ActionGetDeliveries { get; } = EnumHelper.GetEnumDescription(AppActions.GetAllDeliveries);
+    AppFilterDescriptor? _searchFilter;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -56,6 +57,8 @@ public partial class SalesReturnDeliverySelection
         AppBusyService.SetBusy(ActionGetDeliveries, false);
         return DataGridResultVM<DeliveryDataGridVM>.New(action.Result.Data ?? [], action.Result.Count);
     }
+
+    async Task OnSearchAsync() => await DeliveryDataGrid.DataGrid.Reload();
 
     async Task SelectSource(DeliveryDataGridVM delivery)
     {

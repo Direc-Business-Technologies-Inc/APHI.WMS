@@ -14,10 +14,17 @@
                  DataGridSelectionMode="DataGridSelectionMode.Multiple"
                  OnRowSelect="@OnRowSelect"
                  OnRowDeselect="@OnRowDeselect"
-                 ClearOnDispose="true">
+                 ClearOnDispose="true"
+                 SearchFilter="@_searchFilter">
         <HeaderTemplate>
-            <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
-                <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />
+            <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center">
+                <AppDataGridSearchBar TItem="ItemVM"
+                                      @bind-SearchFilter="_searchFilter"
+                                      OnSearch="OnSearchAsync"
+                                      Properties="@(new[] { nameof(ItemVM.ItemCode), nameof(ItemVM.ItemName) })" />
+                <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
+                    <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />
+                </RadzenStack>
             </RadzenStack>
         </HeaderTemplate>
         <GridColumns>

@@ -20,6 +20,7 @@ public partial class PurchaseOrderGrid
     DataGridSettings PurchaseOrderDataGridSettings { get; set; }
 
     string ActionGetPurchaseOrders { get; } = EnumHelper.GetEnumDescription(AppActions.GetAllPurchaseOrders);
+    AppFilterDescriptor? _searchFilter;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -56,6 +57,8 @@ public partial class PurchaseOrderGrid
         AppBusyService.SetBusy(ActionGetPurchaseOrders, false);
         return DataGridResultVM<PurchaseOrderDataGridVM>.New(action.Result.Data ?? [], action.Result.Count);
     }
+
+    async Task OnSearchAsync() => await PurchaseOrderDataGrid.DataGrid.Reload();
 
     void ViewPurchaseOrder(PurchaseOrderDataGridVM purchaseOrder) => NavManager.NavigateTo($"/transactions/purchasing/receiving/purchase-order/view?ref={purchaseOrder.DocEntry}", true);
 }
