@@ -1,6 +1,7 @@
 ﻿using Application.DataTransferObjects.Administration.User;
 using Application.DataTransferObjects.System.Settings;
 using Domain.Entities.Entities.System;
+using Shared.Libraries.Kernel;
 using Application.DataTransferObjects.Others;
 using Application.DataTransferObjects.Others.SAP;
 using Application.DataTransferObjects.Transactions.Commons;
@@ -45,7 +46,8 @@ public class MappingRegistration : IRegister
         #endregion User Management
 
         #region System
-        config.NewConfig<SettingsDEM, SettingsDTO>();
+        config.NewConfig<SettingsDEM, SettingsDTO>()
+            .Map(d => d.Type, s => EnumHelper.ParseStringToEnum<AppTypes>(s.Type));
         #endregion System
 
         #endregion DEM to DTO

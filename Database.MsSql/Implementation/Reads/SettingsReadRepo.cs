@@ -5,6 +5,8 @@ using Database.MsSql.Core;
 using Domain.Entities.Entities.System;
 using Microsoft.EntityFrameworkCore;
 using Shared.Entities;
+using Shared.Kernel;
+using Shared.Libraries.Kernel;
 
 namespace Database.MsSql.Implementation.Reads;
 
@@ -16,17 +18,9 @@ public class SettingsReadRepo(IDbContextFactory<AppDbContext> dbContextFactory) 
         {
             await using var ctx = await dbContextFactory.CreateDbContextAsync();
 
-            var query = from s in ctx.Set<SettingsDEM>().AsNoTracking()
-                        select new SettingsDataGridDTO
-                        {
-                            Id = s.Id,
-                            Name = s.Name,
-                            Description = s.Description,
-                            Type = s.Type,
-                            Value = s.Value
-                        };
+            var query = ctx.Set<SettingsDEM>().AsNoTracking();
 
-            var filterPredicate = LinqIntentExpressionBuilder.BuildPredicate<SettingsDataGridDTO>(intent.Filters);
+            var filterPredicate = LinqIntentExpressionBuilder.BuildPredicate<SettingsDEM>(intent.Filters);
             int count = await query.CountAsync(filterPredicate);
 
             query = query.Where(filterPredicate);
@@ -37,7 +31,16 @@ public class SettingsReadRepo(IDbContextFactory<AppDbContext> dbContextFactory) 
             query = query.Skip(intent.Skip);
             query = query.Take(intent.Take);
 
-            List<SettingsDataGridDTO> data = await query.ToListAsync();
+            List<SettingsDEM> rawData = await query.ToListAsync();
+
+            List<SettingsDataGridDTO> data = rawData.Select(s => new SettingsDataGridDTO
+            {
+                Id = s.Id,
+                Name = s.Name,
+                Description = s.Description,
+                Type = EnumHelper.ParseStringToEnum<AppTypes>(s.Type),
+                Value = s.Value
+            }).ToList();
 
             return (data, count);
         });
