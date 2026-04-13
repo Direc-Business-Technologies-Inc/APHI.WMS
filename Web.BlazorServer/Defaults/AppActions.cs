@@ -56,6 +56,17 @@ public enum AppActions
     CascadeRolePermissions,
     #endregion Administration - Authorization
 
+    #region Administration - Settings
+    [Description("Get All Settings")]
+    GetAllSettings,
+    [Description("Get Setting")]
+    GetSettingById,
+    [Description("Get Setting By Name")]
+    GetSettingByName,
+    [Description("Update Settings")]
+    UpdateSettingsList,
+    #endregion Administration - Settings
+
     #region Administration - User Management
     [Description("Get All Users")]
     GetAllUsers,
