@@ -145,6 +145,10 @@ public class InventoryCountingReadRepo(IDbContextFactory<AppDbContext> dbContext
                     periodStart = new DateTime(countingDate.Year, quarter * 3 + 1, 1);
                     periodEnd   = periodStart.AddMonths(3);
                     break;
+                case CycleType.Annual:
+                    periodStart = new DateTime(countingDate.Year, 1, 1);
+                    periodEnd   = periodStart.AddYears(1);
+                    break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(cycleType));
             }
