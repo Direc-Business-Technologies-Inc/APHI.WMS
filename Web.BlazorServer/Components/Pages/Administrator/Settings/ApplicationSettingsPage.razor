@@ -43,10 +43,12 @@
         <RadzenStack Gap="8px">
             @foreach (var setting in Settings)
             {
-                <DynamicInput Item="@setting"
-                              IsEditing="@IsEditing"
-                              Disabled="@IsSavingBusy"
-                              OnValueChanged="@OnSettingChanged" />
+                <DynamicInput @key="@($"{DataVersion}-{setting.Id}")"
+                              Type="@GetCSharpType(setting)"
+                              Key="@setting.Name"
+                              Description="@setting.Description"
+                              Data="@SettingsData"
+                              Disabled="@(!IsEditing || IsSavingBusy)" />
             }
         </RadzenStack>
 

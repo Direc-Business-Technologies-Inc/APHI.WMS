@@ -1,6 +1,7 @@
 using Mapster;
 using Microsoft.AspNetCore.Components;
 using Shared.Kernel;
+using Shared.Libraries.Kernel;
 using Web.BlazorServer.Components.Base;
 using Web.BlazorServer.Defaults;
 using Web.BlazorServer.Handlers.Repositories.Administration.Settings;
@@ -22,12 +23,14 @@ public partial class ApplicationSettingsPage : BaseComponent
     bool IsSavingBusy  => AppBusyService.IsBusy(ActionUpdateSettings);
     bool IsAnyBusy     => IsLoadingBusy || IsSavingBusy;
 
-    bool IsEditing { get; set; } = false;
+    bool IsEditing   { get; set; } = false;
+    int  DataVersion { get; set; } = 0;
     #endregion Primitives
 
     #region Data Structures
-    List<SettingsVM> Settings { get; set; } = [];
-    List<SettingsVM> SettingsClone { get; set; } = [];
+    List<SettingsVM>             Settings      { get; set; } = [];
+    List<SettingsVM>             SettingsClone { get; set; } = [];
+    Dictionary<string, object>   SettingsData  { get; set; } = [];
     #endregion Data Structures
 
     #region Overrides
@@ -52,7 +55,9 @@ public partial class ApplicationSettingsPage : BaseComponent
 
         action.OnSuccess(result =>
         {
-            Settings = result?.ToList() ?? [];
+            Settings     = result?.ToList() ?? [];
+            SettingsData = BuildSettingsData(Settings);
+            DataVersion++;
             return Task.CompletedTask;
         });
     }
@@ -76,13 +81,17 @@ public partial class ApplicationSettingsPage : BaseComponent
             UnsavedChangesService.MarkClean();
         }
 
-        Settings = SettingsClone.Adapt<List<SettingsVM>>();
+        Settings     = SettingsClone.Adapt<List<SettingsVM>>();
+        SettingsData = BuildSettingsData(Settings);
+        DataVersion++;
         IsEditing = false;
         await InvokeAsync(StateHasChanged);
     }
 
     async Task SaveChanges()
     {
+        SyncSettingsFromData();
+
         var action = await AppActionFactory.RunAsync(async () =>
         {
             AppBusyService.SetBusy(ActionUpdateSettings, true);
@@ -103,14 +112,32 @@ public partial class ApplicationSettingsPage : BaseComponent
     }
     #endregion Edit / Cancel / Save
 
-    #region DynamicInput Callbacks
-    void OnSettingChanged(SettingsVM updated)
+    #region Helpers
+    // Converts SettingsVM list to a typed dictionary for DynamicInput.
+    Dictionary<string, object> BuildSettingsData(List<SettingsVM> settings)
     {
-        int index = Settings.FindIndex(s => s.Id == updated.Id);
-        if (index >= 0)
-            Settings[index] = updated;
+        var dict = new Dictionary<string, object>();
 
-        UnsavedChangesService.MarkDirty();
+        foreach (var s in settings)
+        {
+            try   { dict[s.Name] = AppTypeConverter.Convert(s.Value, s.Type); }
+            catch { dict[s.Name] = s.Value; }
+        }
+
+        return dict;
     }
-    #endregion DynamicInput Callbacks
+
+    // Writes typed dictionary values back into SettingsVM.Value strings before saving.
+    void SyncSettingsFromData()
+    {
+        foreach (var setting in Settings)
+        {
+            if (SettingsData.TryGetValue(setting.Name, out var value))
+                setting.Value = value?.ToString() ?? setting.Value;
+        }
+    }
+
+    // Resolves System.Type from AppTypes enum for the DynamicInput Type parameter.
+    Type GetCSharpType(SettingsVM setting) => AppTypeConverter.GetCSharpType(setting.Type);
+    #endregion Helpers
 }

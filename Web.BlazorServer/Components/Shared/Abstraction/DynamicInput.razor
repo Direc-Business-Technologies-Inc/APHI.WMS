@@ -1,0 +1,42 @@
+@inherits BaseComponent
+
+<RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="1rem">
+    <RadzenFormField Text="@Key" class="rz-w-100">
+        <ChildContent>
+            <RadzenTextBox    Visible="@(Type == typeof(string))"
+                              @bind-Value="@StringValue"
+                              @bind-Value:after="@Save"
+                              Disabled="@Disabled"
+                              class="rz-w-100" />
+            <RadzenNumeric    TValue="int"
+                              Visible="@(Type == typeof(int))"
+                              @bind-Value="@IntValue"
+                              @bind-Value:after="@Save"
+                              ShowUpDown="false"
+                              Disabled="@Disabled"
+                              class="rz-w-100" />
+            <RadzenNumeric    TValue="decimal"
+                              Visible="@(Type == typeof(decimal))"
+                              @bind-Value="@DecimalValue"
+                              @bind-Value:after="@Save"
+                              ShowUpDown="false"
+                              Disabled="@Disabled"
+                              class="rz-w-100" />
+            <RadzenCheckBox   Visible="@(Type == typeof(bool))"
+                              @bind-Value="@BoolValue"
+                              @bind-Value:after="@Save"
+                              Disabled="@Disabled" />
+            <RadzenDatePicker Visible="@(Type == typeof(DateTime))"
+                              @bind-Value="@DateTimeValue"
+                              @bind-Value:after="@Save"
+                              Disabled="@Disabled"
+                              class="rz-w-100" />
+        </ChildContent>
+        <Helper>
+            @if (!string.IsNullOrWhiteSpace(Description))
+            {
+                <RadzenText Text="@Description" TextStyle="TextStyle.Caption" class="rz-color-base-500" />
+            }
+        </Helper>
+    </RadzenFormField>
+</RadzenStack>
