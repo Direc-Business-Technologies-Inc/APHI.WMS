@@ -7,7 +7,9 @@ using Shared.Kernel;
 using Web.BlazorServer.Components.Shared.Abstraction;
 using Web.BlazorServer.Defaults;
 using Web.BlazorServer.Handlers.Repositories.Others;
+using Web.BlazorServer.Handlers.Repositories.Administration.Settings;
 using Web.BlazorServer.Handlers.Repositories.Transaction.InventoryCounting;
+using Web.BlazorServer.ViewModels.Administration.Settings;
 using Web.BlazorServer.Helpers;
 using Web.BlazorServer.Services.Implementation;
 using Web.BlazorServer.Services.Repositories;
@@ -28,6 +30,7 @@ public partial class InventoryCountingCVUPage
     [Inject] IInventoryCountingHandler InventoryCountingHandler { get; set; } = default!;
     [Inject] IWarehouseMasterDataHandler WarehouseHandler { get; set; } = default!;
     [Inject] IGridSettingsService GridSettingsService { get; set; } = default!;
+    [Inject] ISettingsHandler SettingsHandler { get; set; } = default!;
     #endregion Injects
 
     #region Primitives
@@ -50,6 +53,11 @@ public partial class InventoryCountingCVUPage
 
     int WarehousesCount { get; set; }
     IEnumerable<CycleType> CycleTypeValues { get; } = Enum.GetValues<CycleType>();
+
+    SettingsVM? _postingCycleSetting;
+    bool IsPostingAllowed =>
+        _postingCycleSetting is not null
+        && FormData.CycleType.ToString() == _postingCycleSetting.Value;
     #endregion Primitives
 
     #region Data Structures
@@ -152,6 +160,8 @@ public partial class InventoryCountingCVUPage
         try
         {
             GridSettingsLoaded = true;
+
+            _postingCycleSetting = await SettingsHandler.GetSettingByNameAsync("Inventory Counting Posting Cycle");
 
             await LoadWarehouses(new());
 
