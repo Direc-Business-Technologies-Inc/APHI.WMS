@@ -53,12 +53,6 @@ internal static class AppDefaults
             navRouteId: WebStructure.SubRouteList2.First(x => x.Name.Equals("System Configuration")).Id,
             permissions: [AppDefaults.NewPermission("VIEW"), AppDefaults.NewPermission("UPDATE")]),
         ModuleDEM.Create(
-            name: "Application Settings",
-            code: "OSTN",
-            root: false,
-            navRouteId: WebStructure.SubRouteList1.First(x => x.Name.Equals("Application Settings")).Id,
-            permissions: [AppDefaults.NewPermission("VIEW"), AppDefaults.NewPermission("UPDATE")]),
-        ModuleDEM.Create(
             name: "Receiving",
             code: "ORCV",
             root: false,

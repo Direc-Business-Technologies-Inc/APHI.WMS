@@ -36,13 +36,6 @@ public static class WebStructure
             icon: "settings",
             parentId: ParentRouteList!.First(x => x.Name.Equals("Administration")).Id),
         NavigationRouteDEM.New(
-            name: "Application Settings",
-            protectedRoute: true,
-            position: 2,
-            icon: "settings_applications",
-            uri: "/administration/settings/application-settings",
-            parentId: ParentRouteList!.First(x => x.Name.Equals("Administration")).Id),
-        NavigationRouteDEM.New(
             name: "Purchasing A/P",
             position: 0,
             icon: "archive",
