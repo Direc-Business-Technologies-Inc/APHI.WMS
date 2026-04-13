@@ -1,0 +1,54 @@
+@page "/administration/settings/application-settings"
+@layout ProtectedLayout
+@using Web.BlazorServer.ViewModels.Administration.Settings
+
+@inherits BaseComponent
+
+<PageTitle>Application Settings</PageTitle>
+
+<AppContent>
+    <RadzenStack Gap="16px">
+
+        <AppBreadCrumbs ModuleCode="OSTN" />
+
+        {{* ── Button Strip ── *}}
+        <RadzenStack Orientation="Orientation.Horizontal"
+                     JustifyContent="JustifyContent.End"
+                     AlignItems="AlignItems.Center"
+                     Gap="8px">
+
+            {{* View Mode *}}
+            <RadzenButton Visible="@(!IsEditing)"
+                          Text="Edit"
+                          Icon="edit"
+                          ButtonStyle="ButtonStyle.Primary"
+                          Disabled="@IsAnyBusy"
+                          Click="@OnEdit" />
+
+            {{* Edit Mode *}}
+            <RadzenButton Visible="@IsEditing"
+                          Text="Cancel"
+                          ButtonStyle="ButtonStyle.Base"
+                          Disabled="@IsSavingBusy"
+                          Click="@CancelEdit" />
+            <RadzenButton Visible="@IsEditing"
+                          Text="Save Changes"
+                          Icon="save"
+                          ButtonStyle="ButtonStyle.Success"
+                          Disabled="@IsAnyBusy"
+                          Click="@SaveChanges" />
+        </RadzenStack>
+
+        {{* ── Settings List ── *}}
+        <RadzenStack Gap="8px">
+            @foreach (var setting in Settings)
+            {
+                <DynamicInput Item="@setting"
+                              IsEditing="@IsEditing"
+                              Disabled="@IsSavingBusy"
+                              OnValueChanged="@OnSettingChanged" />
+            }
+        </RadzenStack>
+
+    </RadzenStack>
+</AppContent>
