@@ -29,7 +29,7 @@ public class InventoryCountingReadRepo(IDbContextFactory<AppDbContext> dbContext
                             Status = d.Status,
                             CreatedDate = d.CreatedDate,
                             Remarks = d.Remarks,
-                            CreatedBy = u.Name.GetFirstLast()
+                            CreatedBy = u.Name.FirstName + (string.IsNullOrEmpty(u.Name.LastName) ? "" : " " + u.Name.LastName)
                         };
 
             var filterPredicate = LinqIntentExpressionBuilder.BuildPredicate<InventoryCountingDataGridDTO>(intent.Filters);
