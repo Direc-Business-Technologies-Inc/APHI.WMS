@@ -84,6 +84,7 @@ public partial class InventoryCountingSheetCreatePage
 
         action.OnSuccess(async _ =>
         {
+            await ClearFormCacheAsync();
             UnsavedChangesService.MarkClean();
             NavManager.NavigateTo($"/transactions/inventory/inventory-counting/view?Id={Document}", true);
         });

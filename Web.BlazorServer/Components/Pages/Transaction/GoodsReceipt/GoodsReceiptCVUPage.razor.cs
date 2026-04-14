@@ -141,6 +141,7 @@ public partial class GoodsReceiptCVUPage
 
         action.OnSuccess(async (args) =>
         {
+            await ClearFormCacheAsync();
             NavManager.NavigateTo("/transactions/inventory/goods-receipt/?t=pndng");
         });
     }

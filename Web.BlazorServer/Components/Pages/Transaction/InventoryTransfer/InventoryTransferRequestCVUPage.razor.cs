@@ -148,6 +148,7 @@ public partial class InventoryTransferRequestCVUPage
 
         action.OnSuccess(async (args) =>
         {
+            await ClearFormCacheAsync();
             NavManager.NavigateTo(string.Format(VIEW_PENDING_ITR_URI, action.Result), true);
         });
     }
