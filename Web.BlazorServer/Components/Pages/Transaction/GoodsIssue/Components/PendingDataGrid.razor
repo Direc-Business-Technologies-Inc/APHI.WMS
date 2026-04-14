@@ -8,7 +8,7 @@
             <AppDataGridSearchBar TItem="GoodsIssueDataGridVM"
                                   @bind-SearchFilter="_searchFilter"
                                   OnSearch="OnSearchAsync"
-                                  Properties="@(new[] { nameof(GoodsIssueDataGridVM.TransTypeName), nameof(GoodsIssueDataGridVM.AcctName), nameof(GoodsIssueDataGridVM.PreparedBy) })" />
+                                  Properties="@(new[] { nameof(GoodsIssueDataGridVM.TransTypeName), nameof(GoodsIssueDataGridVM.AcctName), nameof(GoodsIssueDataGridVM.PreparedBy), nameof(GoodsIssueDataGridVM.DocEntry) })" />
             <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
                 <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />
                 <RadzenButton Icon="sync" Size="ButtonSize.Small" Click="GoodsIssueDataGrid.ReloadDataAsync" />
