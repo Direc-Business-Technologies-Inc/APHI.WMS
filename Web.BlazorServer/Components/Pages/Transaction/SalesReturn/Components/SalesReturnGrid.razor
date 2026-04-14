@@ -9,7 +9,7 @@
             <AppDataGridSearchBar TItem="SalesReturnDataGridVM"
                                   @bind-SearchFilter="_searchFilter"
                                   OnSearch="OnSearchAsync"
-                                  Properties="@(new[] { nameof(SalesReturnDataGridVM.CardCode), nameof(SalesReturnDataGridVM.CardName), nameof(SalesReturnDataGridVM.Remarks) })" />
+                                  Properties="@(new[] { nameof(SalesReturnDataGridVM.CardCode), nameof(SalesReturnDataGridVM.CardName), nameof(SalesReturnDataGridVM.Remarks), nameof(SalesReturnDataGridVM.DocNum) })" />
             <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
                 <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />
                 <RadzenButton Icon="sync" Size="ButtonSize.Small" Click="SalesReturnDataGrid.ReloadDataAsync" />
