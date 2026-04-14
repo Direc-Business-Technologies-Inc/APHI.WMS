@@ -216,7 +216,7 @@
                 <RadzenColumn>
                     <RadzenStack class="rz-mt-8" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
                         <RadzenButton IsBusy="@IsBusy" Text="Back" Disabled="@(IsBusy && Creating)" ButtonStyle="ButtonStyle.Base" Click="@Back" />
-                        <RadzenButton IsBusy="@IsBusy" Text="Create Sales Return" Visible="@(Can.Create("OSRN") && Viewing)" ButtonStyle="ButtonStyle.Base" Click="@InitializeEditing" />
+                        <RadzenButton IsBusy="@IsBusy" Text="Create Sales Return" Visible="@(Can.Create("OSRN") && Viewing)" ButtonStyle="ButtonStyle.Success" Click="@InitializeEditing" />
                         <RadzenStack Visible="@(Can.Create("OSRN") && Creating)" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="16px">
                             <RadzenButton IsBusy="@IsBusy" ButtonStyle="ButtonStyle.Base" Click="@CancelEditing">
                                 Cancel
