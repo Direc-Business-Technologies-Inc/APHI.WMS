@@ -52,8 +52,6 @@ public partial class InventoryCountingItemSelection
 
         await GridSettingsService.SetGridSettings(ItemsDataGrid.DataGrid, settings => ItemsDataGridSettings = settings ?? new());
         GridSettingsLoaded = true;
-        await ItemsDataGrid.DataGrid.ReloadSettings();
-        await ItemsDataGrid.DataGrid.Reload();
     }
 
     async Task OnSearchAsync() => await ItemsDataGrid.DataGrid.Reload();
