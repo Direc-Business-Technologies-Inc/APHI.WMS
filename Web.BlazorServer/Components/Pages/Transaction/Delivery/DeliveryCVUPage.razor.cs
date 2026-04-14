@@ -125,6 +125,7 @@ public partial class DeliveryCVUPage
 
         action.OnSuccess(async (args) =>
         {
+            await ClearFormCacheAsync();
             NavManager.NavigateTo("/transactions/sales/delivery?T=dlv", true);
         });
     }
@@ -238,14 +239,9 @@ public partial class DeliveryCVUPage
             if (!await AlertService.HasUnsavedChangesAsync(header: "Cancel Delivery Creation"))
                 return;
 
+        await ClearFormCacheAsync();
         string tab = Creating ? "so" : "dlv";
         NavManager.NavigateTo($"/transactions/sales/delivery?T={tab}", true);
-    }
-
-
-    void ParseActualDeliveryDate()
-    {
-        FormData.ActualDelivDate = ActualDeliveryDate.ToString("MM-dd-yy");
     }
 
     #endregion Custom Functions

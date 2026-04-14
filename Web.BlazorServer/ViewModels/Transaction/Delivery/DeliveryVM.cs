@@ -1,4 +1,5 @@
-﻿using Web.BlazorServer.ViewModels.Transaction.Commons;
+﻿using Domain.Providers;
+using Web.BlazorServer.ViewModels.Transaction.Commons;
 
 namespace Web.BlazorServer.ViewModels.Transaction.Delivery;
 
@@ -11,7 +12,7 @@ public class DeliveryVM : MarketingDocumentVM
     public string? NumAtCard { get; set; } = null;
     public string? ContactPerson { get; set; } = null;
     public string? SchoolYear { get; set; } = null;
-    public string? ActualDelivDate { get; set; } = null;
+    public DateTime? ActualDelivDate { get; set; } = DateTimeProvider.Now;
     public string? CourierName { get; set; } = null;
     public string? WayBillNo { get; set; } = null;
     public string? PlateNo { get; set; } = null;

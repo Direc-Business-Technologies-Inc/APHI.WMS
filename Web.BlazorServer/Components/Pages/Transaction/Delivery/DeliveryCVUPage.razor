@@ -71,8 +71,8 @@
                             <RadzenColumn Size="12" SizeMD="4">
                                 <RadzenFormField Text="Actual Delivery Date" class="rz-w-100" AllowFloatingLabel="false">
                                     <ChildContent>
-                                        <RadzenTextBox Visible="@Viewing" Value="@(DateTime.TryParse(FormData.ActualDelivDate, out DateTime actualDeliveryDate) ? actualDeliveryDate.ToString("MM-dd-yy") : "N/A")" Placeholder="N/A" Name="dlv_actual_date" Disabled="@IsBusy" class="rz-w-100" />
-                                        <RadzenDatePicker Visible="@Creating" ShowTime="true" DateFormat="MM-dd-yy" Name="dlv_actual_date" Placeholder="1400" @bind-Value="@ActualDeliveryDate" @bind-Value:after="@ParseActualDeliveryDate" />
+                                        <RadzenTextBox Visible="@Viewing" Value="@(FormData.ActualDelivDate is not null ? FormData.ActualDelivDate?.ToString("MM-dd-yy") : "N/A")" Placeholder="N/A" Name="dlv_actual_date" Disabled="@IsBusy" class="rz-w-100" />
+                                        <RadzenDatePicker Visible="@Creating" ShowTime="false" DateFormat="MM-dd-yy" Name="dlv_actual_date" Placeholder="1400" @bind-Value="@FormData.ActualDelivDate" />
                                     </ChildContent>
                                 </RadzenFormField>
                             </RadzenColumn>

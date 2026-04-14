@@ -118,10 +118,6 @@ public class DeliveryIntegration(
                 line.Warehouse.WhsCode));
         }
 
-        DateTime? actualDelivDate = null;
-        if (DateTime.TryParse(document.ActualDelivDate, out DateTime parsedDate))
-            actualDelivDate = parsedDate;
-
         DeliveryNotesPayload payload = new(
             document.BusinessPartner.CardCode,
             document.DocDate,
@@ -133,7 +129,7 @@ public class DeliveryIntegration(
             document.DeliveryMeans,
             document.Courier,
             document.CourierName,
-            actualDelivDate,
+            document.ActualDelivDate,
             document.Designation,
             document.WayBillNo,
             document.PlateNo,
@@ -148,7 +144,7 @@ public class DeliveryIntegration(
             WriteIndented = true
         });
 
-        await SLActions.PostAsync<object, DeliveryNotesPayload>("DeliveryNotes", payload);
+         await SLActions.PostAsync<object, DeliveryNotesPayload>("DeliveryNotes", payload);
 
         return true;
     }
