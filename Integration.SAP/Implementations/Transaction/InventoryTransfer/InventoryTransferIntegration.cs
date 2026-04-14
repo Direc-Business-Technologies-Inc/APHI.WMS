@@ -30,16 +30,6 @@ public partial class InventoryTransferIntegration(
     #region Lists
     public async Task<(IEnumerable<InventoryTransferDataGridSAPDTO>, int)> GetInventoryTransferRequestListAsync(DataGridIntent intent)
     {
-        Dictionary<string, string> columnMap = new()
-            {
-                { "DocEntry", "T0.DocEntry" },
-                { "DocNum", "T0.DocNum" },
-                { "DocDate", "T0.DocDate" },
-                { "ToWhsName", "T1.WhsName" },
-                { "FromWhsName", "T2.WhsName" },
-                { "Remarks", "T0.U_Remarks" },
-                { "PreparedBy", "T0.U_PrepBy" },
-            };
         if (intent.Sorts.Count <= 0)
         {
             intent.Sorts.Add(new AppSortDescriptor
@@ -59,7 +49,7 @@ public partial class InventoryTransferIntegration(
             throw new Exception("Query for getting all open Inventory Transfer Request not found.");
 
         string query = DataGridQueryBuilder.BuildQuery(qry, intent);
-        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent.Filters, columnMap);
+        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent);
 
         List<InventoryTransferDataGridSAPDTO> docs = await SLActions.RawQueryAsync<InventoryTransferDataGridSAPDTO>(query);
         TotalRows? rowCount = await SLActions.RawQueryOneAsync<TotalRows>(countQuery);
@@ -68,17 +58,6 @@ public partial class InventoryTransferIntegration(
     }
     public async Task<(IEnumerable<InventoryTransferDataGridSAPDTO>, int)> GetPendingInventoryTransferRequestListAsync(DataGridIntent intent)
     {
-        Dictionary<string, string> columnMap = new()
-            {
-                { "DocEntry", "T0.DocEntry" },
-                { "DocNum", "T0.DocNum" },
-                { "DocDate", "T0.DocDate" },
-                { "ToWhsName", "T1.WhsName" },
-                { "FromWhsName", "T2.WhsName" },
-                { "Remarks", "T0.U_Remarks" },
-                { "PreparedBy", "T0.U_PrepBy" },
-            };
-
         if (intent.Sorts.Count <= 0)
         {
             intent.Sorts.Add(new AppSortDescriptor
@@ -93,7 +72,7 @@ public partial class InventoryTransferIntegration(
             throw new Exception("Query for getting all pending Inventory Transfer Request not found.");
 
         string query = DataGridQueryBuilder.BuildQuery(qry, intent);
-        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent.Filters, columnMap);
+        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent);
 
         List<InventoryTransferDataGridSAPDTO> docs = await SLActions.RawQueryAsync<InventoryTransferDataGridSAPDTO>(query);
         TotalRows? rowCount = await SLActions.RawQueryOneAsync<TotalRows>(countQuery);
@@ -102,17 +81,6 @@ public partial class InventoryTransferIntegration(
     }
     public async Task<(IEnumerable<InventoryTransferDataGridSAPDTO>, int)> GetRejectedInventoryTransferRequestListAsync(DataGridIntent intent)
     {
-        Dictionary<string, string> columnMap = new()
-            {
-                { "DocEntry", "T0.DocEntry" },
-                { "DocNum", "T0.DocNum" },
-                { "DocDate", "T0.DocDate" },
-                { "ToWhsName", "T1.WhsName" },
-                { "FromWhsName", "T2.WhsName" },
-                { "Remarks", "T0.U_Remarks" },
-                { "PreparedBy", "T0.U_PrepBy" },
-            };
-
         if (intent.Sorts.Count <= 0)
         {
             intent.Sorts.Add(new AppSortDescriptor
@@ -127,7 +95,7 @@ public partial class InventoryTransferIntegration(
             throw new Exception("Query for getting all rejected Inventory Transfer Request not found.");
 
         string query = DataGridQueryBuilder.BuildQuery(qry, intent);
-        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent.Filters, columnMap);
+        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent);
 
         List<InventoryTransferDataGridSAPDTO> docs = await SLActions.RawQueryAsync<InventoryTransferDataGridSAPDTO>(query);
         TotalRows? rowCount = await SLActions.RawQueryOneAsync<TotalRows>(countQuery);
@@ -136,17 +104,6 @@ public partial class InventoryTransferIntegration(
     }
     public async Task<(IEnumerable<InventoryTransferDataGridSAPDTO>, int)> GetPostedInventoryTransferRequestListAsync(DataGridIntent intent)
     {
-        Dictionary<string, string> columnMap = new()
-            {
-                { "DocEntry", "T0.DocEntry" },
-                { "DocNum", "T0.DocNum" },
-                { "DocDate", "T0.DocDate" },
-                { "ToWhsName", "T1.WhsName" },
-                { "FromWhsName", "T2.WhsName" },
-                { "Remarks", "T0.U_Remarks" },
-                { "PreparedBy", "T0.U_PrepBy" },
-            };
-
         if (intent.Sorts.Count <= 0)
         {
             intent.Sorts.Add(new AppSortDescriptor
@@ -161,7 +118,7 @@ public partial class InventoryTransferIntegration(
             throw new Exception("Query for getting all open Inventory Transfer Request not found.");
 
         string query = DataGridQueryBuilder.BuildQuery(qry, intent);
-        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent.Filters, columnMap);
+        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent);
 
         List<InventoryTransferDataGridSAPDTO> docs = await SLActions.RawQueryAsync<InventoryTransferDataGridSAPDTO>(query);
         TotalRows? rowCount = await SLActions.RawQueryOneAsync<TotalRows>(countQuery);

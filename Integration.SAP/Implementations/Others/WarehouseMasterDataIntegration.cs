@@ -15,12 +15,6 @@ public class WarehouseMasterDataIntegration (
 {
     public async Task<(IEnumerable<WarehouseSelectionSAPDTO> Data, int Count)> GetWarehouseAsync(DataGridIntent intent)
     {
-        Dictionary<string, string> columnMap = new()
-            {
-                { "WhsCode", "T0.WhsCode" },
-                { "WhsName", "T0.WhsName" },
-            };
-
         if (intent.Sorts.Count <= 0)
         {
             intent.Sorts.Add(new AppSortDescriptor
@@ -35,7 +29,7 @@ public class WarehouseMasterDataIntegration (
             throw new Exception("Base query for getting warehouses not found.");
 
         string query = DataGridQueryBuilder.BuildQuery(qry, intent);
-        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent.Filters, columnMap);
+        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent);
 
         List<WarehouseSelectionSAPDTO> data = await SLActions.RawQueryAsync<WarehouseSelectionSAPDTO>(query);
         TotalRows? rowCount = await SLActions.RawQueryOneAsync<TotalRows>(countQuery);

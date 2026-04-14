@@ -16,14 +16,6 @@ public class SchoolYearIntegration(
 {
     public async Task<(IEnumerable<SchoolYearSAPDTO> Data, int Count)> GetAllSchoolYear(DataGridIntent intent)
     {
-        Dictionary<string, string> columnMap = new()
-            {
-                { "Code", "Code" },
-                { "Name", "Name" },
-                { "YearFrom", "U_YearFrom" },
-                { "YearTo", "U_YearTo" },
-            };
-
         if (intent.Sorts.Count <= 0)
         {
             intent.Sorts.Add(new AppSortDescriptor
@@ -38,7 +30,7 @@ public class SchoolYearIntegration(
             throw new Exception("Base query for getting School Years not found.");
 
         string query = DataGridQueryBuilder.BuildQuery(qry, intent);
-        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent.Filters, columnMap);
+        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent);
 
         List<SchoolYearSAPDTO> data = await SLActions.RawQueryAsync<SchoolYearSAPDTO>(query);
         TotalRows? rowCount = await SLActions.RawQueryOneAsync<TotalRows>(countQuery);

@@ -17,16 +17,6 @@ public class SalesReturnIntegration(
 {
     public async Task<(IEnumerable<SalesReturnDataGridSAPDTO> Data, int Count)> GetSalesReturnDataAsync(DataGridIntent intent)
     {
-        Dictionary<string, string> columnMap = new()
-            {
-                { "DocEntry", "ORDN.DocEntry" },
-                { "DocNum", "ORDN.DocNum" },
-                { "DocDate", "ORDN.DocDate" },
-                { "Remarks", "ORDN.U_Remarks" },
-                { "CardCode", "ORDN.CardCode" },
-                { "CardName", "OCRD.CardName" },
-            };
-
         if (intent.Sorts.Count <= 0)
         {
             intent.Sorts.Add(new AppSortDescriptor
@@ -41,7 +31,7 @@ public class SalesReturnIntegration(
             throw new Exception("Query for getting all Sales Return not found.");
 
         string query = DataGridQueryBuilder.BuildQuery(qry, intent);
-        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent.Filters, columnMap);
+        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent);
 
         List<SalesReturnDataGridSAPDTO> docs = await SLActions.RawQueryAsync<SalesReturnDataGridSAPDTO>(query);
         TotalRows? rowCount = await SLActions.RawQueryOneAsync<TotalRows>(countQuery);
@@ -65,16 +55,6 @@ public class SalesReturnIntegration(
 
     public async Task<(IEnumerable<SalesReturnRequestDataGridSAPDTO> Data, int Count)> GetSalesReturnRequestDataAsync(DataGridIntent intent)
     {
-        Dictionary<string, string> columnMap = new()
-            {
-                { "DocEntry", "ORRR.DocEntry" },
-                { "DocNum", "ORRR.DocNum" },
-                { "DocDate", "ORRR.DocDate" },
-                { "Remarks", "ORRR.U_Remarks" },
-                { "CardCode", "ORRR.CardCode" },
-                { "CardName", "OCRD.CardName" },
-            };
-
         if (intent.Sorts.Count <= 0)
         {
             intent.Sorts.Add(new AppSortDescriptor
@@ -89,7 +69,7 @@ public class SalesReturnIntegration(
             throw new Exception("Query for getting all Sales Return not found.");
 
         string query = DataGridQueryBuilder.BuildQuery(qry, intent);
-        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent.Filters, columnMap);
+        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent);
 
         List<SalesReturnRequestDataGridSAPDTO> docs = await SLActions.RawQueryAsync<SalesReturnRequestDataGridSAPDTO>(query);
         TotalRows? rowCount = await SLActions.RawQueryOneAsync<TotalRows>(countQuery);

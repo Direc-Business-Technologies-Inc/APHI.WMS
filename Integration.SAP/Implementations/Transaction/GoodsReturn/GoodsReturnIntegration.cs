@@ -32,22 +32,6 @@ public class GoodsReturnIntegration(
 
     public async Task<(IEnumerable<GoodsReturnsSAPDTO>, int)> GetGoodsReturnsListAsync(DataGridIntent intent)
     {
-        Dictionary<string, string> columnMap = new()
-            {
-                { "DocEntry", "T0.DocEntry" },
-                { "DocNum", "T0.DocNum" },
-                { "LineNum", "T1.LineNum" },
-                { "GRPODocEntry", "T3.BaseEntry" },
-                { "GRPODocNum", "T3.DocNum" },
-                { "PODocEntry", "T5.DocEntry" },
-                { "PODocNum", "T5.DocNum" },
-                { "DocDate", "T0.DocDate" },
-                { "DocDueDate", "T0.DocDueDate" },
-                { "CardCode", "T0.CardCode" },
-                { "CardName", "T0.CardName" },
-                { "Remarks", "T0.Comments" },
-            };
-
         if (intent.Sorts.Count <= 0)
         {
             intent.Sorts.Add(new AppSortDescriptor
@@ -62,7 +46,7 @@ public class GoodsReturnIntegration(
             throw new Exception("Query for getting all open Purchase Orders not found.");
 
         string query = DataGridQueryBuilder.BuildQuery(qry, intent);
-        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent.Filters, columnMap);
+        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent);
 
         List<GoodsReturnsSAPDTO> docs = await SLActions.RawQueryAsync<GoodsReturnsSAPDTO>(query);
         TotalRows? rowCount = await SLActions.RawQueryOneAsync<TotalRows>(countQuery);
@@ -86,22 +70,6 @@ public class GoodsReturnIntegration(
 
     public async Task<(IEnumerable<GoodsReturnRequestsSAPDTO>, int)> GetGRRsListAsync(DataGridIntent intent)
     {
-        Dictionary<string, string> columnMap = new()
-            {
-                { "DocEntry", "T0.DocEntry" },
-                { "DocNum", "T0.DocNum" },
-                { "LineNum", "T1.LineNum" },
-                { "GRPODocEntry", "T3.BaseEntry" },
-                { "GRPODocNum", "T3.DocNum" },
-                { "PODocEntry", "T5.DocEntry" },
-                { "PODocNum", "T5.DocNum" },
-                { "DocDate", "T0.DocDate" },
-                { "DocDueDate", "T0.DocDueDate" },
-                { "CardCode", "T0.CardCode" },
-                { "CardName", "T0.CardName" },
-                { "Remarks", "T0.Comments" },
-            };
-
         if (intent.Sorts.Count <= 0)
         {
             intent.Sorts.Add(new AppSortDescriptor
@@ -116,7 +84,7 @@ public class GoodsReturnIntegration(
             throw new Exception("Query for getting all open Purchase Orders not found.");
 
         string query = DataGridQueryBuilder.BuildQuery(qry, intent);
-        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent.Filters, columnMap);
+        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent);
 
         List<GoodsReturnRequestsSAPDTO> docs = await SLActions.RawQueryAsync<GoodsReturnRequestsSAPDTO>(query);
         TotalRows? rowCount = await SLActions.RawQueryOneAsync<TotalRows>(countQuery);

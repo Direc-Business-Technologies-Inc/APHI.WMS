@@ -32,16 +32,6 @@ public class DeliveryIntegration(
 
     public async Task<(IEnumerable<DeliveryDataGridSAPDTO> Data, int Count)> GetDeliveryDocumentsAsync(DataGridIntent intent)
     {
-        Dictionary<string, string> columnMap = new()
-            {
-                { "DocEntry", "ODLN.DocEntry" },
-                { "DocNum", "ODLN.DocNum" },
-                { "DocDate", "ODLN.DocDate" },
-                { "PreparedBy", "ODLN.U_PrepBy" },
-                { "CardCode", "ODLN.CardCode" },
-                { "CardName", "OCRD.CardName" },
-            };
-
         if (intent.Sorts.Count <= 0)
         {
             intent.Sorts.Add(new AppSortDescriptor
@@ -56,7 +46,7 @@ public class DeliveryIntegration(
             throw new Exception("Query for getting all Approved Deliveries not found.");
 
         string query = DataGridQueryBuilder.BuildQuery(qry, intent);
-        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent.Filters, columnMap);
+        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent);
 
         List<DeliveryDataGridSAPDTO> docs = await SLActions.RawQueryAsync<DeliveryDataGridSAPDTO>(query);
         TotalRows? rowCount = await SLActions.RawQueryOneAsync<TotalRows>(countQuery);
@@ -87,18 +77,6 @@ public class DeliveryIntegration(
 
     public async Task<(IEnumerable<SalesOrderDataGridSAPDTO> Data, int Count)> GetSalesOrderDocumentsAsync(DataGridIntent intent)
     {
-        Dictionary<string, string> columnMap = new()
-            {
-                { "DocEntry", "ORDR.DocEntry" },
-                { "DocNum", "ORDR.DocNum" },
-                { "DocDate", "ORDR.DocDate" },
-                { "PreparedBy", "ORDR.U_PrepBy" },
-                { "CardCode", "ORDR.CardCode" },
-                { "CardName", "OCRD.CardName" },
-                { "ContactPerson", "ORDR.CntctPrsn" },
-                { "DocRemarks", "ORDR.U_Remarks" },
-            };
-
         if (intent.Sorts.Count <= 0)
         {
             intent.Sorts.Add(new AppSortDescriptor
@@ -113,7 +91,7 @@ public class DeliveryIntegration(
             throw new Exception("Query for getting all open Sales Orders not found.");
 
         string query = DataGridQueryBuilder.BuildQuery(qry, intent);
-        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent.Filters, columnMap);
+        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent);
 
         List<SalesOrderDataGridSAPDTO> docs = await SLActions.RawQueryAsync<SalesOrderDataGridSAPDTO>(query);
         TotalRows? rowCount = await SLActions.RawQueryOneAsync<TotalRows>(countQuery);

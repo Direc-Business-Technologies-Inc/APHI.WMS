@@ -33,22 +33,6 @@ public class ReceivingIntegration(
 
     public async Task<(IEnumerable<PurchaseDeliveryNoteSAPDTO>, int)> GetPurchaseDeliveryNotesListAsync(DataGridIntent intent)
     {
-        Dictionary<string, string> columnMap = new()
-            {
-                { "DocEntry", "T0.DocEntry" },
-                { "DocNum", "T0.DocNum" },
-                { "BaseDocEntry", "T1.BaseEntry" },
-                { "BaseDocNum", "T3.DocNum" },
-                { "DocDate", "T0.DocDate" },
-                { "DocDueDate", "T0.DocDueDate" },
-                { "CardCode", "T0.CardCode" },
-                { "CardName", "T5.CardName" },
-                { "SupplierContactPerson", "T6.Name" },
-                { "WhsCode", "T1.WhsCode" },
-                { "WhsName", "T4.WhsName" },
-                { "ReceivedBy", "T0.U_RecBy" },
-            };
-
         if (intent.Sorts.Count <= 0)
         {
             intent.Sorts.Add(new AppSortDescriptor
@@ -63,7 +47,7 @@ public class ReceivingIntegration(
             throw new Exception("Query for getting all open Purchase Orders not found.");
 
         string query = DataGridQueryBuilder.BuildQuery(qry, intent);
-        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent.Filters, columnMap);
+        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent);
 
         List<PurchaseDeliveryNoteSAPDTO> docs = await SLActions.RawQueryAsync<PurchaseDeliveryNoteSAPDTO>(query);
         TotalRows? rowCount = await SLActions.RawQueryOneAsync<TotalRows>(countQuery);
@@ -87,18 +71,6 @@ public class ReceivingIntegration(
 
     public async Task<(IEnumerable<PurchaseOrderSAPDTO>, int)> GetPurchaseOrdersListAsync(DataGridIntent intent)
     {
-        Dictionary<string, string> columnMap = new()
-            {
-                { "DocEntry", "T0.DocEntry" },
-                { "DocNum", "T0.DocNum" },
-                { "DocDate", "T0.DocDate" },
-                { "DocDueDate", "T0.DocDueDate" },
-                { "CardCode", "T0.CardCode" },
-                { "CardName", "C0.CardName" },
-                { "SupplierContactPerson", "P0.Name" },
-                { "Remarks", "T0.Remarks" },
-            };
-
         if (intent.Sorts.Count <= 0)
         {
             intent.Sorts.Add(new AppSortDescriptor
@@ -113,7 +85,7 @@ public class ReceivingIntegration(
             throw new Exception("Query for getting all open Purchase Orders not found.");
 
         string query = DataGridQueryBuilder.BuildQuery(qry, intent);
-        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent.Filters, columnMap);
+        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent);
 
         List<PurchaseOrderSAPDTO> docs = await SLActions.RawQueryAsync<PurchaseOrderSAPDTO>(query);
         TotalRows? rowCount = await SLActions.RawQueryOneAsync<TotalRows>(countQuery);
