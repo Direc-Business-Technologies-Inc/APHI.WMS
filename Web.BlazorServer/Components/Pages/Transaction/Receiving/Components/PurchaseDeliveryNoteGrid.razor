@@ -10,7 +10,7 @@
             <AppDataGridSearchBar TItem="PurchaseDeliveryNoteDataGridVM"
                                   @bind-SearchFilter="_searchFilter"
                                   OnSearch="OnSearchAsync"
-                                  Properties="@(new[] { nameof(PurchaseDeliveryNoteDataGridVM.CardCode), nameof(PurchaseDeliveryNoteDataGridVM.CardName), nameof(PurchaseDeliveryNoteDataGridVM.ReceivedBy) })" />
+                                  Properties="@(new[] { nameof(PurchaseDeliveryNoteDataGridVM.WhsCode), nameof(PurchaseDeliveryNoteDataGridVM.WhsName), nameof(PurchaseDeliveryNoteDataGridVM.DocNum), nameof(PurchaseDeliveryNoteDataGridVM.BaseDocNum), nameof(PurchaseDeliveryNoteDataGridVM.CardCode), nameof(PurchaseDeliveryNoteDataGridVM.CardName), nameof(PurchaseDeliveryNoteDataGridVM.ItemDesc), nameof(PurchaseDeliveryNoteDataGridVM.ReceivedBy) })" />
             <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
                 <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />
                 <RadzenButton Icon="sync" Size="ButtonSize.Small" Click="PurchaseDeliveryNoteDataGrid.ReloadDataAsync" />
