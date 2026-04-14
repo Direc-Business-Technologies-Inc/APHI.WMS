@@ -20,6 +20,7 @@ public partial class DeliveryDataGrid
     DataGridSettings DeliveryDataGridSettings { get; set; } = new();
 
     string ActionGetAllDeliveries { get; } = EnumHelper.GetEnumDescription(AppActions.GetAllDeliveries);
+    AppFilterDescriptor? _searchFilter;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -56,6 +57,8 @@ public partial class DeliveryDataGrid
         AppBusyService.SetBusy(ActionGetAllDeliveries, false);
         return DataGridResultVM<DeliveryDataGridVM>.New(action.Result.Data ?? [], action.Result.Count);
     }
+
+    async Task OnSearchAsync() => await DeliveryGrid.DataGrid.Reload();
 
     void ViewDelivery(DeliveryDataGridVM delivery) => NavManager.NavigateTo($"/transactions/sales/delivery/view?ref={delivery.DocEntry}");
 }

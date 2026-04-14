@@ -266,7 +266,7 @@
                                           Text="Save" ButtonStyle="ButtonStyle.Info"
                                           IsBusy="@AppBusyService.IsBusy(ActionSave)"
                                           Click="@SaveDocument" />
-                            <RadzenButton Visible="@(Viewing && FormData.Status.Equals(InventoryCountingDocumentStatus.Saved))"
+                            <RadzenButton Visible="@(Viewing && FormData.Status.Equals(InventoryCountingDocumentStatus.Saved) && IsPostingAllowed)"
                                           Text="Post" ButtonStyle="ButtonStyle.Success"
                                           IsBusy="@AppBusyService.IsBusy(ActionPost)"
                                           Click="@PostDocument" />

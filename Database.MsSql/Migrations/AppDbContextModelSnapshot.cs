@@ -174,6 +174,43 @@ namespace Database.MsSql.Migrations
                     b.ToTable("ROL1", (string)null);
                 });
 
+            modelBuilder.Entity("Domain.Entities.Entities.System.SettingsDEM", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Value")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id")
+                        .HasName("PK_OSTN");
+
+                    b.ToTable("OSTN", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("a1b2c3d4-e5f6-7890-abcd-ef1234567890"),
+                            Description = "Controls which cycle type is allowed to post inventory counting documents. Valid values: Daily, Weekly, Monthly, Quarterly. Set to None to hide the Post button for all documents.",
+                            Name = "Inventory Counting Posting Cycle",
+                            Type = "STRING",
+                            Value = "None"
+                        });
+                });
+
             modelBuilder.Entity("Domain.Entities.Entities.Transaction.InventoryCounting.InventoryCountingDocumentDEM", b =>
                 {
                     b.Property<Guid>("Id")

@@ -1,0 +1,52 @@
+@page "/administration/settings/system-configuration"
+@layout ProtectedLayout
+@using Web.BlazorServer.Components.Security
+@using Web.BlazorServer.ViewModels.Administration.Settings
+@attribute [AppAuthorizationAttribute("VIEW", "OSYS")]
+
+@inherits BaseComponent
+
+
+<PageTitle>System Configuration</PageTitle>
+
+<RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween" class="rz-mb-4">
+    <AppBreadCrumbs ModuleCode="OSTN" />
+    <RadzenStack Orientation="Orientation.Horizontal"
+                 JustifyContent="JustifyContent.End"
+                 AlignItems="AlignItems.Center"
+                 Gap="8px">
+
+        <RadzenButton Visible="@(!IsEditing)"
+                      Text="Edit"
+                      Icon="edit"
+                      ButtonStyle="ButtonStyle.Primary"
+                      Disabled="@IsAnyBusy"
+                      Click="@OnEdit" />
+
+        <RadzenButton Visible="@IsEditing"
+                      Text="Cancel"
+                      ButtonStyle="ButtonStyle.Base"
+                      Disabled="@IsSavingBusy"
+                      Click="@CancelEdit" />
+        <RadzenButton Visible="@IsEditing"
+                      Text="Save Changes"
+                      Icon="save"
+                      ButtonStyle="ButtonStyle.Success"
+                      Disabled="@IsAnyBusy"
+                      Click="@SaveChanges" />
+    </RadzenStack>
+</RadzenStack>
+
+<AppContent>
+    <RadzenStack Gap="8px">
+        @foreach (var setting in Settings)
+        {
+            <DynamicInput @key="@($"{DataVersion}-{setting.Id}")"
+                          Type="@GetCSharpType(setting)"
+                          Key="@setting.Name"
+                          Description="@setting.Description"
+                          Data="@SettingsData"
+                          Disabled="@(!IsEditing || IsSavingBusy)" />
+        }
+    </RadzenStack>
+</AppContent>

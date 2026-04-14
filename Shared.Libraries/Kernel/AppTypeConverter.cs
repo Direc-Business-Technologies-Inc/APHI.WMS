@@ -1,25 +1,49 @@
-﻿using System.Globalization;
+﻿using System.ComponentModel;
+using System.Globalization;
 using System.Reflection;
 
-namespace Shared.Kernel;
+namespace Shared.Libraries.Kernel;
+
+public enum AppTypes
+{
+    [Description("STRING")]
+    STRING,
+    [Description("INT")]
+    INT,
+    [Description("DECIMAL")]
+    DECIMAL,
+    [Description("DOUBLE")]
+    DOUBLE,
+    [Description("DATETIME")]
+    DATETIME,
+    [Description("BOOL")]
+    BOOL,
+    [Description("GUID")]
+    GUID,
+    [Description("CHAR")]
+    CHAR,
+    [Description("STRING_LIST")]
+    STRING_LIST
+}
 
 public class AppTypeConverter
 {
-    public static dynamic Convert(string value, string targetType)
+    public static dynamic Convert(string value, AppTypes targetType)
     {
-        var typeConverters = new Dictionary<string, Func<string, object>>
+        var typeConverters = new Dictionary<AppTypes, Func<string, object>>
     {
-        { "string", val => val },
-        { "int", val => int.Parse(val, CultureInfo.InvariantCulture) },
-        { "decimal", val => decimal.Parse(val, CultureInfo.InvariantCulture) },
-        { "double", val => double.Parse(val, CultureInfo.InvariantCulture) },
-        { "datetime", val => DateTime.Parse(val, CultureInfo.InvariantCulture) },
-        { "bool", val => bool.Parse(val) },
-        { "guid", val => Guid.Parse(val) },
-        { "string_list", val => val.Split(',').Select(x => x.Trim()).ToArray() }
+        { AppTypes.STRING, val => val },
+        { AppTypes.CHAR, val => val },
+        { AppTypes.INT, val => int.Parse(val, CultureInfo.InvariantCulture) },
+        { AppTypes.DECIMAL, val => decimal.Parse(val, CultureInfo.InvariantCulture) },
+        { AppTypes.DOUBLE, val => double.Parse(val, CultureInfo.InvariantCulture) },
+        { AppTypes.DATETIME, val => DateTime.Parse(val, CultureInfo.InvariantCulture) },
+        { AppTypes.BOOL, val => bool.Parse(val) },
+        { AppTypes.GUID, val => Guid.Parse(val) },
+        { AppTypes.STRING_LIST, val => val.Split(',').Select(x => x.Trim()).ToArray() }
     };
 
-        if (typeConverters.TryGetValue(targetType.ToLower(), out var converter))
+        if (typeConverters.TryGetValue(targetType, out var converter))
         {
             try
             {
@@ -34,48 +58,46 @@ public class AppTypeConverter
         throw new NotSupportedException($"Conversion to {targetType} is not supported.");
     }
 
-    public static string CSharpTypeToSqlType(string type)
+    public static string CSharpTypeToSqlType(AppTypes type)
     {
-        switch (type.Trim().ToLower())
+        switch (type)
         {
-            case "string":
+            case AppTypes.STRING:
                 return "NVARCHAR(128)";
-            case "bool":
-            case "boolean":
+            case AppTypes.BOOL:
                 return "BIT";
-            case "int":
+            case AppTypes.INT:
                 return "int";
-            case "decimal":
+            case AppTypes.DECIMAL:
                 return "DECIMAL(18,5)";
-            case "datetime":
+            case AppTypes.DATETIME:
                 return "DATETIME";
-            case "guid":
+            case AppTypes.GUID:
                 return "UNIQUEIDENTIFIER";
-            case "char":
+            case AppTypes.CHAR:
                 return "NCHAR(1)";
             default:
                 return "NVARCHAR(128)";
         }
     }
 
-    public static Type GetCSharpType(string typeName)
+    public static Type GetCSharpType(AppTypes typeName)
     {
-        switch (typeName.Trim().ToLower())
+        switch (typeName)
         {
-            case "string":
+            case AppTypes.STRING:
                 return typeof(string);
-            case "bool":
-            case "boolean":
+            case AppTypes.BOOL:
                 return typeof(bool);
-            case "int":
+            case AppTypes.INT:
                 return typeof(int);
-            case "decimal":
+            case AppTypes.DECIMAL:
                 return typeof(decimal);
-            case "datetime":
+            case AppTypes.DATETIME:
                 return typeof(DateTime);
-            case "guid":
+            case AppTypes.GUID:
                 return typeof(Guid);
-            case "char":
+            case AppTypes.CHAR:
                 return typeof(char);
             default:
                 return typeof(string);
@@ -191,24 +213,5 @@ public class AppTypeConverter
         }
 
         return null;
-    }
-
-    public static string ToOVBLTypes(Type type)
-    {
-        if (type == null || type == typeof(string) || type.BaseType == typeof(Enum))
-            return "STRING";
-        if (type == typeof(int))
-            return "INT";
-        if (type == typeof(decimal))
-            return "DECIMAL";
-        if (type == typeof(double))
-            return "DECIMAL";
-        if (type == typeof(DateTime))
-            return "DATETIME";
-        if (type == typeof(bool))
-            return "BOOL";
-        if (type == typeof(Guid))
-            return "GUID";
-        throw new NotSupportedException($"Type {type.Name} is not supported.");
     }
 }

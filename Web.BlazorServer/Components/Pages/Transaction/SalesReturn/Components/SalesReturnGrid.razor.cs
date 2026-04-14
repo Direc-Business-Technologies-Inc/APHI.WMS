@@ -20,6 +20,7 @@ public partial class SalesReturnGrid
     DataGridSettings SalesReturnDataGridSettings { get; set; } = new();
 
     string ActionGetSalesReturns { get; } = EnumHelper.GetEnumDescription(AppActions.GetAllSalesReturns);
+    AppFilterDescriptor? _searchFilter;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -52,6 +53,8 @@ public partial class SalesReturnGrid
         AppBusyService.SetBusy(ActionGetSalesReturns, false);
         return DataGridResultVM<SalesReturnDataGridVM>.New(action.Result.Data ?? [], action.Result.Count);
     }
+
+    async Task OnSearchAsync() => await SalesReturnDataGrid.DataGrid.Reload();
 
     void ViewSalesReturn(SalesReturnDataGridVM item) => NavManager.NavigateTo($"/transactions/sales/sales-return/view?ref={item.DocEntry}", true);
     void CreateSalesReturn() => NavManager.NavigateTo("/transactions/sales/sales-return/create", true);

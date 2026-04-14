@@ -20,18 +20,6 @@ public class GoodsIssueIntegration(
 {
     public async Task<(IEnumerable<GoodsIssueDataGridSAPDTO> Data, int Count)> GetApprovedGoodsIssueDataGrid(DataGridIntent intent)
     {
-        Dictionary<string, string> columnMap = new()
-            {
-                { "DocEntry", "T0.DocEntry" },
-                { "DocNum", "T0.DocNum" },
-                { "DocDate", "T0.DocDate" },
-                { "PreparedBy", "T0.U_PrepBy" },
-                { "TransTypeCode", "T1.U_TransType" },
-                { "TransTypeName", "T1.Name" },
-                { "AcctCode", "T2.AcctCode" },
-                { "AcctName", "T2.AcctName" },
-            };
-
         if (intent.Sorts.Count <= 0)
         {
             intent.Sorts.Add(new AppSortDescriptor
@@ -46,7 +34,7 @@ public class GoodsIssueIntegration(
             throw new Exception("Query for getting all Approved Goods Issue not found.");
 
         string query = DataGridQueryBuilder.BuildQuery(qry, intent);
-        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent.Filters, columnMap);
+        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent);
 
         List<GoodsIssueDataGridSAPDTO> docs = await SLActions.RawQueryAsync<GoodsIssueDataGridSAPDTO>(query);
         TotalRows? rowCount = await SLActions.RawQueryOneAsync<TotalRows>(countQuery);
@@ -56,19 +44,6 @@ public class GoodsIssueIntegration(
 
     public async Task<(IEnumerable<GoodsIssueDataGridSAPDTO> Data, int Count)> GetGoodsIssueDraftDataGrid(DataGridIntent intent, string status)
     {
-        Dictionary<string, string> columnMap = new()
-            {
-                { "DocEntry", "T0.DocEntry" },
-                { "DocNum", "T0.DocNum" },
-                { "DocDate", "T0.DocDate" },
-                { "PreparedBy", "T0.U_PrepBy" },
-                { "TransTypeCode", "T1.U_TransType" },
-                { "TransTypeName", "T1.Name" },
-                { "AcctCode", "T2.AcctCode" },
-                { "AcctName", "T2.AcctName" },
-                { "Status", "T1.Status" },
-            };
-
         if (intent.Sorts.Count <= 0)
         {
             intent.Sorts.Add(new AppSortDescriptor
@@ -92,7 +67,7 @@ public class GoodsIssueIntegration(
             throw new Exception("Query for getting all Approved Goods Issue not found.");
 
         string query = DataGridQueryBuilder.BuildQuery(qry, intent);
-        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent.Filters, columnMap);
+        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent);
 
         List<GoodsIssueDataGridSAPDTO> docs = await SLActions.RawQueryAsync<GoodsIssueDataGridSAPDTO>(query);
         TotalRows? rowCount = await SLActions.RawQueryOneAsync<TotalRows>(countQuery);

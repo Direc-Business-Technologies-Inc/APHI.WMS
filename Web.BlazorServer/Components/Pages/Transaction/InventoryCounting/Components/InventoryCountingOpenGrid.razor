@@ -9,12 +9,19 @@
              DataGetter="@LoadDataAsync"
              GridSettings="@GridSettings"
              @bind-GridSettingsLoaded="@GridSettingsLoaded"
-             ActionName="@ActionGetAll">
+             ActionName="@ActionGetAll"
+             SearchFilter="@_searchFilter">
     <HeaderTemplate>
-        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
-            <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />
-            <RadzenButton Icon="sync" Size="ButtonSize.Small" Click="DataGrid.ReloadDataAsync" />
-            <RadzenButton Icon="add" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@CreateDocument" />
+        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center">
+            <AppDataGridSearchBar TItem="InventoryCountingDataGridVM"
+                                  @bind-SearchFilter="_searchFilter"
+                                  OnSearch="OnSearchAsync"
+                                  Properties="@(new[] { nameof(InventoryCountingDataGridVM.AppDocNum), nameof(InventoryCountingDataGridVM.Warehouse), nameof(InventoryCountingDataGridVM.CreatedBy) })" />
+            <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
+                <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />
+                <RadzenButton Icon="sync" Size="ButtonSize.Small" Click="DataGrid.ReloadDataAsync" />
+                <RadzenButton Icon="add" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@CreateDocument" />
+            </RadzenStack>
         </RadzenStack>
     </HeaderTemplate>
     <GridColumns>

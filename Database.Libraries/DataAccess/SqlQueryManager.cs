@@ -3,6 +3,7 @@ using Database.Libraries.Helpers;
 using Database.Libraries.Repositories;
 using Microsoft.Data.SqlClient;
 using Shared.Kernel;
+using Shared.Libraries.Kernel;
 using System.Data;
 using System.IO;
 using System.Runtime.InteropServices;

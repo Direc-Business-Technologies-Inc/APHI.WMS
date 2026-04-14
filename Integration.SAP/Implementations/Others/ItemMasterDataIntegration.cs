@@ -15,17 +15,6 @@ public class ItemMasterDataIntegration (
     : IItemMasterDataIntegration
 {
     public async Task<(IEnumerable<ItemSelectionSAPDTO> Data, int Count)> GetItemWarehouseLevel(DataGridIntent intent, string whsCode, List<string> itemCodes)    {
-        Dictionary<string, string> columnMap = new()
-            {
-                { "ItemCode", "T0.ItemCode" },
-                { "ItemName", "T0.ItemName" },
-                { "Quantity", "T0.OnHand" },
-                { "UoMCode", "T0.InvntryUom" },
-                { "UoMValue", "T4.BaseQty" },
-                { "UoMName", "T2.UomName" },
-                { "WhsCode", "T5.WhsCode" },
-            };
-
         if (intent.Sorts.Count <= 0)
         {
             intent.Sorts.Add(new AppSortDescriptor
@@ -58,7 +47,7 @@ public class ItemMasterDataIntegration (
             throw new Exception("Query for getting all items not found.");
 
         string query = DataGridQueryBuilder.BuildQuery(qry, intent);
-        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent.Filters, columnMap);
+        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent);
 
         List<ItemSelectionSAPDTO> items = await SLActions.RawQueryAsync<ItemSelectionSAPDTO>(query);
         TotalRows? rowCount = await SLActions.RawQueryOneAsync<TotalRows>(countQuery);
@@ -68,16 +57,6 @@ public class ItemMasterDataIntegration (
 
     public async Task<(IEnumerable<ItemSelectionSAPDTO> Data, int Count)> GetMerchandiseItems(DataGridIntent intent)
     {
-        Dictionary<string, string> columnMap = new()
-            {
-                { "ItemCode", "T0.ItemCode" },
-                { "ItemName", "T0.ItemName" },
-                { "Quantity", "T0.OnHand" },
-                { "UoMCode", "T0.InvntryUom" },
-                { "UoMValue", "T4.BaseQty" },
-                { "UoMName", "T2.UomName" },
-            };
-
         if (intent.Sorts.Count <= 0)
         {
             intent.Sorts.Add(new AppSortDescriptor
@@ -92,7 +71,7 @@ public class ItemMasterDataIntegration (
             throw new Exception("Query for getting all items not found.");
 
         string query = DataGridQueryBuilder.BuildQuery(qry, intent);
-        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent.Filters, columnMap);
+        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent);
 
         List<ItemSelectionSAPDTO> items = await SLActions.RawQueryAsync<ItemSelectionSAPDTO>(query);
         TotalRows? rowCount = await SLActions.RawQueryOneAsync<TotalRows>(countQuery);
@@ -113,17 +92,6 @@ public class ItemMasterDataIntegration (
 
     public async Task<(IEnumerable<ItemSelectionSAPDTO> Data, int Count)> GetWarehouseItems(DataGridIntent intent, string whsCode)
     {
-        Dictionary<string, string> columnMap = new()
-            {
-                { "ItemCode", "T0.ItemCode" },
-                { "ItemName", "T0.ItemName" },
-                { "Quantity", "T5.OnHand" },
-                { "UoMCode", "T0.InvntryUom" },
-                { "UoMValue", "T4.BaseQty" },
-                { "UoMName", "T2.UomName" },
-                { "WhsCode", "T5.WhsCode" },
-            };
-
         if (intent.Sorts.Count <= 0)
         {
             intent.Sorts.Add(new AppSortDescriptor
@@ -147,7 +115,7 @@ public class ItemMasterDataIntegration (
             throw new Exception("Query for getting all items not found.");
 
         string query = DataGridQueryBuilder.BuildQuery(qry, intent);
-        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent.Filters, columnMap);
+        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent);
 
         List<ItemSelectionSAPDTO> items = await SLActions.RawQueryAsync<ItemSelectionSAPDTO>(query);
         TotalRows? rowCount = await SLActions.RawQueryOneAsync<TotalRows>(countQuery);

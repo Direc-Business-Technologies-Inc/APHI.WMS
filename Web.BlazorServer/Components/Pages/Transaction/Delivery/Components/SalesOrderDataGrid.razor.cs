@@ -20,6 +20,7 @@ public partial class SalesOrderDataGrid
     DataGridSettings SalesOrderDataGridSettings { get; set; } = new();
 
     string ActionGetAllSalesOrders { get; } = EnumHelper.GetEnumDescription(AppActions.GetAllSalesOrders);
+    AppFilterDescriptor? _searchFilter;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -56,6 +57,8 @@ public partial class SalesOrderDataGrid
         AppBusyService.SetBusy(ActionGetAllSalesOrders, false);
         return DataGridResultVM<SalesOrderDataGridVM>.New(action.Result.Data ?? [], action.Result.Count);
     }
+
+    async Task OnSearchAsync() => await SalesOrderGrid.DataGrid.Reload();
 
     void ViewSalesOrder(SalesOrderDataGridVM salesOrder) => NavManager.NavigateTo($"/transactions/sales/delivery/sales-order/view?ref={salesOrder.DocEntry}");
 }

@@ -15,12 +15,6 @@ public class BusinessPartnerIntegration(
 {
     public async Task<(IEnumerable<BusinessPartnerSAPDTO> Data, int Count)> GetAllAsync(DataGridIntent intent)
     {
-        Dictionary<string, string> columnMap = new()
-            {
-                { "CardCode", "T0.CardCode" },
-                { "CardName", "T0.CardName" },
-            };
-
         if (intent.Sorts.Count <= 0)
         {
             intent.Sorts.Add(new AppSortDescriptor
@@ -35,7 +29,7 @@ public class BusinessPartnerIntegration(
             throw new Exception("Base query for getting all Business Partners not found.");
 
         string query = DataGridQueryBuilder.BuildQuery(qry, intent);
-        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent.Filters, columnMap);
+        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent);
 
         List<BusinessPartnerSAPDTO> data = await SLActions.RawQueryAsync<BusinessPartnerSAPDTO>(query);
         TotalRows? rowCount = await SLActions.RawQueryOneAsync<TotalRows>(countQuery);
@@ -45,12 +39,6 @@ public class BusinessPartnerIntegration(
 
     public async Task<(IEnumerable<BusinessPartnerSAPDTO> Data, int Count)> GetCustomersAsync(DataGridIntent intent)
     {
-        Dictionary<string, string> columnMap = new()
-            {
-                { "CardCode", "T0.CardCode" },
-                { "CardName", "T0.CardName" },
-            };
-
         if (intent.Sorts.Count <= 0)
         {
             intent.Sorts.Add(new AppSortDescriptor
@@ -65,7 +53,7 @@ public class BusinessPartnerIntegration(
             throw new Exception("Base query for getting all Customers not found.");
 
         string query = DataGridQueryBuilder.BuildQuery(qry, intent);
-        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent.Filters, columnMap);
+        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent);
 
         List<BusinessPartnerSAPDTO> data = await SLActions.RawQueryAsync<BusinessPartnerSAPDTO>(query);
         TotalRows? rowCount = await SLActions.RawQueryOneAsync<TotalRows>(countQuery);
@@ -75,12 +63,6 @@ public class BusinessPartnerIntegration(
 
     public async Task<(IEnumerable<BusinessPartnerSAPDTO> Data, int Count)> GetVendorsAsync(DataGridIntent intent)
     {
-        Dictionary<string, string> columnMap = new()
-            {
-                { "CardCode", "T0.CardCode" },
-                { "CardName", "T0.CardName" },
-            };
-
         if (intent.Sorts.Count <= 0)
         {
             intent.Sorts.Add(new AppSortDescriptor
@@ -95,7 +77,7 @@ public class BusinessPartnerIntegration(
             throw new Exception("Base query for getting all Vendors not found.");
 
         string query = DataGridQueryBuilder.BuildQuery(qry, intent);
-        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent.Filters, columnMap);
+        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent);
 
         List<BusinessPartnerSAPDTO> data = await SLActions.RawQueryAsync<BusinessPartnerSAPDTO>(query);
         TotalRows? rowCount = await SLActions.RawQueryOneAsync<TotalRows>(countQuery);

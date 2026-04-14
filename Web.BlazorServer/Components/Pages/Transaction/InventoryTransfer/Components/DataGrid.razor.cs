@@ -12,6 +12,7 @@ namespace Web.BlazorServer.Components.Pages.Transaction.InventoryTransfer.Compon
 partial class DataGrid
 {
     [Parameter, EditorRequired] public string ActionName { get; set; }
+    AppFilterDescriptor? _searchFilter;
     [Parameter] public string ViewItemURI { get; set; } = string.Empty;
     [Parameter] public bool IsDraft { get; set; } = false;
     [Parameter] public string? CreateItemURI { get; set; } = null;
@@ -68,6 +69,8 @@ partial class DataGrid
         AppBusyService.SetBusy(ActionName, false);
         return DataGridResultVM<InventoryTransferRequestDataGridVM>.New(action.Result.Data ?? [], action.Result.Count);
     }
+
+    async Task OnSearchAsync() => await InventoryTransferRequestDataGrid.DataGrid.Reload();
 
     void CreateItem()
     {

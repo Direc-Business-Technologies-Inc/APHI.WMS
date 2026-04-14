@@ -5,11 +5,17 @@
 
 @inherits BaseComponent
 
-<AppDataGrid @ref="@GoodsReturnRequestDataGrid" Id="goods_return_request_grid" TItem="GRRDataGridVM" DataGetter="@LoadDataAsync" GridSettings="@GoodsReturnRequestDataGridSettings" @bind-GridSettingsLoaded="@GridSettingsLoaded" ActionName="@ActionGetGoodsReturnRequests">
+<AppDataGrid @ref="@GoodsReturnRequestDataGrid" Id="goods_return_request_grid" TItem="GRRDataGridVM" DataGetter="@LoadDataAsync" GridSettings="@GoodsReturnRequestDataGridSettings" @bind-GridSettingsLoaded="@GridSettingsLoaded" ActionName="@ActionGetGoodsReturnRequests" SearchFilter="@_searchFilter">
     <HeaderTemplate>
-        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
-            <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />
-            <RadzenButton Icon="sync" Size="ButtonSize.Small" Click="GoodsReturnRequestDataGrid.ReloadDataAsync" />
+        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center">
+            <AppDataGridSearchBar TItem="GRRDataGridVM"
+                                  @bind-SearchFilter="_searchFilter"
+                                  OnSearch="OnSearchAsync"
+                                  Properties="@(new[] { nameof(GRRDataGridVM.CardCode), nameof(GRRDataGridVM.CardName), nameof(GRRDataGridVM.DocNum) })" />
+            <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
+                <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />
+                <RadzenButton Icon="sync" Size="ButtonSize.Small" Click="GoodsReturnRequestDataGrid.ReloadDataAsync" />
+            </RadzenStack>
         </RadzenStack>
     </HeaderTemplate>
     <GridColumns>

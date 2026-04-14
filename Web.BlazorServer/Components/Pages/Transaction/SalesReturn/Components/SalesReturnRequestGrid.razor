@@ -3,11 +3,17 @@
 
 @inherits BaseComponent
 
-<AppDataGrid @ref="@SalesReturnRequestDataGrid" Id="sales_return_request_grid" TItem="SalesReturnRequestDataGridVM" DataGetter="@LoadDataAsync" GridSettings="@SalesReturnRequestDataGridSettings" @bind-GridSettingsLoaded="@GridSettingsLoaded" ActionName="@ActionGetSalesReturnRequests">
+<AppDataGrid @ref="@SalesReturnRequestDataGrid" Id="sales_return_request_grid" TItem="SalesReturnRequestDataGridVM" DataGetter="@LoadDataAsync" GridSettings="@SalesReturnRequestDataGridSettings" @bind-GridSettingsLoaded="@GridSettingsLoaded" ActionName="@ActionGetSalesReturnRequests" SearchFilter="@_searchFilter">
     <HeaderTemplate>
-        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
-            <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />
-            <RadzenButton Icon="sync" Size="ButtonSize.Small" Click="SalesReturnRequestDataGrid.ReloadDataAsync" />
+        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center">
+            <AppDataGridSearchBar TItem="SalesReturnRequestDataGridVM"
+                                  @bind-SearchFilter="_searchFilter"
+                                  OnSearch="OnSearchAsync"
+                                  Properties="@(new[] { nameof(SalesReturnRequestDataGridVM.CardCode), nameof(SalesReturnRequestDataGridVM.CardName), nameof(SalesReturnRequestDataGridVM.Remarks), nameof(SalesReturnDataGridVM.DocNum) })" />
+            <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
+                <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />
+                <RadzenButton Icon="sync" Size="ButtonSize.Small" Click="SalesReturnRequestDataGrid.ReloadDataAsync" />
+            </RadzenStack>
         </RadzenStack>
     </HeaderTemplate>
     <GridColumns>

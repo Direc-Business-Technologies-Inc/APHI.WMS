@@ -34,6 +34,7 @@ public static class DatabaseMsSqlDI
         services.TryAddTransient<IUserReadRepo, UserReadRepo>();
         services.TryAddTransient<IRoleReadRepo, RoleReadRepo>();
         services.TryAddTransient<IInventoryCountingReadRepo, InventoryCountingReadRepo>();
+        services.TryAddTransient<ISettingsReadRepo, SettingsReadRepo>();
 
         return services;
     }

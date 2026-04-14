@@ -5,6 +5,9 @@ async function LogoutAPI(uri) {
             if (key && key.endsWith('-TSET')) {
                 localStorage.removeItem(key);
             }
+            if (key && key.endsWith('-FCACHE')) {
+                localStorage.removeItem(key);
+            }
         }
 
         const response = await fetch(uri, {

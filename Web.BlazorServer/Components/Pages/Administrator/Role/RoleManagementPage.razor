@@ -13,12 +13,18 @@
     <AppBreadCrumbs ModuleCode="OROL" />
 </RadzenStack>
 <AppContent>
-    <AppDataGrid @ref="@RolesDataGrid" Id="roles_grid" TItem="RoleVM" DataGetter="@LoadDataAsync" GridSettings="@RolesDataGridSettings" @bind-GridSettingsLoaded="@GridSettingsLoaded" ActionName="@ActionGetRoles" DataGridSelectionMode="DataGridSelectionMode.Single">
+    <AppDataGrid @ref="@RolesDataGrid" Id="roles_grid" TItem="RoleVM" DataGetter="@LoadDataAsync" GridSettings="@RolesDataGridSettings" @bind-GridSettingsLoaded="@GridSettingsLoaded" ActionName="@ActionGetRoles" DataGridSelectionMode="DataGridSelectionMode.Single" SearchFilter="@_searchFilter">
         <HeaderTemplate>
-            <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
-                <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />
-                <RadzenButton Icon="sync" Size="ButtonSize.Small" Click="RolesDataGrid.ReloadDataAsync" />
-                <RadzenButton Visible="@Can.Create("OROL")" Icon="add" Size=ButtonSize.Small ButtonStyle="ButtonStyle.Success" Shade="Shade.Light" Click="@CreateRole" />
+            <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center">
+                <AppDataGridSearchBar TItem="RoleVM"
+                                      @bind-SearchFilter="_searchFilter"
+                                      OnSearch="OnSearchAsync"
+                                      Properties="@(new[] { nameof(RoleVM.Code), nameof(RoleVM.Name) })" />
+                <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
+                    <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />
+                    <RadzenButton Icon="sync" Size="ButtonSize.Small" Click="RolesDataGrid.ReloadDataAsync" />
+                    <RadzenButton Visible="@Can.Create("OROL")" Icon="add" Size=ButtonSize.Small ButtonStyle="ButtonStyle.Success" Shade="Shade.Light" Click="@CreateRole" />
+                </RadzenStack>
             </RadzenStack>
         </HeaderTemplate>
         <GridColumns>

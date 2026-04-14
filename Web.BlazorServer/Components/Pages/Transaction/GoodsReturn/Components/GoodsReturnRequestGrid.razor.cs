@@ -20,6 +20,7 @@ public partial class GoodsReturnRequestGrid
     DataGridSettings GoodsReturnRequestDataGridSettings { get; set; }
 
     string ActionGetGoodsReturnRequests { get; } = EnumHelper.GetEnumDescription(AppActions.GetAllGoodsReturnRequests);
+    AppFilterDescriptor? _searchFilter;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -56,6 +57,8 @@ public partial class GoodsReturnRequestGrid
         AppBusyService.SetBusy(ActionGetGoodsReturnRequests, false);
         return DataGridResultVM<GRRDataGridVM>.New(action.Result.Data ?? [], action.Result.Count);
     }
+
+    async Task OnSearchAsync() => await GoodsReturnRequestDataGrid.DataGrid.Reload();
 
     void ViewGoodsReturnRequest(GRRDataGridVM purchaseOrder) => NavManager.NavigateTo($"/transactions/purchasing/goods-return/request/view?ref={purchaseOrder.DocEntry}", true);
 }

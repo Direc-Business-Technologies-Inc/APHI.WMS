@@ -15,4 +15,7 @@ public enum CycleType
 
     [Description("Quarterly")]
     Quarterly,
+
+    [Description("Annual")]
+    Annual,
 }

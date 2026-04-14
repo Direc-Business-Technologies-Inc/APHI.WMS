@@ -21,6 +21,7 @@ public partial class InventoryCountingHistoryGrid
     DataGridSettings GridSettings { get; set; } = new();
 
     string ActionGetAll { get; } = EnumHelper.GetEnumDescription(AppActions.GetAllInventoryCountingDocuments);
+    AppFilterDescriptor? _searchFilter;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -64,6 +65,8 @@ public partial class InventoryCountingHistoryGrid
         AppBusyService.SetBusy(ActionGetAll, false);
         return DataGridResultVM<InventoryCountingDataGridVM>.New(action.Result.Data ?? [], action.Result.Count);
     }
+
+    async Task OnSearchAsync() => await DataGrid.DataGrid.Reload();
 
     void ViewDocument(InventoryCountingDataGridVM doc) =>
         NavManager.NavigateTo($"/transactions/inventory/inventory-counting/view?Id={doc.Id}", true);

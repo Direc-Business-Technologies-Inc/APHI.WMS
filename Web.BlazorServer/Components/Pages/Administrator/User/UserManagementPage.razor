@@ -14,12 +14,18 @@
     <AppBreadCrumbs ModuleCode="OUSR" />
 </RadzenStack>
 <AppContent>
-    <AppDataGrid @ref="@UsersDataGrid" Id="users_grid" TItem="UserDataGridVM" DataGetter="@LoadDataAsync" GridSettings="@UsersDataGridSettings" @bind-GridSettingsLoaded="@GridSettingsLoaded" ActionName="@ActionGetUsers">
+    <AppDataGrid @ref="@UsersDataGrid" Id="users_grid" TItem="UserDataGridVM" DataGetter="@LoadDataAsync" GridSettings="@UsersDataGridSettings" @bind-GridSettingsLoaded="@GridSettingsLoaded" ActionName="@ActionGetUsers" SearchFilter="@_searchFilter">
         <HeaderTemplate>
-            <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
-                <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />
-                <RadzenButton Icon="sync" Size="ButtonSize.Small" Click="UsersDataGrid.ReloadDataAsync" />
-                <RadzenButton Visible="@Can.Create("OUSR")" Icon="add" Size=ButtonSize.Small ButtonStyle="ButtonStyle.Success" Shade="Shade.Light" Click="@CreateUser" />
+            <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center">
+                <AppDataGridSearchBar TItem="UserDataGridVM"
+                                      @bind-SearchFilter="_searchFilter"
+                                      OnSearch="OnSearchAsync"
+                                      Properties="@(new[] { nameof(UserDataGridVM.FullName), nameof(UserDataGridVM.UserName), nameof(UserDataGridVM.Email), nameof(UserDataGridVM.Position) })" />
+                <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
+                    <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />
+                    <RadzenButton Icon="sync" Size="ButtonSize.Small" Click="UsersDataGrid.ReloadDataAsync" />
+                    <RadzenButton Visible="@Can.Create("OUSR")" Icon="add" Size=ButtonSize.Small ButtonStyle="ButtonStyle.Success" Shade="Shade.Light" Click="@CreateUser" />
+                </RadzenStack>
             </RadzenStack>
         </HeaderTemplate>
         <GridColumns>
