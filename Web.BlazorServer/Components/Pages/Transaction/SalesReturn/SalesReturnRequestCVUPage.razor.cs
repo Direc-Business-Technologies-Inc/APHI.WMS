@@ -121,6 +121,7 @@ public partial class SalesReturnRequestCVUPage
 
         action.OnSuccess(async (_) =>
         {
+            await ClearFormCacheAsync();
             NavManager.NavigateTo("/transactions/sales/sales-return?T=srr", true);
         });
     }

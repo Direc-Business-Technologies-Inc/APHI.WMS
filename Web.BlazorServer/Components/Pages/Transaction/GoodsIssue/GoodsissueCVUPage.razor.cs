@@ -145,6 +145,7 @@ public partial class GoodsIssueCVUPage
 
         action.OnSuccess(async (args) =>
         {
+            await ClearFormCacheAsync();
             NavManager.NavigateTo("/transactions/inventory/goods-issue/?t=pndng");
         });
     }

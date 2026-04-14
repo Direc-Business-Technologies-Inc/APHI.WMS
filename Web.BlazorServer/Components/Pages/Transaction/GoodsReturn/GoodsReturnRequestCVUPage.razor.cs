@@ -140,6 +140,7 @@ public partial class GoodsReturnRequestCVUPage
 
         action.OnSuccess(async (args) =>
         {
+            await ClearFormCacheAsync();
             NavManager.NavigateTo("/transactions/purchasing/goods-return?t=grr");
         });
     }

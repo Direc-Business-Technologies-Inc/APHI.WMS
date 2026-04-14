@@ -147,6 +147,7 @@ public partial class InventoryCountingCVUPage
 
         action.OnSuccess(async result =>
         {
+            await ClearFormCacheAsync();
             UnsavedChangesService.MarkClean();
             NavManager.NavigateTo("/transactions/inventory/inventory-counting?T=open", true);
         });

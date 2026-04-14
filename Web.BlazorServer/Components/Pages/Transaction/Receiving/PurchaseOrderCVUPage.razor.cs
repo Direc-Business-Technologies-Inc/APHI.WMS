@@ -140,6 +140,7 @@ public partial class PurchaseOrderCVUPage
 
         action.OnSuccess(async (args) =>
         {
+            await ClearFormCacheAsync();
             await LoadDataAsync();
             NavManager.NavigateTo($"/transactions/purchasing/receiving/purchase-order/view?ref={FormData.SapReference.DocEntry}");
         });
