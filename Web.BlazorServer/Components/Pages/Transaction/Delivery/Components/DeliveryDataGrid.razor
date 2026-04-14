@@ -9,7 +9,7 @@
             <AppDataGridSearchBar TItem="DeliveryDataGridVM"
                                   @bind-SearchFilter="_searchFilter"
                                   OnSearch="OnSearchAsync"
-                                  Properties="@(new[] { nameof(DeliveryDataGridVM.CardCode), nameof(DeliveryDataGridVM.CardName), nameof(DeliveryDataGridVM.Remarks) })" />
+                                  Properties="@(new[] { nameof(DeliveryDataGridVM.CardCode), nameof(DeliveryDataGridVM.CardName), nameof(DeliveryDataGridVM.Remarks), nameof(DeliveryDataGridVM.DocNum) })" />
             <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
                 <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />
                 <RadzenButton Icon="sync" Size="ButtonSize.Small" Click="DeliveryGrid.ReloadDataAsync" />
