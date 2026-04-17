@@ -57,7 +57,7 @@
                         <HeaderTemplate>
                             <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center" Gap="8px">
                                 <RadzenTextBox Placeholder="Search by item code or name..."
-                                               Value="@_sheetLinesSearchTerm" Change="@OnSheetLinesSearchChange"
+                                               Value="@_sheetLinesSearchTerm" Input="@OnSheetLinesSearchChange"
                                                style="max-width: 300px;" />
                                 <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="8px">
                                     <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenSheetLinesSettings" />

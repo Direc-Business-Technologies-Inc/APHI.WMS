@@ -151,7 +151,7 @@
                                 <HeaderTemplate>
                                     <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center" Gap="8px">
                                         <RadzenTextBox Placeholder="Search by item code or name..."
-                                                       Value="@_linesSearchTerm" Change="@OnLinesSearchChange"
+                                                       Value="@_linesSearchTerm" Input="@OnLinesSearchChange"
                                                        style="max-width: 300px;" />
                                         <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="8px">
                                             <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenLinesTableSettings" />
@@ -194,7 +194,7 @@
                             @* Viewing: grid with sub-row expansion *@
                             <RadzenStack Visible="@Viewing" Gap="8px">
                             <RadzenTextBox Placeholder="Search by item code or name..."
-                                           Value="@_linesSearchTerm" Change="@OnLinesSearchChange"
+                                           Value="@_linesSearchTerm" Input="@OnLinesSearchChange"
                                            style="max-width: 300px;" />
                             <RadzenDataGrid TItem="InventoryCountingLineVM"
                                             Data="@FilteredDocumentLines.ToList()"
