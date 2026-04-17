@@ -42,11 +42,17 @@
                              })" />
         </RadzenStack>
 
-        <AppTable TItem="InventoryCountingSheetLineVM"
+        <AppTable @ref="@SheetLinesTable"
+                  TItem="InventoryCountingSheetLineVM"
                   Id="ict_sheet_lines"
                   ActionName="@ActionView"
                   @bind-GridSettingsLoaded="@GridSettingsLoaded"
-                  Data="@([.. Sheet?.SheetLines ?? []])">
+                  Data="@([.. FilteredSheetLines])">
+            <HeaderTemplate>
+                <RadzenTextBox Placeholder="Search by item code or name..."
+                               Value="@_sheetLinesSearchTerm" Change="@OnSheetLinesSearchChange"
+                               style="max-width: 300px;" />
+            </HeaderTemplate>
             <Columns>
                 <RadzenDataGridColumn TItem="InventoryCountingSheetLineVM"
                                       Property="@nameof(InventoryCountingSheetLineVM.ItemCode)"

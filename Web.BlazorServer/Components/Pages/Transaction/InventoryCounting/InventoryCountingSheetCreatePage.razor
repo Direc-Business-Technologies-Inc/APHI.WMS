@@ -53,13 +53,18 @@
                               Id="ict_sheet_lines"
                               TItem="InventoryCountingSheetLineVM"
                               @bind-GridSettingsLoaded="@GridSettingsLoaded"
-                              Data="[..FormData.SheetLines]">
+                              Data="[..FilteredSheetLines]">
                         <HeaderTemplate>
-                            <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
-                                <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenSheetLinesSettings" />
-                                <RadzenButton Text="Scan Barcode" Icon="qr_code_scanner"
-                                              Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Primary"
-                                              Click="@OpenScannerDialog" />
+                            <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center" Gap="8px">
+                                <RadzenTextBox Placeholder="Search by item code or name..."
+                                               Value="@_sheetLinesSearchTerm" Change="@OnSheetLinesSearchChange"
+                                               style="max-width: 300px;" />
+                                <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="8px">
+                                    <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenSheetLinesSettings" />
+                                    <RadzenButton Text="Scan Barcode" Icon="qr_code_scanner"
+                                                  Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Primary"
+                                                  Click="@OpenScannerDialog" />
+                                </RadzenStack>
                             </RadzenStack>
                         </HeaderTemplate>
                         <Columns>

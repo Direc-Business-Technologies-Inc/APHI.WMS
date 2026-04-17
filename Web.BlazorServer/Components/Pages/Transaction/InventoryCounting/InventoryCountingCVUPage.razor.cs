@@ -58,6 +58,14 @@ public partial class InventoryCountingCVUPage
     bool IsPostingAllowed =>
         _postingCycleSetting is not null
         && FormData.CycleType.ToString().ToUpper() == _postingCycleSetting.Value;
+
+    string _linesSearchTerm = string.Empty;
+    IEnumerable<InventoryCountingLineVM> FilteredDocumentLines =>
+        string.IsNullOrWhiteSpace(_linesSearchTerm)
+            ? FormData.DocumentLines
+            : FormData.DocumentLines.Where(l =>
+                l.ItemCode.Contains(_linesSearchTerm, StringComparison.OrdinalIgnoreCase) ||
+                l.ItemName.Contains(_linesSearchTerm, StringComparison.OrdinalIgnoreCase));
     #endregion Primitives
 
     #region Data Structures
@@ -212,6 +220,7 @@ public partial class InventoryCountingCVUPage
     {
         OnFieldChanged(nameof(FormData.Warehouse));
         FormData.DocumentLines = [];
+        _linesSearchTerm = string.Empty;
         _ = LoadWarehouseItemsAsync();
     }
 
@@ -237,6 +246,14 @@ public partial class InventoryCountingCVUPage
 
             await InvokeAsync(StateHasChanged);
         });
+    }
+
+    async Task OnLinesSearchChange(string value)
+    {
+        _linesSearchTerm = value;
+        if (DocumentLinesTable is not null)
+            await DocumentLinesTable.DataGrid.Reload();
+        await InvokeAsync(StateHasChanged);
     }
 
     void RemoveLine(InventoryCountingLineVM line) =>

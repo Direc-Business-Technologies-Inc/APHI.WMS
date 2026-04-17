@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Shared.Libraries.Kernel;
+using Web.BlazorServer.Components.Shared.Abstraction;
 using Web.BlazorServer.Defaults;
 using Web.BlazorServer.Handlers.Repositories.Transaction.InventoryCounting;
 using Web.BlazorServer.ViewModels.Transaction.InventoryCounting;
@@ -30,10 +31,19 @@ public partial class InventoryCountingSheetViewPage
     readonly string ActionView = EnumHelper.GetEnumDescription(AppActions.ViewInventoryCountingDocument);
     readonly string ActionIgnore = EnumHelper.GetEnumDescription(AppActions.IgnoreInventoryCountingSheet);
     readonly string ActionSync = EnumHelper.GetEnumDescription(AppActions.SyncInventoryCountingSheet);
+
+    string _sheetLinesSearchTerm = string.Empty;
+    IEnumerable<InventoryCountingSheetLineVM> FilteredSheetLines =>
+        string.IsNullOrWhiteSpace(_sheetLinesSearchTerm) || Sheet is null
+            ? Sheet?.SheetLines ?? []
+            : Sheet.SheetLines.Where(l =>
+                l.ItemCode.Contains(_sheetLinesSearchTerm, StringComparison.OrdinalIgnoreCase) ||
+                l.ItemName.Contains(_sheetLinesSearchTerm, StringComparison.OrdinalIgnoreCase));
     #endregion Primitives
 
     #region Data Structures
     InventoryCountingSheetVM? Sheet { get; set; }
+    AppTable<InventoryCountingSheetLineVM> SheetLinesTable { get; set; } = default!;
     #endregion Data Structures
 
     #region Overrides
@@ -136,6 +146,14 @@ public partial class InventoryCountingSheetViewPage
         AppBusyService.SetBusy(ActionIgnore, false);
 
         action.OnSuccess(async _ => await LoadSheetAsync());
+    }
+
+    async Task OnSheetLinesSearchChange(string value)
+    {
+        _sheetLinesSearchTerm = value;
+        if (SheetLinesTable is not null)
+            await SheetLinesTable.DataGrid.Reload();
+        await InvokeAsync(StateHasChanged);
     }
 
     void GoBack() =>

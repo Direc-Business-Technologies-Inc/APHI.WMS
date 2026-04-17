@@ -147,13 +147,18 @@
                                       Id="ict_lines_create"
                                       TItem="InventoryCountingLineVM"
                                       @bind-GridSettingsLoaded="@GridSettingsLoaded"
-                                      Data="[..FormData.DocumentLines]">
+                                      Data="[..FilteredDocumentLines]">
                                 <HeaderTemplate>
-                                    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
-                                        <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenLinesTableSettings" />
-                                        <RadzenButton Icon="add" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success"
-                                                      Disabled="@(string.IsNullOrEmpty(FormData.Warehouse?.WhsCode) || IsLoadingWarehouseItems)"
-                                                      Click="@AddItems" />
+                                    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center" Gap="8px">
+                                        <RadzenTextBox Placeholder="Search by item code or name..."
+                                                       Value="@_linesSearchTerm" Change="@OnLinesSearchChange"
+                                                       style="max-width: 300px;" />
+                                        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="8px">
+                                            <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenLinesTableSettings" />
+                                            <RadzenButton Icon="add" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success"
+                                                          Disabled="@(string.IsNullOrEmpty(FormData.Warehouse?.WhsCode) || IsLoadingWarehouseItems)"
+                                                          Click="@AddItems" />
+                                        </RadzenStack>
                                     </RadzenStack>
                                 </HeaderTemplate>
                                 <Columns>
@@ -187,9 +192,12 @@
                             </AppTable>
 
                             @* Viewing: grid with sub-row expansion *@
-                            <RadzenDataGrid Visible="@Viewing"
-                                            TItem="InventoryCountingLineVM"
-                                            Data="@FormData.DocumentLines"
+                            <RadzenStack Visible="@Viewing" Gap="8px">
+                            <RadzenTextBox Placeholder="Search by item code or name..."
+                                           Value="@_linesSearchTerm" Change="@OnLinesSearchChange"
+                                           style="max-width: 300px;" />
+                            <RadzenDataGrid TItem="InventoryCountingLineVM"
+                                            Data="@FilteredDocumentLines.ToList()"
                                             AllowPaging ShowPagingSummary
                                             RowRender="@ExpandAllRows">
                                 <Template Context="line">
@@ -245,6 +253,7 @@
                                     </RadzenDataGridColumn>
                                 </Columns>
                             </RadzenDataGrid>
+                            </RadzenStack>
 
                         </RadzenColumn>
                     </RadzenRow>

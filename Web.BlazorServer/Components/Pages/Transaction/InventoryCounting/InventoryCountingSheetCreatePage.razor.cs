@@ -31,6 +31,14 @@ public partial class InventoryCountingSheetCreatePage
 
     readonly string ActionView = EnumHelper.GetEnumDescription(AppActions.ViewInventoryCountingDocument);
     readonly string ActionCreate = EnumHelper.GetEnumDescription(AppActions.CreateInventoryCountingSheet);
+
+    string _sheetLinesSearchTerm = string.Empty;
+    IEnumerable<InventoryCountingSheetLineVM> FilteredSheetLines =>
+        string.IsNullOrWhiteSpace(_sheetLinesSearchTerm)
+            ? FormData.SheetLines
+            : FormData.SheetLines.Where(l =>
+                l.ItemCode.Contains(_sheetLinesSearchTerm, StringComparison.OrdinalIgnoreCase) ||
+                l.ItemName.Contains(_sheetLinesSearchTerm, StringComparison.OrdinalIgnoreCase));
     #endregion Primitives
 
     #region Data Structures
@@ -166,6 +174,14 @@ public partial class InventoryCountingSheetCreatePage
                 Width = "400px",
                 CloseDialogOnOverlayClick = false,
             });
+    }
+
+    async Task OnSheetLinesSearchChange(string value)
+    {
+        _sheetLinesSearchTerm = value;
+        if (SheetLinesTable is not null)
+            await SheetLinesTable.DataGrid.Reload();
+        await InvokeAsync(StateHasChanged);
     }
 
     void HandleScanResult(string isbn)
