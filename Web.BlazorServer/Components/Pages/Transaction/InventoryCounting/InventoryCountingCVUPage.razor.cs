@@ -2,6 +2,7 @@ using Domain.Entities.Enums.Transaction.InventoryCounting;
 using Mapster;
 using Microsoft.AspNetCore.Components;
 using Radzen;
+using Radzen.Blazor;
 using Shared.Libraries.Entities;
 using Shared.Libraries.Kernel;
 using Web.BlazorServer.Components.Shared.Abstraction;
@@ -70,6 +71,7 @@ public partial class InventoryCountingCVUPage
 
     #region Data Structures
     AppTable<InventoryCountingLineVM> DocumentLinesTable { get; set; } = default!;
+    RadzenDataGrid<InventoryCountingLineVM> ViewingLinesGrid { get; set; } = default!;
     DataGridSettings DocumentLinesTableSettings { get; set; } = new();
     List<WarehouseVM> Warehouses { get; set; } = [];
     IDataGridIntentAdapter DatagridAdapter { get; set; } = default!;
@@ -251,8 +253,10 @@ public partial class InventoryCountingCVUPage
     async Task OnLinesSearchChange(string value)
     {
         _linesSearchTerm = value;
-        if (DocumentLinesTable is not null)
+        if (Creating && DocumentLinesTable is not null)
             await DocumentLinesTable.DataGrid.Reload();
+        if (Viewing && ViewingLinesGrid is not null)
+            await ViewingLinesGrid.Reload();
         await InvokeAsync(StateHasChanged);
     }
 

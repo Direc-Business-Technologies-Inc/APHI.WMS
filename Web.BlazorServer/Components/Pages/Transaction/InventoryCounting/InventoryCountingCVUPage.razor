@@ -196,7 +196,8 @@
                             <RadzenTextBox Placeholder="Search by item code or name..."
                                            Value="@_linesSearchTerm" Input="@OnLinesSearchChange"
                                            style="max-width: 300px;" />
-                            <RadzenDataGrid TItem="InventoryCountingLineVM"
+                            <RadzenDataGrid @ref="@ViewingLinesGrid"
+                                            TItem="InventoryCountingLineVM"
                                             Data="@FilteredDocumentLines.ToList()"
                                             AllowPaging ShowPagingSummary
                                             RowRender="@ExpandAllRows">
