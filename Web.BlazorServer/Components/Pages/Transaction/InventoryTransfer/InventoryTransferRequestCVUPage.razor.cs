@@ -112,7 +112,9 @@ public partial class InventoryTransferRequestCVUPage
 
     protected override Task CancelEditing()
     {
-        throw new NotImplementedException();
+        AdaptToForm();
+        NavManager.NavigateTo(VIEW_LIST_ITR_TAB_URI, true);
+        return Task.CompletedTask;
     }
 
     protected override async Task HandleSubmit()
@@ -155,7 +157,8 @@ public partial class InventoryTransferRequestCVUPage
 
     protected override Task InitializeEditing()
     {
-        throw new NotImplementedException();
+        AdaptToClone();
+        return Task.CompletedTask;
     }
     #endregion Overrides
 
@@ -175,6 +178,9 @@ public partial class InventoryTransferRequestCVUPage
             LoadSchoolYears(new()),
             GetInventoryTransferRequest()
         );
+
+        if (Viewing)
+            await InitializeEditing();
 
         await InvokeAsync(StateHasChanged);
         await Task.Yield();

@@ -105,7 +105,9 @@ public partial class GoodsReturnCVUPage
 
     protected override Task CancelEditing()
     {
-        throw new NotImplementedException();
+        AdaptToForm();
+        NavManager.NavigateTo("/transactions/purchasing/goods-return?t=gr", true);
+        return Task.CompletedTask;
     }
 
     protected override async Task HandleSubmit()
@@ -152,7 +154,8 @@ public partial class GoodsReturnCVUPage
 
     protected override Task InitializeEditing()
     {
-        throw new NotImplementedException();
+        AdaptToClone();
+        return Task.CompletedTask;
     }
 
     #endregion Overrides
@@ -176,6 +179,9 @@ public partial class GoodsReturnCVUPage
             LoadWarehouses(new()));
 
         FormData.PreparedBy = AuthenticationService.GetUserName();
+
+        if (!Creating)
+            await InitializeEditing();
 
         AppBusyService.SetBusy(ActionGetGoodsReturn, false);
         await InvokeAsync(StateHasChanged);

@@ -134,11 +134,7 @@ public class GoodsIssueIntegration(
         }
         catch (SLException ex) when (ex.Message.Contains("-2028"))
         {
-
-        }
-        catch
-        {
-            throw;
+            throw new InvalidOperationException("SAP requires confirmation before posting this Goods Issue. Please confirm the document in SAP Business One and retry.", ex);
         }
 
         return true;

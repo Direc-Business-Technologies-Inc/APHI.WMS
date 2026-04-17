@@ -67,12 +67,15 @@ public partial class SalesOrderCVUPage
 
     protected override Task InitializeEditing()
     {
-        throw new NotImplementedException();
+        AdaptToClone();
+        return Task.CompletedTask;
     }
 
     protected override Task CancelEditing()
     {
-        throw new NotImplementedException();
+        AdaptToForm();
+        Back();
+        return Task.CompletedTask;
     }
 
     protected override Task HandleSubmit()
@@ -92,6 +95,7 @@ public partial class SalesOrderCVUPage
         }
 
         await GetSalesOrder();
+        await InitializeEditing();
 
         AppBusyService.SetBusy(ActionGetSalesOrder, false);
         await InvokeAsync(StateHasChanged);

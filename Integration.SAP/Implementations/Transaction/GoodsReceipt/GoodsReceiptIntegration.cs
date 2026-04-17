@@ -128,11 +128,7 @@ public class GoodsReceiptIntegration(
         }
         catch (SLException ex) when (ex.Message.Contains("-2028"))
         {
-
-        }
-        catch
-        {
-            throw;
+            throw new InvalidOperationException("SAP requires confirmation before posting this Goods Receipt. Please confirm the document in SAP Business One and retry.", ex);
         }
 
         return true;

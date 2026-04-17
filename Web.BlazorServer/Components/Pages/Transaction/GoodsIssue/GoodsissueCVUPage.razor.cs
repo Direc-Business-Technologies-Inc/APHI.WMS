@@ -110,7 +110,9 @@ public partial class GoodsIssueCVUPage
 
     protected override Task CancelEditing()
     {
-        throw new NotImplementedException();
+        AdaptToForm();
+        NavManager.NavigateTo("/transactions/inventory/goods-issue/?t=pndng", true);
+        return Task.CompletedTask;
     }
 
     protected override async Task HandleSubmit()
@@ -152,7 +154,8 @@ public partial class GoodsIssueCVUPage
 
     protected override Task InitializeEditing()
     {
-        throw new NotImplementedException();
+        AdaptToClone();
+        return Task.CompletedTask;
     }
 
     #endregion Overrides
@@ -176,6 +179,9 @@ public partial class GoodsIssueCVUPage
             LoadSchoolYears(new()));
 
         FormData.PreparedBy = AuthenticationService.GetUserName();
+
+        if (!Creating)
+            await InitializeEditing();
 
         AppBusyService.SetBusy(ActionGetGoodsIssue, false);
         await InvokeAsync(StateHasChanged);

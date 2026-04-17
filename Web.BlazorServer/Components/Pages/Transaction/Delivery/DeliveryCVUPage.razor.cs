@@ -85,12 +85,15 @@ public partial class DeliveryCVUPage
 
     protected override Task InitializeEditing()
     {
-        throw new NotImplementedException();
+        AdaptToClone();
+        return Task.CompletedTask;
     }
 
     protected override Task CancelEditing()
     {
-        throw new NotImplementedException();
+        AdaptToForm();
+        NavManager.NavigateTo("/transactions/sales/delivery?T=dlv", true);
+        return Task.CompletedTask;
     }
 
     protected override async Task HandleSubmit()
@@ -147,6 +150,9 @@ public partial class DeliveryCVUPage
             await Task.WhenAll(GetDelivery(), LoadDeliveryMeans());
 
         FormData.PreparedBy = AuthenticationService.GetUserName();
+
+        if (Viewing)
+            await InitializeEditing();
 
         AppBusyService.SetBusy(ActionGetDelivery, false);
         await InvokeAsync(StateHasChanged);

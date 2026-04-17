@@ -77,6 +77,7 @@ partial class ReadOnlyForm
         }
 
         await LoadData();
+        await InitializeEditing();
 
         AppBusyService.SetBusy(ActionName, false);
         await InvokeAsync(StateHasChanged);
@@ -112,17 +113,17 @@ partial class ReadOnlyForm
 
     protected override Task InitializeEditing()
     {
-        throw new NotImplementedException();
+        AdaptToClone();
+        return Task.CompletedTask;
     }
 
     protected override Task CancelEditing()
     {
-        throw new NotImplementedException();
+        AdaptToForm();
+        NavManager.NavigateTo(ParentURI);
+        return Task.CompletedTask;
     }
 
-    protected override Task HandleSubmit()
-    {
-        throw new NotImplementedException();
-    }
+    protected override Task HandleSubmit() => Task.CompletedTask;
     #endregion
 }

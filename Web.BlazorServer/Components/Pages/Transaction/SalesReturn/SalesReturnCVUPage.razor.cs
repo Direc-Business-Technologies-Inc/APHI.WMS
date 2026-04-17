@@ -89,7 +89,9 @@ public partial class SalesReturnCVUPage
 
     protected override Task CancelEditing()
     {
-        throw new NotImplementedException();
+        AdaptToForm();
+        NavManager.NavigateTo("/transactions/sales/sales-return?T=sr", true);
+        return Task.CompletedTask;
     }
 
     protected override async Task HandleSubmit()
@@ -137,7 +139,8 @@ public partial class SalesReturnCVUPage
 
     protected override Task InitializeEditing()
     {
-        throw new NotImplementedException();
+        AdaptToClone();
+        return Task.CompletedTask;
     }
     #endregion Overrides
 
@@ -160,6 +163,9 @@ public partial class SalesReturnCVUPage
             LoadWarehouses(new()));
 
         FormData.PreparedBy = AuthenticationService.GetUserName();
+
+        if (!Creating)
+            await InitializeEditing();
 
         AppBusyService.SetBusy(ActionGetSalesReturn, false);
         await InvokeAsync(StateHasChanged);

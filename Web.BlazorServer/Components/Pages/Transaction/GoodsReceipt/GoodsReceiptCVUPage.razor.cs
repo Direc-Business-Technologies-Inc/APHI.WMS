@@ -106,7 +106,9 @@ public partial class GoodsReceiptCVUPage
 
     protected override Task CancelEditing()
     {
-        throw new NotImplementedException();
+        AdaptToForm();
+        NavManager.NavigateTo("/transactions/inventory/goods-receipt/?t=pndng", true);
+        return Task.CompletedTask;
     }
 
     protected override async Task HandleSubmit()
@@ -148,7 +150,8 @@ public partial class GoodsReceiptCVUPage
 
     protected override Task InitializeEditing()
     {
-        throw new NotImplementedException();
+        AdaptToClone();
+        return Task.CompletedTask;
     }
 
     #endregion Overrides
@@ -171,6 +174,9 @@ public partial class GoodsReceiptCVUPage
             LoadWarehouses(new()));
 
         FormData.PreparedBy = AuthenticationService.GetUserName();
+
+        if (!Creating)
+            await InitializeEditing();
 
         AppBusyService.SetBusy(ActionGetGoodsReceipt, false);
         await InvokeAsync(StateHasChanged);

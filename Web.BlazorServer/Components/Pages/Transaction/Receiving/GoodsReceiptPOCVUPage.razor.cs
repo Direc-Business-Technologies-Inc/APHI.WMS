@@ -98,14 +98,17 @@ public partial class GoodsReceiptPOCVUPage
         }
     }
 
-    protected override async Task InitializeEditing()
+    protected override Task InitializeEditing()
     {
-        throw new NotImplementedException();
+        AdaptToClone();
+        return Task.CompletedTask;
     }
 
-    protected override async Task CancelEditing()
+    protected override Task CancelEditing()
     {
-        throw new NotImplementedException();
+        AdaptToForm();
+        NavManager.NavigateTo("/transactions/purchasing/receiving?t=grpo", true);
+        return Task.CompletedTask;
     }
 
     protected override async Task HandleSubmit()
@@ -129,6 +132,9 @@ public partial class GoodsReceiptPOCVUPage
         await Task.WhenAll(
             LoadReturnTypes(),
             GetPurchaseDeliveryNote());
+
+        if (Viewing)
+            await InitializeEditing();
 
         await InvokeAsync(StateHasChanged);
         await Task.Yield();
