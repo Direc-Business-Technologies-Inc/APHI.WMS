@@ -6,9 +6,8 @@ using Integration.Sap.Entities;
 using Integration.Sap.Helpers;
 using Integration.Sap.Repositories;
 using Integration.SAP.Entities.Transactional.InventoryTransfer;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 using System.Text.Json;
-using System.Text.RegularExpressions;
 
 namespace Integration.SAP.Implementations.Transaction.InventoryTransfer;
 
@@ -137,7 +136,7 @@ public partial class InventoryTransferIntegration(
         );
         if (result == null)
             throw new FileNotFoundException(string.Format(ITR_NOT_FOUND_MSG, DocEntry));
-        
+
         return result;
     }
     public async Task<InventoryTransferHeaderSAPDTO?> GetInventoryTransferRequestDraftHeaderAsync(int docEntry, string status)

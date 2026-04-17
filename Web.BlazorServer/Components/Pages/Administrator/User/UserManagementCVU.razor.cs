@@ -1,5 +1,6 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Components;
+using Shared.Libraries.Kernel;
 using Web.BlazorServer.Defaults;
 using Web.BlazorServer.Handlers.Repositories.Administration.Role;
 using Web.BlazorServer.Handlers.Repositories.Administration.User;
@@ -8,7 +9,6 @@ using Web.BlazorServer.Helpers;
 using Web.BlazorServer.Services.Repositories;
 using Web.BlazorServer.ViewModels.Administration.Role;
 using Web.BlazorServer.ViewModels.Enums;
-using KernelEnumHelper = Shared.Kernel.EnumHelper;
 
 namespace Web.BlazorServer.Components.Pages.Administrator.User;
 
@@ -43,10 +43,10 @@ public partial class UserManagementCVU
     bool IsBusy => AppBusyService.IsBusy(ActionCreateUser) || AppBusyService.IsBusy(ActionGetUser) || AppBusyService.IsBusy(ActionUpdateUser);
     bool IsLoadingData => AppBusyService.IsBusy(ActionGetRoles) || AppBusyService.IsBusy(ActionGetUser);
 
-    readonly string ActionCreateUser = KernelEnumHelper.GetEnumDescription(AppActions.CreateUser);
-    readonly string ActionGetUser = KernelEnumHelper.GetEnumDescription(AppActions.ViewUser);
-    readonly string ActionUpdateUser = KernelEnumHelper.GetEnumDescription(AppActions.UpdateUser);
-    readonly string ActionGetRoles = KernelEnumHelper.GetEnumDescription(AppActions.GetAllRoles);
+    readonly string ActionCreateUser = EnumHelper.GetEnumDescription(AppActions.CreateUser);
+    readonly string ActionGetUser = EnumHelper.GetEnumDescription(AppActions.ViewUser);
+    readonly string ActionUpdateUser = EnumHelper.GetEnumDescription(AppActions.UpdateUser);
+    readonly string ActionGetRoles = EnumHelper.GetEnumDescription(AppActions.GetAllRoles);
     #endregion Primitives
 
     #region Data Structures
@@ -69,7 +69,7 @@ public partial class UserManagementCVU
     {
         base.OnInitialized();
         AppBusyService.SetBusy(ActionGetUser, true);
-        if (!Can.Do("OUSR", KernelEnumHelper.GetEnumDescription(PageAction)))
+        if (!Can.Do("OUSR", EnumHelper.GetEnumDescription(PageAction)))
             NavManager.NavigateTo("/401", true);
     }
 

@@ -1,11 +1,9 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Routing;
 using Radzen;
-using Shared.Entities;
-using Shared.Kernel;
+using Shared.Libraries.Entities;
+using Shared.Libraries.Kernel;
 using Sprache;
-using System.Text.RegularExpressions;
 using Web.BlazorServer.Components.Shared.Abstraction;
 using Web.BlazorServer.Defaults;
 using Web.BlazorServer.Handlers.Repositories.Others;
@@ -15,7 +13,6 @@ using Web.BlazorServer.Services.Implementation;
 using Web.BlazorServer.Services.Repositories;
 using Web.BlazorServer.ViewModels.Enums;
 using Web.BlazorServer.ViewModels.Others;
-using Web.BlazorServer.ViewModels.System;
 using Web.BlazorServer.ViewModels.Transaction.InventoryTransfer;
 
 namespace Web.BlazorServer.Components.Pages.Transaction.InventoryTransfer;
@@ -112,7 +109,9 @@ public partial class InventoryTransferRequestCVUPage
 
     protected override Task CancelEditing()
     {
-        throw new NotImplementedException();
+        AdaptToForm();
+        NavManager.NavigateTo(VIEW_LIST_ITR_TAB_URI, true);
+        return Task.CompletedTask;
     }
 
     protected override async Task HandleSubmit()
@@ -155,7 +154,8 @@ public partial class InventoryTransferRequestCVUPage
 
     protected override Task InitializeEditing()
     {
-        throw new NotImplementedException();
+        AdaptToClone();
+        return Task.CompletedTask;
     }
     #endregion Overrides
 
@@ -175,6 +175,9 @@ public partial class InventoryTransferRequestCVUPage
             LoadSchoolYears(new()),
             GetInventoryTransferRequest()
         );
+
+        if (Viewing)
+            await InitializeEditing();
 
         await InvokeAsync(StateHasChanged);
         await Task.Yield();

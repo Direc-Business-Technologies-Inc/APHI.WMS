@@ -26,7 +26,16 @@ public class DocNumReadRepo(IDbContextFactory<AppDbContext> dbContextFactory) : 
 
     public Task<DocumentNumberDEM> GetDocumentNumberEntityWithLockingAsync(Guid documentTypeId)
     {
-        throw new NotImplementedException();
+        return ExecuteAppDbWork<DocumentNumberDEM>(async () =>
+        {
+            await using var ctx = await dbContextFactory.CreateDbContextAsync();
+
+            DocumentTypeDEM? documentType = await ctx.ODCT.FirstOrDefaultAsync(x => x.Id == documentTypeId) ?? throw new KeyNotFoundException($"Document type not found for Id: {documentTypeId}");
+
+            DocumentNumberDEM? series = (await ctx.ODCN.FromSqlInterpolated($@"EXEC APP_SP_GetNextDocumentNumber @DocumentTypeId = {documentTypeId}").ToListAsync()).FirstOrDefault() ?? throw new KeyNotFoundException($"Document number series not found for DocumentTypeId: {documentTypeId}");
+
+            return series;
+        });
     }
 
     public Task<DocumentNumberDTO> GetDocumentNumberWithLockingAsync(Guid documentTypeId)

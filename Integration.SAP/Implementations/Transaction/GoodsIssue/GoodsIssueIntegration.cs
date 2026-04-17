@@ -7,8 +7,7 @@ using Integration.Sap.Entities;
 using Integration.Sap.Helpers;
 using Integration.Sap.Repositories;
 using Integration.SAP.Entities.Transactional.GoodsIssue;
-using Mapster.Adapters;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 using System.Text.Json;
 
 namespace Integration.SAP.Implementations.Transaction.GoodsIssue;
@@ -134,11 +133,7 @@ public class GoodsIssueIntegration(
         }
         catch (SLException ex) when (ex.Message.Contains("-2028"))
         {
-
-        }
-        catch
-        {
-            throw;
+            throw new InvalidOperationException("SAP requires confirmation before posting this Goods Issue. Please confirm the document in SAP Business One and retry.", ex);
         }
 
         return true;

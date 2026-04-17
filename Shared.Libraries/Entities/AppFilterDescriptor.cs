@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel;
 
-namespace Shared.Entities;
+namespace Shared.Libraries.Entities;
 
 public class AppFilterDescriptor
 {

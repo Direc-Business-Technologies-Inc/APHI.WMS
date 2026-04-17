@@ -2,14 +2,14 @@
 using Application.UseCases.Queries.Others;
 using Mapster;
 using MediatR;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 using Web.BlazorServer.Handlers.Repositories.Others;
 using Web.BlazorServer.ViewModels.Others;
 
 namespace Web.BlazorServer.Handlers.Implementations.Others;
 
 public class BusinessPartnerHandler(
-    ISender Sender) 
+    ISender Sender)
     : IBusinessPartnerHandler
 {
     public async Task<(IEnumerable<BusinessPartnerVM> Data, int Count)> GetCustomersAsync(DataGridIntent intent)

@@ -1,5 +1,5 @@
-﻿using Shared.Entities;
-using Shared.Kernel;
+﻿using Shared.Libraries.Entities;
+using Shared.Libraries.Kernel;
 
 namespace Application.DataTransferObjects.Commons;
 

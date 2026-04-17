@@ -1,7 +1,7 @@
 ﻿using Application.UseCases.Repositories.Bases;
 using Database.MsSql.Core;
 using Microsoft.EntityFrameworkCore;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 using System.Linq.Expressions;
 
 namespace Database.MsSql.Implementation.Bases;

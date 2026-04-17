@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Shared.Kernel;
+using Shared.Libraries.Kernel;
 using Web.BlazorServer.Defaults;
 using Web.BlazorServer.Handlers.Repositories.System;
 using Web.BlazorServer.ViewModels.Enums;

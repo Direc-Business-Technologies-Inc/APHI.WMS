@@ -1,14 +1,14 @@
 ﻿using Application.DataTransferObjects.Administration.Role;
 using Application.UseCases.Repositories.Domain.Administration.User;
 using MediatR;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 
 namespace Application.UseCases.Queries.Administration.Role;
 
 public record GetAllRolesQry(DataGridIntent Intent) : IRequest<(IEnumerable<RoleDTO> Data, int Count)>;
 
 public class GetAllRolesQryHandler(
-    IRoleReadRepo roleReadRepo) 
+    IRoleReadRepo roleReadRepo)
     : IRequestHandler<GetAllRolesQry, (IEnumerable<RoleDTO> Data, int Count)>
 {
     public async Task<(IEnumerable<RoleDTO> Data, int Count)> Handle(GetAllRolesQry request, CancellationToken cancellationToken)

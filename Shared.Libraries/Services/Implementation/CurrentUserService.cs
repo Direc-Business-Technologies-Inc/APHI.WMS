@@ -1,6 +1,6 @@
-﻿using Shared.Services.Repository;
+﻿using Shared.Libraries.Services.Repository;
 
-namespace Web.BlazorServer.Services.Implementation;
+namespace Shared.Libraries.Services.Implementation;
 
 public class CurrentUserService : ICurrentUserService
 {

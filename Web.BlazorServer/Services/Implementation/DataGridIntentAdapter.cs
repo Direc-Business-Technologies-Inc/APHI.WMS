@@ -1,5 +1,5 @@
 ﻿using Radzen;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 using Web.BlazorServer.Helpers;
 using Web.BlazorServer.Services.Repositories;
 
@@ -107,8 +107,8 @@ public class DataGridIntentAdapter : IDataGridIntentAdapter
 
     public void AddFilter(AppFilterDescriptor filter) => QueryIntent.Filters.Add(filter);
 
-    public void RemoveFilter(AppFilterDescriptor filter) => 
-        QueryIntent.Filters.RemoveAll(f => f.Property.Equals(filter.Property)  && f.Value is not null ? f.Property.Equals(filter.Value) : false);
+    public void RemoveFilter(AppFilterDescriptor filter) =>
+        QueryIntent.Filters.RemoveAll(f => f.Property.Equals(filter.Property) && f.Value is not null ? f.Property.Equals(filter.Value) : false);
 
     public void RemoveFilters(List<AppFilterDescriptor> filters) => QueryIntent.Filters.RemoveAll(f => filters.Any(fl => fl.Property.Equals(f.Property) && fl.Value is not null ? fl.Value.Equals(f.Value) : false));
 

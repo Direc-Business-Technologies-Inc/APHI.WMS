@@ -3,7 +3,7 @@ using Application.UseCases.Commands.Transaction.GoodsReceipt;
 using Application.UseCases.Queries.Transaction.GoodsReceipt;
 using Mapster;
 using MediatR;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 using Web.BlazorServer.Handlers.Repositories.Transaction.GoodsReceipt;
 using Web.BlazorServer.ViewModels.Transaction.GoodsReceipt;
 

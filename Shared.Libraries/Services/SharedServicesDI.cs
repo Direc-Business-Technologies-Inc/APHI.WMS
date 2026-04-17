@@ -1,16 +1,16 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
-using Shared.Services.Repository;
-using Web.BlazorServer.Services.Implementation;
+using Shared.Libraries.Services.Implementation;
+using Shared.Libraries.Services.Repository;
 
-namespace Shared.Services;
+namespace Shared.Libraries.Services;
 
 public static class SharedServicesDI
 {
     public static IServiceCollection AddSharedServices(this IServiceCollection services)
     {
 
-        services.TryAddScoped<ICurrentUserService,CurrentUserService>();
+        services.TryAddScoped<ICurrentUserService, CurrentUserService>();
 
         return services;
     }

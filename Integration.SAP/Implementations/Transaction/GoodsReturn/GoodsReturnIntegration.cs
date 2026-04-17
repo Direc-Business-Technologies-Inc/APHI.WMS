@@ -6,8 +6,8 @@ using Integration.Sap.Entities;
 using Integration.Sap.Helpers;
 using Integration.Sap.Repositories;
 using Integration.SAP.Entities.Transactional.GoodsReturn;
-using Shared.Entities;
 using System.Text.Json;
+using Shared.Libraries.Entities;
 
 namespace Integration.SAP.Implementations.Transaction.GoodsReturn;
 

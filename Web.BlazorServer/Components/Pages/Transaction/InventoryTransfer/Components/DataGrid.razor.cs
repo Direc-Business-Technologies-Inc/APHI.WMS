@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Radzen;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 using Web.BlazorServer.Components.Shared.Abstraction;
 using Web.BlazorServer.Defaults;
 using Web.BlazorServer.Services.Repositories;

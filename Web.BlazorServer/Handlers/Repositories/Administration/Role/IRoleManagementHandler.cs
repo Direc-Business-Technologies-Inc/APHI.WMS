@@ -1,6 +1,5 @@
-﻿using Shared.Entities;
+﻿using Shared.Libraries.Entities;
 using Web.BlazorServer.ViewModels.Administration.Role;
-using Web.BlazorServer.ViewModels.Administration.User;
 
 namespace Web.BlazorServer.Handlers.Repositories.Administration.Role;
 

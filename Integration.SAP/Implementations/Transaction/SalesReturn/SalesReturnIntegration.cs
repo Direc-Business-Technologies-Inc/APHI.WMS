@@ -6,7 +6,7 @@ using Integration.Sap.Entities;
 using Integration.Sap.Helpers;
 using Integration.Sap.Repositories;
 using Integration.SAP.Entities.Transactional.SalesReturn;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 
 namespace Integration.SAP.Implementations.Transaction.SalesReturn;
 

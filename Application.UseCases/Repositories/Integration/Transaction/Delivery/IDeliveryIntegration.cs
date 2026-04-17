@@ -1,6 +1,6 @@
 ﻿using Application.DataTransferObjects.Transactions.Delivery;
 using Application.DataTransferObjects.Transactions.Delivery.SAP;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 
 namespace Application.UseCases.Repositories.Integration.Transaction.Delivery;
 

@@ -3,14 +3,14 @@ using Application.DataTransferObjects.Others.SAP;
 using Application.UseCases.Repositories.Integration.Others;
 using Mapster;
 using MediatR;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 
 namespace Application.UseCases.Queries.Others;
 
 public record GetVendorsQry(DataGridIntent Intent) : IRequest<(IEnumerable<BusinessPartnerDTO> Data, int Count)>;
 
 public class GetVendorsQryHandler(
-    IBusinessPartnerIntegration bpIntegration) 
+    IBusinessPartnerIntegration bpIntegration)
     : IRequestHandler<GetVendorsQry, (IEnumerable<BusinessPartnerDTO> Data, int Count)>
 {
     public async Task<(IEnumerable<BusinessPartnerDTO> Data, int Count)> Handle(GetVendorsQry request, CancellationToken cancellationToken)

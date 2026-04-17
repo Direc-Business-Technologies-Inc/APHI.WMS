@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Radzen;
 using Radzen.Blazor;
-using Shared.Kernel;
+using Shared.Libraries.Kernel;
 using System.Data;
 using Web.BlazorServer.Defaults;
 using Web.BlazorServer.Handlers.Repositories.Administration.Authorization;

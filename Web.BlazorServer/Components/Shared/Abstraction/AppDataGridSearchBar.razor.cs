@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 using Web.BlazorServer.Components.Base;
 
 namespace Web.BlazorServer.Components.Shared.Abstraction;

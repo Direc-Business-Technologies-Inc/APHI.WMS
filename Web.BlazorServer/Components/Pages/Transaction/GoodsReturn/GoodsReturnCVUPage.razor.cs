@@ -1,14 +1,11 @@
 ﻿using Domain.Entities.Enums.Transaction.GoodsReturn;
-using Domain.Entities.ValueObjects.Others;
 using Mapster;
 using Microsoft.AspNetCore.Components;
 using Radzen;
-using Shared.Entities;
-using Shared.Kernel;
+using Shared.Libraries.Entities;
+using Shared.Libraries.Kernel;
 using Web.BlazorServer.Components.Shared.Abstraction;
 using Web.BlazorServer.Defaults;
-using Web.BlazorServer.Handlers.Implementations.Others;
-using Web.BlazorServer.Handlers.Implementations.Transaction.Receiving;
 using Web.BlazorServer.Handlers.Repositories.Others;
 using Web.BlazorServer.Handlers.Repositories.Transaction.GoodsReturn;
 using Web.BlazorServer.Helpers;
@@ -105,7 +102,9 @@ public partial class GoodsReturnCVUPage
 
     protected override Task CancelEditing()
     {
-        throw new NotImplementedException();
+        AdaptToForm();
+        NavManager.NavigateTo("/transactions/purchasing/goods-return?t=gr", true);
+        return Task.CompletedTask;
     }
 
     protected override async Task HandleSubmit()
@@ -152,7 +151,8 @@ public partial class GoodsReturnCVUPage
 
     protected override Task InitializeEditing()
     {
-        throw new NotImplementedException();
+        AdaptToClone();
+        return Task.CompletedTask;
     }
 
     #endregion Overrides
@@ -176,6 +176,9 @@ public partial class GoodsReturnCVUPage
             LoadWarehouses(new()));
 
         FormData.PreparedBy = AuthenticationService.GetUserName();
+
+        if (!Creating)
+            await InitializeEditing();
 
         AppBusyService.SetBusy(ActionGetGoodsReturn, false);
         await InvokeAsync(StateHasChanged);

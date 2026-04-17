@@ -1,4 +1,4 @@
-﻿using Shared.Entities;
+﻿using Shared.Libraries.Entities;
 using System.Linq.Expressions;
 
 namespace Database.Libraries.Helpers;

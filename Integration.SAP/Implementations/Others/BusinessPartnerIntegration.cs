@@ -4,7 +4,7 @@ using Database.Libraries.Repositories;
 using Integration.Sap.Entities;
 using Integration.Sap.Helpers;
 using Integration.Sap.Repositories;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 
 namespace Integration.SAP.Implementations.Others;
 

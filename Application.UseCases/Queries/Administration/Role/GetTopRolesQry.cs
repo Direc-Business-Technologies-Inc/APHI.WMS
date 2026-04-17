@@ -1,10 +1,7 @@
 ﻿using Application.DataTransferObjects.Administration.Role;
-using Application.UseCases.Repositories.Bases;
 using Application.UseCases.Repositories.Domain.Administration.User;
-using Domain.Entities.Administration.User.Role;
-using Mapster;
 using MediatR;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 
 namespace Application.UseCases.Queries.Administration.Role;
 

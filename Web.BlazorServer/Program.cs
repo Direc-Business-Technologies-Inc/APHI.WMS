@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components.Authorization;
 using Radzen;
-using Shared.Services;
+using Shared.Libraries.Services;
 using Web.BlazorServer.Components;
 using Web.BlazorServer.Components.Security;
 using Web.BlazorServer.Handlers;

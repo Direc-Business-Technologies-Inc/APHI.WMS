@@ -1,7 +1,7 @@
 ﻿using Application.DataTransferObjects.Transactions.Receiving;
 using Application.DataTransferObjects.Transactions.Receiving.SAP;
 using Integration.SAP.Entities.Transactional.Receiving;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 
 namespace Application.UseCases.Repositories.Integration.Transaction.Receiving;
 

@@ -18,6 +18,7 @@ public class BusinessPartnerVO : ValueObject
 
     protected override IEnumerable<object> GetEqualityComponents()
     {
-        throw new NotImplementedException();
+        yield return CardCode;
+        yield return CardName;
     }
 }

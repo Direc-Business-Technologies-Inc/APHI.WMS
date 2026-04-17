@@ -1,11 +1,12 @@
 using Mapster;
 using Microsoft.AspNetCore.Components;
 using Radzen;
-using Shared.Entities;
-using Shared.Kernel;
+using Shared.Libraries.Entities;
+using Shared.Libraries.Kernel;
+using Web.BlazorServer.Components.Pages.Transaction.InventoryCounting.Components;
+using Web.BlazorServer.Components.Pages.Transaction.Receiving.Components;
 using Web.BlazorServer.Components.Shared.Abstraction;
 using Web.BlazorServer.Defaults;
-using Web.BlazorServer.Handlers.Implementations.Transaction.GoodsReturn;
 using Web.BlazorServer.Handlers.Repositories.Others;
 using Web.BlazorServer.Handlers.Repositories.Transaction.Receiving;
 using Web.BlazorServer.Helpers;
@@ -14,11 +15,8 @@ using Web.BlazorServer.Services.Repositories;
 using Web.BlazorServer.ViewModels.Enums;
 using Web.BlazorServer.ViewModels.Others;
 using Web.BlazorServer.ViewModels.System;
-using Web.BlazorServer.ViewModels.Transaction.GoodsReturn;
 using Web.BlazorServer.ViewModels.Transaction.Commons;
 using Web.BlazorServer.ViewModels.Transaction.Receiving;
-using Web.BlazorServer.Components.Pages.Transaction.InventoryCounting.Components;
-using Web.BlazorServer.Components.Pages.Transaction.Receiving.Components;
 
 namespace Web.BlazorServer.Components.Pages.Transaction.Receiving;
 
@@ -355,7 +353,7 @@ public partial class PurchaseOrderCVUPage
             selectedLine.Quantity += 1;
             await PurchaseOrderTable.DataGrid.Reload();
             await InvokeAsync(StateHasChanged);
-            
+
             ToastService.Success($"Incremented quantity for {selectedLine.ItemCode}");
         }
     }

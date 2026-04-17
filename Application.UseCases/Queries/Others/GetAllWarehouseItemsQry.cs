@@ -3,7 +3,7 @@ using Application.DataTransferObjects.Transactions.Commons;
 using Application.UseCases.Repositories.Integration.Others;
 using Mapster;
 using MediatR;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 
 namespace Application.UseCases.Queries.Others;
 

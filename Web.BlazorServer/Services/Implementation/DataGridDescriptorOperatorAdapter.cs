@@ -1,5 +1,5 @@
 ﻿using Radzen;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 using Web.BlazorServer.Services.Repositories;
 
 namespace Web.BlazorServer.Services.Implementation;

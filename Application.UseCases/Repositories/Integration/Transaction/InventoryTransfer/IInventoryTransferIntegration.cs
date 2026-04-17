@@ -1,9 +1,9 @@
 ﻿using Application.DataTransferObjects.Transactions.InventoryTransfer;
 using Integration.SAP.Entities.Transactional.InventoryTransfer;
-using Integration.SAP.Entities.Transactional.Receiving;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 
 namespace Application.UseCases.Repositories.Integration.Transaction.InventoryTransfer;
+
 public interface IInventoryTransferIntegration
 {
     #region Inventory Transfer Requests

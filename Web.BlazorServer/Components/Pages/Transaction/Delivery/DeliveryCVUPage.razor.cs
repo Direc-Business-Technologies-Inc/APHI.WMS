@@ -2,8 +2,7 @@ using Domain.Providers;
 using Mapster;
 using Microsoft.AspNetCore.Components;
 using Radzen;
-using Shared.Entities;
-using Shared.Kernel;
+using Shared.Libraries.Kernel;
 using Web.BlazorServer.Components.Shared.Abstraction;
 using Web.BlazorServer.Defaults;
 using Web.BlazorServer.Handlers.Repositories.Transaction.Delivery;
@@ -85,12 +84,15 @@ public partial class DeliveryCVUPage
 
     protected override Task InitializeEditing()
     {
-        throw new NotImplementedException();
+        AdaptToClone();
+        return Task.CompletedTask;
     }
 
     protected override Task CancelEditing()
     {
-        throw new NotImplementedException();
+        AdaptToForm();
+        NavManager.NavigateTo("/transactions/sales/delivery?T=dlv", true);
+        return Task.CompletedTask;
     }
 
     protected override async Task HandleSubmit()
@@ -147,6 +149,9 @@ public partial class DeliveryCVUPage
             await Task.WhenAll(GetDelivery(), LoadDeliveryMeans());
 
         FormData.PreparedBy = AuthenticationService.GetUserName();
+
+        if (Viewing)
+            await InitializeEditing();
 
         AppBusyService.SetBusy(ActionGetDelivery, false);
         await InvokeAsync(StateHasChanged);

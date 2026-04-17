@@ -1,12 +1,10 @@
 using Mapster;
 using Microsoft.AspNetCore.Components;
 using Radzen;
-using Shared.Entities;
-using Shared.Kernel;
+using Shared.Libraries.Kernel;
 using Web.BlazorServer.Components.Shared.Abstraction;
 using Web.BlazorServer.Defaults;
 using Web.BlazorServer.Handlers.Repositories.Transaction.Delivery;
-using Web.BlazorServer.Helpers;
 using Web.BlazorServer.Services.Repositories;
 using Web.BlazorServer.ViewModels.Enums;
 using Web.BlazorServer.ViewModels.System;
@@ -67,12 +65,15 @@ public partial class SalesOrderCVUPage
 
     protected override Task InitializeEditing()
     {
-        throw new NotImplementedException();
+        AdaptToClone();
+        return Task.CompletedTask;
     }
 
     protected override Task CancelEditing()
     {
-        throw new NotImplementedException();
+        AdaptToForm();
+        Back();
+        return Task.CompletedTask;
     }
 
     protected override Task HandleSubmit()
@@ -92,6 +93,7 @@ public partial class SalesOrderCVUPage
         }
 
         await GetSalesOrder();
+        await InitializeEditing();
 
         AppBusyService.SetBusy(ActionGetSalesOrder, false);
         await InvokeAsync(StateHasChanged);

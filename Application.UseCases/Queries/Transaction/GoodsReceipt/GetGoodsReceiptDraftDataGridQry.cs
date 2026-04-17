@@ -2,7 +2,7 @@
 using Application.UseCases.Repositories.Integration.Transaction.GoodsReceipt;
 using Mapster;
 using MediatR;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 
 namespace Application.UseCases.Queries.Transaction.GoodsReceipt;
 

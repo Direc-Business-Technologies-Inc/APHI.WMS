@@ -1,5 +1,5 @@
 using Domain.Entities.Enums.Transaction.SalesReturn;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 using Web.BlazorServer.ViewModels.Transaction.SalesReturn;
 
 namespace Web.BlazorServer.Handlers.Repositories.Transaction.SalesReturn;

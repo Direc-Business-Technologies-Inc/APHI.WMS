@@ -4,7 +4,7 @@ using Application.UseCases.Queries.Transaction.GoodsReturn;
 using Domain.Entities.Enums.Transaction.GoodsReturn;
 using Mapster;
 using MediatR;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 using Web.BlazorServer.Handlers.Repositories.Transaction.GoodsReturn;
 using Web.BlazorServer.ViewModels.Transaction.GoodsReturn;
 

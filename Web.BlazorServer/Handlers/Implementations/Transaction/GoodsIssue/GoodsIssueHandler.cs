@@ -4,7 +4,7 @@ using Application.UseCases.Commands.Transaction.GoodsIssue;
 using Application.UseCases.Queries.Transaction.GoodsIssue;
 using Mapster;
 using MediatR;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 using Web.BlazorServer.Handlers.Repositories.Transaction.GoodsIssue;
 using Web.BlazorServer.ViewModels.Transaction.GoodsIssue;
 

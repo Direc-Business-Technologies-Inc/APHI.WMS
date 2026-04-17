@@ -1,6 +1,6 @@
 using Application.DataTransferObjects.Transactions.InventoryCounting;
 using Domain.Entities.Enums.Transaction.InventoryCounting;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 
 namespace Application.UseCases.Repositories.Domain.Transaction.InventoryCounting;
 

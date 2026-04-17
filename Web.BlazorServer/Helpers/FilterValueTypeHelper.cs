@@ -1,4 +1,4 @@
-﻿using Shared.Entities;
+﻿using Shared.Libraries.Entities;
 
 namespace Web.BlazorServer.Helpers;
 

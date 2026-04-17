@@ -1,5 +1,4 @@
-﻿using Shared.Entities;
-using Web.BlazorServer.ViewModels.Transaction.GoodsIssue;
+﻿using Shared.Libraries.Entities;
 using Web.BlazorServer.ViewModels.Transaction.GoodsReceipt;
 
 namespace Web.BlazorServer.Handlers.Repositories.Transaction.GoodsReceipt;

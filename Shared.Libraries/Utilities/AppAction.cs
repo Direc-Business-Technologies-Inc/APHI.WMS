@@ -1,6 +1,6 @@
-﻿using Shared.Utilities.Repositories;
+﻿using Shared.Libraries.Utilities.Repositories;
 
-namespace Shared.Utilities;
+namespace Shared.Libraries.Utilities;
 
 public class AppAction : IAppAction
 {

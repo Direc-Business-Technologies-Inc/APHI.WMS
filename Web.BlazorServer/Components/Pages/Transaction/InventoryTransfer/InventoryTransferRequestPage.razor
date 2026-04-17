@@ -18,7 +18,7 @@
 <AppContent>
     <RadzenTabs @bind-SelectedIndex="@SelectedTab" @bind-SelectedIndex:after="@TabChanged">
         <Tabs>
-            <RadzenTabsItem Text="Inventory Transfer Requests">
+          @*   <RadzenTabsItem Text="Inventory Transfer Requests">
                 <DataGrid ViewItemURI="@ITR_VIEW_ITEM_URI"
                           CreateItemURI="@ITR_CREATE_ITEM_URI"
                           ActionName="@ActionGetInventoryTransferRequests"
@@ -40,7 +40,7 @@
                 <DataGrid ViewItemURI="@POSTED_ITR_VIEW_ITEM_URI"
                           ActionName="@ActionGetPostedInventoryTransferRequests"
                           DataGetter="@PostedITRGetter" />
-            </RadzenTabsItem>
+            </RadzenTabsItem> *@
         </Tabs>
     </RadzenTabs>
 </AppContent>

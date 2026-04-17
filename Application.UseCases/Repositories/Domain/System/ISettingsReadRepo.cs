@@ -1,5 +1,5 @@
 using Application.DataTransferObjects.System.Settings;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 
 namespace Application.UseCases.Repositories.Domain.System;
 

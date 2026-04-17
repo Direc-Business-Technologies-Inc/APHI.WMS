@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.Components;
-using Shared.Kernel;
+using Shared.Libraries.Kernel;
 using Web.BlazorServer.Defaults;
 using Web.BlazorServer.Handlers.Repositories.Transaction.InventoryCounting;
 using Web.BlazorServer.ViewModels.Transaction.InventoryCounting;
@@ -27,9 +27,9 @@ public partial class InventoryCountingSheetViewPage
     bool IsLoadingData => _isInitialLoading || AppBusyService.IsBusy(ActionView);
     bool GridSettingsLoaded { get; set; }
 
-    readonly string ActionView   = EnumHelper.GetEnumDescription(AppActions.ViewInventoryCountingDocument);
+    readonly string ActionView = EnumHelper.GetEnumDescription(AppActions.ViewInventoryCountingDocument);
     readonly string ActionIgnore = EnumHelper.GetEnumDescription(AppActions.IgnoreInventoryCountingSheet);
-    readonly string ActionSync   = EnumHelper.GetEnumDescription(AppActions.SyncInventoryCountingSheet);
+    readonly string ActionSync = EnumHelper.GetEnumDescription(AppActions.SyncInventoryCountingSheet);
     #endregion Primitives
 
     #region Data Structures

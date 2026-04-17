@@ -1,4 +1,4 @@
-﻿namespace Shared.Entities;
+﻿namespace Shared.Libraries.Entities;
 
 public class DataGridIntent
 {

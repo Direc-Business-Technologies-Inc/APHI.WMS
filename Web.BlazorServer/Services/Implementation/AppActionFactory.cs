@@ -1,4 +1,4 @@
-﻿using Shared.Utilities;
+﻿using Shared.Libraries.Utilities;
 using Web.BlazorServer.Services.Repositories;
 
 namespace Web.BlazorServer.Services.Implementation;

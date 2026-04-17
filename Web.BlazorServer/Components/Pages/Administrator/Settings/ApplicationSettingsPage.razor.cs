@@ -1,6 +1,5 @@
 using Mapster;
 using Microsoft.AspNetCore.Components;
-using Shared.Kernel;
 using Shared.Libraries.Kernel;
 using Web.BlazorServer.Components.Base;
 using Web.BlazorServer.Defaults;
@@ -20,17 +19,17 @@ public partial class ApplicationSettingsPage : BaseComponent
     string ActionUpdateSettings { get; } = EnumHelper.GetEnumDescription(AppActions.UpdateSettingsList);
 
     bool IsLoadingBusy => AppBusyService.IsBusy(ActionGetAllSettings);
-    bool IsSavingBusy  => AppBusyService.IsBusy(ActionUpdateSettings);
-    bool IsAnyBusy     => IsLoadingBusy || IsSavingBusy;
+    bool IsSavingBusy => AppBusyService.IsBusy(ActionUpdateSettings);
+    bool IsAnyBusy => IsLoadingBusy || IsSavingBusy;
 
-    bool IsEditing   { get; set; } = false;
-    int  DataVersion { get; set; } = 0;
+    bool IsEditing { get; set; } = false;
+    int DataVersion { get; set; } = 0;
     #endregion Primitives
 
     #region Data Structures
-    List<SettingsVM>             Settings      { get; set; } = [];
-    List<SettingsVM>             SettingsClone { get; set; } = [];
-    Dictionary<string, object>   SettingsData  { get; set; } = [];
+    List<SettingsVM> Settings { get; set; } = [];
+    List<SettingsVM> SettingsClone { get; set; } = [];
+    Dictionary<string, object> SettingsData { get; set; } = [];
     #endregion Data Structures
 
     #region Overrides
@@ -55,7 +54,7 @@ public partial class ApplicationSettingsPage : BaseComponent
 
         action.OnSuccess(result =>
         {
-            Settings     = result?.ToList() ?? [];
+            Settings = result?.ToList() ?? [];
             SettingsData = BuildSettingsData(Settings);
             DataVersion++;
             return Task.CompletedTask;
@@ -81,7 +80,7 @@ public partial class ApplicationSettingsPage : BaseComponent
             UnsavedChangesService.MarkClean();
         }
 
-        Settings     = SettingsClone.Adapt<List<SettingsVM>>();
+        Settings = SettingsClone.Adapt<List<SettingsVM>>();
         SettingsData = BuildSettingsData(Settings);
         DataVersion++;
         IsEditing = false;
@@ -120,7 +119,7 @@ public partial class ApplicationSettingsPage : BaseComponent
 
         foreach (var s in settings)
         {
-            try   { dict[s.Name] = AppTypeConverter.Convert(s.Value, s.Type); }
+            try { dict[s.Name] = AppTypeConverter.Convert(s.Value, s.Type); }
             catch { dict[s.Name] = s.Value; }
         }
 

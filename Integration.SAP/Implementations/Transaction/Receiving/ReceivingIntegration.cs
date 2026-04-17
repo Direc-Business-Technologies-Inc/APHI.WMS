@@ -6,8 +6,8 @@ using Integration.Sap.Entities;
 using Integration.Sap.Helpers;
 using Integration.Sap.Repositories;
 using Integration.SAP.Entities.Transactional.Receiving;
-using Shared.Entities;
-using Shared.Kernel;
+using Shared.Libraries.Entities;
+using Shared.Libraries.Kernel;
 using System.Text.Json;
 
 namespace Integration.SAP.Implementations.Transaction.Receiving;

@@ -5,7 +5,7 @@ using Application.UseCases.Repositories.Integration.Transaction.InventoryCountin
 using Domain.Entities.Entities.Transaction.InventoryCounting;
 using Domain.Entities.Enums.Transaction.InventoryCounting;
 using MediatR;
-using Shared.Services.Repository;
+using Shared.Libraries.Services.Repository;
 
 namespace Application.UseCases.Commands.Transaction.InventoryCounting;
 

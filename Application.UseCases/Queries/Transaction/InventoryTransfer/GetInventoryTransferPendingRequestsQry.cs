@@ -2,12 +2,12 @@
 using Application.UseCases.Repositories.Integration.Transaction.InventoryTransfer;
 using Mapster;
 using MediatR;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 namespace Application.UseCases.Queries.Transaction.InventoryTransfer;
 
 public record GetInventoryTransferPendingRequestsQry(DataGridIntent Intent) : IRequest<(IEnumerable<InventoryTransferDataGridDTO> Data, int Count)>;
 
-public class GetPendingInventoryTransferRequestsQryHandler (
+public class GetPendingInventoryTransferRequestsQryHandler(
         IInventoryTransferIntegration inventoryTransferIntegration)
         : IRequestHandler<GetInventoryTransferPendingRequestsQry, (IEnumerable<InventoryTransferDataGridDTO> Data, int Count)>
 {

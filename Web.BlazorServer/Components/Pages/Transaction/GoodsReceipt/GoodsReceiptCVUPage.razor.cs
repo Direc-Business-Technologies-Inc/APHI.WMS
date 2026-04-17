@@ -1,11 +1,10 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Components;
 using Radzen;
-using Shared.Entities;
-using Shared.Kernel;
+using Shared.Libraries.Entities;
+using Shared.Libraries.Kernel;
 using Web.BlazorServer.Components.Shared.Abstraction;
 using Web.BlazorServer.Defaults;
-using Web.BlazorServer.Handlers.Implementations.Others;
 using Web.BlazorServer.Handlers.Repositories.Others;
 using Web.BlazorServer.Handlers.Repositories.Transaction.GoodsReceipt;
 using Web.BlazorServer.Helpers;
@@ -15,7 +14,6 @@ using Web.BlazorServer.ViewModels.Enums;
 using Web.BlazorServer.ViewModels.Others;
 using Web.BlazorServer.ViewModels.Transaction.Commons;
 using Web.BlazorServer.ViewModels.Transaction.GoodsReceipt;
-using Web.BlazorServer.ViewModels.Transaction.GoodsReturn;
 
 namespace Web.BlazorServer.Components.Pages.Transaction.GoodsReceipt;
 
@@ -106,7 +104,9 @@ public partial class GoodsReceiptCVUPage
 
     protected override Task CancelEditing()
     {
-        throw new NotImplementedException();
+        AdaptToForm();
+        NavManager.NavigateTo("/transactions/inventory/goods-receipt/?t=pndng", true);
+        return Task.CompletedTask;
     }
 
     protected override async Task HandleSubmit()
@@ -148,7 +148,8 @@ public partial class GoodsReceiptCVUPage
 
     protected override Task InitializeEditing()
     {
-        throw new NotImplementedException();
+        AdaptToClone();
+        return Task.CompletedTask;
     }
 
     #endregion Overrides
@@ -171,6 +172,9 @@ public partial class GoodsReceiptCVUPage
             LoadWarehouses(new()));
 
         FormData.PreparedBy = AuthenticationService.GetUserName();
+
+        if (!Creating)
+            await InitializeEditing();
 
         AppBusyService.SetBusy(ActionGetGoodsReceipt, false);
         await InvokeAsync(StateHasChanged);

@@ -1,7 +1,5 @@
-﻿using Shared.Services.Repository;
-using System.Security.Claims;
+﻿using System.Security.Claims;
 using System.Text.Json;
-using Web.BlazorServer.Services.Implementation;
 
 namespace Web.BlazorServer.Components.Security;
 

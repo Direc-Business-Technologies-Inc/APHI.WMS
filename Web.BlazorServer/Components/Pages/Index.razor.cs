@@ -1,10 +1,10 @@
 ﻿
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
+using Shared.Libraries.Kernel;
 using Web.BlazorServer.Components.Security;
 using Web.BlazorServer.Defaults;
 using Web.BlazorServer.ViewModels.Security;
-using KernelEnumHelper = Shared.Kernel.EnumHelper;
 
 namespace Web.BlazorServer.Components.Pages;
 
@@ -21,7 +21,7 @@ public partial class Index
 
     #region Primitives
     bool IsBusy => AppBusyService.IsBusy(ActionLogin);
-    readonly string ActionLogin = KernelEnumHelper.GetEnumDescription(AppActions.Login);
+    readonly string ActionLogin = EnumHelper.GetEnumDescription(AppActions.Login);
 
     string Message { get; set; } = string.Empty;
     bool? Success { get; set; } = null;

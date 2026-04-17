@@ -1,8 +1,7 @@
-﻿using Application.DataTransferObjects.Administration.User;
-using Application.DataTransferObjects.System.Modules;
+﻿using Application.DataTransferObjects.System.Modules;
 using Application.UseCases.Repositories.Domain.System;
 using MediatR;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 
 namespace Application.UseCases.Queries.System;
 

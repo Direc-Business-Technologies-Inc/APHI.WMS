@@ -1,5 +1,5 @@
 ﻿using Application.DataTransferObjects.Others.SAP;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 
 namespace Application.UseCases.Repositories.Integration.Others;
 

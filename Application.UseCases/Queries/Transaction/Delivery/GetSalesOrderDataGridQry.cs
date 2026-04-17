@@ -3,7 +3,7 @@ using Application.DataTransferObjects.Transactions.Delivery.SAP;
 using Application.UseCases.Repositories.Integration.Transaction.Delivery;
 using Mapster;
 using MediatR;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 
 
 namespace Application.UseCases.Queries.Transaction.Delivery;
