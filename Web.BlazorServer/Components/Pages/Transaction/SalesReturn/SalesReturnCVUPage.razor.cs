@@ -162,6 +162,8 @@ public partial class SalesReturnCVUPage
             LoadSchoolYears(new()),
             LoadWarehouses(new()));
 
+        await EnsureSchoolYearVisible();
+
         FormData.PreparedBy = AuthenticationService.GetUserName();
 
         if (!Creating)
@@ -322,6 +324,13 @@ public partial class SalesReturnCVUPage
 
             AppBusyService.SetBusy(ActionGetSalesReturnTypes, false);
         }, AppActionOptionPresets.Loading(ActionGetSalesReturnTypes));
+    }
+
+    async Task EnsureSchoolYearVisible()
+    {
+        if (string.IsNullOrEmpty(FormData.SchoolYear)) return;
+        if (SchoolYears.Any(x => x.Code == FormData.SchoolYear)) return;
+        await LoadSchoolYears(new LoadDataArgs { Filter = FormData.SchoolYear });
     }
 
     async Task RemoveLine(SalesReturnLineVM item)

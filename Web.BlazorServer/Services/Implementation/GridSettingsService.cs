@@ -70,10 +70,15 @@ public class GridSettingsService(
                 grid.AllowFiltering,
                 grid.AllowSorting,
                 grid.GridLines);
-            await Task.WhenAll(
-                JSRuntime.InvokeVoidAsync("window.localStorage.setItem", $"{value}-TSET", JsonSerializer.Serialize(gridSettings)).AsTask(),
-                JSRuntime.InvokeVoidAsync("window.localStorage.setItem", $"{value}-OTSET", JsonSerializer.Serialize(ots)).AsTask()
-            );
+            try
+            {
+                await Task.WhenAll(
+                    JSRuntime.InvokeVoidAsync("window.localStorage.setItem", $"{value}-TSET", JsonSerializer.Serialize(gridSettings)).AsTask(),
+                    JSRuntime.InvokeVoidAsync("window.localStorage.setItem", $"{value}-OTSET", JsonSerializer.Serialize(ots)).AsTask()
+                );
+            }
+            catch (JSDisconnectedException) { }
+            catch (TaskCanceledException) { }
         }
     }
     public async Task SetGridSettings<TItem>(RadzenDataGrid<TItem> grid, Action<DataGridSettings?> assignSetting)
@@ -110,8 +115,13 @@ public class GridSettingsService(
 
     async Task LoadSettingAsync(string key, Action<string> assignSetting)
     {
-        var setting = await JSRuntime.InvokeAsync<string>("window.localStorage.getItem", key);
-        assignSetting(setting);
+        try
+        {
+            var setting = await JSRuntime.InvokeAsync<string>("window.localStorage.getItem", key);
+            assignSetting(setting);
+        }
+        catch (JSDisconnectedException) { }
+        catch (TaskCanceledException) { }
     }
 
     public async Task ClearTransientStateAsync<TItem>(RadzenDataGrid<TItem> grid)

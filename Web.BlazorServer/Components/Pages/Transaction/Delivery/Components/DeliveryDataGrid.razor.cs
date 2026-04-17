@@ -22,26 +22,6 @@ public partial class DeliveryDataGrid
     string ActionGetAllDeliveries { get; } = EnumHelper.GetEnumDescription(AppActions.GetAllDeliveries);
     AppFilterDescriptor? _searchFilter;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await base.OnAfterRenderAsync(firstRender);
-
-            await LoadGridSettings();
-            await InvokeAsync(StateHasChanged);
-        }
-    }
-
-    async Task LoadGridSettings()
-    {
-        await GridSettingsService.SetGridSettings(DeliveryGrid.DataGrid, settings => DeliveryDataGridSettings = settings ?? new());
-        GridSettingsLoaded = true;
-
-        await DeliveryGrid.DataGrid.ReloadSettings();
-        await DeliveryGrid.DataGrid.Reload();
-    }
-
     async Task<DataGridResultVM<DeliveryDataGridVM>> LoadDataAsync(DataGridIntent intent)
     {
         var action = await AppActionFactory.RunAsync(async () =>

@@ -293,7 +293,7 @@
         if (result is not null && result is true)
             FormData.Standalone = false;
 
-        FormData.SchoolYear = SchoolYears.FirstOrDefault(x => x.Code == FormData.SchoolYear)?.Code ?? FormData.SchoolYear;
+        await EnsureSchoolYearVisible();
         await SalesReturnTable.DataGrid.Reload();
 
         await InvokeAsync(StateHasChanged);

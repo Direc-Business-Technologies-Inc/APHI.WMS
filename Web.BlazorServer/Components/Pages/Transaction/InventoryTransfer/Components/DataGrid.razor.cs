@@ -9,6 +9,8 @@ using Web.BlazorServer.ViewModels.Transaction.InventoryTransfer;
 
 namespace Web.BlazorServer.Components.Pages.Transaction.InventoryTransfer.Components;
 
+public delegate Task<(IEnumerable<InventoryTransferRequestDataGridVM> Data, int Count)> InventoryTransferDataGridGetter(DataGridIntent intent);
+
 partial class DataGrid
 {
     [Parameter, EditorRequired] public string ActionName { get; set; }
@@ -16,7 +18,7 @@ partial class DataGrid
     [Parameter] public string ViewItemURI { get; set; } = string.Empty;
     [Parameter] public bool IsDraft { get; set; } = false;
     [Parameter] public string? CreateItemURI { get; set; } = null;
-    [Parameter] public Func<DataGridIntent, Task<(IEnumerable<InventoryTransferRequestDataGridVM> Data, int Count)>> DataGetter { get; set; }
+    [Parameter] public InventoryTransferDataGridGetter DataGetter { get; set; }
 
 
     [Inject] IGridSettingsService GridSettingsService { get; set; } = default!;

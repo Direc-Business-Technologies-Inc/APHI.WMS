@@ -33,7 +33,7 @@ public partial class InventoryTransferIntegration(
         {
             intent.Sorts.Add(new AppSortDescriptor
             {
-                Property = "DocDate",
+                Property = "DocNum",
                 Direction = SortDirectionEnum.Descending
             });
         }
@@ -61,7 +61,7 @@ public partial class InventoryTransferIntegration(
         {
             intent.Sorts.Add(new AppSortDescriptor
             {
-                Property = "DocDate",
+                Property = "DocEntry",
                 Direction = SortDirectionEnum.Descending
             });
         }
@@ -84,7 +84,7 @@ public partial class InventoryTransferIntegration(
         {
             intent.Sorts.Add(new AppSortDescriptor
             {
-                Property = "DocDate",
+                Property = "DocEntry",
                 Direction = SortDirectionEnum.Descending
             });
         }
@@ -107,7 +107,7 @@ public partial class InventoryTransferIntegration(
         {
             intent.Sorts.Add(new AppSortDescriptor
             {
-                Property = "DocDate",
+                Property = "DocNum",
                 Direction = SortDirectionEnum.Descending
             });
         }

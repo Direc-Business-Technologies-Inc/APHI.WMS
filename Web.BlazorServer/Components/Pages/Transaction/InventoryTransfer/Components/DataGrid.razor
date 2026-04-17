@@ -25,10 +25,20 @@
         </RadzenStack>
     </HeaderTemplate>
     <GridColumns>
-        <RadzenDataGridColumn TItem="InventoryTransferRequestDataGridVM"
-                              Property="@nameof(InventoryTransferRequestDataGridVM.DocEntry)"
-                              Type="@typeof(int)"
-                              Title="@(IsDraft ? "Draft Entry" : "Doc Entry")" />
+        @if (IsDraft)
+        {
+            <RadzenDataGridColumn TItem="InventoryTransferRequestDataGridVM"
+                                  Property="@nameof(InventoryTransferRequestDataGridVM.DocEntry)"
+                                  Type="@typeof(int)"
+                                  Title="Draft Entry" />
+        }
+        else
+        {
+            <RadzenDataGridColumn TItem="InventoryTransferRequestDataGridVM"
+                                  Property="@nameof(InventoryTransferRequestDataGridVM.DocNum)"
+                                  Type="@typeof(int)"
+                                  Title="Doc Num" />
+        }
         <RadzenDataGridColumn TItem="InventoryTransferRequestDataGridVM"
                               Property="@nameof(InventoryTransferRequestDataGridVM.FromWhsName)"
                               Type="@typeof(string)"
