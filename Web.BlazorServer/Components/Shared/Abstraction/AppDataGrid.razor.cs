@@ -46,6 +46,7 @@ public partial class AppDataGrid<TItem> : BaseComponent, IAsyncDisposable where 
     #endregion Parameter
 
     bool _isFirstLoad { get; set; } = true;
+    bool _disposed { get; set; } = false;
     public RadzenDataGrid<TItem> DataGrid { get; set; } = default!;
     public DataGridResultVM<TItem> DGResult { get; set; } = new DataGridResultVM<TItem>();
     public EventCallback<DataGridResultVM<TItem>> DGResultChanged { get; set; }
@@ -65,6 +66,7 @@ public partial class AppDataGrid<TItem> : BaseComponent, IAsyncDisposable where 
 
     public async Task LoadDataAsync(LoadDataArgs args)
     {
+        if (_disposed) return;
 
         if (IsBusy || ClientSide)
         {
@@ -103,7 +105,9 @@ public partial class AppDataGrid<TItem> : BaseComponent, IAsyncDisposable where 
             DGResult = await DataGetter!(DatagridAdapter.QueryIntent);
         }
 
-        SelectedItems = [.. DataGrid.Data.Where(d => SelectedItems.Contains(d))];
+        if (_disposed) return;
+
+        SelectedItems = [.. (DataGrid.Data ?? []).Where(d => SelectedItems.Contains(d))];
         if (DatagridAdapter is not null)
             DatagridAdapter.ClearIntent();
 
@@ -139,6 +143,9 @@ public partial class AppDataGrid<TItem> : BaseComponent, IAsyncDisposable where 
     async Task LoadGridSettings()
     {
         await GridSettingsService.SetGridSettings(DataGrid, settings => GridSettings = settings ?? new());
+
+        if (_disposed) return;
+
         GridSettingsLoaded = true;
 
         await DataGrid.ReloadSettings();
@@ -147,6 +154,7 @@ public partial class AppDataGrid<TItem> : BaseComponent, IAsyncDisposable where 
 
     public async ValueTask DisposeAsync()
     {
+        _disposed = true;
         if (ClearOnDispose)
             await GridSettingsService.ClearTransientStateAsync(DataGrid);
     }

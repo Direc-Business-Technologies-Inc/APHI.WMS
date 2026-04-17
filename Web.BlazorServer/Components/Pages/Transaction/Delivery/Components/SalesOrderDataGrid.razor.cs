@@ -22,26 +22,6 @@ public partial class SalesOrderDataGrid
     string ActionGetAllSalesOrders { get; } = EnumHelper.GetEnumDescription(AppActions.GetAllSalesOrders);
     AppFilterDescriptor? _searchFilter;
 
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            await base.OnAfterRenderAsync(firstRender);
-
-            await LoadGridSettings();
-            await InvokeAsync(StateHasChanged);
-        }
-    }
-
-    async Task LoadGridSettings()
-    {
-        await GridSettingsService.SetGridSettings(SalesOrderGrid.DataGrid, settings => SalesOrderDataGridSettings = settings ?? new());
-        GridSettingsLoaded = true;
-
-        await SalesOrderGrid.DataGrid.ReloadSettings();
-        await SalesOrderGrid.DataGrid.Reload();
-    }
-
     async Task<DataGridResultVM<SalesOrderDataGridVM>> LoadDataAsync(DataGridIntent intent)
     {
         var action = await AppActionFactory.RunAsync(async () =>
