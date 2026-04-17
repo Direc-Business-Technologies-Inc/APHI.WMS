@@ -1,6 +1,6 @@
 ﻿using Application.DataTransferObjects.Transactions.GoodsReturn;
 using Application.DataTransferObjects.Transactions.GoodsReturn.SAP;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 
 namespace Application.UseCases.Repositories.Integration.Transaction.GoodsReturn;
 

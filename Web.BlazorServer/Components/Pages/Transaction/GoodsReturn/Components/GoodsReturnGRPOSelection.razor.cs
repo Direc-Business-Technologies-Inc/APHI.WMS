@@ -1,14 +1,12 @@
-﻿using Mapster;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using Radzen;
-using Shared.Entities;
-using Shared.Kernel;
+using Shared.Libraries.Entities;
+using Shared.Libraries.Kernel;
 using Web.BlazorServer.Components.Shared.Abstraction;
 using Web.BlazorServer.Defaults;
 using Web.BlazorServer.Handlers.Repositories.Transaction.Receiving;
 using Web.BlazorServer.Services.Repositories;
 using Web.BlazorServer.ViewModels.Abstraction;
-using Web.BlazorServer.ViewModels.Others;
 using Web.BlazorServer.ViewModels.Transaction.GoodsReturn;
 using Web.BlazorServer.ViewModels.Transaction.Receiving;
 
@@ -83,7 +81,7 @@ public partial class GoodsReturnGRPOSelection
         Document.SINo = copyFrom.SINo;
         Document.Warehouse = copyFrom.DocumentLines.FirstOrDefault()?.Warehouse ?? new();
         Document.BusinessPartner = copyFrom.BusinessPartner;
-         
+
         Document.DocumentLines = [.. copyFrom.DocumentLines.Select(dl => new GoodsReturnLineVM()
         {
             LineNum = copyFrom.DocumentLines.IndexOf(dl) + 1,

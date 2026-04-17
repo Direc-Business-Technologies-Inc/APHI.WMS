@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Radzen;
 using Radzen.Blazor;
-using Shared.Entities;
-using System.Timers;
+using Shared.Libraries.Entities;
 using Web.BlazorServer.Components.Base;
-using Web.BlazorServer.Services.Implementation;
 using Web.BlazorServer.Services.Repositories;
 using Web.BlazorServer.ViewModels.Abstraction;
 
@@ -36,7 +34,7 @@ public partial class AppTable<TItem> : BaseComponent where TItem : class
     [Parameter] public EventCallback<bool> GridSettingsLoadedChanged { get; set; }
     [Parameter] public IList<TItem> SelectedItems { get; set; } = new List<TItem>();
     [Parameter] public string ActionName { get; set; } = string.Empty;
-    
+
     protected bool IsBusy => AppBusyService.IsBusy(ActionName);
     public RadzenDataGrid<TItem> DataGrid { get; set; } = default!;
 

@@ -1,12 +1,12 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Components;
+using Shared.Libraries.Kernel;
 using Web.BlazorServer.Defaults;
 using Web.BlazorServer.Handlers.Repositories.Administration.Role;
 using Web.BlazorServer.Helpers;
 using Web.BlazorServer.Services.Repositories;
 using Web.BlazorServer.ViewModels.Administration.Role;
 using Web.BlazorServer.ViewModels.Enums;
-using KernelEnumHelper = Shared.Kernel.EnumHelper;
 
 namespace Web.BlazorServer.Components.Pages.Administrator.Role;
 
@@ -38,10 +38,10 @@ public partial class RoleManagementCVU
     bool Viewing => PageAction == PageActionTypeEnum.View;
     bool IsBusy => AppBusyService.IsBusy(ActionCreateRole) || AppBusyService.IsBusy(ActionViewRole) || AppBusyService.IsBusy(ActionUpdateRole);
 
-    readonly string ActionCreateRole = KernelEnumHelper.GetEnumDescription(AppActions.CreateRole);
-    readonly string ActionViewRole = KernelEnumHelper.GetEnumDescription(AppActions.ViewRole);
-    readonly string ActionUpdateRole = KernelEnumHelper.GetEnumDescription(AppActions.UpdateRole);
-    readonly string ActionGetRoles = KernelEnumHelper.GetEnumDescription(AppActions.GetAllRoles);
+    readonly string ActionCreateRole = EnumHelper.GetEnumDescription(AppActions.CreateRole);
+    readonly string ActionViewRole = EnumHelper.GetEnumDescription(AppActions.ViewRole);
+    readonly string ActionUpdateRole = EnumHelper.GetEnumDescription(AppActions.UpdateRole);
+    readonly string ActionGetRoles = EnumHelper.GetEnumDescription(AppActions.GetAllRoles);
     #endregion Primitives
 
     #region Custom Classes
@@ -70,7 +70,7 @@ public partial class RoleManagementCVU
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        if (!Can.Do("OROL", KernelEnumHelper.GetEnumDescription(PageAction)))
+        if (!Can.Do("OROL", EnumHelper.GetEnumDescription(PageAction)))
             NavManager.NavigateTo("/401", true);
     }
 

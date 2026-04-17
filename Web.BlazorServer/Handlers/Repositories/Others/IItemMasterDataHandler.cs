@@ -1,4 +1,4 @@
-﻿using Shared.Entities;
+﻿using Shared.Libraries.Entities;
 using Web.BlazorServer.ViewModels.Transaction.Commons;
 
 namespace Web.BlazorServer.Handlers.Repositories.Others;

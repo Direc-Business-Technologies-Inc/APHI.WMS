@@ -8,7 +8,7 @@ using Domain.Entities.Administration.User.Management;
 using Domain.Entities.Administration.User.Role;
 using Domain.Entities.System;
 using Microsoft.EntityFrameworkCore;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 
 namespace Database.MsSql.Implementation.Reads;
 

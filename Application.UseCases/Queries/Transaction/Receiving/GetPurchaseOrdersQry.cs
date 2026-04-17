@@ -3,14 +3,14 @@ using Application.UseCases.Repositories.Integration.Transaction.Receiving;
 using Integration.SAP.Entities.Transactional.Receiving;
 using Mapster;
 using MediatR;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 
 namespace Application.UseCases.Queries.Transaction.Receiving;
 
 public record GetPurchaseOrdersQry(DataGridIntent Intent) : IRequest<(IEnumerable<PurchaseOrderDataGridDTO> Data, int Count)>;
 
 public class GetPurchaseOrdersQryHandler(
-    IReceivingIntegration receivingIntegration) 
+    IReceivingIntegration receivingIntegration)
     : IRequestHandler<GetPurchaseOrdersQry, (IEnumerable<PurchaseOrderDataGridDTO> Data, int Count)>
 {
     public async Task<(IEnumerable<PurchaseOrderDataGridDTO> Data, int Count)> Handle(GetPurchaseOrdersQry request, CancellationToken cancellationToken)

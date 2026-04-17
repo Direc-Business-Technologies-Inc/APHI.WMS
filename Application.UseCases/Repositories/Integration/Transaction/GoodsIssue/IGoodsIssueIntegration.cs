@@ -1,6 +1,6 @@
 ﻿using Application.DataTransferObjects.Transactions.Goodsissue;
 using Application.DataTransferObjects.Transactions.GoodsIssue;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 
 namespace Application.UseCases.Repositories.Integration.Transaction.GoodsIssue;
 

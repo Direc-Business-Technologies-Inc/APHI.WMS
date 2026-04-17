@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using Radzen;
-using Shared.Services.Repository;
+using Shared.Libraries.Services.Repository;
 using Web.BlazorServer.Components.Security;
 using Web.BlazorServer.Components.Shared.CascadingValues;
 using Web.BlazorServer.Helpers;

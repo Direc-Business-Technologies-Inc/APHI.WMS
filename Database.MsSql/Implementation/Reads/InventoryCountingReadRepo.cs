@@ -6,7 +6,7 @@ using Domain.Entities.Administration.User.Management;
 using Domain.Entities.Entities.Transaction.InventoryCounting;
 using Domain.Entities.Enums.Transaction.InventoryCounting;
 using Microsoft.EntityFrameworkCore;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 
 namespace Database.MsSql.Implementation.Reads;
 
@@ -129,25 +129,25 @@ public class InventoryCountingReadRepo(IDbContextFactory<AppDbContext> dbContext
             {
                 case CycleType.Daily:
                     periodStart = countingDate.Date;
-                    periodEnd   = periodStart.AddDays(1);
+                    periodEnd = periodStart.AddDays(1);
                     break;
                 case CycleType.Weekly:
                     int daysFromMonday = ((int)countingDate.DayOfWeek + 6) % 7;
                     periodStart = countingDate.Date.AddDays(-daysFromMonday);
-                    periodEnd   = periodStart.AddDays(7);
+                    periodEnd = periodStart.AddDays(7);
                     break;
                 case CycleType.Monthly:
                     periodStart = new DateTime(countingDate.Year, countingDate.Month, 1);
-                    periodEnd   = periodStart.AddMonths(1);
+                    periodEnd = periodStart.AddMonths(1);
                     break;
                 case CycleType.Quarterly:
                     int quarter = (countingDate.Month - 1) / 3;
                     periodStart = new DateTime(countingDate.Year, quarter * 3 + 1, 1);
-                    periodEnd   = periodStart.AddMonths(3);
+                    periodEnd = periodStart.AddMonths(3);
                     break;
                 case CycleType.Annual:
                     periodStart = new DateTime(countingDate.Year, 1, 1);
-                    periodEnd   = periodStart.AddYears(1);
+                    periodEnd = periodStart.AddYears(1);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException(nameof(cycleType));

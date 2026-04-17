@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components.Authorization;
-using Shared.Services.Repository;
+using Shared.Libraries.Services.Repository;
 using System.Security.Claims;
 
 namespace Web.BlazorServer.Components.Security;

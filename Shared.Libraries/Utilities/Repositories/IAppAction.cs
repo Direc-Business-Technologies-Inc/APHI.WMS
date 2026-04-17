@@ -1,5 +1,4 @@
-﻿
-namespace Shared.Utilities.Repositories;
+﻿namespace Shared.Libraries.Utilities.Repositories;
 
 public interface IAppAction<T>
 {

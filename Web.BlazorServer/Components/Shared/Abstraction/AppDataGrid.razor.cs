@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Radzen;
 using Radzen.Blazor;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 using Web.BlazorServer.Components.Base;
 using Web.BlazorServer.Services.Implementation;
 using Web.BlazorServer.Services.Repositories;

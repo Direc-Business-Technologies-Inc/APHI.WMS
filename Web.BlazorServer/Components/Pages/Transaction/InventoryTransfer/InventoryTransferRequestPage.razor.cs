@@ -1,10 +1,8 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Shared.Entities;
-using Shared.Kernel;
+using Shared.Libraries.Entities;
+using Shared.Libraries.Kernel;
 using Web.BlazorServer.Defaults;
-using Web.BlazorServer.Handlers.Implementations.Transaction.InventoryTransfer;
 using Web.BlazorServer.Handlers.Repositories.Transaction.InventoryTransfer;
-using Web.BlazorServer.ViewModels.Abstraction;
 using Web.BlazorServer.ViewModels.Transaction.InventoryTransfer;
 
 namespace Web.BlazorServer.Components.Pages.Transaction.InventoryTransfer;

@@ -1,7 +1,7 @@
 ﻿using Application.DataTransferObjects.Administration.User;
 using Application.DataTransferObjects.System.Commons;
 using Application.DataTransferObjects.System.Modules;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 
 namespace Application.UseCases.Repositories.Domain.Administration.User;
 

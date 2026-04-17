@@ -1,11 +1,10 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Components;
 using Radzen;
-using Shared.Entities;
-using Shared.Kernel;
+using Shared.Libraries.Entities;
+using Shared.Libraries.Kernel;
 using Web.BlazorServer.Components.Shared.Abstraction;
 using Web.BlazorServer.Defaults;
-using Web.BlazorServer.Handlers.Implementations.Others;
 using Web.BlazorServer.Handlers.Repositories.Others;
 using Web.BlazorServer.Handlers.Repositories.Transaction.GoodsIssue;
 using Web.BlazorServer.Helpers;
@@ -15,7 +14,6 @@ using Web.BlazorServer.ViewModels.Enums;
 using Web.BlazorServer.ViewModels.Others;
 using Web.BlazorServer.ViewModels.Transaction.Commons;
 using Web.BlazorServer.ViewModels.Transaction.GoodsIssue;
-using Web.BlazorServer.ViewModels.Transaction.GoodsReceipt;
 
 namespace Web.BlazorServer.Components.Pages.Transaction.GoodsIssue;
 
@@ -129,7 +127,7 @@ public partial class GoodsIssueCVUPage
             return;
         }
 
-            if (FormData.DocumentLines.Any(x => x.Quantity <= 0))
+        if (FormData.DocumentLines.Any(x => x.Quantity <= 0))
         {
             if (!await AlertService.PromptAsync("Some Items in the Goods Issue has no Quantity. These Items will be removed in the transaction. Are you sure wou want to proceed?"))
                 return;

@@ -3,7 +3,7 @@ using Application.UseCases.Commands.Transaction.InventoryTransfer;
 using Application.UseCases.Queries.Transaction.InventoryTransfer;
 using Mapster;
 using MediatR;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 using Web.BlazorServer.Handlers.Repositories.Transaction.InventoryTransfer;
 using Web.BlazorServer.ViewModels.Transaction.InventoryTransfer;
 

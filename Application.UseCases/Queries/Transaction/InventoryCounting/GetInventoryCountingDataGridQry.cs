@@ -1,7 +1,7 @@
 using Application.DataTransferObjects.Transactions.InventoryCounting;
 using Application.UseCases.Repositories.Domain.Transaction.InventoryCounting;
 using MediatR;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 
 namespace Application.UseCases.Queries.Transaction.InventoryCounting;
 

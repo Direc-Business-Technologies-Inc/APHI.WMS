@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel;
 using System.Reflection;
 
-namespace Shared.Kernel;
+namespace Shared.Libraries.Kernel;
 
 public class EnumHelper
 {

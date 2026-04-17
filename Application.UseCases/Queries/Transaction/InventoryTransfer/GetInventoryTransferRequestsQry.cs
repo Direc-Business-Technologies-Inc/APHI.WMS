@@ -1,9 +1,7 @@
-﻿using Application.DataTransferObjects.Transactions.InventoryTransfer;
-using Application.UseCases.Repositories.Integration.Transaction.InventoryTransfer;
-using Integration.SAP.Entities.Transactional.InventoryTransfer;
+﻿using Application.UseCases.Repositories.Integration.Transaction.InventoryTransfer;
 using Mapster;
 using MediatR;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 using DataGridDTO = Application.DataTransferObjects.Transactions.InventoryTransfer.InventoryTransferDataGridDTO;
 using DataGridSAPDTO = Integration.SAP.Entities.Transactional.InventoryTransfer.InventoryTransferDataGridSAPDTO;
 

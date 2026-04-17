@@ -4,7 +4,7 @@ using Domain.Commons;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage;
-using Shared.Services.Repository;
+using Shared.Libraries.Services.Repository;
 using System.Linq.Expressions;
 
 namespace Database.MsSql.Implementation.Bases;

@@ -1,14 +1,12 @@
-﻿using Application.DataTransferObjects.Transactions.GoodsIssue;
-using Application.DataTransferObjects.Transactions.GoodsReceipt;
+﻿using Application.DataTransferObjects.Transactions.GoodsReceipt;
 using Application.UseCases.Repositories.Integration.Transaction.GoodsReceipt;
 using B1SLayer;
 using Database.Libraries.Repositories;
 using Integration.Sap.Entities;
 using Integration.Sap.Helpers;
 using Integration.Sap.Repositories;
-using Integration.SAP.Entities.Transactional.GoodsIssue;
 using Integration.SAP.Entities.Transactional.GoodsReceipt;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 
 namespace Integration.SAP.Implementations.Transaction.GoodsReceipt;
 

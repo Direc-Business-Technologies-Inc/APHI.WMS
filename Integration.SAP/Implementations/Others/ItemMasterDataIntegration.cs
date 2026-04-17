@@ -1,20 +1,20 @@
 using Application.DataTransferObjects.Others.SAP;
-using Application.DataTransferObjects.Transactions.GoodsReturn.SAP;
 using Application.UseCases.Repositories.Integration.Others;
 using Database.Libraries.Repositories;
 using Integration.Sap.Entities;
 using Integration.Sap.Helpers;
 using Integration.Sap.Repositories;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 
 namespace Integration.SAP.Implementations.Others;
 
-public class ItemMasterDataIntegration (
+public class ItemMasterDataIntegration(
     ISqlQueryManager qryManager,
     IServiceLayerActions SLActions)
     : IItemMasterDataIntegration
 {
-    public async Task<(IEnumerable<ItemSelectionSAPDTO> Data, int Count)> GetItemWarehouseLevel(DataGridIntent intent, string whsCode, List<string> itemCodes)    {
+    public async Task<(IEnumerable<ItemSelectionSAPDTO> Data, int Count)> GetItemWarehouseLevel(DataGridIntent intent, string whsCode, List<string> itemCodes)
+    {
         if (intent.Sorts.Count <= 0)
         {
             intent.Sorts.Add(new AppSortDescriptor

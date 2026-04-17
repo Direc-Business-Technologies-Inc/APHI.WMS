@@ -3,14 +3,14 @@ using Application.UseCases.Commands.Transaction.Receiving;
 using Application.UseCases.Queries.Transaction.Receiving;
 using Mapster;
 using MediatR;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 using Web.BlazorServer.Handlers.Repositories.Transaction.Receiving;
 using Web.BlazorServer.ViewModels.Transaction.Receiving;
 
 namespace Web.BlazorServer.Handlers.Implementations.Transaction.Receiving;
 
 public class ReceivingHandler(
-    ISender Sender) 
+    ISender Sender)
     : IReceivingHandler
 {
     public async Task<(IEnumerable<PurchaseDeliveryNoteDataGridVM> Data, int Count)> GetPurchaseDeliveryNoteDataGridAsync(DataGridIntent intent)

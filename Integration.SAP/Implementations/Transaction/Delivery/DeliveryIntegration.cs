@@ -6,7 +6,7 @@ using Integration.Sap.Entities;
 using Integration.Sap.Helpers;
 using Integration.Sap.Repositories;
 using Integration.SAP.Entities.Transactional.Delivery;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 using System.Text.Json;
 
 namespace Integration.SAP.Implementations.Transaction.Delivery;
@@ -144,7 +144,7 @@ public class DeliveryIntegration(
             WriteIndented = true
         });
 
-         await SLActions.PostAsync<object, DeliveryNotesPayload>("DeliveryNotes", payload);
+        await SLActions.PostAsync<object, DeliveryNotesPayload>("DeliveryNotes", payload);
 
         return true;
     }

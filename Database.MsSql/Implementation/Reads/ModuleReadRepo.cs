@@ -4,7 +4,7 @@ using Database.Libraries.Helpers;
 using Database.MsSql.Core;
 using Domain.Entities.System;
 using Microsoft.EntityFrameworkCore;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 
 namespace Database.MsSql.Implementation.Reads;
 

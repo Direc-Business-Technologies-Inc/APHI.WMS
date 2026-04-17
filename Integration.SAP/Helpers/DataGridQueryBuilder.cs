@@ -1,4 +1,4 @@
-﻿using Shared.Entities;
+﻿using Shared.Libraries.Entities;
 using System.Text;
 
 namespace Integration.Sap.Helpers;

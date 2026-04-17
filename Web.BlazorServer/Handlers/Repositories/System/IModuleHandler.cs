@@ -1,5 +1,4 @@
-﻿using Application.DataTransferObjects.System;
-using Shared.Entities;
+﻿using Shared.Libraries.Entities;
 using Web.BlazorServer.ViewModels.System;
 
 namespace Web.BlazorServer.Handlers.Repositories.System;

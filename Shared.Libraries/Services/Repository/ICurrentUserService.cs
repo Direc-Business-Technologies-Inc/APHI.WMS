@@ -1,4 +1,4 @@
-﻿namespace Shared.Services.Repository;
+﻿namespace Shared.Libraries.Services.Repository;
 
 public interface ICurrentUserService
 {

@@ -1,9 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.EntityFrameworkCore;
-using Shared.Kernel;
-using Sprache;
+using Shared.Libraries.Kernel;
 using Web.BlazorServer.Defaults;
-using Web.BlazorServer.Handlers.Implementations.Transaction.InventoryTransfer;
 using Web.BlazorServer.Handlers.Repositories.Transaction.InventoryTransfer;
 using Web.BlazorServer.ViewModels.System;
 using Web.BlazorServer.ViewModels.Transaction.InventoryTransfer;

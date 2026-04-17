@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Shared.Kernel;
-using Shared.Utilities;
+using Shared.Libraries.Kernel;
 using Web.BlazorServer.Defaults;
 using Web.BlazorServer.Handlers.Repositories.Administration.User;
 using Web.BlazorServer.Services.Implementation;

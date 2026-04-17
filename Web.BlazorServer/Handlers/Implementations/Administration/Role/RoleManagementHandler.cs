@@ -3,7 +3,7 @@ using Application.UseCases.Commands.Administration.Role;
 using Application.UseCases.Queries.Administration.Role;
 using Mapster;
 using MediatR;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 using Web.BlazorServer.Handlers.Repositories.Administration.Role;
 using Web.BlazorServer.ViewModels.Administration.Role;
 
