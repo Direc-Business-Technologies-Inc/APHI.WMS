@@ -8,7 +8,6 @@ using Web.BlazorServer.Handlers.Repositories.Others;
 using Web.BlazorServer.Services.Repositories;
 using Web.BlazorServer.ViewModels.Abstraction;
 using Web.BlazorServer.ViewModels.Transaction.Commons;
-using Web.BlazorServer.ViewModels.Transaction.GoodsIssue;
 using Web.BlazorServer.ViewModels.Transaction.InventoryTransfer;
 
 namespace Web.BlazorServer.Components.Pages.Transaction.InventoryTransfer.Components;
@@ -59,11 +58,22 @@ public partial class ItemSelection
             intent.Filters.Add(new AppFilterDescriptor()
             {
                 LogicalOperator = LogicalOperatorEnum.AND,
-                Property = "Quantity",
+                Property = nameof(ItemVM.Quantity),
                 ComparisonOperator = ComparisonOperatorEnum.GreaterThan,
                 Value = 0,
                 FilterValueType = FilterValueTypeEnum.Number
             });
+            if (Request.Lines.Count != 0)
+            {
+                intent.Filters.Add(new AppFilterDescriptor()
+                {
+                    LogicalOperator = LogicalOperatorEnum.AND,
+                    Property = nameof(ItemVM.ItemCode),
+                    ComparisonOperator = ComparisonOperatorEnum.NotIn,
+                    Value = Request.Lines.Select(x => x.ItemCode),
+                    FilterValueType = FilterValueTypeEnum.String
+                });
+            }
 
             var response = await ItemsHandler.GetWarehouseItemsAsync(intent, Request.FromWarehouse?.WhsCode ?? string.Empty);
             return response;
@@ -87,38 +97,51 @@ public partial class ItemSelection
     {
         if (!SelectedItems.Any(x => x.ItemCode == data.ItemCode))
             SelectedItems.Add(data);
-
-        if (!Request.Lines.Any(x => x.ItemCode == data.ItemCode))
-        {
-            InventoryTransferRequestLineVM line = new()
-            {
-                LineNum = Request.Lines.Count() + 1,
-                ItemCode = data.ItemCode,
-                ItemName = data.ItemName,
-                Quantity = 0,
-                OnHandQuantity = data.Quantity,
-                UoMCode = data.UoMCode,
-                UoMName = data.UoMName,
-                UoMValue = data.UoMValue,
-            };
-
-            Request.Lines = [.. Request.Lines, line];
-        }
-
-        await RequestChanged.InvokeAsync(Request);
-        await InvokeAsync(StateHasChanged);
     }
 
     async Task OnRowDeselect(ItemVM data)
     {
         if (SelectedItems.Any(x => x.ItemCode == data.ItemCode))
             SelectedItems.Remove(data);
+    }
 
-        if (Request.Lines.Any(x => x.ItemCode == data.ItemCode))
-            Request.Lines = [.. Request.Lines.Where(x => x.ItemCode != data.ItemCode)];
+    async Task SaveSelection()
+    {
+        if (!await AlertService.PromptAsync())
+            return;
+
+        foreach (ItemVM data in SelectedItems)
+        {
+            if (!Request.Lines.Any(x => x.ItemCode == data.ItemCode))
+            {
+                InventoryTransferRequestLineVM line = new()
+                {
+                    LineNum = Request.Lines.Count() + 1,
+                    ItemCode = data.ItemCode,
+                    ItemName = data.ItemName,
+                    Quantity = 0,
+                    OnHandQuantity = data.Quantity,
+                    UoMCode = data.UoMCode,
+                    UoMName = data.UoMName,
+                    UoMValue = data.UoMValue,
+                };
+
+                Request.Lines = [.. Request.Lines, line];
+            }
+        }
 
         await RequestChanged.InvokeAsync(Request);
         await InvokeAsync(StateHasChanged);
+
+        DialogService.Close();
+    }
+
+    async Task Return()
+    {
+        if (!await AlertService.PromptAsync())
+            return;
+
+        DialogService.Close();
     }
 
 }

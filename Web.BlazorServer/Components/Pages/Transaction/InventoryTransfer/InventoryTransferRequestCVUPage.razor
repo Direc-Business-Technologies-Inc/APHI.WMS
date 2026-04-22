@@ -450,7 +450,7 @@
         await DialogService.OpenAsync(
             "Item Selection",
             ds => @<ItemSelection @bind-Request="@FormData" />,
-    options: GridSettingsService.GetDialogOptions().MaximizedMode()
+            options: GridSettingsService.GetDialogOptions().HideCloseButton().MaximizedMode()
         );
 
         await InventoryTransferRequestTable.DataGrid.Reload();

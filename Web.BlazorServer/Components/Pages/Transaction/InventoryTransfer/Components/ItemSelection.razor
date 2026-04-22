@@ -2,7 +2,7 @@
 
 @inherits BaseComponent
 
-<RadzenStack Gap="2rem">
+<RadzenStack class="rz-w-100" Gap="2rem">
     <AppDataGrid @ref="@ItemsDataGrid"
                  Id="goods_issue_item_selection_grid"
                  TItem="ItemVM"
@@ -56,6 +56,11 @@
                                   Type="@typeof(string)" />
         </GridColumns>
     </AppDataGrid>
+
+    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center" Gap="8px" class="rz-w-100">
+        <RadzenButton Text="Cancel" ButtonStyle="ButtonStyle.Base" Click="@Return" />
+        <RadzenButton Text="Select" ButtonStyle="ButtonStyle.Success" Click="@SaveSelection" />
+    </RadzenStack>
 </RadzenStack>
 
 @code {
