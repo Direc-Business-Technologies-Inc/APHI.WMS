@@ -174,12 +174,12 @@ public class MappingRegistration : IRegister
             .Map(d => d.ContactPerson, s => s.ContactPerson)
             .Map(d => d.SchoolYear, s => s.SchoolYear)
             .Map(d => d.DRNo, s => s.DRNo)
-            .Map(d => d.ActualDelivDate, s => s.ActualDeliveryDate)  // name mismatch
+            .Map(d => d.ActualDelivDate, s => string.IsNullOrEmpty(s.ActualDeliveryDate) ? (DateTime?)null : DateTime.Parse(s.ActualDeliveryDate, System.Globalization.CultureInfo.InvariantCulture))
             .Map(d => d.DeliveryMeans, s => s.DeliveryMeans)
             .Map(d => d.Courier, s => s.Courier)
             .Map(d => d.CourierName, s => s.CourierName)
             .Map(d => d.Designation, s => s.Designation)
-            .Map(d => d.WayBillNo, s => s.WaybillNo)           // case mismatch
+            .Map(d => d.WayBillNo, s => s.WaybillNo)
             .Map(d => d.PlateNo, s => s.PlateNo)
             .Map(d => d.Driver, s => s.Driver)
             .Map(d => d.DocRemarks, s => s.DocRemarks)
@@ -189,7 +189,7 @@ public class MappingRegistration : IRegister
             .Map(d => d.NotedBy, s => s.NotedBy);
 
         config.NewConfig<DeliveryLineSAPDTO, DeliveryLineDTO>()
-            .Map(d => d.LineNum, s => s.LineNum + 1)   // 0-indexed → 1-indexed
+            .Map(d => d.LineNum, s => s.LineNum + 1)
             .Map(d => d.ItemCode, s => s.ItemCode)
             .Map(d => d.ItemName, s => s.ItemName)
             .Map(d => d.Quantity, s => s.Quantity)
