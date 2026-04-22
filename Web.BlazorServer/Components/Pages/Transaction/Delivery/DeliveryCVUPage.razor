@@ -172,7 +172,11 @@
                                                               Title="Item Name" />
                                         <RadzenDataGridColumn TItem="SalesOrderLineVM"
                                                               Property="@nameof(SalesOrderLineVM.Warehouse.WhsName)"
-                                                              Title="Warehouse" Width="150px" />
+                                                              Title="Warehouse" Width="150px">
+                                                          <Template Context="data">
+                                                              @data.Warehouse?.WhsName
+                                                          </Template>
+                                        </RadzenDataGridColumn>
                                         <RadzenDataGridColumn TItem="SalesOrderLineVM"
                                                               Property="@nameof(SalesOrderLineVM.UoMName)"
                                                               Title="UoM" Width="100px" />
