@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using Radzen;
 using Radzen.Blazor;
 using Shared.Libraries.Entities;
@@ -148,8 +149,17 @@ public partial class AppDataGrid<TItem> : BaseComponent, IAsyncDisposable where 
 
         GridSettingsLoaded = true;
 
-        await DataGrid.ReloadSettings();
-        await DataGrid.Reload();
+        try
+        {
+            await DataGrid.ReloadSettings();
+
+            if (_disposed) return;
+
+            await DataGrid.Reload();
+        }
+        catch (JSException) { }
+        catch (ObjectDisposedException) { }
+        catch (JSDisconnectedException) { }
     }
 
     public async ValueTask DisposeAsync()

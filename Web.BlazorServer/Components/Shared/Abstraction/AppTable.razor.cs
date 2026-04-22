@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 using Radzen;
 using Radzen.Blazor;
 using Shared.Libraries.Entities;
@@ -54,7 +55,13 @@ public partial class AppTable<TItem> : BaseComponent where TItem : class
         await GridSettingsService.SetGridSettings(DataGrid, settings => GridSettings = settings ?? new());
         GridSettingsLoaded = true;
 
-        await DataGrid.ReloadSettings();
-        await DataGrid.Reload();
+        try
+        {
+            await DataGrid.ReloadSettings();
+            await DataGrid.Reload();
+        }
+        catch (JSException) { }
+        catch (ObjectDisposedException) { }
+        catch (JSDisconnectedException) { }
     }
 }
