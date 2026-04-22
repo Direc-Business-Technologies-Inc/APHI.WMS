@@ -7,6 +7,7 @@ using Web.BlazorServer.Defaults;
 using Web.BlazorServer.Handlers.Repositories.Transaction.Delivery;
 using Web.BlazorServer.Services.Repositories;
 using Web.BlazorServer.ViewModels.Abstraction;
+using Web.BlazorServer.ViewModels.Others;
 using Web.BlazorServer.ViewModels.Transaction.Delivery;
 using Web.BlazorServer.ViewModels.Transaction.SalesReturn;
 
@@ -93,7 +94,11 @@ public partial class SalesReturnDeliverySelection
             TargetQuantity = dl.Quantity,
             OpenQuantity = dl.Quantity,
             Quantity = dl.Quantity,
-            Warehouse = dl.Warehouse ?? new(),
+            Warehouse = dl.Warehouse is null ? null : new WarehouseVM
+            {
+                WhsCode = dl.Warehouse.WhsCode,
+                WhsName = dl.Warehouse.WhsName
+            },
         })];
 
         await DocumentChanged.InvokeAsync(Document);

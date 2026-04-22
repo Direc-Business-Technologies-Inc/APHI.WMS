@@ -12,5 +12,5 @@ public class SalesReturnLineVM : ItemVM
     public int BaseLine { get; set; }
     public decimal TargetQuantity { get; set; }
     public decimal OpenQuantity { get; set; }
-    public WarehouseVM Warehouse { get; set; } = new();
+    public WarehouseVM? Warehouse { get; set; } = null;
 }

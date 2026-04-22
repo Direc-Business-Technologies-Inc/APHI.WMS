@@ -172,11 +172,11 @@
                                                           Type="@typeof(string)"
                                                           Title="Item Name" />
                                     <RadzenDataGridColumn TItem="SalesReturnLineVM"
-                                                          Property="@nameof(SalesReturnLineVM.Warehouse.WhsName)"
+                                                          Property="Warehouse.WhsName"
                                                           Type="@typeof(string)"
                                                           Title="Warehouse" Width="150px">
                                         <Template Context="data">
-                                            @data.Warehouse.WhsName
+                                            @data.Warehouse?.WhsName
                                         </Template>
                                     </RadzenDataGridColumn>
                                     <RadzenDataGridColumn TItem="SalesReturnLineVM"
