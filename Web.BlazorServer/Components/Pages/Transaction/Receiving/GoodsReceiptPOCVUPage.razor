@@ -136,7 +136,7 @@
                             <RadzenColumn Size="12" SizeMD="@(FormData.ItemGroupCodes.Contains("100") ? 3 : 4)">
                                 <RadzenFormField Text="Time" class="rz-w-100" AllowFloatingLabel="false">
                                     <ChildContent>
-                                        <RadzenDatePicker ReadOnly="@Viewing"  ShowTime="true" TimeOnly="true" DateFormat="HH:mm" Name="po_time" Placeholder="1400" @bind-Value="@Time" @bind-Value:after="@ParseIntTime" />
+                                        <RadzenDatePicker ReadOnly="@Viewing" ShowTime="true" TimeOnly="true" DateFormat="HH:mm" Name="po_time" Placeholder="1400" @bind-Value="@Time" @bind-Value:after="@ParseIntTime" />
                                     </ChildContent>
                                 </RadzenFormField>
                             </RadzenColumn>
@@ -156,14 +156,19 @@
                                       @bind-GridSettingsLoaded="@GridSettingsLoaded"
                                       Data="@FormData.DocumentLines">
                                 <HeaderTemplate>
-                                    <RadzenStack Orientation="Orientation.Horizontal"
-                                                 JustifyContent="JustifyContent.End"
-                                                 AlignItems="AlignItems.Center"
-                                                 Gap="8px">
-                                        <RadzenButton Icon="settings"
-                                                      Size="ButtonSize.Small"
-                                                      ButtonStyle="ButtonStyle.Light"
-                                                      Click="@OpenTableSettings" />
+                                    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center" Gap="8px">
+                                        <AppTableSearchBar TItem="PurchaseDeliveryNoteLineVM"
+                                                           Properties="@(new[] { nameof(PurchaseDeliveryNoteLineVM.ItemCode), nameof(PurchaseDeliveryNoteLineVM.ItemName) })"
+                                                           @bind-SearchFilter="_grpoLinesFilter" />
+                                        <RadzenStack Orientation="Orientation.Horizontal"
+                                                     JustifyContent="JustifyContent.End"
+                                                     AlignItems="AlignItems.Center"
+                                                     Gap="8px">
+                                            <RadzenButton Icon="settings"
+                                                          Size="ButtonSize.Small"
+                                                          ButtonStyle="ButtonStyle.Light"
+                                                          Click="@OpenTableSettings" />
+                                        </RadzenStack>
                                     </RadzenStack>
                                 </HeaderTemplate>
                                 <Columns>

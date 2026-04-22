@@ -59,6 +59,8 @@ public partial class PurchaseOrderCVUPage
     #endregion Primitives
 
     #region Data Structures
+    AppFilterDescriptor? _poLinesFilter;
+
     TimeOnly? Time { get; set; }
 
     AppTable<PurchaseOrderLineVM> PurchaseOrderTable { get; set; } = default!;

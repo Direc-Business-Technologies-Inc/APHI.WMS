@@ -164,20 +164,25 @@
                                       @bind-GridSettingsLoaded="@GridSettingsLoaded"
                                       Data="@FormData.DocumentLines">
                                 <HeaderTemplate>
-                                    <RadzenStack Orientation="Orientation.Horizontal"
-                                                 JustifyContent="JustifyContent.End"
-                                                 AlignItems="AlignItems.Center"
-                                                 Gap="8px">
-                                        <RadzenButton Icon="settings"
-                                                      Size="ButtonSize.Small"
-                                                      ButtonStyle="ButtonStyle.Light"
-                                                      Click="@OpenTableSettings" />
-                                        <RadzenButton Icon="qr_code_scanner"
-                                                      Text="Scan"
-                                                      Size="ButtonSize.Small"
-                                                      ButtonStyle="ButtonStyle.Primary"
-                                                      Visible="@Creating"
-                                                      Click="@OpenScannerDialog" />
+                                    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center" Gap="8px">
+                                        <AppTableSearchBar TItem="PurchaseOrderLineVM"
+                                                           Properties="@(new[] { nameof(PurchaseOrderLineVM.ItemCode), nameof(PurchaseOrderLineVM.ItemName) })"
+                                                           @bind-SearchFilter="_poLinesFilter" />
+                                        <RadzenStack Orientation="Orientation.Horizontal"
+                                                     JustifyContent="JustifyContent.End"
+                                                     AlignItems="AlignItems.Center"
+                                                     Gap="8px">
+                                            <RadzenButton Icon="settings"
+                                                          Size="ButtonSize.Small"
+                                                          ButtonStyle="ButtonStyle.Light"
+                                                          Click="@OpenTableSettings" />
+                                            <RadzenButton Icon="qr_code_scanner"
+                                                          Text="Scan"
+                                                          Size="ButtonSize.Small"
+                                                          ButtonStyle="ButtonStyle.Primary"
+                                                          Visible="@Creating"
+                                                          Click="@OpenScannerDialog" />
+                                        </RadzenStack>
                                     </RadzenStack>
                                 </HeaderTemplate>
                                 <Columns>
@@ -199,7 +204,7 @@
                                                           Type="@typeof(string)"
                                                           Title="Item Name" />
                                     <RadzenDataGridColumn TItem="PurchaseOrderLineVM"
-                                                          Property="@nameof(PurchaseOrderLineVM.Warehouse.WhsName)"
+                                                          Property="Warehouse.WhsName"
                                                           Type="@typeof(string)"
                                                           Title="Warehouse"
                                                           Width="150px">

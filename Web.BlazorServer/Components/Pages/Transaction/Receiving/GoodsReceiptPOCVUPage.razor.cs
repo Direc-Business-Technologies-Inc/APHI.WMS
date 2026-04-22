@@ -55,6 +55,8 @@ public partial class GoodsReceiptPOCVUPage
     #endregion Primitives
 
     #region Data Structures
+    AppFilterDescriptor? _grpoLinesFilter;
+
     TimeOnly? Time { get; set; }
 
     AppTable<PurchaseDeliveryNoteLineVM> PurchaseDeliveryNoteTable { get; set; } = default!;
