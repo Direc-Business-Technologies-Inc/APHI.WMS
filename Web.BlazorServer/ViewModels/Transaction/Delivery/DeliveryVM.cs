@@ -12,7 +12,7 @@ public class DeliveryVM : MarketingDocumentVM
     public string? NumAtCard { get; set; } = null;
     public string? ContactPerson { get; set; } = null;
     public string? SchoolYear { get; set; } = null;
-    public DateTime? ActualDelivDate { get; set; } = DateTimeProvider.Now;
+    public DateTime? ActualDelivDate { get; set; } = null;
     public string? CourierName { get; set; } = null;
     public string? WayBillNo { get; set; } = null;
     public string? PlateNo { get; set; } = null;

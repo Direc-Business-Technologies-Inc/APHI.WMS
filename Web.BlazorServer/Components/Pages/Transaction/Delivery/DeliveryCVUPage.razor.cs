@@ -85,6 +85,10 @@ public partial class DeliveryCVUPage
     protected override Task InitializeEditing()
     {
         AdaptToClone();
+
+        if (FormData.ActualDelivDate is null)
+            FormData.ActualDelivDate = DateTimeProvider.Now.Date;
+
         return Task.CompletedTask;
     }
 
