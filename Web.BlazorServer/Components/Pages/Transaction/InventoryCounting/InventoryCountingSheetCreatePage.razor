@@ -82,7 +82,7 @@
                                                   Property="@nameof(InventoryCountingSheetLineVM.Quantity)"
                                                   Title="Count Qty" Width="160px">
                                 <Template Context="line">
-                                    <RadzenNumeric Format="N0" @bind-Value="@line.Quantity" Min="0" ShowUpDown />
+                                    <RadzenNumeric Format="N0" @bind-Value="@line.Quantity" Change="(decimal args) => OnFieldChanged(nameof(FormData.SheetLines))" Min="0" ShowUpDown />
                                 </Template>
                             </RadzenDataGridColumn>
                         </Columns>

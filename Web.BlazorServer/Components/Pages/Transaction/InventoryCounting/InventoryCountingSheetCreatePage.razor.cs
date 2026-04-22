@@ -199,6 +199,7 @@ public partial class InventoryCountingSheetCreatePage
             if (!await AlertService.HasUnsavedChangesAsync(header: "Cancel Sheet Creation"))
                 return;
 
+        await ClearFormCacheAsync();
         NavManager.NavigateTo($"/transactions/inventory/inventory-counting/view?Id={Document}", true);
     }
     #endregion Custom Functions
