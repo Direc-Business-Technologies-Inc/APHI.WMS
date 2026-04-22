@@ -154,6 +154,7 @@
                                       Id="grpo_cvu_items"
                                       TItem="PurchaseDeliveryNoteLineVM"
                                       @bind-GridSettingsLoaded="@GridSettingsLoaded"
+                                      SearchFilter="@_grpoLinesFilter"
                                       Data="@FormData.DocumentLines">
                                 <HeaderTemplate>
                                     <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center" Gap="8px">

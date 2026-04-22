@@ -216,6 +216,7 @@ public partial class PurchaseOrderCVUPage
             if (!await AlertService.HasUnsavedChangesAsync(header: "Cancel Goods Receipt PO Creation"))
                 return;
 
+        await ClearFormCacheAsync();
         NavManager.NavigateTo($"/transactions/purchasing/receiving?t=po", true);
     }
 
