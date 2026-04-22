@@ -298,6 +298,7 @@ public partial class InventoryCountingCVUPage
             if (!await AlertService.HasUnsavedChangesAsync(header: "Cancel Inventory Counting Creation"))
                 return;
 
+        await ClearFormCacheAsync();
         NavManager.NavigateTo("/transactions/inventory/inventory-counting?T=open", true);
     }
 
