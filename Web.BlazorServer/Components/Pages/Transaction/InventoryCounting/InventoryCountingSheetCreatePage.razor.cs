@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Radzen;
+using Shared.Libraries.Entities;
 using Shared.Libraries.Kernel;
 using Web.BlazorServer.Components.Pages.Transaction.InventoryCounting.Components;
 using Web.BlazorServer.Components.Shared.Abstraction;
@@ -37,6 +38,7 @@ public partial class InventoryCountingSheetCreatePage
     InventoryCountingVM? ParentDocument { get; set; }
     AppTable<InventoryCountingSheetLineVM> SheetLinesTable { get; set; } = default!;
     DataGridSettings SheetLinesTableSettings { get; set; } = new();
+    AppFilterDescriptor? _sheetLinesFilter;
     #endregion Data Structures
 
     #region Overrides
@@ -197,6 +199,7 @@ public partial class InventoryCountingSheetCreatePage
             if (!await AlertService.HasUnsavedChangesAsync(header: "Cancel Sheet Creation"))
                 return;
 
+        await ClearFormCacheAsync();
         NavManager.NavigateTo($"/transactions/inventory/inventory-counting/view?Id={Document}", true);
     }
     #endregion Custom Functions

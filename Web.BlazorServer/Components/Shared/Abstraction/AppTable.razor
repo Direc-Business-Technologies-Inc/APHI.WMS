@@ -8,9 +8,9 @@
 <RadzenDataGrid TItem="TItem"
                 Visible="@(GridSettingsLoaded && Visible && !IsBusy)"
                 @ref=@(DataGrid)
-                Count="@(Data.Count)"
+                Count="@(_filteredData.Count)"
                 IsLoading="@(IsBusy)"
-                Data=@(Data)
+                Data=@(_filteredData)
                 @bind-Value=@(SelectedItems)
                 FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive"
                 RowDoubleClick=@(OnRowDoubleClick)
@@ -21,6 +21,9 @@
                 id="@(Id)"
                 Settings=@(GridSettings)
                 SettingsChanged=@(async args => GridSettings = await GridSettingsService.GridSettingsChanged(DataGrid, args))
+                AllowFiltering
+                AllowSorting
+                FilterMode="@FilterMode.Advanced"
                 AllowPaging
                 ShowPagingSummary
                 PagerHorizontalAlign="@HorizontalAlign.Right">

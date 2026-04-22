@@ -46,7 +46,13 @@
                   Id="ict_sheet_lines"
                   ActionName="@ActionView"
                   @bind-GridSettingsLoaded="@GridSettingsLoaded"
+                  SearchFilter="@_sheetLinesFilter"
                   Data="@([.. Sheet?.SheetLines ?? []])">
+            <HeaderTemplate>
+                <AppTableSearchBar TItem="InventoryCountingSheetLineVM"
+                                   Properties="@(new[] { nameof(InventoryCountingSheetLineVM.ItemCode), nameof(InventoryCountingSheetLineVM.ItemName) })"
+                                   @bind-SearchFilter="_sheetLinesFilter" />
+            </HeaderTemplate>
             <Columns>
                 <RadzenDataGridColumn TItem="InventoryCountingSheetLineVM"
                                       Property="@nameof(InventoryCountingSheetLineVM.ItemCode)"

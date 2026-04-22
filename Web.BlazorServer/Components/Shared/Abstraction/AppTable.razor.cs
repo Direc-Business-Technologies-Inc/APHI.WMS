@@ -34,14 +34,23 @@ public partial class AppTable<TItem> : BaseComponent where TItem : class
     [Parameter] public EventCallback<bool> GridSettingsLoadedChanged { get; set; }
     [Parameter] public IList<TItem> SelectedItems { get; set; } = new List<TItem>();
     [Parameter] public string ActionName { get; set; } = string.Empty;
+    [Parameter] public AppFilterDescriptor? SearchFilter { get; set; }
 
     protected bool IsBusy => AppBusyService.IsBusy(ActionName);
     public RadzenDataGrid<TItem> DataGrid { get; set; } = default!;
+    private List<TItem> _filteredData = [];
 
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+        _filteredData = ApplyFilter(Data, SearchFilter);
+
+        if (GridSettingsLoaded && DataGrid is not null)
+            await DataGrid.Reload();
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-
         if (firstRender)
         {
             await base.OnAfterRenderAsync(firstRender);
@@ -56,5 +65,47 @@ public partial class AppTable<TItem> : BaseComponent where TItem : class
 
         await DataGrid.ReloadSettings();
         await DataGrid.Reload();
+    }
+
+    private static List<TItem> ApplyFilter(List<TItem> data, AppFilterDescriptor? filter)
+    {
+        if (filter is null || filter.Filters.Count == 0)
+            return data;
+
+        var itemType = typeof(TItem);
+
+        return data.Where(item =>
+        {
+            foreach (var leaf in filter.Filters)
+            {
+                var propInfo = itemType.GetProperty(leaf.Property);
+                if (propInfo is null) continue;
+
+                var rawValue = propInfo.GetValue(item);
+
+                bool match = leaf.FilterValueType switch
+                {
+                    FilterValueTypeEnum.String =>
+                        rawValue is string s &&
+                        leaf.Value is string searchStr &&
+                        s.Contains(searchStr, StringComparison.OrdinalIgnoreCase),
+
+                    FilterValueTypeEnum.Number =>
+                        leaf.Value is decimal decVal &&
+                        decimal.TryParse(rawValue?.ToString(), out var itemDec) &&
+                        itemDec == decVal,
+
+                    FilterValueTypeEnum.DateTime =>
+                        leaf.Value is DateTime dtVal &&
+                        rawValue is DateTime itemDt &&
+                        itemDt.Date == dtVal.Date,
+
+                    _ => false
+                };
+
+                if (match) return true;
+            }
+            return false;
+        }).ToList();
     }
 }
