@@ -16,16 +16,16 @@
 
 <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween" class="rz-mb-4">
     <AppBreadCrumbs ModuleCode="OICT" />
-        <RadzenStack Visible="@(Viewing && !IsLoadingData)" Orientation="Orientation.Horizontal" Gap="0.5rem">
-            <RadzenButton Text="View Sheets" Icon="list"
-                          ButtonStyle="ButtonStyle.Info"
-                          Visible="@(FormData.Sheets.Any())"
-                          Click="@OpenSheetsModal" />
-            <RadzenButton Text="Add Sheet" Icon="add"
-                          ButtonStyle="ButtonStyle.Success"
-                          Visible="@(FormData.Status is InventoryCountingDocumentStatus.Open or InventoryCountingDocumentStatus.Recount)"
-                          Click="@AddSheet" />
-        </RadzenStack>
+    <RadzenStack Visible="@(Viewing && !IsLoadingData)" Orientation="Orientation.Horizontal" Gap="0.5rem">
+        <RadzenButton Text="View Sheets" Icon="list"
+                      ButtonStyle="ButtonStyle.Info"
+                      Visible="@(FormData.Sheets.Any())"
+                      Click="@OpenSheetsModal" />
+        <RadzenButton Text="Add Sheet" Icon="add"
+                      ButtonStyle="ButtonStyle.Success"
+                      Visible="@(FormData.Status is InventoryCountingDocumentStatus.Open or InventoryCountingDocumentStatus.Recount)"
+                      Click="@AddSheet" />
+    </RadzenStack>
 </RadzenStack>
 
 <AppContent>
@@ -38,7 +38,8 @@
         <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center">
             <AppContentBadge Title="Doc #" Content="@FormData.AppDocNum.Value" />
             <AppContentBadge Title="Status" Content="@FormData.Status.ToString()"
-                             ChildBadgeStyle="@(FormData.Status switch {
+                             ChildBadgeStyle="@(FormData.Status switch
+                             {
                                  InventoryCountingDocumentStatus.Open => BadgeStyle.Success,
                                  InventoryCountingDocumentStatus.Recount => BadgeStyle.Warning,
                                  InventoryCountingDocumentStatus.Saved => BadgeStyle.Info,
@@ -147,13 +148,19 @@
                                       Id="ict_lines_create"
                                       TItem="InventoryCountingLineVM"
                                       @bind-GridSettingsLoaded="@GridSettingsLoaded"
+                                      SearchFilter="@_createLinesFilter"
                                       Data="[..FormData.DocumentLines]">
                                 <HeaderTemplate>
-                                    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
-                                        <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenLinesTableSettings" />
-                                        <RadzenButton Icon="add" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success"
-                                                      Disabled="@(string.IsNullOrEmpty(FormData.Warehouse?.WhsCode) || IsLoadingWarehouseItems)"
-                                                      Click="@AddItems" />
+                                    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center" Gap="8px">
+                                        <AppTableSearchBar TItem="InventoryCountingLineVM"
+                                                           Properties="@(new[] { nameof(InventoryCountingLineVM.ItemCode), nameof(InventoryCountingLineVM.ItemName) })"
+                                                           @bind-SearchFilter="_createLinesFilter" />
+                                        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
+                                            <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenLinesTableSettings" />
+                                            <RadzenButton Icon="add" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success"
+                                                          Disabled="@(string.IsNullOrEmpty(FormData.Warehouse?.WhsCode) || IsLoadingWarehouseItems)"
+                                                          Click="@AddItems" />
+                                        </RadzenStack>
                                     </RadzenStack>
                                 </HeaderTemplate>
                                 <Columns>
@@ -187,9 +194,15 @@
                             </AppTable>
 
                             @* Viewing: grid with sub-row expansion *@
+                            <RadzenStack Visible="@Viewing" Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Start" AlignItems="AlignItems.Center" class="rz-mb-2">
+                                <AppTableSearchBar TItem="InventoryCountingLineVM"
+                                                   Properties="@(new[] { nameof(InventoryCountingLineVM.ItemCode), nameof(InventoryCountingLineVM.ItemName) })"
+                                                   @bind-SearchFilter="_viewLinesFilter"
+                                                   OnSearch="OnViewLinesSearch" />
+                            </RadzenStack>
                             <RadzenDataGrid Visible="@Viewing"
                                             TItem="InventoryCountingLineVM"
-                                            Data="@FormData.DocumentLines"
+                                            Data="@_filteredViewLines"
                                             AllowPaging ShowPagingSummary
                                             RowRender="@ExpandAllRows">
                                 <Template Context="line">
@@ -290,7 +303,7 @@
         await DialogService.OpenAsync(
             "Item Selection",
             ds => @<InventoryCountingItemSelection @bind-Document="@FormData" />,
-            options: GridSettingsService.GetDialogOptions().MaximizedMode());
+    options: GridSettingsService.GetDialogOptions().MaximizedMode());
         await DocumentLinesTable.DataGrid.Reload();
     }
 
@@ -301,7 +314,7 @@
             ds => @<AppGridSettings TItem="InventoryCountingLineVM"
                                     @bind-Grid=@DocumentLinesTable.DataGrid
                                     @bind-GridSettings=@DocumentLinesTableSettings />,
-            options: GridSettingsService.GetDialogOptions());
+        options: GridSettingsService.GetDialogOptions());
         await DocumentLinesTable.DataGrid.Reload();
     }
 
@@ -310,6 +323,6 @@
         await DialogService.OpenAsync(
             "Sheets",
             ds => @<InventoryCountingSheetListModal Sheets="@FormData.Sheets" DocumentId="@FormData.Id" />,
-            options: GridSettingsService.GetDialogOptions().MaximizedMode());
+    options: GridSettingsService.GetDialogOptions().MaximizedMode());
     }
 }

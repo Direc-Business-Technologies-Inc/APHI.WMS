@@ -65,6 +65,10 @@ public partial class InventoryCountingCVUPage
     DataGridSettings DocumentLinesTableSettings { get; set; } = new();
     List<WarehouseVM> Warehouses { get; set; } = [];
     IDataGridIntentAdapter DatagridAdapter { get; set; } = default!;
+
+    AppFilterDescriptor? _createLinesFilter;
+    AppFilterDescriptor? _viewLinesFilter;
+    List<InventoryCountingLineVM> _filteredViewLines = [];
     #endregion Data Structures
 
     #region Overrides
@@ -117,6 +121,7 @@ public partial class InventoryCountingCVUPage
             if (string.IsNullOrEmpty(FormData.PrepBy))
                 FormData.PrepBy = AuthenticationService.GetUserName();
 
+            OnViewLinesSearch();
             AdaptToClone();
             return Task.CompletedTask;
         });
@@ -294,6 +299,16 @@ public partial class InventoryCountingCVUPage
                 return;
 
         NavManager.NavigateTo("/transactions/inventory/inventory-counting?T=open", true);
+    }
+
+    void OnViewLinesSearch()
+    {
+        var term = _viewLinesFilter?.Filters?.FirstOrDefault()?.Value?.ToString() ?? "";
+        _filteredViewLines = string.IsNullOrEmpty(term)
+            ? [.. FormData.DocumentLines]
+            : [.. FormData.DocumentLines.Where(l =>
+                l.ItemCode.Contains(term, StringComparison.OrdinalIgnoreCase)
+                || l.ItemName.Contains(term, StringComparison.OrdinalIgnoreCase))];
     }
 
     void ExpandAllRows(RowRenderEventArgs<InventoryCountingLineVM> args)

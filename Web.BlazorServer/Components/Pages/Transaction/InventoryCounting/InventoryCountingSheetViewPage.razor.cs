@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Components;
+using Shared.Libraries.Entities;
 using Shared.Libraries.Kernel;
 using Web.BlazorServer.Defaults;
 using Web.BlazorServer.Handlers.Repositories.Transaction.InventoryCounting;
@@ -34,6 +35,7 @@ public partial class InventoryCountingSheetViewPage
 
     #region Data Structures
     InventoryCountingSheetVM? Sheet { get; set; }
+    AppFilterDescriptor? _sheetLinesFilter;
     #endregion Data Structures
 
     #region Overrides

@@ -53,13 +53,19 @@
                               Id="ict_sheet_lines"
                               TItem="InventoryCountingSheetLineVM"
                               @bind-GridSettingsLoaded="@GridSettingsLoaded"
+                              SearchFilter="@_sheetLinesFilter"
                               Data="[..FormData.SheetLines]">
                         <HeaderTemplate>
-                            <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
-                                <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenSheetLinesSettings" />
-                                <RadzenButton Text="Scan Barcode" Icon="qr_code_scanner"
-                                              Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Primary"
-                                              Click="@OpenScannerDialog" />
+                            <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center" Gap="8px">
+                                <AppTableSearchBar TItem="InventoryCountingSheetLineVM"
+                                                   Properties="@(new[] { nameof(InventoryCountingSheetLineVM.ItemCode), nameof(InventoryCountingSheetLineVM.ItemName) })"
+                                                   @bind-SearchFilter="_sheetLinesFilter" />
+                                <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
+                                    <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenSheetLinesSettings" />
+                                    <RadzenButton Text="Scan Barcode" Icon="qr_code_scanner"
+                                                  Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Primary"
+                                                  Click="@OpenScannerDialog" />
+                                </RadzenStack>
                             </RadzenStack>
                         </HeaderTemplate>
                         <Columns>
