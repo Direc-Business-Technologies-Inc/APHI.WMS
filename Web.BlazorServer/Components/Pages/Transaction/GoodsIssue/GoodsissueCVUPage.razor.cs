@@ -70,6 +70,8 @@ public partial class GoodsIssueCVUPage
     #endregion Primitives
 
     #region Data Structures
+    AppFilterDescriptor? _giLinesFilter;
+
     AppTable<GoodsIssueLineVM> GoodsIssueTable { get; set; } = default!;
     DataGridSettings GoodsIssueTableSettings { get; set; } = new();
     List<BusinessPartnerVM> BusinessPartners { get; set; } = [];
