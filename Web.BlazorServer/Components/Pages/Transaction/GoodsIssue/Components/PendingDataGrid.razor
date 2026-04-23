@@ -23,7 +23,8 @@
                               Title="Doc No." />
         <RadzenDataGridColumn TItem="GoodsIssueDataGridVM"
                               Property="@nameof(GoodsIssueDataGridVM.DocDate)"
-                              Type="@typeof(DateTime)"
+                              Type="@typeof(DateOnly)"
+                              FormatString="{0:d}"
                               Title="Doc Date">
             <Template>
                 @context.DocDate.ToString("MM/dd/yyyy")

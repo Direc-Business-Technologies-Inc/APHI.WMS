@@ -107,6 +107,12 @@ public static class DataGridQueryBuilder
             FilterValueTypeEnum.String => $"'{value.ToString().Replace("'", "''")}'",
             FilterValueTypeEnum.Number => $"{value}",
             FilterValueTypeEnum.DateTime => $"'{((DateTime)value):yyyy-MM-dd HH:mm:ss}'",
+            FilterValueTypeEnum.DateOnly => value switch
+            {
+                DateOnly d  => $"'{d:yyyy-MM-dd}'",
+                DateTime dt => $"'{DateOnly.FromDateTime(dt):yyyy-MM-dd}'",
+                _           => $"'{value}'"
+            },
             _ => $"'{value}'"
         };
     }

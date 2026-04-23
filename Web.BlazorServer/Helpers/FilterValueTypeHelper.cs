@@ -19,6 +19,10 @@ public class FilterValueTypeHelper
         {
             return FilterValueTypeEnum.DateTime;
         }
+        else if (propertyType == typeof(DateOnly) || propertyType == typeof(DateOnly?))
+        {
+            return FilterValueTypeEnum.DateOnly;
+        }
         else
         {
             throw new NotSupportedException($"Property type '{propertyType.Name}' is not supported for filtering.");

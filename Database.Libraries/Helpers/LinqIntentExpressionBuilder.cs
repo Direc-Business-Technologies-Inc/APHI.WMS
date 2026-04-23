@@ -135,6 +135,14 @@ public static class LinqIntentExpressionBuilder
 
         if (underlyingType == typeof(string)) return value.ToString();
 
+        if (underlyingType == typeof(DateOnly))
+        {
+            if (value is DateOnly d) return d;
+            if (value is DateTime dt) return DateOnly.FromDateTime(dt);
+            if (DateOnly.TryParse(value?.ToString(), out var parsed)) return parsed;
+            return null;
+        }
+
         if (underlyingType.IsEnum)
         {
             // Handle both string and numeric enum values

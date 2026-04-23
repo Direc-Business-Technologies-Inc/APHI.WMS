@@ -59,7 +59,8 @@
         <RadzenDataGridColumn TItem="InventoryCountingDataGridVM"
                               Property="@nameof(InventoryCountingDataGridVM.CreatedDate)"
                               Title="Created Date"
-                              Type="@typeof(DateTime)">
+                              Type="@typeof(DateOnly)" 
+                              FormatString="{0:d}">
             <Template>
                 @context.CreatedDate.ToString("MM/dd/yyyy")
             </Template>

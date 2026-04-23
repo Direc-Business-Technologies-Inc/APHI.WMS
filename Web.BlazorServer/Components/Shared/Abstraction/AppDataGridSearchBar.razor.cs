@@ -117,6 +117,19 @@ public partial class AppDataGridSearchBar<TItem> : BaseComponent where TItem : c
                     });
                 }
             }
+            else if (targetType == typeof(DateOnly))
+            {
+                if (DateOnly.TryParse(_searchValue, out var dateValue))
+                {
+                    leaves.Add(new AppFilterDescriptor
+                    {
+                        Property = propName,
+                        Value = dateValue,
+                        ComparisonOperator = ComparisonOperatorEnum.Equals,
+                        FilterValueType = FilterValueTypeEnum.DateOnly
+                    });
+                }
+            }
             else if (targetType.IsEnum)
             {
                 if (Enum.TryParse(targetType, _searchValue, true, out var enumValue) && Enum.IsDefined(targetType, enumValue!))

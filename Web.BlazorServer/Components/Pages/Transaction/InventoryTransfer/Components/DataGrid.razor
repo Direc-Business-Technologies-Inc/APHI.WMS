@@ -51,7 +51,8 @@
         </RadzenDataGridColumn>
         <RadzenDataGridColumn TItem="InventoryTransferRequestDataGridVM"
                               Property="@nameof(InventoryTransferRequestDataGridVM.DocDate)"
-                              Type="@typeof(DateTime)"
+                              Type="@typeof(DateOnly)"
+                              FormatString="{0:d}"
                               Title="Doc Date">
             <Template>
                 @context.DocDate.ToString("MM/dd/yyyy")
@@ -68,6 +69,8 @@
         <RadzenDataGridColumn TItem="InventoryTransferRequestDataGridVM"
                               Frozen
                               FrozenPosition="FrozenColumnPosition.Right"
+                              Filterable="false"
+                              Sortable="false"
                               Width="35px">
             <Template>
                 <RadzenButton Icon="visibility" Size="ButtonSize.ExtraSmall" Click="() => ViewInventoryTransferRequest(context)" />

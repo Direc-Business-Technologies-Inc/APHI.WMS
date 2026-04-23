@@ -100,6 +100,11 @@ public partial class AppTable<TItem> : BaseComponent where TItem : class
                         rawValue is DateTime itemDt &&
                         itemDt.Date == dtVal.Date,
 
+                    FilterValueTypeEnum.DateOnly =>
+                        ToDateOnly(rawValue) is { } rawDate &&
+                        ToDateOnly(leaf.Value) is { } searchDate &&
+                        rawDate == searchDate,
+
                     _ => false
                 };
 
@@ -108,4 +113,11 @@ public partial class AppTable<TItem> : BaseComponent where TItem : class
             return false;
         }).ToList();
     }
+
+    private static DateOnly? ToDateOnly(object? value) => value switch
+    {
+        DateOnly d  => d,
+        DateTime dt => DateOnly.FromDateTime(dt),
+        _           => null
+    };
 }

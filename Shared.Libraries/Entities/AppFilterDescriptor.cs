@@ -23,6 +23,7 @@ public enum FilterValueTypeEnum
     String,
     Number,
     DateTime,
+    DateOnly,
     Boolean,
     Enum
 }
