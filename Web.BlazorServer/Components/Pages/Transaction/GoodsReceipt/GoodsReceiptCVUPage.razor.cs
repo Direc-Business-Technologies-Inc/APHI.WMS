@@ -67,6 +67,8 @@ public partial class GoodsReceiptCVUPage
     #endregion Primitives
 
     #region Data Structures
+    AppFilterDescriptor? _grLinesFilter;
+
     AppTable<GoodsReceiptLineVM> GoodsReceiptTable { get; set; } = default!;
     DataGridSettings GoodsReceiptTableSettings { get; set; } = new();
     List<BusinessPartnerVM> BusinessPartners { get; set; } = [];

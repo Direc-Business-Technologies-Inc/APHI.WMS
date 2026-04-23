@@ -152,14 +152,16 @@
                 <ChildContent>
                     <RadzenRow>
                         <RadzenColumn>
-                            <AppTable @ref="@GoodsReceiptTable" Id="goods_receipt_cvu_items" TItem="GoodsReceiptLineVM" @bind-GridSettingsLoaded="@GridSettingsLoaded" Data="[..FormData.DocumentLines]">
+                            <AppTable @ref="@GoodsReceiptTable" Id="goods_receipt_cvu_items" TItem="GoodsReceiptLineVM" @bind-GridSettingsLoaded="@GridSettingsLoaded" SearchFilter="@_grLinesFilter" Data="[..FormData.DocumentLines]">
                                 <HeaderTemplate>
-                                    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
-                                        <RadzenButton Icon="settings"
-                                                      Size="ButtonSize.Small"
-                                                      ButtonStyle="ButtonStyle.Light"
-                                                      Click="@OpenTableSettings" />
-                                        <RadzenButton Visible="@Creating" Icon="add" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@AddItems" Disabled="@(string.IsNullOrEmpty(FormData.Warehouse.WhsCode))" />
+                                    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center" Gap="8px">
+                                        <AppTableSearchBar TItem="GoodsReceiptLineVM"
+                                                           Properties="@(new[] { nameof(GoodsReceiptLineVM.ItemCode), nameof(GoodsReceiptLineVM.ItemName) })"
+                                                           @bind-SearchFilter="_grLinesFilter" />
+                                        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
+                                            <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />
+                                            <RadzenButton Visible="@Creating" Icon="add" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@AddItems" Disabled="@(string.IsNullOrEmpty(FormData.Warehouse.WhsCode))" />
+                                        </RadzenStack>
                                     </RadzenStack>
                                 </HeaderTemplate>
                                 <Columns>
