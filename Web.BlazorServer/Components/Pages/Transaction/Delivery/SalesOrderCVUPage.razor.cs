@@ -1,6 +1,7 @@
 using Mapster;
 using Microsoft.AspNetCore.Components;
 using Radzen;
+using Shared.Libraries.Entities;
 using Shared.Libraries.Kernel;
 using Web.BlazorServer.Components.Shared.Abstraction;
 using Web.BlazorServer.Defaults;
@@ -35,6 +36,8 @@ public partial class SalesOrderCVUPage
     #endregion Primitives
 
     #region Data Structures
+    AppFilterDescriptor? _soLinesFilter;
+
     AppTable<SalesOrderLineVM> SalesOrderTable { get; set; } = default!;
     DataGridSettings SalesOrderTableSettings { get; set; } = new();
 

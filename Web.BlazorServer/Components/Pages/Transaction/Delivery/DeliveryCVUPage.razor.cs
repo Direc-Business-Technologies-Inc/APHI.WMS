@@ -2,6 +2,7 @@ using Domain.Providers;
 using Mapster;
 using Microsoft.AspNetCore.Components;
 using Radzen;
+using Shared.Libraries.Entities;
 using Shared.Libraries.Kernel;
 using Web.BlazorServer.Components.Shared.Abstraction;
 using Web.BlazorServer.Defaults;
@@ -45,6 +46,9 @@ public partial class DeliveryCVUPage
     #region Data Structures
     SalesOrderVM SalesOrderData { get; set; } = new();
     List<DeliveryMeansVM> DeliveryMeans { get; set; } = [];
+
+    AppFilterDescriptor? _soLinesFilter;
+    AppFilterDescriptor? _dlvLinesFilter;
 
     AppTable<SalesOrderLineVM> SalesOrderLinesTable { get; set; } = default!;
     DataGridSettings SalesOrderLinesTableSettings { get; set; } = new();

@@ -154,9 +154,12 @@
                         <RadzenColumn>
                             @if (Creating)
                             {
-                                <AppTable @ref="@SalesOrderLinesTable" Id="dlv_so_items" TItem="SalesOrderLineVM" @bind-GridSettingsLoaded="@GridSettingsLoaded" Data="[.. SalesOrderData.DocumentLines]">
+                                <AppTable @ref="@SalesOrderLinesTable" Id="dlv_so_items" TItem="SalesOrderLineVM" @bind-GridSettingsLoaded="@GridSettingsLoaded" SearchFilter="@_soLinesFilter" Data="[.. SalesOrderData.DocumentLines]">
                                     <HeaderTemplate>
-                                        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
+                                        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center" Gap="8px">
+                                            <AppTableSearchBar TItem="SalesOrderLineVM"
+                                                               Properties="@(new[] { nameof(SalesOrderLineVM.ItemCode), nameof(SalesOrderLineVM.ItemName) })"
+                                                               @bind-SearchFilter="_soLinesFilter" />
                                             <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenSalesOrderTableSettings" />
                                         </RadzenStack>
                                     </HeaderTemplate>
@@ -208,9 +211,12 @@
                             }
                             else
                             {
-                                <AppTable @ref="@DeliveryLinesTable" Id="dlv_items" TItem="DeliveryLineVM" @bind-GridSettingsLoaded="@GridSettingsLoaded" Data="[.. FormData.DocumentLines]">
+                                <AppTable @ref="@DeliveryLinesTable" Id="dlv_items" TItem="DeliveryLineVM" @bind-GridSettingsLoaded="@GridSettingsLoaded" SearchFilter="@_dlvLinesFilter" Data="[.. FormData.DocumentLines]">
                                     <HeaderTemplate>
-                                        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
+                                        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center" Gap="8px">
+                                            <AppTableSearchBar TItem="DeliveryLineVM"
+                                                               Properties="@(new[] { nameof(DeliveryLineVM.ItemCode), nameof(DeliveryLineVM.ItemName) })"
+                                                               @bind-SearchFilter="_dlvLinesFilter" />
                                             <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenDeliveryTableSettings" />
                                         </RadzenStack>
                                     </HeaderTemplate>
