@@ -215,7 +215,8 @@
                                 <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center" Gap="8px">
                                     <AppTableSearchBar TItem="InventoryTransferRequestLineVM"
                                                        Properties="@(new[] { nameof(InventoryTransferRequestLineVM.ItemCode), nameof(InventoryTransferRequestLineVM.ItemName) })"
-                                                       @bind-SearchFilter="_itrLinesFilter" />
+                                                       @bind-SearchFilter="_itrLinesFilter"
+                                                       SuggestionSource="@FormData.Lines" />
                                     <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
                                         <RadzenButton Icon="settings"
                                                       Size="ButtonSize.Small"

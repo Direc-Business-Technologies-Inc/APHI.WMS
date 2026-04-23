@@ -168,7 +168,8 @@
                                     <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center" Gap="8px">
                                         <AppTableSearchBar TItem="PurchaseOrderLineVM"
                                                            Properties="@(new[] { nameof(PurchaseOrderLineVM.ItemCode), nameof(PurchaseOrderLineVM.ItemName) })"
-                                                           @bind-SearchFilter="_poLinesFilter" />
+                                                           @bind-SearchFilter="_poLinesFilter"
+                                                           SuggestionSource="@FormData.DocumentLines" />
                                         <RadzenStack Orientation="Orientation.Horizontal"
                                                      JustifyContent="JustifyContent.End"
                                                      AlignItems="AlignItems.Center"
