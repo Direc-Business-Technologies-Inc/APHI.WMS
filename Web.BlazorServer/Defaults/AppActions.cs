@@ -9,6 +9,15 @@ public enum AppActions
     GetNavigationRoutes,
     #endregion System Actions
 
+    #region Error Logs
+    [Description("Get Error Logs")]
+    GetErrorLogs,
+    [Description("Delete Error Log")]
+    DeleteErrorLog,
+    [Description("Delete All Error Logs")]
+    DeleteAllErrorLogs,
+    #endregion Error Logs
+
     #region Others
     [Description("Get Customers")]
     GetCustomers,

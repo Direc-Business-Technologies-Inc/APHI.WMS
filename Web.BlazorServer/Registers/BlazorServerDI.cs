@@ -17,6 +17,7 @@ public static class BlazorServerDI
         services.TryAddScoped<IToastService, ToastService>();
         services.TryAddScoped<IGridSettingsService, GridSettingsService>();
         services.TryAddScoped<IFormCacheService, FormCacheService>();
+        services.AddSingleton<IAppErrorLogger, AppErrorLogger>();
 
         return services;
     }
