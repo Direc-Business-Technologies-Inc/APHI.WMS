@@ -149,11 +149,17 @@
                                       Id="sales_return_cvu_items"
                                       TItem="SalesReturnLineVM"
                                       @bind-GridSettingsLoaded="@GridSettingsLoaded"
+                                      SearchFilter="@_srLinesFilter"
                                       Data="@FormData.DocumentLines">
                                 <HeaderTemplate>
-                                    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
-                                        <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />
-                                        <RadzenButton Visible="@(Creating && FormData.Standalone)" Icon="add" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@AddItems" Disabled="@(string.IsNullOrEmpty(FormData.Warehouse?.WhsCode))" />
+                                    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center" Gap="8px">
+                                        <AppTableSearchBar TItem="SalesReturnLineVM"
+                                                           Properties="@(new[] { nameof(SalesReturnLineVM.ItemCode), nameof(SalesReturnLineVM.ItemName) })"
+                                                           @bind-SearchFilter="_srLinesFilter" />
+                                        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
+                                            <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />
+                                            <RadzenButton Visible="@(Creating && FormData.Standalone)" Icon="add" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@AddItems" Disabled="@(string.IsNullOrEmpty(FormData.Warehouse?.WhsCode))" />
+                                        </RadzenStack>
                                     </RadzenStack>
                                 </HeaderTemplate>
                                 <Columns>

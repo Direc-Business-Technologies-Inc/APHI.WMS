@@ -47,6 +47,8 @@ public partial class SalesReturnRequestCVUPage
     #endregion Primitives
 
     #region Data Structures
+    AppFilterDescriptor? _srrLinesFilter;
+
     AppTable<SalesReturnRequestLineVM> SalesReturnRequestTable { get; set; } = default!;
     DataGridSettings SalesReturnRequestTableSettings { get; set; } = new();
     List<ReturnTypeVM> ReturnTypes { get; set; } = [];

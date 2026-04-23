@@ -54,6 +54,8 @@ public partial class SalesReturnCVUPage
     #endregion Primitives
 
     #region Data Structures
+    AppFilterDescriptor? _srLinesFilter;
+
     AppTable<SalesReturnLineVM> SalesReturnTable { get; set; } = default!;
     DataGridSettings SalesReturnTableSettings { get; set; } = new();
     List<BusinessPartnerVM> Customers { get; set; } = [];

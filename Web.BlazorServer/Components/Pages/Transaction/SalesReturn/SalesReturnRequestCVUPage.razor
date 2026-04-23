@@ -114,9 +114,13 @@
                                       Id="sales_return_request_cvu_items"
                                       TItem="SalesReturnRequestLineVM"
                                       @bind-GridSettingsLoaded="@GridSettingsLoaded"
+                                      SearchFilter="@_srrLinesFilter"
                                       Data="@FormData.DocumentLines">
                                 <HeaderTemplate>
-                                    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
+                                    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center" Gap="8px">
+                                        <AppTableSearchBar TItem="SalesReturnRequestLineVM"
+                                                           Properties="@(new[] { nameof(SalesReturnRequestLineVM.ItemCode), nameof(SalesReturnRequestLineVM.ItemName) })"
+                                                           @bind-SearchFilter="_srrLinesFilter" />
                                         <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />
                                     </RadzenStack>
                                 </HeaderTemplate>
@@ -136,7 +140,7 @@
                                                           Type="@typeof(string)"
                                                           Title="Item Name" />
                                     <RadzenDataGridColumn TItem="SalesReturnRequestLineVM"
-                                                          Property="@nameof(SalesReturnRequestLineVM.Warehouse.WhsName)"
+                                                          Property="Warehouse.WhsName"
                                                           Type="@typeof(string)"
                                                           Title="Warehouse" Width="150px">
                                         <Template Context="data">
@@ -166,7 +170,8 @@
                                     <RadzenDataGridColumn TItem="SalesReturnRequestLineVM"
                                                           Property="@nameof(SalesReturnRequestLineVM.Quantity)"
                                                           Type="@typeof(decimal)"
-                                                          Title="Quantity" Width="150px">
+                                                          Title="Quantity" Width="150px" 
+                                                          Visible="@Creating">
                                         <Template Context="data">
                                             <RadzenNumeric Format="N0" @bind-Value="@data.Quantity" Min="0" Max="@data.OpenQuantity" ReadOnly="@(Viewing || data.OpenQuantity <= 0)" ShowUpDown="@Creating" />
                                         </Template>
