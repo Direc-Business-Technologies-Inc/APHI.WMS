@@ -2,6 +2,7 @@
 @layout ProtectedLayout
 @using Web.BlazorServer.Components.Security
 @using Web.BlazorServer.ViewModels.Administration.ErrorLog
+@attribute [AppAuthorizationAttribute("VIEW", "OLOG")]
 
 @inherits BaseComponent
 
@@ -20,6 +21,7 @@
                       Size="ButtonSize.Small"
                       ButtonStyle="ButtonStyle.Danger"
                       Shade="Shade.Light"
+                      Visible="@Can.Archive("OLOG")"
                       Disabled="@(AppBusyService.IsAnyBusy() || !LogFiles.Any())"
                       Click="@DeleteAllAsync" />
     </RadzenStack>
@@ -65,6 +67,7 @@
                                       Size="ButtonSize.ExtraSmall"
                                       ButtonStyle="ButtonStyle.Danger"
                                       Shade="Shade.Light"
+                                      Visible="@Can.Archive("OLOG")"
                                       Click="@(() => DeleteLogAsync(log))" />
                     </RadzenStack>
                 </Template>
