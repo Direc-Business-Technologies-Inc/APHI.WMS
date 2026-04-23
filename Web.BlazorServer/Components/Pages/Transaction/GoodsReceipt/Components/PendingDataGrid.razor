@@ -24,7 +24,7 @@
         <RadzenDataGridColumn TItem="GoodsReceiptDataGridVM"
                               Property="@nameof(GoodsReceiptDataGridVM.DocDate)"
                               Type="@typeof(DateOnly)"
-FormatString="{0:d}"
+                              FormatString="{0:d}"
                               Title="Doc Date">
             <Template>
                 @context.DocDate.ToString("MM/dd/yyyy")
