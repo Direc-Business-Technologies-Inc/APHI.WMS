@@ -23,7 +23,8 @@
                               Title="Delivery Doc No." />
         <RadzenDataGridColumn TItem="DeliveryDataGridVM"
                               Property="@nameof(DeliveryDataGridVM.DocDate)"
-                              Type="@typeof(DateTime)"
+                              Type="@typeof(DateOnly)"
+                              FormatString="{0:d}"
                               Title="Delivery Date">
             <Template>
                 @context.DocDate.ToString("MM/dd/yyyy")
@@ -43,6 +44,8 @@
                               Title="Remarks" />
         <RadzenDataGridColumn TItem="DeliveryDataGridVM"
                               Frozen
+                              Filterable="false"
+                              Sortable="false"
                               FrozenPosition="FrozenColumnPosition.Right"
                               Width="35px">
             <Template>

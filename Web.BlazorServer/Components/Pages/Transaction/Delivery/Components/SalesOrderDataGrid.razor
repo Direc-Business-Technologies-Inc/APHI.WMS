@@ -23,7 +23,8 @@
                               Title="SO Doc No." />
         <RadzenDataGridColumn TItem="SalesOrderDataGridVM"
                               Property="@nameof(SalesOrderDataGridVM.DocDate)"
-                              Type="@typeof(DateTime)"
+                              Type="@typeof(DateOnly)"
+                              FormatString="{0:d}"
                               Title="SO Date">
             <Template>
                 @context.DocDate.ToString("MM/dd/yyyy")
@@ -44,6 +45,8 @@
         <RadzenDataGridColumn TItem="SalesOrderDataGridVM"
                               Frozen
                               FrozenPosition="FrozenColumnPosition.Right"
+                              Filterable="false"
+                              Sortable="false"
                               Width="35px">
             <Template>
                 <RadzenButton Icon="visibility" Size="ButtonSize.ExtraSmall" Click="() => ViewSalesOrder(context)" />
