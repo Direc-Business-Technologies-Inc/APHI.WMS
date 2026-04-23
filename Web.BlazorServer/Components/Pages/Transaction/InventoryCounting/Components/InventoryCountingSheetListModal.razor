@@ -22,6 +22,8 @@
         </RadzenDataGridColumn>
         <RadzenDataGridColumn TItem="InventoryCountingSheetVM"
                               Title="Submitted Date"
+                              Type="@typeof(DateOnly)" 
+                              FormatString="{0:d}"
                               Property="@nameof(InventoryCountingSheetVM.SubmittedDate)">
             <Template>
                 @context.SubmittedDate.ToString("MM/dd/yyyy")
