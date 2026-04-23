@@ -71,6 +71,8 @@ public partial class InventoryTransferRequestCVUPage
     int WarehousesCount { get; set; }
     int SchoolYearsCount { get; set; }
 
+    AppFilterDescriptor? _itrLinesFilter;
+
     AppTable<InventoryTransferRequestLineVM> InventoryTransferRequestTable { get; set; } = default!;
     DataGridSettings InventoryTransferRequestTableSettings { get; set; } = new();
     #endregion

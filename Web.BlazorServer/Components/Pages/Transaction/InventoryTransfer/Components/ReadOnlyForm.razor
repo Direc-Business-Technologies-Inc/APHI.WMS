@@ -119,12 +119,13 @@
                                   Id="itr_cvu_lines"
                                   TItem="InventoryTransferCVULineVM"
                                   @bind-GridSettingsLoaded="@GridSettingsLoaded"
+                                  SearchFilter="@_linesFilter"
                                   Data="@FormData.Lines">
                             <HeaderTemplate>
-                                <RadzenStack Orientation="Orientation.Horizontal"
-                                             JustifyContent="JustifyContent.End"
-                                             AlignItems="AlignItems.Center"
-                                             Gap="8px">
+                                <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center" Gap="8px">
+                                    <AppTableSearchBar TItem="InventoryTransferCVULineVM"
+                                                       Properties="@(new[] { nameof(InventoryTransferCVULineVM.ItemCode), nameof(InventoryTransferCVULineVM.ItemDescription) })"
+                                                       @bind-SearchFilter="_linesFilter" />
                                     <RadzenButton Icon="settings"
                                                   Size="ButtonSize.Small"
                                                   ButtonStyle="ButtonStyle.Light"

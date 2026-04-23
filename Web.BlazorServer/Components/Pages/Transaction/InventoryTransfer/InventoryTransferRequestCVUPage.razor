@@ -209,23 +209,25 @@
                                   Id="items"
                                   TItem="InventoryTransferRequestLineVM"
                                   @bind-GridSettingsLoaded="@GridSettingsLoaded"
+                                  SearchFilter="@_itrLinesFilter"
                                   Data="@FormData.Lines">
                             <HeaderTemplate>
-                                <RadzenStack Orientation="Orientation.Horizontal"
-                                             JustifyContent="JustifyContent.End"
-                                             AlignItems="AlignItems.Center"
-                                             Gap="8px">
-                                    <RadzenButton Icon="settings"
-                                                  Size="ButtonSize.Small"
-                                                  ButtonStyle="ButtonStyle.Light"
-                                                  Click="@OpenTableSettings" />
-                                    <RadzenButton Visible="@CreatingNew"
-                                                  Icon="add"
-                                                  Size="ButtonSize.Small"
-                                                  ButtonStyle="ButtonStyle.Success"
-                                                  Click="@AddItems"
-                                                  Disabled="@(string.IsNullOrEmpty(FormData.FromWarehouse?.WhsCode))" />
-
+                                <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center" Gap="8px">
+                                    <AppTableSearchBar TItem="InventoryTransferRequestLineVM"
+                                                       Properties="@(new[] { nameof(InventoryTransferRequestLineVM.ItemCode), nameof(InventoryTransferRequestLineVM.ItemName) })"
+                                                       @bind-SearchFilter="_itrLinesFilter" />
+                                    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
+                                        <RadzenButton Icon="settings"
+                                                      Size="ButtonSize.Small"
+                                                      ButtonStyle="ButtonStyle.Light"
+                                                      Click="@OpenTableSettings" />
+                                        <RadzenButton Visible="@CreatingNew"
+                                                      Icon="add"
+                                                      Size="ButtonSize.Small"
+                                                      ButtonStyle="ButtonStyle.Success"
+                                                      Click="@AddItems"
+                                                      Disabled="@(string.IsNullOrEmpty(FormData.FromWarehouse?.WhsCode))" />
+                                    </RadzenStack>
                                 </RadzenStack>
                             </HeaderTemplate>
                             <Columns>

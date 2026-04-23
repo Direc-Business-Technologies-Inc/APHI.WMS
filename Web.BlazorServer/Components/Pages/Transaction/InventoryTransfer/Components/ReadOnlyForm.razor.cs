@@ -1,4 +1,5 @@
 ﻿using Mapster;
+using Shared.Libraries.Entities;
 using Microsoft.AspNetCore.Components;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
@@ -30,6 +31,8 @@ partial class ReadOnlyForm
     #endregion
 
     [Inject] IGridSettingsService GridSettingsService { get; set; } = default!;
+    AppFilterDescriptor? _linesFilter;
+
     AppTable<InventoryTransferCVULineVM> LinesTable { get; set; } = default!;
     DataGridSettings LinesTableSettings { get; set; } = new();
     bool IsBusy => AppBusyService.IsBusy(ActionName);
