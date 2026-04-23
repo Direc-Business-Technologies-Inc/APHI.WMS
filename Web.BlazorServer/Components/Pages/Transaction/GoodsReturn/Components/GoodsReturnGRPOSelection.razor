@@ -25,7 +25,8 @@
                               Title="PO Ref. No." />
         <RadzenDataGridColumn TItem="PurchaseDeliveryNoteDataGridVM"
                               Property="@nameof(PurchaseDeliveryNoteDataGridVM.PoDocDate)"
-                              Type="@typeof(DateTime)"
+                              Type="@typeof(DateOnly)"
+                              FormatString="{0:d}"
                               Title="PO Doc Date">
             <Template>
                 @context.PoDocDate.ToString("MM/dd/yyyy")
@@ -45,7 +46,8 @@
                               Title="Warehouse" />
         <RadzenDataGridColumn TItem="PurchaseDeliveryNoteDataGridVM"
                               Property="@nameof(PurchaseDeliveryNoteDataGridVM.DocDate)"
-                              Type="@typeof(DateTime)"
+                              Type="@typeof(DateOnly)"
+                              FormatString="{0:d}"
                               Title="Doc Date">
             <Template>
                 @context.DocDate.ToString("MM/dd/yyyy")
@@ -54,6 +56,8 @@
         <RadzenDataGridColumn TItem="PurchaseDeliveryNoteDataGridVM"
                               Frozen
                               FrozenPosition="FrozenColumnPosition.Right"
+                              Filterable="false"
+                              Sortable="false"
                               Width="35px">
             <Template>
                 <RadzenButton Icon="visibility" Size="ButtonSize.ExtraSmall" Click="() => SelectSource(context)" />
