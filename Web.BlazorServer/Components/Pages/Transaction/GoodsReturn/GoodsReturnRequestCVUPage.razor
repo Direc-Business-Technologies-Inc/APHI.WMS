@@ -117,16 +117,14 @@
                                       Id="goods_return_request_cvu_items"
                                       TItem="GRRLineVM"
                                       @bind-GridSettingsLoaded="@GridSettingsLoaded"
+                                      SearchFilter="@_grrLinesFilter"
                                       Data="@FormData.DocumentLines">
                                 <HeaderTemplate>
-                                    <RadzenStack Orientation="Orientation.Horizontal"
-                                                 JustifyContent="JustifyContent.End"
-                                                 AlignItems="AlignItems.Center"
-                                                 Gap="8px">
-                                        <RadzenButton Icon="settings"
-                                                      Size="ButtonSize.Small"
-                                                      ButtonStyle="ButtonStyle.Light"
-                                                      Click="@OpenTableSettings" />
+                                    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center" Gap="8px">
+                                        <AppTableSearchBar TItem="GRRLineVM"
+                                                           Properties="@(new[] { nameof(GRRLineVM.ItemCode), nameof(GRRLineVM.ItemName) })"
+                                                           @bind-SearchFilter="_grrLinesFilter" />
+                                        <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />
                                     </RadzenStack>
                                 </HeaderTemplate>
                                 <Columns>
@@ -143,7 +141,7 @@
                                                           Type="@typeof(string)"
                                                           Title="Item Name" />
                                     <RadzenDataGridColumn TItem="GRRLineVM"
-                                                          Property="@nameof(GRRLineVM.Warehouse.WhsName)"
+                                                          Property="Warehouse.WhsName"
                                                           Type="@typeof(string)"
                                                           Title="Warehouse" Width="150px">
                                         <Template Context="data">

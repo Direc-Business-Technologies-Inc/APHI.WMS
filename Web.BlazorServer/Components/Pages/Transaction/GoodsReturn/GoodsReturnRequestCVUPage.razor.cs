@@ -62,6 +62,8 @@ public partial class GoodsReturnRequestCVUPage
     #endregion Primitives
 
     #region Data Structures
+    AppFilterDescriptor? _grrLinesFilter;
+
     AppTable<GRRLineVM> GoodsReturnTable { get; set; } = default!;
     DataGridSettings GoodsReturnTableSettings { get; set; } = new();
     List<BusinessPartnerVM> BusinessPartners { get; set; } = [];
@@ -105,6 +107,7 @@ public partial class GoodsReturnRequestCVUPage
             if (!await AlertService.HasUnsavedChangesAsync(header: "Cancel Goods Return Creation"))
                 return;
 
+        await ClearFormCacheAsync();
         NavManager.NavigateTo($"/transactions/purchasing/goods-return/request/view?Ref={FormData.SapReference.DocEntry}", true);
     }
 
@@ -221,6 +224,7 @@ public partial class GoodsReturnRequestCVUPage
             if (!await AlertService.HasUnsavedChangesAsync(header: "Cancel Goods Return Creation"))
                 return;
 
+        await ClearFormCacheAsync();
         NavManager.NavigateTo($"/transactions/purchasing/goods-return?t=grr", true);
     }
 

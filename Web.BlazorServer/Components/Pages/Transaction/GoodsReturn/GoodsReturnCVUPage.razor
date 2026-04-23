@@ -152,21 +152,17 @@
                                       Id="goods_return_cvu_items"
                                       TItem="GoodsReturnLineVM"
                                       @bind-GridSettingsLoaded="@GridSettingsLoaded"
+                                      SearchFilter="@_grLinesFilter"
                                       Data="@FormData.DocumentLines">
                                 <HeaderTemplate>
-                                    <RadzenStack Orientation="Orientation.Horizontal"
-                                                 JustifyContent="JustifyContent.End"
-                                                 AlignItems="AlignItems.Center"
-                                                 Gap="8px">
-                                        <RadzenButton Icon="settings"
-                                                      Size="ButtonSize.Small"
-                                                      ButtonStyle="ButtonStyle.Light"
-                                                      Click="@OpenTableSettings" />
-                                    </RadzenStack>
-                                </HeaderTemplate>
-                                <HeaderTemplate>
-                                    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
-                                        <RadzenButton Visible="@Creating" Icon="add" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@AddItems" Disabled="@(string.IsNullOrEmpty(FormData.Warehouse?.WhsCode))" />
+                                    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center" Gap="8px">
+                                        <AppTableSearchBar TItem="GoodsReturnLineVM"
+                                                           Properties="@(new[] { nameof(GoodsReturnLineVM.ItemCode), nameof(GoodsReturnLineVM.ItemName) })"
+                                                           @bind-SearchFilter="_grLinesFilter" />
+                                        <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
+                                            <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />
+                                            <RadzenButton Visible="@Creating" Icon="add" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@AddItems" Disabled="@(string.IsNullOrEmpty(FormData.Warehouse?.WhsCode))" />
+                                        </RadzenStack>
                                     </RadzenStack>
                                 </HeaderTemplate>
                                 <Columns>
@@ -185,7 +181,7 @@
                                                           Type="@typeof(string)"
                                                           Title="Item Name" />
                                     <RadzenDataGridColumn TItem="GoodsReturnLineVM"
-                                                          Property="@nameof(GoodsReturnLineVM.Warehouse.WhsName)"
+                                                          Property="Warehouse.WhsName"
                                                           Type="@typeof(string)"
                                                           Title="Warehouse" Width="150px">
                                         <Template Context="data">
