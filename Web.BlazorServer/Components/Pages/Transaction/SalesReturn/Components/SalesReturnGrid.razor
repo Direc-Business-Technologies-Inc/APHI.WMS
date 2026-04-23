@@ -24,7 +24,7 @@
                               Title="SR Doc No." />
         <RadzenDataGridColumn TItem="SalesReturnDataGridVM"
                               Property="@nameof(SalesReturnDataGridVM.DocDate)"
-                              Type="@typeof(DateTime)"
+                              Type="@typeof(DateOnly)"
                               Title="Doc Date">
             <Template>
                 @context.DocDate.ToString("MM/dd/yyyy")
