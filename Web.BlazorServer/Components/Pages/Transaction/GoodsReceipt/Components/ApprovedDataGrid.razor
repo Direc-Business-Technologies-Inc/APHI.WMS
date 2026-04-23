@@ -23,7 +23,8 @@
                               Title="Doc No." />
         <RadzenDataGridColumn TItem="GoodsReceiptDataGridVM"
                               Property="@nameof(GoodsReceiptDataGridVM.DocDate)"
-                              Type="@typeof(DateTime)"
+                              Type="@typeof(DateOnly)"
+                              FormatString="{0:d}"
                               Title="Doc Date">
             <Template>
                 @context.DocDate.ToString("MM/dd/yyyy")
@@ -40,6 +41,8 @@
         <RadzenDataGridColumn TItem="GoodsReceiptDataGridVM"
                               Frozen
                               FrozenPosition="FrozenColumnPosition.Right"
+                              Filterable="false"
+                              Sortable="false"
                               Width="35px">
             <Template>
                 <RadzenButton Icon="visibility" Size="ButtonSize.ExtraSmall" Click="() => ViewGoodsReceipt(context)" />
