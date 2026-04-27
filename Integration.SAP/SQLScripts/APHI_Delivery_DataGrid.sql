@@ -4,7 +4,7 @@ SELECT
 	,ODLN.DocDate
 	,ODLN.CardCode
 	,OCRD.CardName
-	,OCRD.CntctPrsn
+	,OCRD.CntctPrsn [ContactPerson]
 	,ODLN.U_PrepBy [PreparedBy]
 	,ODLN.U_Remarks [Remarks]
 FROM ODLN

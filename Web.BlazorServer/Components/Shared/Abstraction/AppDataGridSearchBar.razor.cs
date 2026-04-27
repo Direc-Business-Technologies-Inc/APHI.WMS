@@ -41,7 +41,13 @@ public partial class AppDataGridSearchBar<TItem> : BaseComponent where TItem : c
     {
         _searchValue = string.Empty;
         _debounceCts?.Cancel();
-        await ExecuteSearchAsync();
+        if (SearchFilter is not null)
+        {
+            SearchFilter = null;
+            await SearchFilterChanged.InvokeAsync(null);
+            await OnSearch.InvokeAsync();
+        }
+        await InvokeAsync(StateHasChanged);
     }
 
     private async Task OnLoadSuggestionsAsync(LoadDataArgs args)
