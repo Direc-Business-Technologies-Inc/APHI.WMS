@@ -26,7 +26,7 @@
         <RadzenDataGridColumn TItem="GRRDataGridVM"
                               Property="@nameof(GRRDataGridVM.DocDate)"
                               Type="@typeof(DateOnly)"
-                              FormatString="{0:d}" )"
+                              FormatString="{0:d}"
                               Title="GRPO Date">
             <Template>
                 @context.DocDate.ToString("MM/dd/yyyy")
