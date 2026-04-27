@@ -59,7 +59,8 @@
                             <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center" Gap="8px">
                                 <AppTableSearchBar TItem="InventoryCountingSheetLineVM"
                                                    Properties="@(new[] { nameof(InventoryCountingSheetLineVM.ItemCode), nameof(InventoryCountingSheetLineVM.ItemName) })"
-                                                   @bind-SearchFilter="_sheetLinesFilter" />
+                                                   @bind-SearchFilter="_sheetLinesFilter"
+                                                   SuggestionSource="@FormData.SheetLines" />
                                 <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
                                     <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenSheetLinesSettings" />
                                     <RadzenButton Text="Scan Barcode" Icon="qr_code_scanner"

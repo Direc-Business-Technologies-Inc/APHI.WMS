@@ -159,7 +159,8 @@
                                         <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center" Gap="8px">
                                             <AppTableSearchBar TItem="SalesOrderLineVM"
                                                                Properties="@(new[] { nameof(SalesOrderLineVM.ItemCode), nameof(SalesOrderLineVM.ItemName) })"
-                                                               @bind-SearchFilter="_soLinesFilter" />
+                                                               @bind-SearchFilter="_soLinesFilter"
+                                                               SuggestionSource="@SalesOrderData.DocumentLines" />
                                             <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenSalesOrderTableSettings" />
                                         </RadzenStack>
                                     </HeaderTemplate>
@@ -216,7 +217,8 @@
                                         <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center" Gap="8px">
                                             <AppTableSearchBar TItem="DeliveryLineVM"
                                                                Properties="@(new[] { nameof(DeliveryLineVM.ItemCode), nameof(DeliveryLineVM.ItemName) })"
-                                                               @bind-SearchFilter="_dlvLinesFilter" />
+                                                               @bind-SearchFilter="_dlvLinesFilter"
+                                                               SuggestionSource="@FormData.DocumentLines" />
                                             <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenDeliveryTableSettings" />
                                         </RadzenStack>
                                     </HeaderTemplate>

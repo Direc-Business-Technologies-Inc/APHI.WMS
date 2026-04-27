@@ -154,7 +154,8 @@
                                     <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center" Gap="8px">
                                         <AppTableSearchBar TItem="InventoryCountingLineVM"
                                                            Properties="@(new[] { nameof(InventoryCountingLineVM.ItemCode), nameof(InventoryCountingLineVM.ItemName) })"
-                                                           @bind-SearchFilter="_createLinesFilter" />
+                                                           @bind-SearchFilter="_createLinesFilter"
+                                                           SuggestionSource="@FormData.DocumentLines" />
                                         <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
                                             <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenLinesTableSettings" />
                                             <RadzenButton Icon="add" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success"
@@ -198,7 +199,8 @@
                                 <AppTableSearchBar TItem="InventoryCountingLineVM"
                                                    Properties="@(new[] { nameof(InventoryCountingLineVM.ItemCode), nameof(InventoryCountingLineVM.ItemName) })"
                                                    @bind-SearchFilter="_viewLinesFilter"
-                                                   OnSearch="OnViewLinesSearch" />
+                                                   OnSearch="OnViewLinesSearch"
+                                                   SuggestionSource="@_filteredViewLines" />
                             </RadzenStack>
                             <RadzenDataGrid Visible="@Viewing"
                                             TItem="InventoryCountingLineVM"

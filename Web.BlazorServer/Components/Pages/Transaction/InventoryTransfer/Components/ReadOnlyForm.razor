@@ -125,7 +125,8 @@
                                 <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center" Gap="8px">
                                     <AppTableSearchBar TItem="InventoryTransferCVULineVM"
                                                        Properties="@(new[] { nameof(InventoryTransferCVULineVM.ItemCode), nameof(InventoryTransferCVULineVM.ItemDescription) })"
-                                                       @bind-SearchFilter="_linesFilter" />
+                                                       @bind-SearchFilter="_linesFilter"
+                                                       SuggestionSource="@FormData.Lines" />
                                     <RadzenButton Icon="settings"
                                                   Size="ButtonSize.Small"
                                                   ButtonStyle="ButtonStyle.Light"

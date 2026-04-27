@@ -51,7 +51,8 @@
             <HeaderTemplate>
                 <AppTableSearchBar TItem="InventoryCountingSheetLineVM"
                                    Properties="@(new[] { nameof(InventoryCountingSheetLineVM.ItemCode), nameof(InventoryCountingSheetLineVM.ItemName) })"
-                                   @bind-SearchFilter="_sheetLinesFilter" />
+                                   @bind-SearchFilter="_sheetLinesFilter"
+                                   SuggestionSource="@(Sheet?.SheetLines ?? [])" />
             </HeaderTemplate>
             <Columns>
                 <RadzenDataGridColumn TItem="InventoryCountingSheetLineVM"

@@ -123,7 +123,8 @@
                                     <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center" Gap="8px">
                                         <AppTableSearchBar TItem="GRRLineVM"
                                                            Properties="@(new[] { nameof(GRRLineVM.ItemCode), nameof(GRRLineVM.ItemName) })"
-                                                           @bind-SearchFilter="_grrLinesFilter" />
+                                                           @bind-SearchFilter="_grrLinesFilter"
+                                                           SuggestionSource="@FormData.DocumentLines" />
                                         <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />
                                     </RadzenStack>
                                 </HeaderTemplate>

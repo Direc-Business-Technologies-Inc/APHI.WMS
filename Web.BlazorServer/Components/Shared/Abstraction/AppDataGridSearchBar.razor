@@ -2,11 +2,17 @@
 @typeparam TItem where TItem : class
 
 <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="0.25rem">
-    <RadzenTextBox @bind-Value="_searchValue"
-                   @oninput="OnInputChanged"
-                   @onkeydown="OnKeyDownAsync"
-                   Placeholder="@Placeholder"
-                   Style="min-width: 220px;" />
+    <RadzenAutoComplete @bind-Value="_searchValue"
+                        Data="_suggestions"
+                        LoadData="OnLoadSuggestionsAsync"
+                        Change="OnSuggestionSelectedAsync"
+                        @oninput="OnInputChanged"
+                        @onkeydown="OnKeyDownAsync"
+                        MinLength="@MinSuggestionChars"
+                        FilterDelay="@DebounceMs"
+                        AllowCustomValue="true"
+                        Placeholder="@Placeholder"
+                        Style="min-width: 220px;" />
     @if (!string.IsNullOrEmpty(_searchValue))
     {
         <RadzenButton Icon="close" ButtonStyle="ButtonStyle.Light"

@@ -155,7 +155,8 @@
                                     <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center" Gap="8px">
                                         <AppTableSearchBar TItem="SalesReturnLineVM"
                                                            Properties="@(new[] { nameof(SalesReturnLineVM.ItemCode), nameof(SalesReturnLineVM.ItemName) })"
-                                                           @bind-SearchFilter="_srLinesFilter" />
+                                                           @bind-SearchFilter="_srLinesFilter"
+                                                           SuggestionSource="@FormData.DocumentLines" />
                                         <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
                                             <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />
                                             <RadzenButton Visible="@(Creating && FormData.Standalone)" Icon="add" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@AddItems" Disabled="@(string.IsNullOrEmpty(FormData.Warehouse?.WhsCode))" />
