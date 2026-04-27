@@ -47,12 +47,22 @@ public partial class AppDataGrid<TItem> : BaseComponent, IAsyncDisposable where 
 
     bool _isFirstLoad { get; set; } = true;
     bool _disposed { get; set; } = false;
+    AppFilterDescriptor? _prevSearchFilter;
     public RadzenDataGrid<TItem> DataGrid { get; set; } = default!;
     public DataGridResultVM<TItem> DGResult { get; set; } = new DataGridResultVM<TItem>();
     public EventCallback<DataGridResultVM<TItem>> DGResultChanged { get; set; }
     public IDataGridIntentAdapter DatagridAdapter { get; set; } = default!;
     protected bool IsBusy => AppBusyService.IsBusy(ActionName);
 
+
+    protected override async Task OnParametersSetAsync()
+    {
+        bool filterChanged = SearchFilter != _prevSearchFilter;
+        _prevSearchFilter = SearchFilter;
+
+        if (!_isFirstLoad && filterChanged && DataGrid is not null)
+            await InvokeAsync(() => DataGrid.Reload());
+    }
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -68,7 +78,9 @@ public partial class AppDataGrid<TItem> : BaseComponent, IAsyncDisposable where 
     {
         if (_disposed) return;
 
-        if (IsBusy || ClientSide)
+        if (IsBusy) return;
+
+        if (ClientSide)
         {
             DGResult = DataGridResultVM<TItem>.New(Data, Data.Count);
 

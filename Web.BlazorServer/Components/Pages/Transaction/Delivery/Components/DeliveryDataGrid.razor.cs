@@ -38,6 +38,25 @@ public partial class DeliveryDataGrid
         return DataGridResultVM<DeliveryDataGridVM>.New(action.Result.Data ?? [], action.Result.Count);
     }
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await base.OnAfterRenderAsync(firstRender);
+            await LoadGridSettings();
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    async Task LoadGridSettings()
+    {
+        await GridSettingsService.SetGridSettings(DeliveryGrid.DataGrid, settings => DeliveryDataGridSettings = settings ?? new());
+        GridSettingsLoaded = true;
+
+        await DeliveryGrid.DataGrid.ReloadSettings();
+        await DeliveryGrid.DataGrid.Reload();
+    }
+
     async Task OnSearchAsync() => await DeliveryGrid.DataGrid.Reload();
 
     void ViewDelivery(DeliveryDataGridVM delivery) => NavManager.NavigateTo($"/transactions/sales/delivery/view?ref={delivery.DocEntry}");

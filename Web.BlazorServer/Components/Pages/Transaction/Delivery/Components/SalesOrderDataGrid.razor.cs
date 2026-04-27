@@ -38,6 +38,25 @@ public partial class SalesOrderDataGrid
         return DataGridResultVM<SalesOrderDataGridVM>.New(action.Result.Data ?? [], action.Result.Count);
     }
 
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await base.OnAfterRenderAsync(firstRender);
+            await LoadGridSettings();
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    async Task LoadGridSettings()
+    {
+        await GridSettingsService.SetGridSettings(SalesOrderGrid.DataGrid, settings => SalesOrderDataGridSettings = settings ?? new());
+        GridSettingsLoaded = true;
+
+        await SalesOrderGrid.DataGrid.ReloadSettings();
+        await SalesOrderGrid.DataGrid.Reload();
+    }
+
     async Task OnSearchAsync() => await SalesOrderGrid.DataGrid.Reload();
 
     void ViewSalesOrder(SalesOrderDataGridVM salesOrder) => NavManager.NavigateTo($"/transactions/sales/delivery/sales-order/view?ref={salesOrder.DocEntry}");
