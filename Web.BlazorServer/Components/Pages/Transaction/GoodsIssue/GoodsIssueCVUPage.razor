@@ -234,7 +234,7 @@
                                                           Title="Quantity" Width="150px"
                                                           Type="@typeof(decimal)">
                                         <Template Context="data">
-                                            <RadzenNumeric Format="N0" @bind-Value="@data.Quantity" Min="0" ReadOnly="@(Viewing && data.OnHandQty <= 0)" ShowUpDown="@Creating" />
+                                            <RadzenNumeric Format="N0" @bind-Value="@data.Quantity" Min="0" Max="@data.OnHandQty" ReadOnly="@(Viewing || data.OnHandQty <= 0)" ShowUpDown="@(Creating && data.OnHandQty > 0)" />
                                         </Template>
                                     </RadzenDataGridColumn>
                                     <RadzenDataGridColumn TItem="GoodsIssueLineVM"
