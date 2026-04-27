@@ -53,6 +53,12 @@ internal static class AppDefaults
             navRouteId: WebStructure.SubRouteList2.First(x => x.Name.Equals("System Configuration")).Id,
             permissions: [AppDefaults.NewPermission("VIEW"), AppDefaults.NewPermission("UPDATE")]),
         ModuleDEM.Create(
+            name: "Error Logs",
+            code: "OLOG",
+            root: false,
+            navRouteId: WebStructure.SubRouteList2.First(x => x.Name.Equals("Error Logs")).Id,
+            permissions: [AppDefaults.NewPermission("VIEW"), AppDefaults.NewPermission("ARCHIVE")]),
+        ModuleDEM.Create(
             name: "Receiving",
             code: "ORCV",
             root: false,

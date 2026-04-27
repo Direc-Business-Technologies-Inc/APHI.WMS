@@ -112,4 +112,30 @@ public partial class GoodsReturnItemSelection
         await InvokeAsync(StateHasChanged);
     }
 
+    async Task<IEnumerable<string>> GetSuggestionsAsync(string text)
+    {
+        var intent = new DataGridIntent
+        {
+            Skip = 0,
+            Take = 8,
+            Filters =
+            [
+                new AppFilterDescriptor
+                {
+                    LogicalOperator = LogicalOperatorEnum.OR,
+                    Filters =
+                    [
+                        new AppFilterDescriptor { Property = nameof(ItemVM.ItemCode), Value = text, ComparisonOperator = ComparisonOperatorEnum.Contains, FilterValueType = FilterValueTypeEnum.String },
+                        new AppFilterDescriptor { Property = nameof(ItemVM.ItemName), Value = text, ComparisonOperator = ComparisonOperatorEnum.Contains, FilterValueType = FilterValueTypeEnum.String }
+                    ]
+                }
+            ]
+        };
+        var result = await ItemsHandler.GetMerchandiseItemsAsync(intent);
+        return (result.Data ?? [])
+            .SelectMany(x => new[] { x.ItemCode, x.ItemName })
+            .Where(v => v is not null && v.Contains(text, StringComparison.OrdinalIgnoreCase))
+            .Distinct(StringComparer.OrdinalIgnoreCase);
+    }
+
 }

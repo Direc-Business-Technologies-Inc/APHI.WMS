@@ -5,7 +5,8 @@ namespace Web.BlazorServer.Services.Implementation;
 
 public class AppActionFactory(
     IToastService ToastService,
-    IBusyService BusyService
+    IBusyService BusyService,
+    IAppErrorLogger ErrorLogger
     ) : IAppActionFactory
 {
     public event Func<string, Task<bool>>? ConfirmationEvent;
@@ -48,6 +49,7 @@ public class AppActionFactory(
         catch (Exception ex)
         {
             action.SetException(ex);
+            await ErrorLogger.LogAsync(options.ActionName, ex);
 
             if(options.ShowToastOnFailure)
                 ToastService.Error($"{options.ActionName} failed: {ex.Message}");
@@ -99,6 +101,7 @@ public class AppActionFactory(
         catch (Exception ex)
         {
             action.SetException(ex);
+            await ErrorLogger.LogAsync(options.ActionName, ex);
 
             if (options.ShowToastOnFailure)
                 ToastService.Error($"{options.ActionName} failed: {ex.Message}");

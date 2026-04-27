@@ -21,6 +21,14 @@ public class SettingsCfg : IEntityTypeConfiguration<SettingsDEM>
                 "Set to None to hide the Post button for all documents.",
                 "STRING",
                 "None"
+            ),
+            CreateSeed(
+                new Guid("b2c3d4e5-f6a7-8901-bcde-f12345678901"),
+                "Max Failed Login Attempts",
+                "Number of consecutive failed login attempts before the user account is locked. " +
+                "Must be a positive integer. Defaults to 5 if not configured.",
+                "INT",
+                "5"
             )
         );
     }

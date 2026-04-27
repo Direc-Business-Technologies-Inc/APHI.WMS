@@ -1,0 +1,77 @@
+@page "/administration/error-logs"
+@layout ProtectedLayout
+@using Web.BlazorServer.Components.Security
+@using Web.BlazorServer.ViewModels.Administration.ErrorLog
+@attribute [AppAuthorizationAttribute("VIEW", "OLOG")]
+
+@inherits BaseComponent
+
+<PageTitle>Error Logs</PageTitle>
+
+<RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween" class="rz-mb-4">
+    <RadzenText TextStyle="TextStyle.H6" style="margin: 0;">Error Logs</RadzenText>
+    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="8px">
+        <RadzenButton Icon="sync"
+                      Size="ButtonSize.Small"
+                      ButtonStyle="ButtonStyle.Light"
+                      Disabled="@AppBusyService.IsAnyBusy()"
+                      Click="@RefreshAsync" />
+        <RadzenButton Text="Delete All"
+                      Icon="delete_sweep"
+                      Size="ButtonSize.Small"
+                      ButtonStyle="ButtonStyle.Danger"
+                      Shade="Shade.Light"
+                      Visible="@Can.Archive("OLOG")"
+                      Disabled="@(AppBusyService.IsAnyBusy() || !LogFiles.Any())"
+                      Click="@DeleteAllAsync" />
+    </RadzenStack>
+</RadzenStack>
+
+<AppContent>
+    <RadzenDataGrid Data="@LogFiles"
+                    TItem="ErrorLogVM"
+                    AllowSorting="true"
+                    AllowFiltering="false"
+                    PageSize="20"
+                    AllowPaging="true"
+                    PagerHorizontalAlign="HorizontalAlign.Right"
+                    EmptyText="No error logs found.">
+        <Columns>
+            <RadzenDataGridColumn TItem="ErrorLogVM"
+                                  Property="@nameof(ErrorLogVM.FileName)"
+                                  Title="File Name"
+                                  Width="55%" />
+            <RadzenDataGridColumn TItem="ErrorLogVM"
+                                  Property="@nameof(ErrorLogVM.FileSizeDisplay)"
+                                  Title="Size"
+                                  Width="10%"
+                                  TextAlign="TextAlign.Right" />
+            <RadzenDataGridColumn TItem="ErrorLogVM"
+                                  Property="@nameof(ErrorLogVM.LastModified)"
+                                  Title="Last Modified"
+                                  Width="20%"
+                                  FormatString="{0:yyyy-MM-dd HH:mm:ss}" />
+            <RadzenDataGridColumn TItem="ErrorLogVM"
+                                  Width="15%"
+                                  TextAlign="TextAlign.Center"
+                                  Sortable="false"
+                                  Filterable="false">
+                <Template Context="log">
+                    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Center" Gap="4px">
+                        <RadzenButton Icon="visibility"
+                                      Size="ButtonSize.ExtraSmall"
+                                      ButtonStyle="ButtonStyle.Info"
+                                      Shade="Shade.Light"
+                                      Click="@(() => ViewLogAsync(log))" />
+                        <RadzenButton Icon="delete"
+                                      Size="ButtonSize.ExtraSmall"
+                                      ButtonStyle="ButtonStyle.Danger"
+                                      Shade="Shade.Light"
+                                      Visible="@Can.Archive("OLOG")"
+                                      Click="@(() => DeleteLogAsync(log))" />
+                    </RadzenStack>
+                </Template>
+            </RadzenDataGridColumn>
+        </Columns>
+    </RadzenDataGrid>
+</AppContent>

@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Radzen;
 using Shared.Libraries.Entities;
 using Web.BlazorServer.Components.Base;
 
@@ -13,9 +14,13 @@ public partial class AppDataGridSearchBar<TItem> : BaseComponent where TItem : c
     [Parameter] public EventCallback OnSearch { get; set; }
     [Parameter] public string Placeholder { get; set; } = "Search...";
     [Parameter] public int DebounceMs { get; set; } = 400;
+    [Parameter] public Func<string, Task<IEnumerable<string>>>? SuggestionGetter { get; set; }
+    [Parameter] public int MaxSuggestions { get; set; } = 8;
+    [Parameter] public int MinSuggestionChars { get; set; } = 2;
 
     private string _searchValue = string.Empty;
     private CancellationTokenSource? _debounceCts;
+    private List<string> _suggestions = [];
 
     private async Task OnInputChanged(ChangeEventArgs args)
     {
@@ -35,6 +40,33 @@ public partial class AppDataGridSearchBar<TItem> : BaseComponent where TItem : c
     private async Task ClearSearchAsync()
     {
         _searchValue = string.Empty;
+        _debounceCts?.Cancel();
+        await ExecuteSearchAsync();
+    }
+
+    private async Task OnLoadSuggestionsAsync(LoadDataArgs args)
+    {
+        _suggestions.Clear();
+        if (SuggestionGetter is null || (args.Filter?.Length ?? 0) < MinSuggestionChars)
+        {
+            await InvokeAsync(StateHasChanged);
+            return;
+        }
+        try
+        {
+            var results = await SuggestionGetter.Invoke(args.Filter!.Trim());
+            _suggestions = results.Take(MaxSuggestions).ToList();
+        }
+        catch
+        {
+            // SAP failure must not break the search bar
+        }
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task OnSuggestionSelectedAsync(object value)
+    {
+        _searchValue = value?.ToString() ?? string.Empty;
         _debounceCts?.Cancel();
         await ExecuteSearchAsync();
     }

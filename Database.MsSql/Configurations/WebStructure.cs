@@ -77,11 +77,18 @@ public static class WebStructure
             uri: "/administration/user/authorization-management"),
         NavigationRouteDEM.New(
             name: "System Configuration",
-            protectedRoute : true, 
+            protectedRoute : true,
             position: 0,
             parentId: SubRouteList1!.First(x => x.Name.Equals("Settings")).Id,
             icon: "build_circle",
             uri: "/administration/settings/system-configuration"),
+        NavigationRouteDEM.New(
+            name: "Error Logs",
+            protectedRoute : true,
+            position: 1,
+            parentId: SubRouteList1!.First(x => x.Name.Equals("Settings")).Id,
+            icon: "bug_report",
+            uri: "/administration/error-logs"),
         NavigationRouteDEM.New(
             name: "Receiving",
             protectedRoute : true, 

@@ -5,6 +5,7 @@ using Application.UseCases.Repositories.Bases;
 using DataCipher;
 using Domain.Entities.Administration.User.Management;
 using Domain.Entities.Administration.User.Role;
+using Domain.Entities.Entities.System;
 using Domain.Providers;
 using Mapster;
 using MediatR;
@@ -36,10 +37,14 @@ public class LoginCmdHandler(
         login ??= LoginDEM.Create(false, user.Id);
         user.AddNewLogin(login);
 
+        SettingsDEM? maxAttemptsSetting = await appRead.FirstOrDefaultAsync<SettingsDEM>(
+            x => x.Name == "Max Failed Login Attempts", false);
+        int maxFailedAttempts = int.TryParse(maxAttemptsSetting?.Value, out int parsed) ? parsed : 5;
+
         if (!Encryption.Decrypt(user.Account.HashedPassword).Equals(request.Login.Password))
         {
             login.NewAttempt();
-            if (login.AttemptCount > 3)
+            if (login.AttemptCount >= maxFailedAttempts)
                 user.Account.Lock();
 
             appCommand.Update(user);

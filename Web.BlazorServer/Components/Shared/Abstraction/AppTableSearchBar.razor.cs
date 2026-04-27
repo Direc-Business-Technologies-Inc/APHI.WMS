@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
+using Radzen;
 using Shared.Libraries.Entities;
 using Web.BlazorServer.Components.Base;
 
@@ -13,9 +14,13 @@ public partial class AppTableSearchBar<TItem> : BaseComponent where TItem : clas
     [Parameter] public EventCallback OnSearch { get; set; }
     [Parameter] public string Placeholder { get; set; } = "Search...";
     [Parameter] public int DebounceMs { get; set; } = 400;
+    [Parameter] public IEnumerable<TItem>? SuggestionSource { get; set; }
+    [Parameter] public int MaxSuggestions { get; set; } = 8;
+    [Parameter] public int MinSuggestionChars { get; set; } = 2;
 
     private string _searchValue = string.Empty;
     private CancellationTokenSource? _debounceCts;
+    private List<string> _suggestions = [];
 
     private async Task OnInputChanged(ChangeEventArgs args)
     {
@@ -35,6 +40,44 @@ public partial class AppTableSearchBar<TItem> : BaseComponent where TItem : clas
     private async Task ClearSearchAsync()
     {
         _searchValue = string.Empty;
+        _debounceCts?.Cancel();
+        await ExecuteSearchAsync();
+    }
+
+    private void BuildSuggestions(string term)
+    {
+        _suggestions.Clear();
+        if (SuggestionSource is null || term.Length < MinSuggestionChars) return;
+
+        var itemType = typeof(TItem);
+        var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        foreach (var propName in Properties)
+        {
+            var prop = itemType.GetProperty(propName);
+            if (prop is null || prop.PropertyType != typeof(string)) continue;
+
+            foreach (var item in SuggestionSource)
+            {
+                var val = prop.GetValue(item) as string;
+                if (val is not null && val.Contains(term, StringComparison.OrdinalIgnoreCase) && seen.Add(val))
+                {
+                    _suggestions.Add(val);
+                    if (_suggestions.Count >= MaxSuggestions) return;
+                }
+            }
+        }
+    }
+
+    private async Task OnLoadSuggestionsAsync(LoadDataArgs args)
+    {
+        BuildSuggestions(args.Filter ?? string.Empty);
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private async Task OnSuggestionSelectedAsync(object value)
+    {
+        _searchValue = value?.ToString() ?? string.Empty;
         _debounceCts?.Cancel();
         await ExecuteSearchAsync();
     }
