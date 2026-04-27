@@ -26,7 +26,9 @@ public class UserReadRepo(IDbContextFactory<AppDbContext> dbContextFactory) : Ap
                         select new UserDataGridDTO
                         {
                             Id = u.Id,
-                            FullName = u.Name.FullName,
+                            FullName = (u.Name.MiddleName != null && u.Name.MiddleName != "")
+                                ? u.Name.FirstName + " " + u.Name.MiddleName.Substring(0, 1).ToUpper() + ". " + u.Name.LastName
+                                : u.Name.FirstName + " " + u.Name.LastName,
                             UserName = u.Account.UserName.Value,
                             Email = u.Email.Address,
                             Phone = u.PhoneNumber,
@@ -52,7 +54,9 @@ public class UserReadRepo(IDbContextFactory<AppDbContext> dbContextFactory) : Ap
                         select new UserDataGridDTO
                         {
                             Id = u.Id,
-                            FullName = u.Name.FullName,
+                            FullName = (u.Name.MiddleName != null && u.Name.MiddleName != "")
+                                ? u.Name.FirstName + " " + u.Name.MiddleName.Substring(0, 1).ToUpper() + ". " + u.Name.LastName
+                                : u.Name.FirstName + " " + u.Name.LastName,
                             UserName = u.Account.UserName.Value,
                             Email = u.Email.Address,
                             Phone = u.PhoneNumber,
@@ -153,23 +157,52 @@ public class UserReadRepo(IDbContextFactory<AppDbContext> dbContextFactory) : Ap
         {
             await using var ctx = await dbContextFactory.CreateDbContextAsync();
 
-            var query = from u in ctx.Set<UserDEM>().AsNoTracking()
-                        join r in ctx.Set<RoleDEM>().AsNoTracking() on u.RoleId equals r.Id
-                        select new UserDataGridDTO
-                        {
-                            Id = u.Id,
-                            FirstName = u.Name.FirstName,
-                            LastName = u.Name.LastName,
-                            FullName = u.Name.FullName,
-                            UserName = u.Account.UserName.Value,
-                            Email = u.Email.Address,
-                            Phone = u.PhoneNumber,
-                            Active = u.Active,
-                            Position = r.Name
-                        };
+            var entityQuery = from u in ctx.Set<UserDEM>().AsNoTracking()
+                              join r in ctx.Set<RoleDEM>().AsNoTracking() on u.RoleId equals r.Id
+                              select new { u, r };
 
+            // PersonNameVO.FullName is a C# computed getter — EF Core cannot translate it to SQL.
+            // Any OR filter group that contains a FullName leaf (produced by the search bar) is
+            // intercepted here and applied directly on the entity query using mapped columns only.
+            var searchGroups = intent.Filters
+                .Where(f => f.Filters.Any(lf => lf.Property == nameof(UserDataGridDTO.FullName)))
+                .ToList();
 
-            var filterPredicate = LinqIntentExpressionBuilder.BuildPredicate<UserDataGridDTO>(intent.Filters);
+            var dtoFilters = intent.Filters.Except(searchGroups).ToList();
+
+            foreach (var group in searchGroups)
+            {
+                var term = group.Filters
+                    .FirstOrDefault(f => f.Property == nameof(UserDataGridDTO.FullName)
+                                     && f.ComparisonOperator == ComparisonOperatorEnum.Contains)
+                    ?.Value as string;
+
+                if (string.IsNullOrEmpty(term)) continue;
+
+                entityQuery = entityQuery.Where(x =>
+                    x.u.Name.FirstName.Contains(term) ||
+                    x.u.Name.LastName.Contains(term) ||
+                    x.u.Account.UserName.Value.Contains(term) ||
+                    x.u.Email.Address.Contains(term) ||
+                    x.r.Name.Contains(term));
+            }
+
+            var query = entityQuery.Select(x => new UserDataGridDTO
+            {
+                Id = x.u.Id,
+                FirstName = x.u.Name.FirstName,
+                LastName = x.u.Name.LastName,
+                FullName = (x.u.Name.MiddleName != null && x.u.Name.MiddleName != "")
+                    ? x.u.Name.FirstName + " " + x.u.Name.MiddleName.Substring(0, 1).ToUpper() + ". " + x.u.Name.LastName
+                    : x.u.Name.FirstName + " " + x.u.Name.LastName,
+                UserName = x.u.Account.UserName.Value,
+                Email = x.u.Email.Address,
+                Phone = x.u.PhoneNumber,
+                Active = x.u.Active,
+                Position = x.r.Name
+            });
+
+            var filterPredicate = LinqIntentExpressionBuilder.BuildPredicate<UserDataGridDTO>(dtoFilters);
             int count = await query.CountAsync(filterPredicate);
 
             query = query.Where(filterPredicate);
