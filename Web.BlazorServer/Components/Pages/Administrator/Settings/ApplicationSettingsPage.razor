@@ -40,7 +40,7 @@
 <AppContent>
     <RadzenStack Gap="16px">
 
-        <RadzenCard Visible="@(InventoryCountingPostingCycleSetting is not null)">
+        <RadzenCard Visible="@(InventoryCountingPostingCycleSetting is not null)" class="rz-border-radius-2" Variant="Variant.Outlined">
             <RadzenStack Gap="8px">
                 <RadzenStack Gap="2px">
                     <RadzenText Text="@InventoryCountingPostingCycleSetting?.Name" TextStyle="TextStyle.H6" class="rz-m-0" />
@@ -56,10 +56,10 @@
             </RadzenStack>
         </RadzenCard>
 
-        <RadzenCard Visible="@(MaxFailedLoginAttemptsSetting is not null)">
+        <RadzenCard Visible="@(MaxFailedLoginAttemptsSetting is not null)" class="rz-border-radius-2" Variant="Variant.Outlined">
             <RadzenStack Gap="8px">
                 <RadzenStack Gap="2px">
-                    <RadzenText Text="@MaxFailedLoginAttemptsSetting?.Name" TextStyle="TextStyle.H6" class="rz-m-0" />
+                    <RadzenText Text="@MaxFailedLoginAttemptsSetting?.Name" TextStyle="TextStyle.H6" class="rz-m-0"  />
                     <RadzenText Text="@MaxFailedLoginAttemptsSetting?.Description" TextStyle="TextStyle.Body2" class="rz-m-0" />
                 </RadzenStack>
                 <RadzenNumeric TValue="int"
@@ -67,6 +67,7 @@
                                Min="1"
                                Max="100"
                                Style="width: 150px;"
+                               ShowUpDown="@IsEditing"
                                Disabled="@(!IsEditing || IsSavingBusy)" />
             </RadzenStack>
         </RadzenCard>
