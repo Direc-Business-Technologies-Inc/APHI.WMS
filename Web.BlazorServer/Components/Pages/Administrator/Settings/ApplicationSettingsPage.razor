@@ -6,7 +6,6 @@
 
 @inherits BaseComponent
 
-
 <PageTitle>System Configuration</PageTitle>
 
 <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween" class="rz-mb-4">
@@ -28,6 +27,7 @@
                       ButtonStyle="ButtonStyle.Base"
                       Disabled="@IsSavingBusy"
                       Click="@CancelEdit" />
+
         <RadzenButton Visible="@IsEditing"
                       Text="Save Changes"
                       Icon="save"
@@ -38,15 +38,38 @@
 </RadzenStack>
 
 <AppContent>
-    <RadzenStack Gap="8px">
-        @foreach (var setting in Settings)
-        {
-            <DynamicInput @key="@($"{DataVersion}-{setting.Id}")"
-                          Type="@GetCSharpType(setting)"
-                          Key="@setting.Name"
-                          Description="@setting.Description"
-                          Data="@SettingsData"
-                          Disabled="@(!IsEditing || IsSavingBusy)" />
-        }
+    <RadzenStack Gap="16px">
+
+        <RadzenCard Visible="@(InventoryCountingPostingCycleSetting is not null)">
+            <RadzenStack Gap="8px">
+                <RadzenStack Gap="2px">
+                    <RadzenText Text="@InventoryCountingPostingCycleSetting?.Name" TextStyle="TextStyle.H6" class="rz-m-0" />
+                    <RadzenText Text="@InventoryCountingPostingCycleSetting?.Description" TextStyle="TextStyle.Body2" class="rz-m-0" />
+                </RadzenStack>
+                <RadzenDropDown TValue="string"
+                                @bind-Value="@InventoryCountingPostingCycleSetting!.Value"
+                                Data="@CycleTypeOptions"
+                                ValueProperty="Value"
+                                TextProperty="Label"
+                                Style="width: 220px;"
+                                Disabled="@(!IsEditing || IsSavingBusy)" />
+            </RadzenStack>
+        </RadzenCard>
+
+        <RadzenCard Visible="@(MaxFailedLoginAttemptsSetting is not null)">
+            <RadzenStack Gap="8px">
+                <RadzenStack Gap="2px">
+                    <RadzenText Text="@MaxFailedLoginAttemptsSetting?.Name" TextStyle="TextStyle.H6" class="rz-m-0" />
+                    <RadzenText Text="@MaxFailedLoginAttemptsSetting?.Description" TextStyle="TextStyle.Body2" class="rz-m-0" />
+                </RadzenStack>
+                <RadzenNumeric TValue="int"
+                               @bind-Value="@MaxFailedLoginAttempts"
+                               Min="1"
+                               Max="100"
+                               Style="width: 150px;"
+                               Disabled="@(!IsEditing || IsSavingBusy)" />
+            </RadzenStack>
+        </RadzenCard>
+
     </RadzenStack>
 </AppContent>
