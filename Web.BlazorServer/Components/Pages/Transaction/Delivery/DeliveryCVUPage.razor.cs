@@ -126,9 +126,23 @@ public partial class DeliveryCVUPage
             ToastService.Warning("Delivery quantity cannot exceed the open quantity for one or more items");
             return;
         }
+        var partialDeliveries = SalesOrderData.DocumentLines.Where(x => x.Quantity > 0 && x.Quantity != x.OpenQty);
+        if (partialDeliveries.Any())
+        {
+            var warning = string.Join(", ", partialDeliveries.Select(x => x.ItemCode));
+            ToastService.Warning($"Partial deliveries are not allowed! Please edit these items: [{warning}]");
+            return;
+        }
 
+        if (SalesOrderData.DocumentLines.Where(x => x.Quantity == 0).Any())
+        {
+            if (!await AlertService.PromptAsync("Some items have quantities set to zero. These items will not be included in the SAP request"))
+                return;
+        }
+
+        var nonZeroes = SalesOrderData.DocumentLines.Where(x => x.Quantity > 0);
         if (Creating)
-            FormData.DocumentLines = [.. SalesOrderData.DocumentLines.Adapt<IEnumerable<DeliveryLineVM>>()];
+            FormData.DocumentLines = [.. nonZeroes.Adapt<IEnumerable<DeliveryLineVM>>()];
 
         var action = await AppActionFactory.RunAsync(async () =>
         {
