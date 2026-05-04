@@ -204,6 +204,7 @@ public partial class DeliveryCVUPage
                 FormData.PostingDate = DateTime.Today;
                 FormData.DeliveryDate = action.Result.DocDueDate;
                 FormData.DocumentDate = DateTime.Today;
+                FormData.Area = action.Result.Area;
                 FormData.SapReference.DocNum = action.Result.SapReference.DocNum;
                 SetInitialSalesOrderQuantity();
             }
