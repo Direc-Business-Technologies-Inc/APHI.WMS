@@ -676,7 +676,12 @@ public class MappingRegistration : IRegister
             })
             .Map(d => d.UoMCode, s => s.UoMCode)
             .Map(d => d.UoMValue, s => s.UoMValue)
-            .Map(d => d.UoMName, s => s.UoMName);
+            .Map(d => d.Warehouse, s => new WarehouseDTO()
+            {
+                WhsCode = s.WhsCode,
+                WhsName = s.WhsName
+            })
+            .Map(d => d.UoMName,  s => s.UoMName);
 
         config.NewConfig<SalesReturnRequestHeaderSAPDTO, SalesReturnRequestDTO>()
             .Map(d => d.SapReference, s => new SapDocumentReferenceDTO
