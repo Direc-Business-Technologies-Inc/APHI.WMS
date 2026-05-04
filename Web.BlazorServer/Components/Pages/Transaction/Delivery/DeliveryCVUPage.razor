@@ -64,7 +64,7 @@
                             <RadzenColumn Size="12" SizeMD="4">
                                 <RadzenFormField Text="DR No." class="rz-w-100" AllowFloatingLabel="false">
                                     <ChildContent>
-                                        <RadzenTextBox ReadOnly="@Viewing" @bind-Value="@FormData.DRNo" Placeholder="DR-001" Name="dlv_dr_no" Disabled="@IsBusy" class="rz-w-100" />
+                                        <RadzenTextBox ReadOnly Value="@(FormData.SapReference.DocNum?.ToString() ?? string.Empty)" Placeholder="DR-001" Name="dlv_dr_no" Disabled="@IsBusy" class="rz-w-100" />
                                     </ChildContent>
                                 </RadzenFormField>
                             </RadzenColumn>
