@@ -2,8 +2,9 @@ using Domain.Providers;
 using Mapster;
 using Microsoft.AspNetCore.Components;
 using Radzen;
-using Shared.Libraries.Entities;
-using Shared.Libraries.Kernel;
+using Shared.Entities;
+using Shared.Kernel;
+using System.Runtime.InteropServices.Marshalling;
 using Web.BlazorServer.Components.Shared.Abstraction;
 using Web.BlazorServer.Defaults;
 using Web.BlazorServer.Handlers.Repositories.Transaction.Delivery;
@@ -194,6 +195,7 @@ public partial class DeliveryCVUPage
                 FormData.PostingDate = DateTime.Today;
                 FormData.DeliveryDate = action.Result.DocDueDate;
                 FormData.DocumentDate = DateTime.Today;
+                SetInitialSalesOrderQuantity();
             }
         });
     }
@@ -243,6 +245,14 @@ public partial class DeliveryCVUPage
             await GridSettingsService.SetGridSettings(DeliveryLinesTable.DataGrid, settings => DeliveryLinesTableSettings = settings ?? new());
             await DeliveryLinesTable.DataGrid.ReloadSettings();
             await DeliveryLinesTable.DataGrid.Reload();
+        }
+    }
+
+    private void SetInitialSalesOrderQuantity()
+    {
+        foreach (var item in SalesOrderData.DocumentLines)
+        {
+            item.Quantity = item.OpenQty;
         }
     }
 
