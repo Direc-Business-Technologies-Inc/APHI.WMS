@@ -112,6 +112,15 @@ public partial class DeliveryCVUPage
             return;
         }
 
+        var exceedOnHand = SalesOrderData.DocumentLines.Where(x => x.OnHand < x.Quantity);
+        if (Creating && exceedOnHand.Any())
+        {
+            var warning = string.Join(",", exceedOnHand.Select(x => x.ItemCode));
+
+            ToastService.Warning($"Quantity alloted exceeds on-hand quantity for items: [{warning}]");
+            return;
+        }
+
         if (Creating && SalesOrderData.DocumentLines.Any(l => l.Quantity > l.OpenQty))
         {
             ToastService.Warning("Delivery quantity cannot exceed the open quantity for one or more items");

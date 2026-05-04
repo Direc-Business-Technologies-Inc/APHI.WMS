@@ -182,6 +182,13 @@
                                                           </Template>
                                         </RadzenDataGridColumn>
                                         <RadzenDataGridColumn TItem="SalesOrderLineVM"
+                                                              Property="@nameof(SalesOrderLineVM.OnHand)"
+                                                              Title="On-hand Qty" Width="130px">
+                                            <Template Context="data">
+                                                @data.OnHand.ToString("N0")
+                                            </Template>
+                                        </RadzenDataGridColumn>
+                                        <RadzenDataGridColumn TItem="SalesOrderLineVM"
                                                               Property="@nameof(SalesOrderLineVM.UoMName)"
                                                               Title="UoM" Width="100px" />
                                         <RadzenDataGridColumn TItem="SalesOrderLineVM"
@@ -202,8 +209,6 @@
                                                               Title="Deliver Qty" Width="140px">
                                             <Template Context="data">
                                                 <RadzenNumeric Format="N0" @bind-Value="@data.Quantity"
-                                                               Min="0"
-                                                               Max="@(data.OpenQty)"
                                                                class="rz-w-100" />
                                             </Template>
                                         </RadzenDataGridColumn>

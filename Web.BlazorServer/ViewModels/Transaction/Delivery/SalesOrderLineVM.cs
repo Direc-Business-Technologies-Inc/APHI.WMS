@@ -8,5 +8,5 @@ public class SalesOrderLineVM : ItemVM
     public WarehouseVM? Warehouse { get; set; }
     public decimal TargetQty { get; set; }
     public decimal OpenQty { get; set; }
-
+    public decimal OnHand { get; set; }
 }
