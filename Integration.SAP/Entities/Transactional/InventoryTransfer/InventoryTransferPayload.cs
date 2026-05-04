@@ -22,6 +22,8 @@ public class InventoryTransferPayload
     public string? U_SchlYear { get; private set; }
     public int DocObjectCode { get; private set; } = 67;
     public IEnumerable<InventoryTransferLinesPayload> StockTransferLines { get; private set; }
+    public string? CardCode { get; private set; }
+    public string? CardName { get; private set; }
 
     protected InventoryTransferPayload(
         DateTime docDate,
@@ -35,6 +37,8 @@ public class InventoryTransferPayload
         string? schlYear,
         int? docEntry,
         int? docNum,
+        string? cardCode,
+        string? cardName,
         IEnumerable<InventoryTransferLinesPayload> lines
     ) 
     { 
@@ -63,6 +67,8 @@ public class InventoryTransferPayload
         string? notedBy,
         int? docEntry,
         int? docNum,
+        string? cardCode,
+        string? cardName,
         IEnumerable<InventoryTransferLinesPayload> lines
     )
     {
@@ -78,7 +84,9 @@ public class InventoryTransferPayload
             lines: lines,
             docEntry: docEntry, 
             docNum: docNum,
-            schlYear: schoolYear
+            schlYear: schoolYear,
+            cardName: cardName,
+            cardCode: cardCode
         );
     }
 }

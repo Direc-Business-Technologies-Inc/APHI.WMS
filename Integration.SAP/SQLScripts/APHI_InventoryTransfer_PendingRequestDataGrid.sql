@@ -6,6 +6,8 @@
 	,T0.U_PrepBy [PreparedBy]
 	,T1.WhsName [FromWhsName]
 	,T2.WhsName [ToWhsName]
+	,T0.CardCode
+	,T0.CardName
 FROM ODRF T0
 INNER JOIN OWDD T3 ON T0.DocEntry = T3.DraftEntry
 LEFT JOIN OWHS T1 ON T1.WhsCode = T0.Filler

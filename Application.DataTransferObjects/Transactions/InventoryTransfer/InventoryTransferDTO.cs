@@ -8,6 +8,7 @@ public class InventoryTransferDTO
 {
     public int DocEntry { get; set; }
     public int DocNum { get; set; }
+    public BusinessPartnerDTO BusinessPartner { get; set; }
     public DateTime DocDate { get; set; }
     public string Status { get; set; }
     public WarehouseDTO FromWarehouse { get; set; }
