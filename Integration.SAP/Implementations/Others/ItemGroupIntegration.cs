@@ -4,7 +4,7 @@ using Database.Libraries.Repositories;
 using Integration.Sap.Entities;
 using Integration.Sap.Helpers;
 using Integration.Sap.Repositories;
-using Shared.Entities;
+using Shared.Libraries.Entities;
 
 namespace Integration.SAP.Implementations.Others;
 
@@ -35,7 +35,7 @@ public class ItemGroupIntegration(
             throw new Exception("Base query for getting item groups not found.");
 
         string query = DataGridQueryBuilder.BuildQuery(qry, intent);
-        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent.Filters, columnMap);
+        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent);
 
         List<ItemGroupSAPDTO> data = await SLActions.RawQueryAsync<ItemGroupSAPDTO>(query);
         TotalRows? rowCount = await SLActions.RawQueryOneAsync<TotalRows>(countQuery);
