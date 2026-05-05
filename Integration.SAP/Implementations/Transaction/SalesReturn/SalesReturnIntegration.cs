@@ -184,7 +184,7 @@ public class SalesReturnIntegration(
         foreach (SalesReturnLineDTO line in data.DocumentLines.Where(dl => dl.Quantity > 0))
             payloadLines.Add(new SalesReturnLinesPayload(
                 data.SalesReturnRequestDocEntry,
-                data.SapReference.BaseEntry,
+                234000031,
                 line.BaseLine,
                 data.DocumentLines.IndexOf(line),
                 line.ItemCode,
