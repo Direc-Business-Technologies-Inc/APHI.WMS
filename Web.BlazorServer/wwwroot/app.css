@@ -77,3 +77,12 @@ p, span {
     color: var(--rz-white) !important;
     border-radius: var( --rz-border-radius-1) !important;
 }
+
+.busy-dialog-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    text-align: center;
+}
