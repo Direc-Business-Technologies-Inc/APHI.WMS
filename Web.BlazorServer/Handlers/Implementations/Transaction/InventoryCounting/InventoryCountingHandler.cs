@@ -77,4 +77,12 @@ public class InventoryCountingHandler(ISender Sender) : IInventoryCountingHandle
 
         return response.Adapt<IEnumerable<InventoryCountingLineVM>>();
     }
+
+    public async Task<IEnumerable<InventoryCountingLineVM>> GetWarehouseItemsForCountingAsync(string whsCode, string itemGroupCode)
+    {
+        GetWarehouseItemsByItemGroupForCountingQry qry = new(whsCode, itemGroupCode);
+        IEnumerable<InventoryCountingItemSAPDTO> response = await Sender.Send(qry);
+
+        return response.Adapt<IEnumerable<InventoryCountingLineVM>>();
+    }
 }

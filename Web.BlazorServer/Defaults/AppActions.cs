@@ -45,6 +45,8 @@ public enum AppActions
     Login,
     [Description("Logout")]
     Logout,
+    [Description("Get Item Groups")]
+    GetItemGroups,
     #endregion Others
 
     #region Administration - Module Management

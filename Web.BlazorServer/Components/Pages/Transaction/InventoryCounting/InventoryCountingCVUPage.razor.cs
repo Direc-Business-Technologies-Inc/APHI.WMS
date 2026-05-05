@@ -29,6 +29,7 @@ public partial class InventoryCountingCVUPage
     #region Injects
     [Inject] IInventoryCountingHandler InventoryCountingHandler { get; set; } = default!;
     [Inject] IWarehouseMasterDataHandler WarehouseHandler { get; set; } = default!;
+    [Inject] IItemGroupsHandler ItemGroupsHandler { get; set; } = default!;
     [Inject] IGridSettingsService GridSettingsService { get; set; } = default!;
     [Inject] ISettingsHandler SettingsHandler { get; set; } = default!;
     #endregion Injects
@@ -47,11 +48,14 @@ public partial class InventoryCountingCVUPage
     readonly string ActionCreate = EnumHelper.GetEnumDescription(AppActions.CreateInventoryCountingDocument);
     readonly string ActionGetItems = EnumHelper.GetEnumDescription(AppActions.GetWarehouseItemsForCounting);
     readonly string ActionGetWarehouses = EnumHelper.GetEnumDescription(AppActions.GetWarehouses);
+    readonly string ActionGetItemGroups = EnumHelper.GetEnumDescription(AppActions.GetItemGroups);
     readonly string ActionSave = EnumHelper.GetEnumDescription(AppActions.SaveInventoryCountingDocument);
     readonly string ActionPost = EnumHelper.GetEnumDescription(AppActions.PostInventoryCountingDocument);
     readonly string ActionRecount = EnumHelper.GetEnumDescription(AppActions.RecountInventoryCountingDocument);
 
     int WarehousesCount { get; set; }
+    string? ItemGroupCode { get; set; }
+    int ItemGroupsCount { get; set; }
     IEnumerable<CycleType> CycleTypeValues { get; } = Enum.GetValues<CycleType>();
 
     SettingsVM? _postingCycleSetting;
@@ -64,6 +68,7 @@ public partial class InventoryCountingCVUPage
     AppTable<InventoryCountingLineVM> DocumentLinesTable { get; set; } = default!;
     DataGridSettings DocumentLinesTableSettings { get; set; } = new();
     List<WarehouseVM> Warehouses { get; set; } = [];
+    List<ItemGroupVM> ItemGroups { get; set; } = [];
     IDataGridIntentAdapter DatagridAdapter { get; set; } = default!;
 
     AppFilterDescriptor? _createLinesFilter;
@@ -168,8 +173,10 @@ public partial class InventoryCountingCVUPage
             GridSettingsLoaded = true;
 
             _postingCycleSetting = await SettingsHandler.GetSettingByNameAsync("Inventory Counting Posting Cycle");
-
-            await LoadWarehouses(new());
+            await Task.WhenAll(
+                LoadWarehouses(new()),
+                LoadItemGroups(new())
+            );
 
             if (Viewing)
                 await InitializeEditing();
@@ -213,6 +220,35 @@ public partial class InventoryCountingCVUPage
         }, AppActionOptionPresets.Loading(ActionGetWarehouses));
     }
 
+    async Task LoadItemGroups(LoadDataArgs args)
+    {
+        var action = await AppActionFactory.RunAsync(async () =>
+        {
+            AppBusyService.SetBusy(ActionGetItemGroups, true);
+
+            DatagridAdapter = new DataGridIntentAdapter(args);
+            DatagridAdapter.AdaptToPagination();
+            if (DatagridAdapter.QueryIntent.Take <= 0)
+                DatagridAdapter.QueryIntent.Take = 10;
+
+            if (!string.IsNullOrEmpty(args.Filter))
+                DatagridAdapter.QueryIntent.Filters.Add(new AppFilterDescriptor
+                {
+                    LogicalOperator = LogicalOperatorEnum.AND,
+                    Property = nameof(ItemGroupVM.Name),
+                    Value = args.Filter,
+                    ComparisonOperator = ComparisonOperatorEnum.Contains
+                });
+
+            (IEnumerable<ItemGroupVM> Data, int Count) = await ItemGroupsHandler.GetItemGroupsAsync(DatagridAdapter.QueryIntent);
+            ItemGroups = [.. Data];
+            ItemGroupsCount = Count;
+
+            AppBusyService.SetBusy(ActionGetItemGroups, false);
+            await InvokeAsync(StateHasChanged);
+        }, AppActionOptionPresets.Loading(ActionGetItemGroups));
+    }
+
     void OnWarehouseChange()
     {
         OnFieldChanged(nameof(FormData.Warehouse));
@@ -227,6 +263,8 @@ public partial class InventoryCountingCVUPage
         var action = await AppActionFactory.RunAsync(async () =>
         {
             AppBusyService.SetBusy(ActionGetItems, true);
+            if (!string.IsNullOrEmpty(ItemGroupCode))
+                return await InventoryCountingHandler.GetWarehouseItemsForCountingAsync(FormData.Warehouse.WhsCode, ItemGroupCode);
             return await InventoryCountingHandler.GetWarehouseItemsForCountingAsync(FormData.Warehouse.WhsCode);
         }, AppActionOptionPresets.Loading(ActionGetItems));
 

@@ -90,6 +90,20 @@ public class ItemMasterDataIntegration(
         return await SLActions.RawQueryAsync<InventoryCountingItemSAPDTO>(query);
     }
 
+    public async Task<IEnumerable<InventoryCountingItemSAPDTO>> GetWarehouseItemsForCounting(string whsCode, string itemGroupCode)
+    {
+        var qryDetails = qryManager.GetSqlScriptWithMetadata("APHI_Other_WhsItemsByItemGroup", out string qry, out bool found);
+        if (!found)
+            throw new Exception("Query for getting warehouse items by item group for counting was not found.");
+
+        //TODO does not seem safe but im just following other code
+        string query = qry.Replace("@WhsCode", $"\'{whsCode}\'").Replace("@ItmsGrpCod", itemGroupCode);
+
+
+        return await SLActions.RawQueryAsync<InventoryCountingItemSAPDTO>(query);
+    }
+
+
     public async Task<(IEnumerable<ItemSelectionSAPDTO> Data, int Count)> GetWarehouseItems(DataGridIntent intent, string whsCode)
     {
         if (intent.Sorts.Count <= 0)
