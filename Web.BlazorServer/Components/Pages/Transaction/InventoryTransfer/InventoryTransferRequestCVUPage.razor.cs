@@ -27,6 +27,7 @@ public partial class InventoryTransferRequestCVUPage
     #endregion
 
     #region Injects
+    [Inject] IBusyDialogService BusyDialogService { get; set; } = default!;
     [Inject] IGridSettingsService GridSettingsService { get; set; } = default!;
     [Inject] IInventoryTransferHandler InventoryTransferHandler { get; set; } = default!;
     [Inject] IWarehouseMasterDataHandler WarehouseHandler { get; set; } = default!;
@@ -107,6 +108,15 @@ public partial class InventoryTransferRequestCVUPage
 
             await InvokeAsync(StateHasChanged);
         }
+
+        AppBusyService.BusyChanged += (key, busy) =>
+        {
+            if (key.Equals(ActionCreateInventoryTransferRequest))
+            {
+                if (busy) BusyDialogService.Show();
+                else BusyDialogService.Hide();
+            }
+        };
     }
 
     protected override Task CancelEditing()
