@@ -29,10 +29,11 @@ public partial class SalesOrderCVUPage
     #region Primitives
     PageActionTypeEnum PageAction { get; set; } = PageActionTypeEnum.View;
 
-    bool IsBusy => AppBusyService.IsBusy(ActionGetSalesOrder);
+    bool IsBusy => AppBusyService.IsBusy(ActionGetSalesOrder) || AppBusyService.IsBusy(ActionCreateDelivery);
     bool IsLoadingData => AppBusyService.IsBusy(ActionGetSalesOrder);
 
     readonly string ActionGetSalesOrder = EnumHelper.GetEnumDescription(AppActions.ViewSalesOrder);
+    readonly string ActionCreateDelivery = EnumHelper.GetEnumDescription(AppActions.CreateDelivery);
     #endregion Primitives
 
     #region Data Structures
