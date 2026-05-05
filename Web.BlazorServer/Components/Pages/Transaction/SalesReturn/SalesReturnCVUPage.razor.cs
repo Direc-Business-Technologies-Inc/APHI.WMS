@@ -112,8 +112,12 @@ public partial class SalesReturnCVUPage
 
         if (FormData.DocumentLines.Any(x => x.Quantity <= 0))
         {
-            if (!await AlertService.PromptAsync("Some Items in the Sales Return have no Quantity. These Items will be removed from the transaction. Are you sure you want to proceed?"))
-                return;
+            var promptAccept = await AlertService.PromptAsync(
+                "Some Items in the Sales Return have no Quantity." +
+                "These Items will be removed from the transaction." +
+                "Are you sure you want to proceed?"
+            );
+            if (!promptAccept) return;
             FormData.DocumentLines.RemoveAll(x => x.Quantity <= 0);
         }
 
