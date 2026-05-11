@@ -1,4 +1,5 @@
-﻿@using Web.BlazorServer.Components.Security
+﻿@using Web.BlazorServer.Components.Pages.Dashboard.Components
+@using Web.BlazorServer.Components.Security
 @page "/dashboard"
 @layout ProtectedLayout
 @inherits BaseComponent
@@ -8,4 +9,10 @@
 
 <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween" class="rz-mb-4">
     <AppBreadCrumbs ModuleCode="ODSB" />
+</RadzenStack>
+
+<RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Center" Gap="10">
+    <DashboardCard Title="Deliveries" Count="@DeliveryCount" IsBusy="@IsBusy" Link="/transactions/sales/delivery" />
+    <DashboardCard Title="Returns" Count="@ReturnsCount" IsBusy="@IsBusy" Link="/transactions/sales/sales-return" />
+    <DashboardCard Title="Receivings" Count="@ReceivingCount" IsBusy="@IsBusy" Link="/transactions/purchasing/receiving" />
 </RadzenStack>

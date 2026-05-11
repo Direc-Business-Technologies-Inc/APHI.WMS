@@ -1,0 +1,33 @@
+﻿<RadzenCard Style="min-width: 150px; cursor: pointer" onclick="@(() => OnClick())">
+    <RadzenStack Gap="10">
+        <RadzenText TextStyle="TextStyle.Subtitle1">@Title</RadzenText>
+        <RadzenStack Visible="@(!IsBusy)" AlignItems="AlignItems.End" Style="padding:1em">
+            <RadzenText class="rz-color-success" TextStyle="TextStyle.DisplayH1">@Count</RadzenText>
+        </RadzenStack>
+        <RadzenStack Visible="@IsBusy" AlignItems="AlignItems.Center">
+            <RadzenProgressBarCircular 
+                ProgressBarStyle="ProgressBarStyle.Primary" 
+                Value="100"
+                ShowValue="false"
+                Mode="ProgressBarMode.Indeterminate"/>
+        </RadzenStack>
+    </RadzenStack>
+</RadzenCard>
+
+@code {
+    [Inject] NavigationManager NavigationManager { get; set; }
+
+    public void OnClick()
+    {
+        if (!string.IsNullOrEmpty(Link)) NavigationManager.NavigateTo(Link);
+    }
+
+    [Parameter]
+    public string Title { get; set; } = string.Empty;
+    [Parameter]
+    public string? Count { get; set; } = "...";
+    [Parameter]
+    public string? Link { get; set; } = string.Empty;
+    [Parameter]
+    public bool IsBusy { get; set; }
+}
