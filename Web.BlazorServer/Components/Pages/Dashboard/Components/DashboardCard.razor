@@ -1,8 +1,12 @@
 ﻿<RadzenCard Style="min-width: 150px; cursor: pointer" onclick="@(() => OnClick())">
     <RadzenStack Gap="10">
-        <RadzenText TextStyle="TextStyle.Subtitle1">@Title</RadzenText>
-        <RadzenStack Visible="@(!IsBusy)" AlignItems="AlignItems.End" Style="padding:1em">
-            <RadzenText class="rz-color-success" TextStyle="TextStyle.DisplayH1">@Count</RadzenText>
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Start" Gap="0.25em">
+            <RadzenIcon Icon="@Icon" class="filled-icon" IconColor="@Colors.Success"></RadzenIcon>
+            <RadzenText TextStyle="TextStyle.H5">@Title</RadzenText>
+        </RadzenStack>
+        <RadzenStack Visible="@(!IsBusy)" AlignItems="AlignItems.Start" Style="padding:1em">
+            <RadzenText class="rz-color-success" TextStyle="TextStyle.DisplayH1">@TotalCount</RadzenText>
+            <RadzenText TextStyle="TextStyle.H6">Pending Documents</RadzenText>
         </RadzenStack>
         <RadzenStack Visible="@IsBusy" AlignItems="AlignItems.Center">
             <RadzenProgressBarCircular 
@@ -10,6 +14,12 @@
                 Value="100"
                 ShowValue="false"
                 Mode="ProgressBarMode.Indeterminate"/>
+        </RadzenStack>
+        <RadzenStack Visible="@(!IsBusy)" AlignItems="AlignItems.End">
+            <RadzenStack Orientation="Orientation.Horizontal" Gap="0.25em">
+                <RadzenText class="rz-color-success" TextStyle="TextStyle.Subtitle2">@TodayCount</RadzenText>
+                <RadzenText TextStyle="TextStyle.Subtitle2"> @SubtitleBlurb</RadzenText>
+            </RadzenStack>
         </RadzenStack>
     </RadzenStack>
 </RadzenCard>
@@ -24,10 +34,22 @@
 
     [Parameter]
     public string Title { get; set; } = string.Empty;
+
     [Parameter]
-    public string? Count { get; set; } = "...";
+    public int? TotalCount { get; set; } = 0;
+
+    [Parameter]
+    public int? TodayCount { get; set; } = 0;
+
+    [Parameter]
+    public string Icon { get; set; } = "info";
+
+    [Parameter]
+    public string SubtitleBlurb { get; set; } = "Today";
+
     [Parameter]
     public string? Link { get; set; } = string.Empty;
+
     [Parameter]
     public bool IsBusy { get; set; }
 }

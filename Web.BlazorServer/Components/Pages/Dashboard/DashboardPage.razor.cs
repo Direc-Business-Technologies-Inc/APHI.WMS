@@ -12,9 +12,13 @@ namespace Web.BlazorServer.Components.Pages.Dashboard;
 
 public partial class DashboardPage
 {
-    public string DeliveryCount = "...";
-    public string ReturnsCount = "...";
-    public string ReceivingCount = "...";
+    public int DeliveryCount = 0;
+    public int ReturnsCount = 0;
+    public int ReceivingCount = 0;
+
+    public int DeliveryTodayCount = 0;
+    public int ReturnsTodayCount = 0;
+    public int ReceivingTodayCount = 0;
 
     readonly string ActionGetDashboard = EnumHelper.GetEnumDescription(AppActions.GetDashboardItems);
     public bool IsBusy => AppBusyService.IsBusy(ActionGetDashboard);
@@ -42,9 +46,12 @@ public partial class DashboardPage
                 ToastService.Error("Error while retrieving dashboard items");
             else
             {
-                DeliveryCount = action.Result.DeliveryCount.ToString();
-                ReturnsCount = action.Result.ReturnCount.ToString();
-                ReceivingCount = action.Result.ReceivingCount.ToString();
+                DeliveryCount = action.Result.DeliveryCount;
+                ReturnsCount = action.Result.ReturnCount;
+                ReceivingCount = action.Result.ReceivingCount;
+                DeliveryTodayCount = action.Result.DeliveryTodayCount;
+                ReceivingTodayCount = action.Result.ReceivingTodayCount;
+                ReturnsTodayCount = action.Result.ReturnTodayCount;
                 await InvokeAsync(StateHasChanged);
             }
         });

@@ -12,7 +12,25 @@
 </RadzenStack>
 
 <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.Center" Gap="10">
-    <DashboardCard Title="Deliveries" Count="@DeliveryCount" IsBusy="@IsBusy" Link="/transactions/sales/delivery" />
-    <DashboardCard Title="Returns" Count="@ReturnsCount" IsBusy="@IsBusy" Link="/transactions/sales/sales-return" />
-    <DashboardCard Title="Receivings" Count="@ReceivingCount" IsBusy="@IsBusy" Link="/transactions/purchasing/receiving" />
+    <DashboardCard 
+        Title="Deliveries" 
+        TotalCount="@DeliveryCount" 
+        IsBusy="@IsBusy"
+        Icon="Unarchive"
+        TodayCount="@DeliveryTodayCount"
+        Link="/transactions/sales/delivery" />
+    <DashboardCard 
+        Title="Returns" 
+        TotalCount="@ReturnsCount" 
+        IsBusy="@IsBusy"
+                   Icon="Assignment_Return"
+                   TodayCount="@ReturnsTodayCount"
+        Link="/transactions/sales/sales-return" />
+    <DashboardCard 
+        Title="Receiving" 
+        TotalCount="@ReceivingCount" 
+        IsBusy="@IsBusy"
+                   Icon="Archive"
+                   TodayCount="@ReceivingTodayCount"
+        Link="/transactions/purchasing/receiving" />
 </RadzenStack>
