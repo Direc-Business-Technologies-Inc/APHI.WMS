@@ -1,0 +1,15 @@
+﻿<div class="busy-dialog">
+    <h3>@Title</h3>
+    <p>@Message</p>
+    <RadzenProgressBar 
+        ProgressBarStyle="ProgressBarStyle.Primary" 
+        Value="100" 
+        ShowValue="false" 
+        Mode="ProgressBarMode.Indeterminate" 
+        AriaLabel="Primary loading" />
+</div>
+
+@code {
+    [Parameter] public string Title {get; set;} = "Please Wait...";
+    [Parameter] public string Message { get; set; } = "Processing your request. Please wait.";
+}

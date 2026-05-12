@@ -18,6 +18,7 @@ public static class BlazorServerDI
         services.TryAddScoped<IGridSettingsService, GridSettingsService>();
         services.TryAddScoped<IFormCacheService, FormCacheService>();
         services.AddSingleton<IAppErrorLogger, AppErrorLogger>();
+        services.TryAddScoped<IBusyDialogService, BusyDialogService>();
 
         return services;
     }
