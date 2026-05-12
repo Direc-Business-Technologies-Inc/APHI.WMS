@@ -27,6 +27,7 @@ public static class SAPImplementationsDI
     {
         services.TryAddTransient<IReceivingIntegration, ReceivingIntegration>();
         services.TryAddTransient<IInventoryTransferIntegration, InventoryTransferIntegration>();
+        services.TryAddTransient<IDashboardItemsIntegration, DashboardItemsIntegration>();
         services.TryAddTransient<IGoodsReturnIntegration, GoodsReturnIntegration>();
         services.TryAddTransient<IBusinessPartnerIntegration, BusinessPartnerIntegration>();
         services.TryAddTransient<IItemMasterDataIntegration, ItemMasterDataIntegration>();

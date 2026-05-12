@@ -26,6 +26,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Content Update="SQLScripts\APHI_Others_Dashboard.sql" Link="Scripts\APHI_Others_Dashboard.sql" />
 	  <Content Update="SQLScripts\APHI_InventoryTransferRequest_DataGrid.sql" Link="Scripts\APHI_InventoryTransfer_RequestDataGrid.sql" />
 	  <Content Update="SQLScripts\APHI_InventoryTransfer_TransferTypes.sql" Link="Scripts\APHI_InventoryTransfer_TransferTypes.sql" />
 	  <Content Update="SQLScripts\APHI_InventoryTransfer_PendingRequestDataGrid.sql" Link="Scripts\APHI_InventoryTransfer_PendingRequestDataGrid.sql" />
