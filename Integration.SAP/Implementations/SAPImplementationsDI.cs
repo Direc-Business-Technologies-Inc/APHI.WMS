@@ -40,6 +40,7 @@ public static class SAPImplementationsDI
         services.TryAddTransient<IDeliveryIntegration, DeliveryIntegration>();
         services.TryAddTransient<ISalesReturnIntegration, SalesReturnIntegration>();
         services.TryAddTransient<IInventoryCountingIntegration, InventoryCountingIntegration>();
+        services.TryAddTransient<IItemGroupsIntegration, ItemGroupIntegration>();
 
         return services;
     }

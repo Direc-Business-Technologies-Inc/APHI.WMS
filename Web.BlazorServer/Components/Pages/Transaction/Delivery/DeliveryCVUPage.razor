@@ -38,9 +38,32 @@
 
                         <RadzenRow Gap="1rem">
                             <RadzenColumn Size="12" SizeMD="4">
-                                <RadzenFormField Text="Customer" class="rz-w-100" AllowFloatingLabel="false">
+                                <RadzenFormField Text="Customer Code" class="rz-w-100" AllowFloatingLabel="false">
                                     <ChildContent>
-                                        <RadzenTextBox ReadOnly Value="@FormData.BusinessPartner?.CardName" Placeholder="Customer ABC" Name="dlv_customer" Disabled="@IsBusy" class="rz-w-100" />
+                                        <RadzenTextBox ReadOnly Value="@FormData.BusinessPartner?.CardCode" Placeholder="Customer ABC" Name="dlv_customer_code" Disabled="@IsBusy" class="rz-w-100" />
+                                    </ChildContent>
+                                </RadzenFormField>
+                            </RadzenColumn>
+                            <RadzenColumn Size="12" SizeMD="4">
+                                <RadzenFormField Text="Customer Name" class="rz-w-100" AllowFloatingLabel="false">
+                                    <ChildContent>
+                                        <RadzenTextBox ReadOnly Value="@FormData.BusinessPartner?.CardName" Placeholder="Customer ABC" Name="dlv_customer_name" Disabled="@IsBusy" class="rz-w-100" />
+                                    </ChildContent>
+                                </RadzenFormField>
+                            </RadzenColumn>
+                            <RadzenColumn Size="12" SizeMD="4">
+                                <RadzenFormField Text="Area" class="rz-w-100" AllowFloatingLabel="false">
+                                    <ChildContent>
+                                        <RadzenTextBox ReadOnly Value="@FormData.Area" Placeholder="Customer ABC" Name="dlv_area" Disabled="@IsBusy" class="rz-w-100" />
+                                    </ChildContent>
+                                </RadzenFormField>
+                            </RadzenColumn>
+                        </RadzenRow>
+                        <RadzenRow Gap="1rem">
+                            <RadzenColumn Size="12" SizeMD="4">
+                                <RadzenFormField Text="School Year" class="rz-w-100" AllowFloatingLabel="false">
+                                    <ChildContent>
+                                        <RadzenTextBox ReadOnly="@Viewing" @bind-Value="@FormData.SchoolYear" Placeholder="N/A" Name="dlv_school_year" Disabled="@IsBusy" class="rz-w-100" />
                                     </ChildContent>
                                 </RadzenFormField>
                             </RadzenColumn>
@@ -52,9 +75,9 @@
                                 </RadzenFormField>
                             </RadzenColumn>
                             <RadzenColumn Size="12" SizeMD="4">
-                                <RadzenFormField Text="School Year" class="rz-w-100" AllowFloatingLabel="false">
+                                <RadzenFormField Text="Designation" class="rz-w-100" AllowFloatingLabel="false">
                                     <ChildContent>
-                                        <RadzenTextBox ReadOnly="@Viewing" @bind-Value="@FormData.SchoolYear" Placeholder="N/A" Name="dlv_school_year" Disabled="@IsBusy" class="rz-w-100" />
+                                        <RadzenTextBox ReadOnly="@Viewing" @bind-Value="@FormData.Designation" Placeholder="N/A" Name="dlv_designation" Disabled="@IsBusy" class="rz-w-100" />
                                     </ChildContent>
                                 </RadzenFormField>
                             </RadzenColumn>
@@ -64,7 +87,7 @@
                             <RadzenColumn Size="12" SizeMD="4">
                                 <RadzenFormField Text="DR No." class="rz-w-100" AllowFloatingLabel="false">
                                     <ChildContent>
-                                        <RadzenTextBox ReadOnly="@Viewing" @bind-Value="@FormData.DRNo" Placeholder="DR-001" Name="dlv_dr_no" Disabled="@IsBusy" class="rz-w-100" />
+                                        <RadzenTextBox ReadOnly Value="@(FormData.SapReference.DocNum?.ToString() ?? string.Empty)" Placeholder="DR-001" Name="dlv_dr_no" Disabled="@IsBusy" class="rz-w-100" />
                                     </ChildContent>
                                 </RadzenFormField>
                             </RadzenColumn>
@@ -135,13 +158,6 @@
                                     </ChildContent>
                                 </RadzenFormField>
                             </RadzenColumn>
-                            <RadzenColumn Size="12" SizeMD="4">
-                                <RadzenFormField Text="Designation" class="rz-w-100" AllowFloatingLabel="false">
-                                    <ChildContent>
-                                        <RadzenTextBox ReadOnly="@Viewing" @bind-Value="@FormData.Designation" Placeholder="N/A" Name="dlv_designation" Disabled="@IsBusy" class="rz-w-100" />
-                                    </ChildContent>
-                                </RadzenFormField>
-                            </RadzenColumn>
                         </RadzenRow>
 
                     </RadzenStack>
@@ -182,6 +198,13 @@
                                                           </Template>
                                         </RadzenDataGridColumn>
                                         <RadzenDataGridColumn TItem="SalesOrderLineVM"
+                                                              Property="@nameof(SalesOrderLineVM.OnHand)"
+                                                              Title="On-hand Qty" Width="130px">
+                                            <Template Context="data">
+                                                @data.OnHand.ToString("N0")
+                                            </Template>
+                                        </RadzenDataGridColumn>
+                                        <RadzenDataGridColumn TItem="SalesOrderLineVM"
                                                               Property="@nameof(SalesOrderLineVM.UoMName)"
                                                               Title="UoM" Width="100px" />
                                         <RadzenDataGridColumn TItem="SalesOrderLineVM"
@@ -202,8 +225,6 @@
                                                               Title="Deliver Qty" Width="140px">
                                             <Template Context="data">
                                                 <RadzenNumeric Format="N0" @bind-Value="@data.Quantity"
-                                                               Min="0"
-                                                               Max="@(data.OpenQty)"
                                                                class="rz-w-100" />
                                             </Template>
                                         </RadzenDataGridColumn>

@@ -212,7 +212,9 @@ public partial class InventoryTransferIntegration(
             lines: linesPayload,
             docEntry: data.DocEntry,
             docNum: data.DocNum,
-            schoolYear: data.SchoolYear.Code
+            schoolYear: data.SchoolYear.Code,
+            cardCode: data.BusinessPartner.CardCode,
+            cardName: data.BusinessPartner.CardName
         );
 
         string jsonString = JsonSerializer.Serialize(payload, jsonSerializerOptions);

@@ -26,6 +26,7 @@ public class DeliveryVM : MarketingDocumentVM
     public string? DeliveryMeans { get; set; } = null;
     public string? Courier { get; set; } = null;
     public string? Driver { get; set; } = null;
+    public string? Area { get; set; } = null;
 
     public IEnumerable<DeliveryLineVM> DocumentLines { get; set; } = [];
 }

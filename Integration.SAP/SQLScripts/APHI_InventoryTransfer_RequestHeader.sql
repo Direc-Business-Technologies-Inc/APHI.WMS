@@ -13,6 +13,8 @@ SELECT T0.DocEntry
     ,T0.U_PrepBy [PreparedBy]
     ,T0.U_AppBy [ApprovedBy]
     ,T0.U_NotedBy [NotedBy]
+    ,T0.CardCode
+    ,T0.CardName
     ,T0.U_TransferType [TransferTypeCode]
     ,ISNULL(
         (SELECT _T1.Descr

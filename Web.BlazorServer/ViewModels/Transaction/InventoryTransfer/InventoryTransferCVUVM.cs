@@ -15,5 +15,6 @@ public class InventoryTransferCVUVM
     public string ApprovedBy { get; set; }
     public string NotedBy { get; set; }
     public string SchoolYear { get; set; }
+    public BusinessPartnerVM BusinessPartner { get; set; }
     public List<InventoryTransferCVULineVM> Lines { get; set; } = [];
 }

@@ -10,6 +10,8 @@
     ,T0.U_PrepBy [PreparedBy]
     ,T0.U_AppBy [ApprovedBy]
     ,T0.U_NotedBy [NotedBy]
+    ,T0.CardCode
+    ,T0.CardName
     ,ISNULL(
         (SELECT _T1.Descr
          FROM CUFD _T0

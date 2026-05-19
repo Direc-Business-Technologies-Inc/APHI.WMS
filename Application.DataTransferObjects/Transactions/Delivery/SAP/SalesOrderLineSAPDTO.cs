@@ -8,5 +8,5 @@ public class SalesOrderLineSAPDTO : ItemDTO
     public string WhsName { get; set; }
     public decimal TargetQty { get; set; }
     public decimal OpenQty { get; set; }
-
+    public decimal OnHand { get; set; }
 }

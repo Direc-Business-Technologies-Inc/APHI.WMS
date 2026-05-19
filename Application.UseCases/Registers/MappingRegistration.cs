@@ -552,6 +552,11 @@ public class MappingRegistration : IRegister
                 U_YearFrom = s.U_YearFrom,
                 U_YearTo = s.U_YearTo
             })
+            .Map(d => d.BusinessPartner, s => new BusinessPartnerDTO()
+            {
+                CardCode = s.CardCode,
+                CardName = s.CardName
+            })
             .Map(d => d.FromWarehouse, s => new WarehouseDTO()
             {
                 WhsCode = s.FrmWhsCode,
@@ -576,6 +581,11 @@ public class MappingRegistration : IRegister
             .Map(d => d.DocEntry, s => s.DocEntry)
             .Map(d => d.DocDate, s => s.DocDate)
             .Map(d => d.Remarks, s => s.Remarks)
+            .Map(d => d.BusinessPartner, s => new BusinessPartnerDTO()
+            {
+                CardCode = s.CardCode,
+                CardName = s.CardName
+            })
             .Map(d => d.FromWarehouse, s => new WarehouseDTO()
             {
                 WhsCode = s.FrmWhsCode,
@@ -676,7 +686,12 @@ public class MappingRegistration : IRegister
             })
             .Map(d => d.UoMCode, s => s.UoMCode)
             .Map(d => d.UoMValue, s => s.UoMValue)
-            .Map(d => d.UoMName, s => s.UoMName);
+            .Map(d => d.Warehouse, s => new WarehouseDTO()
+            {
+                WhsCode = s.WhsCode,
+                WhsName = s.WhsName
+            })
+            .Map(d => d.UoMName,  s => s.UoMName);
 
         config.NewConfig<SalesReturnRequestHeaderSAPDTO, SalesReturnRequestDTO>()
             .Map(d => d.SapReference, s => new SapDocumentReferenceDTO

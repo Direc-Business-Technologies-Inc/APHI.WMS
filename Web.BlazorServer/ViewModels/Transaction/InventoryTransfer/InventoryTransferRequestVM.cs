@@ -18,7 +18,7 @@ namespace Web.BlazorServer.ViewModels.Transaction.InventoryTransfer
         public string? PreparedBy { get; set; }
         public string? ApprovedBy { get; set; }
         public string? NotedBy { get; set; }
-
+        public BusinessPartnerVM BusinessPartner { get; set; }
         public List<InventoryTransferRequestLineVM> Lines { get; set; } = [];
 
     }

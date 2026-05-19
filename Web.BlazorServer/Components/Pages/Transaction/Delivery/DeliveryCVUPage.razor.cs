@@ -124,14 +124,37 @@ public partial class DeliveryCVUPage
             return;
         }
 
+        var exceedOnHand = SalesOrderData.DocumentLines.Where(x => x.OnHand < x.Quantity);
+        if (Creating && exceedOnHand.Any())
+        {
+            var warning = string.Join(",", exceedOnHand.Select(x => x.ItemCode));
+
+            ToastService.Warning($"Quantity alloted exceeds on-hand quantity for items: [{warning}]");
+            return;
+        }
+
         if (Creating && SalesOrderData.DocumentLines.Any(l => l.Quantity > l.OpenQty))
         {
             ToastService.Warning("Delivery quantity cannot exceed the open quantity for one or more items");
             return;
         }
+        var partialDeliveries = SalesOrderData.DocumentLines.Where(x => x.Quantity > 0 && x.Quantity != x.OpenQty);
+        if (partialDeliveries.Any())
+        {
+            var warning = string.Join(", ", partialDeliveries.Select(x => x.ItemCode));
+            ToastService.Warning($"Partial deliveries are not allowed! Please edit these items: [{warning}]");
+            return;
+        }
 
+        if (SalesOrderData.DocumentLines.Where(x => x.Quantity == 0).Any())
+        {
+            if (!await AlertService.PromptAsync("Some items have quantities set to zero. These items will not be included in the SAP request"))
+                return;
+        }
+
+        var nonZeroes = SalesOrderData.DocumentLines.Where(x => x.Quantity > 0);
         if (Creating)
-            FormData.DocumentLines = [.. SalesOrderData.DocumentLines.Adapt<IEnumerable<DeliveryLineVM>>()];
+            FormData.DocumentLines = [.. nonZeroes.Adapt<IEnumerable<DeliveryLineVM>>()];
 
         var action = await AppActionFactory.RunAsync(async () =>
         {
@@ -207,6 +230,9 @@ public partial class DeliveryCVUPage
                 FormData.PostingDate = DateTime.Today;
                 FormData.DeliveryDate = action.Result.DocDueDate;
                 FormData.DocumentDate = DateTime.Today;
+                FormData.Area = action.Result.Area;
+                FormData.SapReference.DocNum = action.Result.SapReference.DocNum;
+                SetInitialSalesOrderQuantity();
             }
         });
     }
@@ -256,6 +282,14 @@ public partial class DeliveryCVUPage
             await GridSettingsService.SetGridSettings(DeliveryLinesTable.DataGrid, settings => DeliveryLinesTableSettings = settings ?? new());
             await DeliveryLinesTable.DataGrid.ReloadSettings();
             await DeliveryLinesTable.DataGrid.Reload();
+        }
+    }
+
+    private void SetInitialSalesOrderQuantity()
+    {
+        foreach (var item in SalesOrderData.DocumentLines)
+        {
+            item.Quantity = item.OpenQty;
         }
     }
 

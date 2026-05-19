@@ -12,6 +12,8 @@
     , T2.WhsName [ToWhsName]
     , T0.U_SchlYear [SchoolYear]
     , T0.U_TransferType [TransferTypeCode]
+    , T0.CardCode
+    , T0.CardName
     , ISNULL(
         (SELECT _T1.Descr
          FROM CUFD _T0

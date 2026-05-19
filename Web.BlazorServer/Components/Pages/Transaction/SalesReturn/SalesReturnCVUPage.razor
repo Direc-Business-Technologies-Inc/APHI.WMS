@@ -35,7 +35,7 @@
                     <RadzenStack Gap="0.5rem">
 
                         <RadzenRow Gap="1rem">
-                            <RadzenColumn Size="12" SizeMD="4">
+                            <RadzenColumn Size="12" SizeMD="6">
                                 <RadzenFormField Text="Customer" class="rz-w-100" AllowFloatingLabel="false">
                                     <ChildContent>
                                         <RadzenTextBox ReadOnly Visible="@Viewing" Value="@FormData.BusinessPartner.CardName" Name="sr_card_name" Disabled="@IsBusy" class="rz-w-100" />
@@ -60,7 +60,7 @@
                                     </Helper>
                                 </RadzenFormField>
                             </RadzenColumn>
-                            <RadzenColumn Size="12" SizeMD="4">
+                            <RadzenColumn Size="12" SizeMD="6">
                                 <RadzenFormField Text="Return Type" class="rz-w-100" AllowFloatingLabel="false">
                                     <ChildContent>
                                         <RadzenTextBox ReadOnly Visible="@Viewing" Value="@FormData.ReturnType" Name="sr_return_type" Placeholder="No Return Type" Disabled="@IsBusy" class="rz-w-100" />
@@ -76,7 +76,9 @@
                                     </ChildContent>
                                 </RadzenFormField>
                             </RadzenColumn>
-                            <RadzenColumn Size="12" SizeMD="4">
+                        </RadzenRow>
+                        <RadzenRow Gap="1rem">
+                            <RadzenColumn Size="12" SizeMD="6">
                                 <RadzenFormField Text="School Year" class="rz-w-100" AllowFloatingLabel="false">
                                     <ChildContent>
                                         <RadzenTextBox Visible="@Viewing" ReadOnly Value="@FormData.SchoolYear" Name="sr_school_year" Placeholder="No School Year" Disabled="@IsBusy" class="rz-w-100" />
@@ -93,6 +95,13 @@
                                                         AllowFiltering
                                                         Placeholder="No School Year"
                                                         class="rz-w-100" />
+                                    </ChildContent>
+                                </RadzenFormField>
+                            </RadzenColumn>
+                            <RadzenColumn>
+                                <RadzenFormField Text="PUR No." class="rz-w-100" AllowFloatingLabel="false">
+                                    <ChildContent>
+                                        <RadzenTextBox ReadOnly="@Viewing" @bind-Value="@FormData.PURNo" Placeholder="DR-015" Name="sr_dr_no" Disabled="@IsBusy" class="rz-w-100" />
                                     </ChildContent>
                                 </RadzenFormField>
                             </RadzenColumn>
