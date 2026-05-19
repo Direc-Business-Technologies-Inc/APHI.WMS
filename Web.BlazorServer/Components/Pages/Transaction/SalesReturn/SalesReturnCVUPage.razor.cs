@@ -26,6 +26,7 @@ public partial class SalesReturnCVUPage
     #endregion Parameters
 
     #region Injects
+    [Inject] IBusyDialogService BusyDialogService { get; set; } = default!;
     [Inject] ISalesReturnHandler SalesReturnHandler { get; set; } = default!;
     [Inject] IBusinessPartnerHandler BpHandler { get; set; } = default!;
     [Inject] IWarehouseMasterDataHandler WarehouseHandler { get; set; } = default!;
@@ -87,6 +88,15 @@ public partial class SalesReturnCVUPage
             await LoadDataAsync();
             await InvokeAsync(StateHasChanged);
         }
+
+        AppBusyService.BusyChanged += (key, busy) =>
+        {
+            if (key.Equals(ActionCreateSalesReturn))
+            {
+                if (busy) BusyDialogService.Show();
+                else BusyDialogService.Hide();
+            }
+        };
     }
 
     protected override Task CancelEditing()

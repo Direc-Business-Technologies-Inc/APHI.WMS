@@ -8,6 +8,7 @@ using Web.BlazorServer.Components.Shared.Abstraction;
 using Web.BlazorServer.Defaults;
 using Web.BlazorServer.Handlers.Repositories.Transaction.Delivery;
 using Web.BlazorServer.Helpers;
+using Web.BlazorServer.Services.Implementation;
 using Web.BlazorServer.Services.Repositories;
 using Web.BlazorServer.ViewModels.Enums;
 using Web.BlazorServer.ViewModels.System;
@@ -24,6 +25,7 @@ public partial class DeliveryCVUPage
     #endregion Parameters
 
     #region Injects
+    [Inject] IBusyDialogService BusyDialogService { get; set; } = default!;
     [Inject] IDeliveryHandler DeliveryHandler { get; set; } = default!;
     [Inject] IGridSettingsService GridSettingsService { get; set; } = default!;
     #endregion Injects
@@ -84,6 +86,17 @@ public partial class DeliveryCVUPage
             await LoadDataAsync();
             await InvokeAsync(StateHasChanged);
         }
+
+        AppBusyService.BusyChanged += (key, busy) =>
+        {
+            if (key.Equals(ActionCreateDelivery))
+            {
+                if (busy) BusyDialogService.Show(
+                    title:"Creating Delivery Document",
+                    message: "Please wait...");
+                else BusyDialogService.Hide();
+            }
+        };
     }
 
     protected override Task InitializeEditing()

@@ -27,6 +27,7 @@ public partial class InventoryCountingCVUPage
     #endregion Parameters
 
     #region Injects
+    [Inject] IBusyDialogService BusyDialogService { get; set; } = default!;
     [Inject] IInventoryCountingHandler InventoryCountingHandler { get; set; } = default!;
     [Inject] IWarehouseMasterDataHandler WarehouseHandler { get; set; } = default!;
     [Inject] IItemGroupsHandler ItemGroupsHandler { get; set; } = default!;
@@ -99,6 +100,15 @@ public partial class InventoryCountingCVUPage
             await LoadDataAsync();
             await InvokeAsync(StateHasChanged);
         }
+
+        AppBusyService.BusyChanged += (key, busy) =>
+        {
+            if (key.Equals(ActionCreate))
+            {
+                if (busy) BusyDialogService.Show();
+                else BusyDialogService.Hide();
+            }
+        };
     }
 
     protected override async Task InitializeEditing()

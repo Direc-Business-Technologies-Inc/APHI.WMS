@@ -56,6 +56,7 @@ public static class BlazorServerHandlersDI
         services.TryAddTransient<ITransferTypeHandler, TransferTypeHandler>();
         services.TryAddTransient<ISchoolYearHandler, SchoolYearHandler>();
         services.TryAddTransient<IDeliveryHandler, DeliveryHandler>();
+        services.TryAddTransient<IDashboardItemsHandler, DashboardItemsHandler>();
         services.TryAddTransient<ISalesReturnHandler, SalesReturnHandler>();
 
         return services;
