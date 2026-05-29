@@ -105,7 +105,7 @@ public partial class InventoryCountingCVUPage
         {
             if (key.Equals(ActionCreate))
             {
-                if (busy) BusyDialogService.Show();
+                if (busy) BusyDialogService.Show(title: ActionCreate);
                 else BusyDialogService.Hide();
             }
         };

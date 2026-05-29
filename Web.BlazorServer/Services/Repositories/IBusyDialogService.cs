@@ -2,7 +2,7 @@
 {
     public interface IBusyDialogService
     {
-        public void Show(string title = "Title", string message = "Please wait...");
+        public void Show(string title = "Loading", string message = "Please wait...");
         public void Hide();
     }
 }
