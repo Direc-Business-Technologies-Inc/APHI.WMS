@@ -7,6 +7,7 @@ SELECT
 	,RDR1.WhsCode
 	,OWHS.WhsName
 	,RDR1.Quantity [TargetQty]
+	,OITW.OnHand [OnHand]
 	,0 [Quantity]
 	,RDR1.OpenQty [OpenQty]
 	,CASE 
