@@ -93,7 +93,7 @@ public partial class SalesReturnCVUPage
         {
             if (key.Equals(ActionCreateSalesReturn))
             {
-                if (busy) BusyDialogService.Show();
+                if (busy) BusyDialogService.Show(title: ActionCreateSalesReturn);
                 else BusyDialogService.Hide();
             }
         };

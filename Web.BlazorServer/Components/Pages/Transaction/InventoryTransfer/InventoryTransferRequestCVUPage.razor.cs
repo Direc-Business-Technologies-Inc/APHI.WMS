@@ -114,7 +114,7 @@ public partial class InventoryTransferRequestCVUPage
         {
             if (key.Equals(ActionCreateInventoryTransferRequest))
             {
-                if (busy) BusyDialogService.Show();
+                if (busy) BusyDialogService.Show(title: ActionCreateInventoryTransferRequest);
                 else BusyDialogService.Hide();
             }
         };
