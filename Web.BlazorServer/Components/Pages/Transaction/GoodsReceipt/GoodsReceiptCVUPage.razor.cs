@@ -132,19 +132,30 @@ public partial class GoodsReceiptCVUPage
             FormData.DocumentLines = [.. FormData.DocumentLines.ToList().Where(x => x.Quantity > 0)];
         }
 
-        var action = await AppActionFactory.RunAsync(async () =>
+        var action = await AppActionFactory.RunAsync<bool>(async () =>
         {
             AppBusyService.SetBusy(ActionCreateGoodsReceipt, true);
 
-            bool response = await GoodsReceiptHandler.PostGoodsReceiptAsync(FormData);
-
-            return response;
+            try
+            {
+                bool response = await GoodsReceiptHandler.PostGoodsReceiptAsync(FormData);
+                return response;
+            } catch (InvalidOperationException ex) when (ex.Message.Contains("SAP requires confirmation when posting"))
+            {
+                ToastService.Warning($"{ActionCreateGoodsReceipt}: {ex.Message}");
+            }
+            return false;
         }, AppActionOptionPresets.Confirmed(ActionCreateGoodsReceipt));
 
         action.OnSuccess(async (args) =>
         {
             await ClearFormCacheAsync();
             NavManager.NavigateTo("/transactions/inventory/goods-receipt/?t=pndng");
+        });
+
+        action.OnFailure(async (ex) =>
+        {
+
         });
     }
 

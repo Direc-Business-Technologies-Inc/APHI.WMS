@@ -7,6 +7,7 @@ using Integration.Sap.Helpers;
 using Integration.Sap.Repositories;
 using Integration.SAP.Entities.Transactional.GoodsReceipt;
 using Shared.Libraries.Entities;
+using System.Net.Mail;
 
 namespace Integration.SAP.Implementations.Transaction.GoodsReceipt;
 
@@ -124,11 +125,30 @@ public class GoodsReceiptIntegration(
         {
             await SLActions.PostAsync<object, InventoryGenEntryPayload>("InventoryGenEntries", payload);
         }
-        catch (SLException ex) when (ex.Message.Contains("-2028"))
+        catch (SLException ex) when (ex.InnerException is Flurl.Http.FlurlHttpException httpException)
         {
-            throw new InvalidOperationException("SAP requires confirmation before posting this Goods Receipt. Please confirm the document in SAP Business One and retry.", ex);
+            if (ex.Message.Contains("-2028"))
+            {
+                var location = httpException.Call.Response.Headers.First(x => x.Name == "Location");
+                int? draftId = _getDraftEntryFromURI(location.Value);
+                if (draftId is not null) throw new InvalidOperationException($"Could not post Goods Receipt. SAP requires confirmation when posting goods receipts the document has instead been posted as a draft. Please see draft id {draftId}", ex);
+                throw new InvalidOperationException("An error was encountered while posting a goods receipt", ex);
+            }
+            else throw;
         }
 
         return true;
+    }
+
+    private int? _getDraftEntryFromURI(string uri)
+    {
+        string last = uri.Split("/").Last();
+        string prefix = "Drafts(";
+        string suffix = ")";
+        if (!(last.StartsWith(prefix) && last.EndsWith(suffix))) return null;
+        string mid = last.Substring(prefix.Length, last.Length - prefix.Length - suffix.Length);
+        if (int.TryParse(mid, out int value))
+            return value;
+        return null;
     }
 }
