@@ -54,6 +54,14 @@ public partial class InventoryCountingOpenGrid
             },
             ComparisonOperator = ComparisonOperatorEnum.In,
         });
+        if (intent.Sorts.Count == 0)
+        {
+            intent.Sorts.Add(new()
+            {
+                Direction = SortDirectionEnum.Descending,
+                Property = "CreatedBy"
+            });
+        }
 
         var action = await AppActionFactory.RunAsync(async () =>
         {
