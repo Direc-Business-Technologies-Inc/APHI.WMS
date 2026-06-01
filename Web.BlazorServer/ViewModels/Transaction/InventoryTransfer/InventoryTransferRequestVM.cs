@@ -9,16 +9,16 @@ namespace Web.BlazorServer.ViewModels.Transaction.InventoryTransfer
         public int? DocEntry { get; set; } = null;
         public int? DocNum { get; set; } = null;
         public DateTime DocDate { get; set; } = DateTime.Today;
-        public WarehouseVM FromWarehouse { get; set; }
-        public WarehouseVM ToWarehouse { get; set; }
-        public TransferTypeVM TransferType { get; set; }
+        public WarehouseVM? FromWarehouse { get; set; } = null;
+        public WarehouseVM? ToWarehouse { get; set; } = null;
+        public TransferTypeVM? TransferType { get; set; } = null;
 
-        public SchoolYearVM SchoolYear { get; set; } 
+        public SchoolYearVM? SchoolYear { get; set; } = null;
         public string? Remarks { get; set; }
         public string? PreparedBy { get; set; }
         public string? ApprovedBy { get; set; }
         public string? NotedBy { get; set; }
-        public BusinessPartnerVM BusinessPartner { get; set; }
+        public BusinessPartnerVM? BusinessPartner { get; set; } = null;
         public List<InventoryTransferRequestLineVM> Lines { get; set; } = [];
 
     }

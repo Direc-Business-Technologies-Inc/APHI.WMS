@@ -69,8 +69,9 @@ public partial class InventoryTransferRequestCVUPage
     List<WarehouseVM> Warehouses { get; set; } = [];
     List<TransferTypeVM> TransferTypes { get; set; } = [];
     List<SchoolYearVM> SchoolYears { get; set; } = [];
-    int WarehousesCount { get; set; }
-    int SchoolYearsCount { get; set; }
+
+    int WarehousesCount { get; set; } = 0;
+    int SchoolYearsCount { get; set; } = 0;
 
     AppFilterDescriptor? _itrLinesFilter;
 
@@ -263,9 +264,9 @@ public partial class InventoryTransferRequestCVUPage
             WarehousesCount = Count;
 
             AppBusyService.SetBusy(ActionGetWarehouses, false);
-
-            await InvokeAsync(StateHasChanged);
         }, AppActionOptionPresets.Loading(ActionGetWarehouses));
+        await InvokeAsync(StateHasChanged);
+
     }
 
     async Task LoadSchoolYears(LoadDataArgs args)
@@ -314,9 +315,8 @@ public partial class InventoryTransferRequestCVUPage
             TransferTypes = [.. data];
 
             AppBusyService.SetBusy(ActionGetTransferTypes, false);
-
-            await InvokeAsync(StateHasChanged);
         }, AppActionOptionPresets.Loading(ActionGetTransferTypes));
+        await InvokeAsync(StateHasChanged);
     }
 
     async Task LoadGridSettings()
