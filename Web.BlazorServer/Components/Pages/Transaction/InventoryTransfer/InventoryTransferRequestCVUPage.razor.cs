@@ -70,8 +70,8 @@ public partial class InventoryTransferRequestCVUPage
     List<TransferTypeVM> TransferTypes { get; set; } = [];
     List<SchoolYearVM> SchoolYears { get; set; } = [];
 
-    int WarehousesCount = 0;
-    int SchoolYearsCount = 0;
+    int WarehousesCount { get; set; } = 0;
+    int SchoolYearsCount { get; set; } = 0;
 
     AppFilterDescriptor? _itrLinesFilter;
 
