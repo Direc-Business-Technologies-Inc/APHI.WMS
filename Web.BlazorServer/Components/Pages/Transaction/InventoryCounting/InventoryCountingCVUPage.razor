@@ -104,9 +104,9 @@
                                                         class="rz-w-100" />
                                     </ChildContent>
                                     <Helper>
-                                        <RadzenCustomValidator Visible="@Creating" Component="ict_whs" Popup
-                                                               Validator="() => !string.IsNullOrEmpty(FormData.Warehouse?.WhsCode)"
-                                                               Text="Warehouse is required" />
+                                        <RadzenCustomValidator Visible="@Creating" Component="ict_oitb" Popup
+                                                               Validator="() => !string.IsNullOrEmpty(ItemGroupCode)"
+                                                               Text="Item group is required" />
                                     </Helper>
                                 </RadzenFormField>
                             </RadzenColumn>
