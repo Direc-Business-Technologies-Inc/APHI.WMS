@@ -53,7 +53,7 @@
                                                     @bind-Value="@FormData.BusinessPartner"
                                                     Data="@BusinessPartners"
                                                     Count="@BusinessPartnersCount"
-                                                    LoadData="@(args => GetBusinessPartners(args, "CardCode"))"
+                                                    LoadData="@(args => LoadBusinessPartners(args, "CardCode"))"
                                                     AllowVirtualization
                                                     AllowClear
                                                     Name="itr_card_code_dropdown"
@@ -70,7 +70,7 @@
                                                     @bind-Value="@FormData.BusinessPartner"
                                                     Data="@BusinessPartners"
                                                     Count="@BusinessPartnersCount"
-                                                    LoadData="@(args => GetBusinessPartners(args, "CardName"))"
+                                                    LoadData="@(args => LoadBusinessPartners(args, "CardName"))"
                                                     AllowVirtualization
                                                     AllowClear
                                                     Name="itr_card_code_dropdown"

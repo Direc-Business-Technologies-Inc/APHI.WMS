@@ -191,7 +191,7 @@ public partial class InventoryTransferRequestCVUPage
             LoadWarehouses(new()),
             LoadSchoolYears(new()),
             GetInventoryTransferRequest(),
-            GetBusinessPartners(new())
+            LoadBusinessPartners(new())
         );
 
         if (Viewing)
@@ -204,7 +204,7 @@ public partial class InventoryTransferRequestCVUPage
             await LoadGridSettings();
     }
 
-    async Task GetBusinessPartners(LoadDataArgs args, string? FilterProperty = null)
+    async Task LoadBusinessPartners(LoadDataArgs args, string? FilterProperty = null)
     {
         var action = await AppActionFactory.RunAsync(async () =>
         {
@@ -225,7 +225,7 @@ public partial class InventoryTransferRequestCVUPage
             }
 
             return await BusinessPartnerHandler.GetCustomersAsync(intent);
-        }, AppActionOptionPresets.Silent(ActionGetBusinessPartners));
+        }, AppActionOptionPresets.Loading(ActionGetBusinessPartners));
         action.OnSuccess(async (res) =>
         {
             BusinessPartners = [.. res.Data];
