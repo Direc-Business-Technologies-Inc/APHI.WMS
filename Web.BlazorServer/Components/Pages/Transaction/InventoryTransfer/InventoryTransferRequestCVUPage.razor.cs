@@ -33,6 +33,7 @@ public partial class InventoryTransferRequestCVUPage
     [Inject] IWarehouseMasterDataHandler WarehouseHandler { get; set; } = default!;
     [Inject] ITransferTypeHandler TransferTypeHandler { get; set; } = default!;
     [Inject] ISchoolYearHandler SchoolYearHandler { get; set; } = default!;
+    [Inject] IBusinessPartnerHandler BusinessPartnerHandler { get; set; } = default!;
 
     #endregion Injects
 
@@ -50,6 +51,7 @@ public partial class InventoryTransferRequestCVUPage
     readonly string ActionGetWarehouses = EnumHelper.GetEnumDescription(AppActions.GetWarehouses);
     readonly string ActionGetTransferTypes = EnumHelper.GetEnumDescription(AppActions.GetTransferTypes);
     readonly string ActionGetSchoolYears = EnumHelper.GetEnumDescription(AppActions.GetSchoolYears);
+    readonly string ActionGetBusinessPartners = EnumHelper.GetEnumDescription(AppActions.GetBusinessPartners);
     readonly string ActionCreateInventoryTransferRequest = EnumHelper.GetEnumDescription(AppActions.CreateInventoryTransferRequest);
 
     public IDataGridIntentAdapter DatagridAdapter { get; set; } = default!;
@@ -69,9 +71,11 @@ public partial class InventoryTransferRequestCVUPage
     List<WarehouseVM> Warehouses { get; set; } = [];
     List<TransferTypeVM> TransferTypes { get; set; } = [];
     List<SchoolYearVM> SchoolYears { get; set; } = [];
+    List<BusinessPartnerVM> BusinessPartners { get; set; } = [];
 
     int WarehousesCount { get; set; } = 0;
     int SchoolYearsCount { get; set; } = 0;
+    int BusinessPartnersCount = 0;
 
     AppFilterDescriptor? _itrLinesFilter;
 
@@ -186,7 +190,8 @@ public partial class InventoryTransferRequestCVUPage
             LoadTransferTypes(),
             LoadWarehouses(new()),
             LoadSchoolYears(new()),
-            GetInventoryTransferRequest()
+            GetInventoryTransferRequest(),
+            LoadBusinessPartners(new())
         );
 
         if (Viewing)
@@ -197,6 +202,35 @@ public partial class InventoryTransferRequestCVUPage
 
         if (!GridSettingsLoaded && !IsLoadingData)
             await LoadGridSettings();
+    }
+
+    async Task LoadBusinessPartners(LoadDataArgs args, string? FilterProperty = null)
+    {
+        var action = await AppActionFactory.RunAsync(async () =>
+        {
+            var intent = new DataGridIntent()
+            {
+                Skip = args.Skip ?? 0,
+                Take = args.Top ?? 10
+            };
+
+            if (!string.IsNullOrEmpty(args.Filter) && !string.IsNullOrEmpty(FilterProperty))
+            {
+                intent.Filters.Add(new AppFilterDescriptor()
+                {
+                    Property = FilterProperty,
+                    Value = args.Filter,
+                    ComparisonOperator = ComparisonOperatorEnum.Contains
+                });
+            }
+
+            return await BusinessPartnerHandler.GetCustomersAsync(intent);
+        }, AppActionOptionPresets.Loading(ActionGetBusinessPartners));
+        action.OnSuccess(async (res) =>
+        {
+            BusinessPartners = [.. res.Data];
+            BusinessPartnersCount = res.Count;
+        });
     }
 
     async Task GetInventoryTransferRequest()
