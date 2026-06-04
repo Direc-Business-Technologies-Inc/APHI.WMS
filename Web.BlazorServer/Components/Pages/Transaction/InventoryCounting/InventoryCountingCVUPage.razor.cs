@@ -62,7 +62,7 @@ public partial class InventoryCountingCVUPage
     SettingsVM? _postingCycleSetting;
     bool IsPostingAllowed =>
         _postingCycleSetting is not null
-        && FormData.CycleType.ToString().ToUpper() == _postingCycleSetting.Value;
+        && FormData.CycleType.ToString().ToUpper() == _postingCycleSetting.Value.ToUpper();
     #endregion Primitives
 
     #region Data Structures
