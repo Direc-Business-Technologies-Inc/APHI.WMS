@@ -135,9 +135,14 @@ public partial class GoodsReceiptCVUPage
         var action = await AppActionFactory.RunAsync<bool>(async () =>
         {
             AppBusyService.SetBusy(ActionCreateGoodsReceipt, true);
-            
-            bool response = await GoodsReceiptHandler.PostGoodsReceiptAsync(FormData);
-            return response;
+
+            try
+            {
+                bool response = await GoodsReceiptHandler.PostGoodsReceiptAsync(FormData);
+                return response;
+            }
+            catch (InvalidOperationException ex) when (ex.Message.Contains("SAP requires confirmation when posting")) { }
+            return false;
         }, AppActionOptionPresets.Confirmed(ActionCreateGoodsReceipt));
 
         action.OnSuccess(async (args) =>
