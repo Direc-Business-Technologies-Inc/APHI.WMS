@@ -268,13 +268,30 @@ public partial class GoodsReceiptCVUPage
                 DatagridAdapter.QueryIntent.Take = 5;
 
             if (!string.IsNullOrEmpty(args.Filter))
+            {
                 DatagridAdapter.QueryIntent.Filters.Add(new()
                 {
-                    LogicalOperator = LogicalOperatorEnum.AND,
-                    Property = nameof(WarehouseVM.WhsName),
-                    Value = args.Filter,
-                    ComparisonOperator = ComparisonOperatorEnum.Contains
+                    LogicalOperator = LogicalOperatorEnum.OR,
+                    Filters = new()
+                    {
+                        new AppFilterDescriptor
+                        {
+                            LogicalOperator = LogicalOperatorEnum.OR,
+                            Property = nameof(WarehouseVM.WhsName),
+                            Value = args.Filter,
+                            ComparisonOperator = ComparisonOperatorEnum.Contains
+                        },
+                        new AppFilterDescriptor
+                        {
+                            LogicalOperator = LogicalOperatorEnum.OR,
+                            Property = nameof(WarehouseVM.WhsCode),
+                            Value = args.Filter,
+                            ComparisonOperator = ComparisonOperatorEnum.Contains
+                        }
+                    }
                 });
+
+            }
 
             (IEnumerable<WarehouseVM> Data, int Count) = await WarehouseHandler.GetWarehousesAsync(DatagridAdapter.QueryIntent);
 
