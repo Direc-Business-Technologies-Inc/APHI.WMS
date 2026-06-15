@@ -212,13 +212,29 @@ public partial class InventoryCountingCVUPage
                 DatagridAdapter.QueryIntent.Take = 10;
 
             if (!string.IsNullOrEmpty(args.Filter))
+            {
                 DatagridAdapter.QueryIntent.Filters.Add(new AppFilterDescriptor
                 {
-                    LogicalOperator = LogicalOperatorEnum.AND,
-                    Property = nameof(WarehouseVM.WhsName),
-                    Value = args.Filter,
-                    ComparisonOperator = ComparisonOperatorEnum.Contains
+                    LogicalOperator = LogicalOperatorEnum.OR,
+                    Filters = new() {
+                        new AppFilterDescriptor
+                        {
+                            LogicalOperator = LogicalOperatorEnum.OR,
+                            Property = nameof(WarehouseVM.WhsName),
+                            Value = args.Filter,
+                            ComparisonOperator = ComparisonOperatorEnum.Contains
+                        },
+                        new AppFilterDescriptor
+                        {
+                            LogicalOperator = LogicalOperatorEnum.OR,
+                            Property = nameof(WarehouseVM.WhsCode),
+                            Value = args.Filter,
+                            ComparisonOperator = ComparisonOperatorEnum.Contains
+                        }
+                    } 
                 });
+
+            }
 
             (IEnumerable<WarehouseVM> Data, int Count) = await WarehouseHandler.GetWarehousesAsync(DatagridAdapter.QueryIntent);
             Warehouses = [.. Data];
