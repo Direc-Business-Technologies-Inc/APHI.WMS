@@ -6,6 +6,7 @@ using Shared.Libraries.Kernel;
 using Web.BlazorServer.Components.Shared.Abstraction;
 using Web.BlazorServer.Defaults;
 using Web.BlazorServer.Handlers.Repositories.Others;
+using Web.BlazorServer.Handlers.Repositories.Transaction.GoodsIssue;
 using Web.BlazorServer.Handlers.Repositories.Transaction.GoodsReceipt;
 using Web.BlazorServer.Helpers;
 using Web.BlazorServer.Services.Implementation;
@@ -13,6 +14,7 @@ using Web.BlazorServer.Services.Repositories;
 using Web.BlazorServer.ViewModels.Enums;
 using Web.BlazorServer.ViewModels.Others;
 using Web.BlazorServer.ViewModels.Transaction.Commons;
+using Web.BlazorServer.ViewModels.Transaction.GoodsIssue;
 using Web.BlazorServer.ViewModels.Transaction.GoodsReceipt;
 
 namespace Web.BlazorServer.Components.Pages.Transaction.GoodsReceipt;
@@ -38,6 +40,7 @@ public partial class GoodsReceiptCVUPage
 
     #region Injects
     [Inject] IGoodsReceiptHandler GoodsReceiptHandler { get; set; } = default!;
+    [Inject] IGoodsIssueHandler GoodsIssueHandler { get; set; } = default!;
     [Inject] IBusinessPartnerHandler BpHandler { get; set; } = default!;
     [Inject] ITransactionTypeHandler TransTypeHandler { get; set; } = default!;
     [Inject] IWarehouseMasterDataHandler WarehouseHandler { get; set; } = default!;
@@ -52,9 +55,10 @@ public partial class GoodsReceiptCVUPage
     bool Creating => PageAction == PageActionTypeEnum.Create;
     bool Viewing => PageAction == PageActionTypeEnum.View;
     bool IsBusy => AppBusyService.IsBusy(ActionGetGoodsReceipt) || AppBusyService.IsBusy(ActionCreateGoodsReceipt);
-    bool IsLoadingData => AppBusyService.IsBusy(ActionGetGoodsReceipt);
+    bool IsLoadingData => AppBusyService.IsBusy(ActionGetGoodsReceipt) || AppBusyService.IsBusy(ActionGetGoodsIssue);
 
     readonly string ActionGetGoodsReceipt = EnumHelper.GetEnumDescription(AppActions.ViewGoodsReceipt);
+    readonly string ActionGetGoodsIssue = EnumHelper.GetEnumDescription(AppActions.ViewGoodsIssue);
     readonly string ActionGetTransactionTypes = EnumHelper.GetEnumDescription(AppActions.GetVendors);
     readonly string ActionGetWarehouses = EnumHelper.GetEnumDescription(AppActions.GetWarehouses);
     readonly string ActionGetItems = EnumHelper.GetEnumDescription(AppActions.GetAllItems);
@@ -379,6 +383,31 @@ public partial class GoodsReceiptCVUPage
 
             await InvokeAsync(StateHasChanged);
         }, AppActionOptionPresets.Loading(ActionGetItems));
+    }
+
+    async Task CopyFromGoodsIssue(int? giEntry)
+    {
+        var action = await AppActionFactory.RunAsync(async () =>
+        {
+            if (giEntry is null) throw new Exception("No goods issue selected");
+
+            GoodsIssueVM gi = await GoodsIssueHandler.GetGoodsIssueAsync(giEntry ?? -1);
+            return gi;
+        }, AppActionOptionPresets.Loading(ActionGetBusinessPartners));
+
+        await Task.Yield();
+        action.OnSuccess( async (res) =>
+        {
+            FormData.Warehouse = res.DocumentLines.FirstOrDefault()?.Warehouse ?? new();
+            FormData.TransactionType = res.TransactionType ?? new();
+            FormData.BusinessPartner = res.BusinessPartner;
+            FormData.Designation = res.Designation;
+            FormData.DocRemarks = res.DocRemarks;
+            FormData.DocumentLines = res.DocumentLines.Adapt<IEnumerable<GoodsReceiptLineVM>>();
+            await InvokeAsync(StateHasChanged);
+
+        });
+
     }
 
     #endregion Custom Functions

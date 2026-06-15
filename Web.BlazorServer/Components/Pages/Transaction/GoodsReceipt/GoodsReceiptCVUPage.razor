@@ -51,6 +51,11 @@
                                                         Placeholder="No Vendor Selected"
                                                         class="rz-w-100" />
                                     </ChildContent>
+                                    <End>
+                                        @if (Creating && string.IsNullOrEmpty(FormData.Warehouse.WhsCode)) {
+                                            <RadzenButton ButtonStyle="ButtonStyle.Primary" ButtonType="ButtonType.Button" Text="Copy from Goods issue" Size="ButtonSize.ExtraSmall" Click="OpenGoodsIssueDialog"/>
+                                        }
+                                    </End>
                                     <Helper>
                                         <RadzenCustomValidator Visible="@(Creating)" Component="gi_whs" Popup Validator="() => !string.IsNullOrEmpty(FormData.Warehouse.WhsCode)" Text="Transaction Type is required" />
                                     </Helper>
@@ -308,6 +313,17 @@
         options: GridSettingsService.GetDialogOptions());
 
         await GoodsReceiptTable.DataGrid.Reload();
+    }
+
+    
+    async Task OpenGoodsIssueDialog()
+    {
+        int? result = await DialogService.OpenAsync(
+            "Goods Issue Selection",
+            ds => @<GoodsIssueSelection />,
+            options: GridSettingsService.GetDialogOptions().MaximizedMode());
+
+        if (result is not null) await CopyFromGoodsIssue(result);
     }
 }
 
