@@ -10,6 +10,7 @@ public class GoodsIssueLineSAPDTO
     public string WhsName { get; set; }
     public string ItemCode { get; set; }
     public string ItemName { get; set; }
+    public decimal OnHandQty { get; set; }
     public decimal Quantity { get; set; }
     public string UoMCode { get; set; }
     public decimal UoMValue { get; set; }

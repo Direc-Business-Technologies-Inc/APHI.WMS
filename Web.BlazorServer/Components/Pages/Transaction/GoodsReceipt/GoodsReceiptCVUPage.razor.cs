@@ -398,7 +398,7 @@ public partial class GoodsReceiptCVUPage
 
             GoodsIssueVM gi = await GoodsIssueHandler.GetGoodsIssueAsync(giEntry ?? -1);
             return gi;
-        }, AppActionOptionPresets.Loading(ActionGetBusinessPartners));
+        }, AppActionOptionPresets.Loading(ActionGetGoodsIssue));
 
         await Task.Yield();
         action.OnSuccess( async (res) =>
