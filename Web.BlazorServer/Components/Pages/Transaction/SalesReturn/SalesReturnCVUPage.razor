@@ -52,9 +52,6 @@
                                                         Placeholder="No Customer Selected"
                                                         class="rz-w-100" />
                                     </ChildContent>
-                                    <End>
-                                        <RadzenButton Visible="@(Creating && !FormData.ValidateBusinessPartner())" Size="ButtonSize.ExtraSmall" Text="Copy From Delivery" Click="@CopyFromDelivery" />
-                                    </End>
                                     <Helper>
                                         <RadzenCustomValidator Visible="@Creating" Component="sr_bp" Popup Validator="@FormData.ValidateBusinessPartner" Text="Customer is required" />
                                     </Helper>
@@ -168,6 +165,7 @@
                                                            SuggestionSource="@FormData.DocumentLines" />
                                         <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
                                             <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />
+                                            <RadzenButton Icon="delivery_truck_speed" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@CopyFromDelivery" Visible="@(Creating && !FormData.DefinitivelyStandalone)" Disabled="@(!FormData.ValidateBusinessPartner())" Text="Copy from Delivery"/>
                                             <RadzenButton Visible="@(Creating && FormData.Standalone)" Icon="add" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@AddItems" Disabled="@(string.IsNullOrEmpty(FormData.Warehouse?.WhsCode))" />
                                         </RadzenStack>
                                     </RadzenStack>
@@ -296,6 +294,7 @@
             ds => @<SalesReturnItemSelection @bind-Return="@FormData" />,
     options: GridSettingsService.GetDialogOptions().MaximizedMode());
 
+        FormData.DefinitivelyStandalone = true;
         await SalesReturnTable.DataGrid.Reload();
     }
 
@@ -303,7 +302,7 @@
     {
         bool? result = await DialogService.OpenAsync(
             "Delivery Selection",
-            ds => @<SalesReturnDeliverySelection @bind-Document="@FormData" />,
+            ds => @<SalesReturnDeliverySelection @bind-Document="@FormData" CardCode="@(FormData.BusinessPartner.CardCode ?? null)"/>,
     options: GridSettingsService.GetDialogOptions().MaximizedMode());
 
         if (result is not null && result is true)

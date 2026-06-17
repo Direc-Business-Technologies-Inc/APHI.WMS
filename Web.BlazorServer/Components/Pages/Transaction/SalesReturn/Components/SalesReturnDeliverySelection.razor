@@ -48,11 +48,18 @@
                               FrozenPosition="FrozenColumnPosition.Right"
                               Width="35px">
             <Template>
-                <RadzenButton Icon="visibility" Size="ButtonSize.ExtraSmall" Click="() => SelectSource(context)" />
+                <RadzenButton Icon="@(_selection.Contains(context.DocEntry) ? "check_box" : "check_box_outline_blank")"
+                              Size="ButtonSize.ExtraSmall"
+                              Variant="Variant.Text"
+                              Click="() => ToggleSelection(context.DocEntry)" />
             </Template>
         </RadzenDataGridColumn>
     </GridColumns>
 </AppDataGrid>
+<RadzenStack Orientation="Orientation.Horizontal" Gap="0.5em" JustifyContent="JustifyContent.End">
+    <RadzenButton ButtonType="ButtonType.Button" Text="Clear Selection" Click="@(_ => _selection.Clear())" Disabled="@IsLoadingData" />
+    <RadzenButton ButtonType="ButtonType.Button" ButtonStyle="ButtonStyle.Success" Text="Select" Click="@(_ => Select())" Disabled="@IsLoadingData" />
+</RadzenStack>
 
 @code {
     async Task OpenTableSettings()
