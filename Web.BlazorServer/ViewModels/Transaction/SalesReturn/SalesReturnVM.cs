@@ -23,6 +23,7 @@ public class SalesReturnVM : MarketingDocumentVM
     public string? ApprovedBy { get; set; }
 
     public bool Standalone { get; set; } = true;
+    public bool DefinitivelyStandalone { get; set; } = false;
     public WarehouseVM? Warehouse { get; set; } = null;
     public int DeliveryDocEntry { get; set; }
     public int DeliveryDocNum { get; set; }

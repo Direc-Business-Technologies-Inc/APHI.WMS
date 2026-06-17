@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components;
 using Radzen;
 using Shared.Libraries.Entities;
 using Shared.Libraries.Kernel;
+using System.Collections.Immutable;
 using Web.BlazorServer.Components.Shared.Abstraction;
 using Web.BlazorServer.Defaults;
 using Web.BlazorServer.Handlers.Repositories.Transaction.Delivery;
@@ -25,7 +26,9 @@ public partial class SalesReturnDeliverySelection
     DataGridSettings DeliveryDataGridSettings { get; set; } = new();
 
     string ActionGetDeliveries { get; } = EnumHelper.GetEnumDescription(AppActions.GetAllDeliveries);
+    bool IsLoadingData => AppBusyService.IsBusy(ActionGetDeliveries);
     AppFilterDescriptor? _searchFilter;
+    List<int> _selection = [];
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -35,6 +38,12 @@ public partial class SalesReturnDeliverySelection
             await LoadGridSettings();
             await InvokeAsync(StateHasChanged);
         }
+    }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        _selection = [.. Document.DocumentLines.Select(d => d.BaseEntry).Where(x => x > 0)];
     }
 
     async Task LoadGridSettings()
@@ -59,48 +68,61 @@ public partial class SalesReturnDeliverySelection
         return DataGridResultVM<DeliveryDataGridVM>.New(action.Result.Data ?? [], action.Result.Count);
     }
 
+    void ToggleSelection(int entry)
+    {
+        if (_selection.Contains(entry)) _selection.Remove(entry);
+        else _selection.Add(entry);
+    }
     async Task OnSearchAsync() => await DeliveryDataGrid.DataGrid.Reload();
 
-    async Task SelectSource(DeliveryDataGridVM delivery)
+    async Task Select()
     {
-        if (!await AlertService.PromptAsync())
-            return;
-
-        DeliveryVM? copyFrom = await DeliveryHandler.GetDeliveryAsync(delivery.DocEntry) ?? new();
-
-        if (copyFrom.SapReference.DocEntry <= 0)
+        if (_selection.Count == 0)
         {
-            ToastService.Warning("Failed to get the source Delivery. Please try again.");
+            Document.DocumentLines.Clear();
+            DialogService.Close(false);
             return;
         }
-
-        Document.DeliveryDocEntry = copyFrom.SapReference.DocEntry ?? 0;
-        Document.DeliveryDocNum = copyFrom.SapReference.DocNum ?? 0;
-        Document.SchoolYear = copyFrom.SchoolYear;
-        Document.DRNo = copyFrom.DRNo;
-        Document.BusinessPartner = copyFrom.BusinessPartner;
-
-        Document.DocumentLines = [.. copyFrom.DocumentLines.Select((dl, idx) => new SalesReturnLineVM
+        var action = await AppActionFactory.RunAsync(async () =>
         {
-            LineNum = idx + 1,
-            BaseEntry = copyFrom.SapReference.DocEntry ?? 0,
-            BaseDocNum = copyFrom.SapReference.DocNum ?? 0,
-            BaseLine = dl.LineNum,
-            ItemCode = dl.ItemCode,
-            ItemName = dl.ItemName,
-            UoMCode = dl.UoMCode,
-            UoMName = dl.UoMName,
-            UoMValue = dl.UoMValue,
-            TargetQuantity = dl.Quantity,
-            OpenQuantity = dl.Quantity,
-            Quantity = dl.Quantity,
-            Warehouse = dl.Warehouse is null ? null : new WarehouseVM
-            {
-                WhsCode = dl.Warehouse.WhsCode,
-                WhsName = dl.Warehouse.WhsName
-            },
-        })];
+            List<DeliveryVM?> deliveryVMs = await DeliveryHandler.GetDeliveriesAsync([.. _selection]);
 
+            deliveryVMs.RemoveAll(x => x is null);
+            List<int> selectedIds = [.. deliveryVMs.Select(d => d?.SapReference.DocEntry ?? -1).Where(x => x > 0)];
+            List<int> existingIds = [.. Document.DocumentLines.Select(d => d.BaseEntry).Where(x => x > 0)];
+            deliveryVMs.RemoveAll(x => x is null ? true : existingIds.Contains(x.SapReference.DocEntry ?? 0));
+
+            Document.DRNo = string.Join(", ", selectedIds);
+            Document.DocumentLines.RemoveAll(d => !selectedIds.Contains(d.BaseEntry));
+            foreach (var item in deliveryVMs)
+            {
+                if (item is null) continue;
+
+                Document.DocumentLines.AddRange(item.DocumentLines.Select((x, ix) => new SalesReturnLineVM
+                {
+                    LineNum = ix + 1,
+                    BaseEntry = item.SapReference.DocEntry ?? 0,
+                    BaseDocNum = item.SapReference.DocNum ?? 0,
+                    BaseLine = x.LineNum,
+                    ItemCode = x.ItemCode,
+                    ItemName = x.ItemName,
+                    UoMCode = x.UoMCode,
+                    UoMName = x.UoMName,
+                    UoMValue = x.UoMValue,
+                    TargetQuantity = x.Quantity,
+                    OpenQuantity = x.Quantity,
+                    Quantity = x.Quantity,
+                    Warehouse = x.Warehouse is null ? null : new WarehouseVM
+                    {
+                        WhsCode = x.Warehouse.WhsCode,
+                        WhsName = x.Warehouse.WhsName
+                    },
+                }));
+            }
+        }, AppActionOptionPresets.Loading(ActionGetDeliveries));
+        AppBusyService.SetBusy(ActionGetDeliveries, false);
+
+        await InvokeAsync(StateHasChanged);
         await DocumentChanged.InvokeAsync(Document);
         DialogService.Close(true);
     }

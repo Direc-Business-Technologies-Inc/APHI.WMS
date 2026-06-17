@@ -24,8 +24,8 @@ public class GetDeliveriesQryHandler(
         foreach (var chunk in request.docEntries.Chunk(PARRALEL_COUNT)) // i dont wanna do too many requests at once
         {
             var tasks = chunk.Select(entry => GetDelivery(entry));
-            await Task.WhenAll(tasks);
-            result.AddRange(tasks.Select(task => task.Result));
+            var results = await Task.WhenAll(tasks);
+            result.AddRange(results);
         }
         return result;
     }
