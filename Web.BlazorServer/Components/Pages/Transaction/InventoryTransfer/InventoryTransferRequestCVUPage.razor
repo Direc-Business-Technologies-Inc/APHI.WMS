@@ -87,7 +87,7 @@
                                     <ChildContent>
                                         <RadzenTextBox ReadOnly
                                                        Visible="@Viewing"
-                                                       Value="@(FormData.FromWarehouse?.WhsName)"
+                                                       Value="@(FormData.FromWarehouse?.DisplayString)"
                                                        Placeholder="No Warehouse Selected"
                                                        Name="itr_from_whs_label"
                                                        Disabled="@IsBusy"
@@ -102,7 +102,7 @@
                                                         Name="itr_from_whs_dropdown"
                                                         AllowFiltering
                                                         Change="@OnSourceWarehouseChanged"
-                                                        TextProperty="@(nameof(WarehouseVM.WhsName))"
+                                                        TextProperty="@(nameof(WarehouseVM.DisplayString))"
                                                         Placeholder="No Warehouse Selected"
                                                         class="rz-w-100" />
                                     </ChildContent>
@@ -121,7 +121,7 @@
                                     <ChildContent>
                                         <RadzenTextBox ReadOnly
                                                        Visible="@Viewing"
-                                                       Value="@(FormData.ToWarehouse?.WhsName)"
+                                                       Value="@(FormData.ToWarehouse?.DisplayString)"
                                                        Placeholder="No Warehouse Selected"
                                                        Name="itr_to_whs_label"
                                                        Disabled="@IsBusy"
@@ -135,7 +135,7 @@
                                                         AllowClear
                                                         Name="itr_to_whs_dropdown"
                                                         AllowFiltering
-                                                        TextProperty="@(nameof(WarehouseVM.WhsName))"
+                                                        TextProperty="@(nameof(WarehouseVM.DisplayString))"
                                                         Placeholder="No Warehouse Selected"
                                                         class="rz-w-100" />
                                     </ChildContent>

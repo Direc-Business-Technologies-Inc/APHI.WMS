@@ -61,7 +61,7 @@
                                 <RadzenFormField Text="From Warehouse" class="rz-w-100" AllowFloatingLabel="false">
                                     <ChildContent>
                                         <RadzenTextBox ReadOnly
-                                                       Value="@(FormData.FromWarehouse?.WhsName)"
+                                                       Value="@(FormData.FromWarehouse?.DisplayString)"
                                                        Placeholder="No Warehouse Selected"
                                                        Name="from_whs_name"
                                                        Disabled="@IsBusy"
@@ -74,7 +74,7 @@
                                 <RadzenFormField Text="To Warehouse" class="rz-w-100" AllowFloatingLabel="false">
                                     <ChildContent>
                                         <RadzenTextBox ReadOnly
-                                                       Value="@(FormData.ToWarehouse?.WhsName)"
+                                                       Value="@(FormData.ToWarehouse?.DisplayString)"
                                                        Placeholder="No Warehouse Selected"
                                                        Name="from_whs_name"
                                                        Disabled="@IsBusy"
