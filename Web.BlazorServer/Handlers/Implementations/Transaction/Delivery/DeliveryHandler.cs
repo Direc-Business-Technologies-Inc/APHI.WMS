@@ -41,6 +41,13 @@ public class DeliveryHandler(
         return response.Adapt<DeliveryVM?>();
     }
 
+    public async Task<List<DeliveryVM?>> GetDeliveriesAsync(params int[] entries)
+    {
+        GetDeliveriesQry qry = new(entries);
+        List<DeliveryDTO?> response = await Sender.Send(qry);
+        return response.Adapt<List<DeliveryVM?>>();
+    }
+
     public async Task<bool> PostDeliveryAsync(DeliveryVM data)
     {
         PostDeliveryCmd cmd = new(data.Adapt<DeliveryDTO>());
