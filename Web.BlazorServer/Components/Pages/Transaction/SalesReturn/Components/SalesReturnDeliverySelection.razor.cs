@@ -18,6 +18,7 @@ public partial class SalesReturnDeliverySelection
 {
     [Parameter] public SalesReturnVM Document { get; set; } = new();
     [Parameter] public EventCallback<SalesReturnVM> DocumentChanged { get; set; } = new();
+    [Parameter] public string? CardCode { get; set; } = null;
 
     [Inject] IDeliveryHandler DeliveryHandler { get; set; } = default!;
     [Inject] IGridSettingsService GridSettingsService { get; set; } = default!;
@@ -60,7 +61,10 @@ public partial class SalesReturnDeliverySelection
         var action = await AppActionFactory.RunAsync(async () =>
         {
             AppBusyService.SetBusy(ActionGetDeliveries, true);
-            var response = await DeliveryHandler.GetDeliveryDataGridAsync(intent);
+
+            var response = CardCode is null ?
+                await DeliveryHandler.GetDeliveryDataGridAsync(intent) :
+                await DeliveryHandler.GetDeliveryByCustomerDataGridAsync(intent, CardCode);
             return response;
         }, AppActionOptionPresets.Loading(ActionGetDeliveries));
 

@@ -302,7 +302,7 @@
     {
         bool? result = await DialogService.OpenAsync(
             "Delivery Selection",
-            ds => @<SalesReturnDeliverySelection @bind-Document="@FormData" />,
+            ds => @<SalesReturnDeliverySelection @bind-Document="@FormData" CardCode="@(FormData.BusinessPartner.CardCode ?? null)"/>,
     options: GridSettingsService.GetDialogOptions().MaximizedMode());
 
         if (result is not null && result is true)

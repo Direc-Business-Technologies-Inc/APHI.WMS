@@ -34,6 +34,13 @@ public class DeliveryHandler(
         return (Data.Adapt<IEnumerable<DeliveryDataGridVM>>(), Count);
     }
 
+    public async Task<(IEnumerable<DeliveryDataGridVM> Data, int Count)> GetDeliveryByCustomerDataGridAsync(DataGridIntent intent, string cardcode)
+    {
+        GetDeliveryByCustomerDataGridQry qry = new(intent, cardcode);
+        (IEnumerable<DeliveryDataGridDTO> Data, int Count) = await Sender.Send(qry);
+        return (Data.Adapt<IEnumerable<DeliveryDataGridVM>>(), Count);
+    }
+
     public async Task<DeliveryVM?> GetDeliveryAsync(int docEntry)
     {
         GetDeliveryQry qry = new(docEntry);
