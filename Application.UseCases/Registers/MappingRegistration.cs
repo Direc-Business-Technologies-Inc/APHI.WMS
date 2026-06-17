@@ -255,6 +255,11 @@ public class MappingRegistration : IRegister
                 DocNum = s.DocNum,
             })
             .Map(d => d.PreparedBy, s => s.PreparedBy)
+            .Map(d => d.BusinessPartner, s => new BusinessPartnerDTO
+            {
+                CardCode = s.CardCode,
+                CardName = s.CardName
+            })
             .Map(d => d.TransactionType, s => new TransactionTypeDTO()
             {
                 Code = s.TransTypeCode,
