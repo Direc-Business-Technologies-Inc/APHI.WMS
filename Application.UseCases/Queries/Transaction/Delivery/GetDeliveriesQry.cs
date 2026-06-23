@@ -41,8 +41,9 @@ public class GetDeliveriesQryHandler(
         IEnumerable<DeliveryLineSAPDTO> lines = await deliveryIntegration.GetDeliveryDocumentLinesAsync(docEntry);
 
         DeliveryDTO dto = doc.Adapt<DeliveryDTO>();
+        dto.SapReference.DocEntry = doc.DocEntry;
+        dto.SapReference.DocNum = doc.DocNum;
         dto.DocumentLines = lines.Adapt<IEnumerable<DeliveryLineDTO>>();
-
         return dto;
     }
 }

@@ -142,7 +142,7 @@ public class SalesReturnIntegration(
         // BaseType 15 = A/R Delivery
         foreach (SalesReturnLineDTO line in data.DocumentLines.Where(dl => dl.Quantity > 0))
             payloadLines.Add(new SalesReturnLinesPayload(
-                data.DeliveryDocEntry,
+                line.BaseEntry,
                 15,
                 line.BaseLine,
                 data.DocumentLines.IndexOf(line),

@@ -295,6 +295,7 @@
     options: GridSettingsService.GetDialogOptions().MaximizedMode());
 
         FormData.DefinitivelyStandalone = true;
+        FormData.Standalone = false;
         await SalesReturnTable.DataGrid.Reload();
     }
 
