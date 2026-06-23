@@ -351,7 +351,7 @@ public partial class SalesReturnCVUPage
 
     async Task RemoveLine(SalesReturnLineVM item)
     {
-        if (!await AlertService.PromptAsync())
+        if (!await AlertService.PromptAsync("Remove line from sales return?", "Remove Line?"))
             return;
 
         FormData.DocumentLines.Remove(item);
