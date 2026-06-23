@@ -48,7 +48,9 @@
                               FrozenPosition="FrozenColumnPosition.Right"
                               Width="35px">
             <Template>
-                <RadzenButton Icon="@(_selection.Contains(context.DocEntry) ? "check_box" : "check_box_outline_blank")"
+                <RadzenButton Icon="@(!context.IsOpen ? "lock" : _selection.Contains(context.DocEntry) ? "check_box" : "check_box_outline_blank")"
+                              ButtonStyle="@(!context.IsOpen ? ButtonStyle.Dark : ButtonStyle.Primary)"
+                              Disabled="@(!context.IsOpen)"
                               Size="ButtonSize.ExtraSmall"
                               Variant="Variant.Text"
                               Click="() => ToggleSelection(context.DocEntry)" />

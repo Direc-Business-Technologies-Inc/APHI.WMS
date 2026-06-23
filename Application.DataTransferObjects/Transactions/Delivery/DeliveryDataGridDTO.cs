@@ -9,4 +9,5 @@ public class DeliveryDataGridDTO
     public string CardName { get; set; }
     public string ContactPerson { get; set; }
     public string Remarks { get; set; }
+    public string DocStatus { get; set; } = string.Empty;
 }
