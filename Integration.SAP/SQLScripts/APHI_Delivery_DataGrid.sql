@@ -2,6 +2,7 @@ SELECT
 	 ODLN.DocEntry
 	,ODLN.DocNum
 	,ODLN.DocDate
+	,ODLN.DocStatus
 	,ODLN.CardCode
 	,OCRD.CardName
 	,OCRD.CntctPrsn [ContactPerson]
