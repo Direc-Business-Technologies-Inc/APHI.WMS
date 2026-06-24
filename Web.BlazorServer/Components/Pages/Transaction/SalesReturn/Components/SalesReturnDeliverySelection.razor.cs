@@ -62,6 +62,14 @@ public partial class SalesReturnDeliverySelection
         {
             AppBusyService.SetBusy(ActionGetDeliveries, true);
 
+            intent.Filters.Add(
+                new AppFilterDescriptor
+                {
+                    Value = "O",
+                    ComparisonOperator = ComparisonOperatorEnum.Equals,
+                    Property = "DocStatus"
+                });
+
             var response = CardCode is null ?
                 await DeliveryHandler.GetDeliveryDataGridAsync(intent) :
                 await DeliveryHandler.GetDeliveryByCustomerDataGridAsync(intent, CardCode);

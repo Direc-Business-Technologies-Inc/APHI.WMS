@@ -320,7 +320,7 @@ public partial class GoodsReturnCVUPage
 
     async Task RemoveLine(GoodsReturnLineVM item)
     {
-        if (!await AlertService.PromptAsync())
+        if (!await AlertService.PromptAsync("Remove line from goods return?", "Remove Line?"))
             return;
 
         FormData.DocumentLines.Remove(item);
