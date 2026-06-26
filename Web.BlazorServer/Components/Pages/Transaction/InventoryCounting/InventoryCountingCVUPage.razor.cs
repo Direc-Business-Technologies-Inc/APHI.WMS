@@ -75,6 +75,7 @@ public partial class InventoryCountingCVUPage
     AppFilterDescriptor? _createLinesFilter;
     AppFilterDescriptor? _viewLinesFilter;
     List<InventoryCountingLineVM> _filteredViewLines = [];
+    List<InventoryCountingLineVM> _blackList = [];
     #endregion Data Structures
 
     #region Overrides
@@ -262,6 +263,7 @@ public partial class InventoryCountingCVUPage
     void OnWarehouseChange()
     {
         OnFieldChanged(nameof(FormData.Warehouse));
+        _blackList = [];
         FormData.DocumentLines = [];
         _ = LoadWarehouseItemsAsync();
     }
@@ -283,7 +285,9 @@ public partial class InventoryCountingCVUPage
 
         action.OnSuccess(async result =>
         {
+            _blackList = [];
             FormData.DocumentLines = [.. (result ?? []).Where(x => x.Quantity > 0)];
+            FormData.DocumentLines = FormData.DocumentLines.Except(_blackList);
 
             if (DocumentLinesTable is not null)
                 await DocumentLinesTable.DataGrid.Reload();
@@ -292,8 +296,14 @@ public partial class InventoryCountingCVUPage
         });
     }
 
-    void RemoveLine(InventoryCountingLineVM line) =>
-        FormData.DocumentLines = [.. FormData.DocumentLines.Except([line])];
+    async Task RemoveLine(InventoryCountingLineVM line)
+    {
+        int page = DocumentLinesTable.DataGrid.CurrentPage;
+        int newTotalPage = (FormData.DocumentLines.Count() - 1) / DocumentLinesTable.DataGrid.PageSize;
+        int topage = Math.Min(page, newTotalPage);
+        _blackList.Add(line);
+        await DocumentLinesTable.DataGrid.GoToPage(topage, true);
+    }
 
     async Task SaveDocument()
     {
