@@ -150,7 +150,7 @@ public partial class GoodsReceiptCVUPage
             catch (InvalidOperationException ex) when (ex.Message.Contains("SAP requires confirmation when posting")) { }
 
             BusyDialogService.Hide();
-            return response;
+            return false;
         }, AppActionOptionPresets.Confirmed(ActionCreateGoodsReceipt));
 
         action.OnSuccess(async (args) =>
