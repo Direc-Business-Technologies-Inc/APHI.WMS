@@ -47,6 +47,7 @@ public partial class GoodsReceiptCVUPage
     [Inject] IGridSettingsService GridSettingsService { get; set; } = default!;
     [Inject] IBusinessPartnerHandler BusinessPartnerHandler { get; set; } = default!;
     [Inject] IItemMasterDataHandler ItemMasterDataHandler { get; set; } = default!;
+    [Inject] IBusyDialogService BusyDialogService { get; set; } = default!;
     #endregion Injects
 
     #region Primitives
@@ -138,6 +139,7 @@ public partial class GoodsReceiptCVUPage
 
         var action = await AppActionFactory.RunAsync<bool>(async () =>
         {
+            BusyDialogService.Show(ActionCreateGoodsReceipt);
             AppBusyService.SetBusy(ActionCreateGoodsReceipt, true);
 
             try
@@ -146,7 +148,9 @@ public partial class GoodsReceiptCVUPage
                 return response;
             }
             catch (InvalidOperationException ex) when (ex.Message.Contains("SAP requires confirmation when posting")) { }
-            return false;
+
+            BusyDialogService.Hide();
+            return response;
         }, AppActionOptionPresets.Confirmed(ActionCreateGoodsReceipt));
 
         action.OnSuccess(async (args) =>
