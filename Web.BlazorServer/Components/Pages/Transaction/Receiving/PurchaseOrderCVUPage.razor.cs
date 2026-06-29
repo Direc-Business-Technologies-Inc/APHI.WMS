@@ -39,6 +39,7 @@ public partial class PurchaseOrderCVUPage
     [Inject] IReceivingHandler ReceivingHandler { get; set; } = default!;
     [Inject] IGridSettingsService GridSettingsService { get; set; } = default!;
     [Inject] ISchoolYearHandler SchoolYearHandler { get; set; } = default!;
+    [Inject] IBusyDialogService BusyDialogService { get; set; } = default!;
     #endregion Injects
 
     #region Primitives
@@ -129,12 +130,14 @@ public partial class PurchaseOrderCVUPage
 
         var action = await AppActionFactory.RunAsync(async () =>
         {
+            BusyDialogService.Show(ActionCreateGoodsReceiptPO);
             AppBusyService.SetBusy(ActionCreateGoodsReceiptPO, true);
 
             bool result = await ReceivingHandler.PostGoodsReceiptPOAsync(FormData);
 
             AppBusyService.SetBusy(ActionCreateGoodsReceiptPO, true);
 
+            BusyDialogService.Hide();
             return result;
         }, AppActionOptionPresets.Confirmed(ActionCreateGoodsReceiptPO));
 

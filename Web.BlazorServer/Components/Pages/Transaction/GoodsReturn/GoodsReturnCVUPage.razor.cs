@@ -38,6 +38,7 @@ public partial class GoodsReturnCVUPage
     [Inject] IWarehouseMasterDataHandler WarehouseHandler { get; set; } = default!;
     [Inject] ISchoolYearHandler SchoolYearHandler { get; set; } = default!;
     [Inject] IGridSettingsService GridSettingsService { get; set; } = default!;
+    [Inject] IBusyDialogService BusyDialogService { get; set; } = default!;
     #endregion Injects
 
     #region Primitives
@@ -133,6 +134,7 @@ public partial class GoodsReturnCVUPage
 
         var action = await AppActionFactory.RunAsync(async () =>
         {
+            BusyDialogService.Show(ActionCreateGoodsReturn);
             AppBusyService.SetBusy(ActionCreateGoodsReturn, true);
 
             bool response = false;
@@ -141,6 +143,7 @@ public partial class GoodsReturnCVUPage
             else
                 response = await GoodsReturnHandler.PostGoodsReturnAsync(FormData, GoodsReturnPostingSource.GRPO);
 
+            BusyDialogService.Hide();
             return response;
         }, AppActionOptionPresets.Confirmed(ActionCreateGoodsReturn));
 

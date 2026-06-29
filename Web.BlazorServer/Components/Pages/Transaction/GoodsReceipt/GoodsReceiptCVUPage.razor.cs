@@ -44,6 +44,7 @@ public partial class GoodsReceiptCVUPage
     [Inject] IGridSettingsService GridSettingsService { get; set; } = default!;
     [Inject] IBusinessPartnerHandler BusinessPartnerHandler { get; set; } = default!;
     [Inject] IItemMasterDataHandler ItemMasterDataHandler { get; set; } = default!;
+    [Inject] IBusyDialogService BusyDialogService { get; set; } = default!;
     #endregion Injects
 
     #region Primitives
@@ -134,10 +135,12 @@ public partial class GoodsReceiptCVUPage
 
         var action = await AppActionFactory.RunAsync(async () =>
         {
+            BusyDialogService.Show(ActionCreateGoodsReceipt);
             AppBusyService.SetBusy(ActionCreateGoodsReceipt, true);
 
             bool response = await GoodsReceiptHandler.PostGoodsReceiptAsync(FormData);
 
+            BusyDialogService.Hide();
             return response;
         }, AppActionOptionPresets.Confirmed(ActionCreateGoodsReceipt));
 

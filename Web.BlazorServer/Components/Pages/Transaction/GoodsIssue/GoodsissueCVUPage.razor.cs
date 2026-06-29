@@ -44,6 +44,7 @@ public partial class GoodsIssueCVUPage
     [Inject] IBusinessPartnerHandler BusinessPartnerHandler { get; set; } = default!;
     [Inject] IGridSettingsService GridSettingsService { get; set; } = default!;
     [Inject] IItemMasterDataHandler ItemMasterDataHandler { get; set; } = default!;
+    [Inject] IBusyDialogService BusyDialogService { get; set;} = default!;
 
     #endregion Injects
 
@@ -138,10 +139,11 @@ public partial class GoodsIssueCVUPage
 
         var action = await AppActionFactory.RunAsync(async () =>
         {
+            BusyDialogService.Show(ActionCreateGoodsIssue);
             AppBusyService.SetBusy(ActionCreateGoodsIssue, true);
 
             bool response = await GoodsIssueHandler.PostGoodsIssueAsync(FormData);
-
+            BusyDialogService.Hide();
             return response;
         }, AppActionOptionPresets.Confirmed(ActionCreateGoodsIssue));
 
