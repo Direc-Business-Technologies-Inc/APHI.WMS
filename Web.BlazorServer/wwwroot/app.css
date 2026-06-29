@@ -85,4 +85,6 @@ p, span {
     align-items: center;
     padding: 20px;
     text-align: center;
+    background-color: transparent !important;
+    box-shadow: none !important;
 }
