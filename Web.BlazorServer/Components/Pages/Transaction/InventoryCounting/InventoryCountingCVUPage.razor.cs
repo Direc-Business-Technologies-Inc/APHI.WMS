@@ -37,6 +37,10 @@ public partial class InventoryCountingCVUPage
 
     #region Primitives
     PageActionTypeEnum PageAction { get; set; }
+
+    // Scope the draft cache by mode + document id so drafts never collide across records.
+    protected override string FormCacheKey => $"{GetType().Name}-{PageAction}-{Id}-FCACHE";
+
     bool Creating => PageAction == PageActionTypeEnum.Create;
     bool Viewing => PageAction == PageActionTypeEnum.View;
     bool _isInitialLoading = true;

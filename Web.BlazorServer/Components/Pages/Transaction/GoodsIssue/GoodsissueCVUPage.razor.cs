@@ -51,6 +51,9 @@ public partial class GoodsIssueCVUPage
     #region Primitives
     PageActionTypeEnum PageAction { get; set; }
 
+    // Scope the draft cache by mode + record so drafts never collide across records/modes.
+    protected override string FormCacheKey => $"{GetType().Name}-{PageAction}-{Ref}-FCACHE";
+
     bool Creating => PageAction == PageActionTypeEnum.Create;
     bool Viewing => PageAction == PageActionTypeEnum.View;
     bool IsBusy => AppBusyService.IsBusy(ActionGetGoodsIssue) || AppBusyService.IsBusy(ActionCreateGoodsIssue);
@@ -109,11 +112,11 @@ public partial class GoodsIssueCVUPage
         }
     }
 
-    protected override Task CancelEditing()
+    protected override async Task CancelEditing()
     {
         AdaptToForm();
+        await ClearFormCacheAsync();
         NavManager.NavigateTo("/transactions/inventory/goods-issue/?t=pndng", true);
-        return Task.CompletedTask;
     }
 
     protected override async Task HandleSubmit()
@@ -239,6 +242,7 @@ public partial class GoodsIssueCVUPage
             if (!await AlertService.HasUnsavedChangesAsync(header: "Cancel Goods Issue Creation"))
                 return;
 
+        await ClearFormCacheAsync();
         NavManager.NavigateTo($"/transactions/inventory/goods-issue/?T={(Draft == 1 ? "pndng" : "aprvd")}", true);
     }
 

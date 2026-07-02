@@ -53,6 +53,9 @@ public partial class GoodsReceiptCVUPage
     #region Primitives
     PageActionTypeEnum PageAction { get; set; }
 
+    // Scope the draft cache by mode + record so drafts never collide across records/modes.
+    protected override string FormCacheKey => $"{GetType().Name}-{PageAction}-{Ref}-FCACHE";
+
     bool Creating => PageAction == PageActionTypeEnum.Create;
     bool Viewing => PageAction == PageActionTypeEnum.View;
     bool IsBusy => AppBusyService.IsBusy(ActionGetGoodsReceipt) || AppBusyService.IsBusy(ActionCreateGoodsReceipt);
@@ -109,12 +112,9 @@ public partial class GoodsReceiptCVUPage
         }
     }
 
-    protected override Task CancelEditing()
-    {
-        AdaptToForm();
-        NavManager.NavigateTo("/transactions/inventory/goods-receipt/?t=pndng", true);
-        return Task.CompletedTask;
-    }
+    // Cancel and the toolbar Back button ("Receipt") exit to the same place and must
+    // clear the draft cache — delegate to keep a single canonical exit path.
+    protected override Task CancelEditing() => Receipt();
 
     protected override async Task HandleSubmit()
     {
@@ -249,6 +249,7 @@ public partial class GoodsReceiptCVUPage
             if (!await AlertService.HasUnsavedChangesAsync(header: "Cancel Goods Receipt Creation"))
                 return;
 
+        await ClearFormCacheAsync();
         NavManager.NavigateTo($"/transactions/inventory/goods-receipt/?t=pndng", true);
     }
 

@@ -18,6 +18,9 @@ public partial class UserPasswordManagement
     #endregion Injects
 
     #region Primitives
+    // Sensitive form — never persist the password/confirm-password to localStorage.
+    protected override bool EnableFormCache => false;
+
     string ActionUpdatePassword => EnumHelper.GetEnumDescription(AppActions.UpdateUser);
     bool IsBusy => AppBusyService.IsBusy(ActionUpdatePassword);
     bool PasswordVisibility { get; set; } = false;

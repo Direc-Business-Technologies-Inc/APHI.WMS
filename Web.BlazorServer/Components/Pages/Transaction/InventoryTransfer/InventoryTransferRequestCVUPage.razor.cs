@@ -40,6 +40,9 @@ public partial class InventoryTransferRequestCVUPage
     #region Primitives
     PageActionTypeEnum PageAction { get; set; }
 
+    // Scope the draft cache by mode + source document so drafts never collide across records/modes.
+    protected override string FormCacheKey => $"{GetType().Name}-{PageAction}-{Ref}-FCACHE";
+
     bool Creating => PageAction == PageActionTypeEnum.Create;
     bool Viewing => PageAction == PageActionTypeEnum.View;
     bool IsBusy => AppBusyService.IsBusy(ActionGetInventoryTransferRequest) ||
@@ -124,11 +127,11 @@ public partial class InventoryTransferRequestCVUPage
         };
     }
 
-    protected override Task CancelEditing()
+    protected override async Task CancelEditing()
     {
         AdaptToForm();
+        await ClearFormCacheAsync();
         NavManager.NavigateTo(VIEW_LIST_ITR_TAB_URI, true);
-        return Task.CompletedTask;
     }
 
     protected override async Task HandleSubmit()
@@ -397,13 +400,18 @@ public partial class InventoryTransferRequestCVUPage
             if (!await AlertService.PromptAsync(header: EDIT_EXIT_PROMPT))
                 return;
 
+            await ClearFormCacheAsync();
+
             if (CreatingNew)
                 NavManager.NavigateTo(VIEW_LIST_URI);
             else
                 NavManager.NavigateTo(string.Format(VIEW_ITR_URI, Ref), true);
         }
         else
+        {
+            await ClearFormCacheAsync();
             NavManager.NavigateTo(VIEW_LIST_URI);
+        }
     }
 
     void OnEditButtonPressed()

@@ -37,6 +37,9 @@ public partial class SalesReturnCVUPage
     #region Primitives
     PageActionTypeEnum PageAction { get; set; }
 
+    // Scope the draft cache by mode + record so drafts never collide across records/modes.
+    protected override string FormCacheKey => $"{GetType().Name}-{PageAction}-{Ref}-FCACHE";
+
     bool Creating => PageAction == PageActionTypeEnum.Create;
     bool Viewing => PageAction == PageActionTypeEnum.View;
     bool IsBusy => AppBusyService.IsBusy(ActionGetSalesReturn) || AppBusyService.IsBusy(ActionCreateSalesReturn);
@@ -99,12 +102,9 @@ public partial class SalesReturnCVUPage
         };
     }
 
-    protected override Task CancelEditing()
-    {
-        AdaptToForm();
-        NavManager.NavigateTo("/transactions/sales/sales-return?T=sr", true);
-        return Task.CompletedTask;
-    }
+    // Cancel and the toolbar Back button exit to the same place and must clear the
+    // draft cache — delegate to keep a single canonical exit path.
+    protected override Task CancelEditing() => Back();
 
     protected override async Task HandleSubmit()
     {
@@ -232,6 +232,7 @@ public partial class SalesReturnCVUPage
             if (!await AlertService.HasUnsavedChangesAsync(header: "Cancel Sales Return Creation"))
                 return;
 
+        await ClearFormCacheAsync();
         NavManager.NavigateTo("/transactions/sales/sales-return?T=sr", true);
     }
 

@@ -44,6 +44,9 @@ public partial class GoodsReturnCVUPage
     #region Primitives
     PageActionTypeEnum PageAction { get; set; }
 
+    // Scope the draft cache by mode + record so drafts never collide across records/modes.
+    protected override string FormCacheKey => $"{GetType().Name}-{PageAction}-{Ref}-FCACHE";
+
     bool Creating => PageAction == PageActionTypeEnum.Create;
     bool Viewing => PageAction == PageActionTypeEnum.View;
     bool IsBusy => AppBusyService.IsBusy(ActionGetGoodsReturn) || AppBusyService.IsBusy(ActionCreateGoodsReturn);
@@ -103,12 +106,9 @@ public partial class GoodsReturnCVUPage
         }
     }
 
-    protected override Task CancelEditing()
-    {
-        AdaptToForm();
-        NavManager.NavigateTo("/transactions/purchasing/goods-return?t=gr", true);
-        return Task.CompletedTask;
-    }
+    // Cancel and the toolbar Back button ("Return") exit to the same place and must
+    // clear the draft cache — delegate to keep a single canonical exit path.
+    protected override Task CancelEditing() => Return();
 
     protected override async Task HandleSubmit()
     {

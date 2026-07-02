@@ -45,6 +45,9 @@ public partial class PurchaseOrderCVUPage
     #region Primitives
     PageActionTypeEnum PageAction { get; set; }
 
+    // Scope the draft cache by mode + source order so drafts never collide across records/modes.
+    protected override string FormCacheKey => $"{GetType().Name}-{PageAction}-{Ref}-FCACHE";
+
     bool PasswordVisibility { get; set; } = false;
     bool Creating => PageAction == PageActionTypeEnum.Create;
     bool Viewing => PageAction == PageActionTypeEnum.View;
@@ -116,6 +119,7 @@ public partial class PurchaseOrderCVUPage
             if (!await AlertService.HasUnsavedChangesAsync(header: "Cancel Goods Receipt PO Creation"))
                 return;
 
+        await ClearFormCacheAsync();
         NavManager.NavigateTo($"/transactions/purchasing/receiving/purchase-order/view?ref={FormData.SapReference.DocEntry}", true);
 
     }

@@ -41,6 +41,9 @@ public partial class GoodsReceiptPOCVUPage
     #region Primitives
     PageActionTypeEnum PageAction { get; set; }
 
+    // View-only page — the form is never edited, so never persist/restore a draft.
+    protected override bool EnableFormCache => false;
+
     bool PasswordVisibility { get; set; } = false;
     bool Creating => PageAction == PageActionTypeEnum.Create;
     bool Viewing => PageAction == PageActionTypeEnum.View;
