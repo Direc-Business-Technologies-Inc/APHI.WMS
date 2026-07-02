@@ -33,6 +33,9 @@ public partial class SalesReturnRequestCVUPage
     #region Primitives
     PageActionTypeEnum PageAction { get; set; }
 
+    // Scope the draft cache by mode + source document so drafts never collide across records/modes.
+    protected override string FormCacheKey => $"{GetType().Name}-{PageAction}-{Ref}-FCACHE";
+
     bool Creating => PageAction == PageActionTypeEnum.Create;
     bool Viewing => PageAction == PageActionTypeEnum.View;
     bool IsBusy => AppBusyService.IsBusy(ActionGetSalesReturnRequest) || AppBusyService.IsBusy(ActionCreateSalesReturn);
@@ -86,6 +89,7 @@ public partial class SalesReturnRequestCVUPage
             if (!await AlertService.HasUnsavedChangesAsync(header: "Cancel Sales Return Creation"))
                 return;
 
+        await ClearFormCacheAsync();
         NavManager.NavigateTo($"/transactions/sales/sales-return/request/view?Ref={FormData.SapReference.DocEntry}", true);
     }
 
@@ -198,6 +202,7 @@ public partial class SalesReturnRequestCVUPage
             if (!await AlertService.HasUnsavedChangesAsync(header: "Cancel Sales Return Creation"))
                 return;
 
+        await ClearFormCacheAsync();
         NavManager.NavigateTo("/transactions/sales/sales-return?T=srr", true);
     }
 

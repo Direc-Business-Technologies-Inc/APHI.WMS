@@ -20,6 +20,9 @@ public partial class Index
     #endregion Injects
 
     #region Primitives
+    // Sensitive form — never persist credentials (incl. the password) to localStorage.
+    protected override bool EnableFormCache => false;
+
     bool IsBusy => AppBusyService.IsBusy(ActionLogin);
     readonly string ActionLogin = EnumHelper.GetEnumDescription(AppActions.Login);
 

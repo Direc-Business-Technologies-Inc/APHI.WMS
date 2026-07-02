@@ -29,6 +29,9 @@ public partial class SalesOrderCVUPage
     #region Primitives
     PageActionTypeEnum PageAction { get; set; } = PageActionTypeEnum.View;
 
+    // View-only page — the form is never edited, so never persist/restore a draft.
+    protected override bool EnableFormCache => false;
+
     bool IsBusy => AppBusyService.IsBusy(ActionGetSalesOrder) || AppBusyService.IsBusy(ActionCreateDelivery);
     bool IsLoadingData => AppBusyService.IsBusy(ActionGetSalesOrder);
 

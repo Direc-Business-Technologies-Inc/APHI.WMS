@@ -33,6 +33,9 @@ public partial class DeliveryCVUPage
     #region Primitives
     PageActionTypeEnum PageAction { get; set; }
 
+    // Scope the draft cache by mode + source order so drafts never collide across records/modes.
+    protected override string FormCacheKey => $"{GetType().Name}-{PageAction}-{Ref}-FCACHE";
+
     bool Creating => PageAction == PageActionTypeEnum.Create;
     bool Viewing => PageAction == PageActionTypeEnum.View;
     bool IsBusy => AppBusyService.IsBusy(ActionGetDelivery) || AppBusyService.IsBusy(ActionCreateDelivery);
@@ -109,11 +112,11 @@ public partial class DeliveryCVUPage
         return Task.CompletedTask;
     }
 
-    protected override Task CancelEditing()
+    protected override async Task CancelEditing()
     {
         AdaptToForm();
+        await ClearFormCacheAsync();
         NavManager.NavigateTo("/transactions/sales/delivery?T=dlv", true);
-        return Task.CompletedTask;
     }
 
     protected override async Task HandleSubmit()

@@ -32,6 +32,12 @@ public partial class RoleManagementCVU
     #region Primitives
     PageActionTypeEnum PageAction { get; set; }
 
+    // Scope the draft cache by mode + record. In Create mode Ref is a fresh random Guid
+    // per load, so it is excluded — otherwise a create draft could never be restored.
+    protected override string FormCacheKey => Creating
+        ? $"{GetType().Name}-Create-FCACHE"
+        : $"{GetType().Name}-{PageAction}-{Ref}-FCACHE";
+
     bool PasswordVisibility { get; set; } = false;
     bool Creating => PageAction == PageActionTypeEnum.Create;
     bool Updating => PageAction == PageActionTypeEnum.Update;
@@ -89,6 +95,7 @@ public partial class RoleManagementCVU
         if (UnsavedChangesService.HasChanges)
             if (!await AlertService.HasUnsavedChangesAsync(header: "Cancel Role Update"))
                 return;
+        await ClearFormCacheAsync();
         NavManager.NavigateTo($"/administration/user/role-management/view?ref={Ref}", true);
     }
 
@@ -179,6 +186,7 @@ public partial class RoleManagementCVU
             if (!await AlertService.HasUnsavedChangesAsync(header: "Cancel Role Creation"))
                 return;
 
+        await ClearFormCacheAsync();
         NavManager.NavigateTo($"/administration/user/role-management", true);
     }
 

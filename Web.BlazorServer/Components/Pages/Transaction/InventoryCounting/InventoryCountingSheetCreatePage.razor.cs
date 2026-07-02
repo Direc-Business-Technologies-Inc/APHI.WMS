@@ -30,6 +30,10 @@ public partial class InventoryCountingSheetCreatePage
     bool _isInitialLoading = true;
     bool IsLoadingData => _isInitialLoading || AppBusyService.IsBusy(ActionView);
 
+    // Scope the draft cache by the parent counting document so sheets for different
+    // documents never share a draft.
+    protected override string FormCacheKey => $"{GetType().Name}-{Document}-FCACHE";
+
     readonly string ActionView = EnumHelper.GetEnumDescription(AppActions.ViewInventoryCountingDocument);
     readonly string ActionCreate = EnumHelper.GetEnumDescription(AppActions.CreateInventoryCountingSheet);
     #endregion Primitives

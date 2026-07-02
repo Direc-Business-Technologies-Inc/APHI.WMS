@@ -43,6 +43,10 @@ public partial class GoodsReturnRequestCVUPage
     #region Primitives
     PageActionTypeEnum PageAction { get; set; }
 
+    // Scope the draft cache by mode + source document so a Create draft never
+    // collides with another record or with View/Update of the same page type.
+    protected override string FormCacheKey => $"{GetType().Name}-{PageAction}-{Ref}-FCACHE";
+
     bool Creating => PageAction == PageActionTypeEnum.Create;
     bool Viewing => PageAction == PageActionTypeEnum.View;
     bool IsBusy => AppBusyService.IsBusy(ActionGetGoodsReturn) || AppBusyService.IsBusy(ActionCreateGoodsReturn);
