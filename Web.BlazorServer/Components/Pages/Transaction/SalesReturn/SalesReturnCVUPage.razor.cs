@@ -135,7 +135,7 @@ public partial class SalesReturnCVUPage
         {
             AppBusyService.SetBusy(ActionCreateSalesReturn, true);
 
-            SalesReturnPostingSource source = FormData.Standalone
+            SalesReturnPostingSource source = FormData.DefinitivelyStandalone
                 ? SalesReturnPostingSource.Standalone
                 : SalesReturnPostingSource.Delivery;
 
