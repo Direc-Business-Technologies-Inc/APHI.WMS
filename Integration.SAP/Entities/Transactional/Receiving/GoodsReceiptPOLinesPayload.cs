@@ -50,7 +50,7 @@ public abstract class GoodsReceiptPOLinesBasePayload
     public decimal UnitCost { get; private set; }
     public string TaxCode { get; private set; }
     public string WarehouseCode { get; private set; }
-    public string U_InputType { get; private set; }
+    //public string U_InputType { get; private set; }
 
     public GoodsReceiptPOLinesBasePayload(int lineNum,
                                string itemCode,
@@ -66,6 +66,6 @@ public abstract class GoodsReceiptPOLinesBasePayload
         UnitCost = Guard.Against.NegativeOrZero(qty, nameof(UnitCost), "Unit Cost cannot be negative or zero");
         TaxCode = Guard.Against.NullOrEmpty(taxCode, nameof(TaxCode), "Tax Code cannot be null or empty");
         WarehouseCode = Guard.Against.NullOrEmpty(whsCode, nameof(WarehouseCode), "Warehouse Code cannot be null or empty");
-        U_InputType = Guard.Against.NullOrEmpty(inputType, nameof(U_InputType), "Input Type cannot be null or empty");
+        //U_InputType = Guard.Against.NullOrEmpty(inputType, nameof(U_InputType), "Input Type cannot be null or empty");
     }
 }

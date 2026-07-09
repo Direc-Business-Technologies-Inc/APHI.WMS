@@ -15,7 +15,7 @@ SELECT
 	,ISNULL(T1.unitMsr, 'Manual') [UoMCode]
 	,T1.NumPerMsr [UoMValue]
 	,T4.UomName [UoMName]
-	,T1.U_InputType [InputType]
+	,'Default' [InputType]
 FROM OPDN AS T0
 INNER JOIN PDN1 AS T1 ON T0.DocEntry = T1.DocEntry
 INNER JOIN OITM AS T2 ON T1.ItemCode = T2.ItemCode
