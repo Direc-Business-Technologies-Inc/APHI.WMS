@@ -51,6 +51,11 @@
                                   Title="UoM"
                                   Property="@nameof(ItemVM.UoMName)"
                                   Type="@typeof(string)" />
+            <RadzenDataGridColumn TItem="ItemVM"
+                                  Title="Quantity"
+                                  FormatString="{0:N0}"
+                                  Property="@nameof(ItemVM.Quantity)"
+                                  Type="@typeof(decimal)" />
         </GridColumns>
     </AppDataGrid>
 </RadzenStack>

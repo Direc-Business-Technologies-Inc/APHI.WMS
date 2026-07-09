@@ -197,7 +197,7 @@
                                                           Property="@nameof(SalesReturnLineVM.UoMName)"
                                                           Type="@typeof(string)"
                                                           Title="UoM" Width="125px" />
-                                    <RadzenDataGridColumn Visible="@(Creating && !FormData.Standalone)" TItem="SalesReturnLineVM"
+                                    <RadzenDataGridColumn Visible="@(Creating && !FormData.DefinitivelyStandalone)" TItem="SalesReturnLineVM"
                                                           Property="@nameof(SalesReturnLineVM.OpenQuantity)"
                                                           Type="@typeof(decimal)"
                                                           Title="Open Qty" Width="150px">
@@ -210,7 +210,7 @@
                                                           Type="@typeof(decimal)"
                                                           Title="Quantity" Width="150px">
                                         <Template Context="data">
-                                            <RadzenNumeric Format="N0" @bind-Value="@data.Quantity" Min="0" Max="@(FormData.Standalone ? null : data.OpenQuantity)" ReadOnly="@(Viewing || (!FormData.Standalone && data.OpenQuantity <= 0))" ShowUpDown="@Creating" />
+                                            <RadzenNumeric Format="N0" @bind-Value="@data.Quantity" Min="0" Max="@(FormData.DefinitivelyStandalone ? null : data.OpenQuantity)" ReadOnly="@(Viewing || (!FormData.DefinitivelyStandalone && data.OpenQuantity <= 0))" ShowUpDown="@Creating" />
                                         </Template>
                                     </RadzenDataGridColumn>
                                     <RadzenDataGridColumn TItem="SalesReturnLineVM"

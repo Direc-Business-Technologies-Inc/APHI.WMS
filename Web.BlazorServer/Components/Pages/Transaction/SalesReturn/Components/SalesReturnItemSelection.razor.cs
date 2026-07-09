@@ -53,6 +53,11 @@ public partial class SalesReturnItemSelection
         var action = await AppActionFactory.RunAsync(async () =>
         {
             AppBusyService.SetBusy(ActionGetItems, true);
+            intent.Filters.Add(new AppFilterDescriptor()
+            {
+                Property = nameof(ItemVM.Quantity)
+
+            });
             var response = await ItemsHandler.GetMerchandiseItemsAsync(intent);
             return response;
         }, AppActionOptionPresets.Loading(ActionGetItems));
