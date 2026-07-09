@@ -52,6 +52,7 @@ public class InventoryTransferPayload
         U_AppBy = approvedBy;  
         U_NotedBy = notedBy;
         U_SchlYear = schlYear;
+        CardCode = Guard.Against.NullOrEmpty(cardCode, nameof(cardCode), "\"Card Code\" cannot be empty");
         StockTransferLines = Guard.Against.NullOrEmpty(lines, nameof(StockTransferLines), "Document Lines cannot be null or empty");
     }
 
@@ -89,4 +90,10 @@ public class InventoryTransferPayload
             cardCode: cardCode
         );
     }
+}
+
+
+public class InventoryTransferResponse
+{
+    public int DocEntry { get; set; }
 }

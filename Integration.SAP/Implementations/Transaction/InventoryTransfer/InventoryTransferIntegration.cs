@@ -220,7 +220,8 @@ public partial class InventoryTransferIntegration(
         string jsonString = JsonSerializer.Serialize(payload, jsonSerializerOptions);
         try
         {
-            var result = await SLActions.PostAsync<object, InventoryTransferPayload>("StockTransfers", payload);
+            var result = await SLActions.PostAsync<InventoryTransferResponse, InventoryTransferPayload>("StockTransfers", payload);
+            return result.DocEntry;
         }
         catch (SLException ex) when (ex.InnerException is Flurl.Http.FlurlHttpException httpException)
         {
@@ -247,6 +248,10 @@ public partial class InventoryTransferIntegration(
             {
                 throw;
             }
+        }
+        catch (Exception ex)
+        {
+            throw new InvalidOperationException(ex.Message, ex);
         }
 
         throw new InvalidOperationException("Something went wrong");
