@@ -166,7 +166,7 @@
                                         <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
                                             <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />
                                             <RadzenButton Icon="delivery_truck_speed" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@CopyFromDelivery" Visible="@(Creating && !FormData.DefinitivelyStandalone)" Disabled="@(!FormData.ValidateBusinessPartner())" Text="Copy from Delivery"/>
-                                            <RadzenButton Visible="@(Creating && FormData.Standalone)" Icon="add" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@AddItems" Disabled="@(string.IsNullOrEmpty(FormData.Warehouse?.WhsCode))" />
+                                            <RadzenButton Visible="@(Creating && (FormData.Standalone || FormData.DefinitivelyStandalone))" Icon="add" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@AddItems" Disabled="@(string.IsNullOrEmpty(FormData.Warehouse?.WhsCode))" />
                                         </RadzenStack>
                                     </RadzenStack>
                                 </HeaderTemplate>
