@@ -169,7 +169,12 @@ public partial class GoodsReceiptPOCVUPage
                 action.Result.Adapt(FormData);
 
                 if (Creating)
+                {
+                    FormData.DocDate = DateTime.Now;
+                    FormData.DocDueDate = DateTime.Now.AddDays(7);
                     FormData.ReceivedBy = AuthenticationService.GetUserName();
+
+                }
                 if (Viewing)
                     ParseTimeFromInt();
             }
