@@ -1,3 +1,4 @@
+@using Web.BlazorServer.ViewModels.Others
 @using Web.BlazorServer.ViewModels.Transaction.Delivery
 @using Web.BlazorServer.ViewModels.Transaction.SalesReturn
 
@@ -6,10 +7,25 @@
 <AppDataGrid @ref="@DeliveryDataGrid" Id="sales_return_delivery_selection_grid" TItem="DeliveryDataGridVM" DataGetter="@LoadDataAsync" GridSettings="@DeliveryDataGridSettings" @bind-GridSettingsLoaded="@GridSettingsLoaded" ActionName="@ActionGetDeliveries" ClearOnDispose="true" SearchFilter="@_searchFilter">
     <HeaderTemplate>
         <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center">
+            <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5em">
+            <RadzenDropDown @bind-Value="@SchoolYearFilter"
+                            @bind-Value:after="@(() => DeliveryDataGrid.DataGrid.Reload())"
+                            Data="@SchoolYears"
+                            Count="@SchoolYearsCount"
+                            LoadData="@LoadSchoolYears"
+                            TValue="SchoolYearVM"
+                            TextProperty="@nameof(SchoolYearVM.Name)"
+                            AllowVirtualization
+                            AllowClear
+                            Name="sr_sy_filter"
+                            AllowFiltering
+                            Placeholder="Filter by school year" />
             <AppDataGridSearchBar TItem="DeliveryDataGridVM"
                                   @bind-SearchFilter="_searchFilter"
                                   OnSearch="OnSearchAsync"
                                   Properties="@(new[] { nameof(DeliveryDataGridVM.CardCode), nameof(DeliveryDataGridVM.CardName), nameof(DeliveryDataGridVM.Remarks) })" />
+
+            </RadzenStack>
             <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
                 <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />
                 <RadzenButton Icon="sync" Size="ButtonSize.Small" Click="DeliveryDataGrid.ReloadDataAsync" />
@@ -38,6 +54,10 @@
                               Type="@typeof(string)"
                               Title="Customer Name" />
         <RadzenDataGridColumn TItem="DeliveryDataGridVM"
+                              Property="@nameof(DeliveryDataGridVM.SchoolYear)"
+                              Type="@typeof(string)"
+                              Title="School Year" />
+        <RadzenDataGridColumn TItem="DeliveryDataGridVM"
                               Property="@nameof(DeliveryDataGridVM.Remarks)"
                               Type="@typeof(string)"
                               Title="Remarks" />
@@ -58,7 +78,7 @@
         </RadzenDataGridColumn>
     </GridColumns>
 </AppDataGrid>
-<RadzenStack Orientation="Orientation.Horizontal" Gap="0.5em" JustifyContent="JustifyContent.End">
+<RadzenStack Orientation="Orientation.Horizontal" Gap="0.5em" JustifyContent="JustifyContent.End" class="rz-mt-3">
     <RadzenButton ButtonType="ButtonType.Button" Text="Clear Selection" Click="@(_ => _selection.Clear())" Disabled="@IsLoadingData" />
     <RadzenButton ButtonType="ButtonType.Button" ButtonStyle="ButtonStyle.Success" Text="Select" Click="@(_ => Select())" Disabled="@IsLoadingData" />
 </RadzenStack>

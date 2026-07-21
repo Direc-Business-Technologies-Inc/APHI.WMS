@@ -5,7 +5,10 @@ using Shared.Libraries.Kernel;
 using System.Collections.Immutable;
 using Web.BlazorServer.Components.Shared.Abstraction;
 using Web.BlazorServer.Defaults;
+using Web.BlazorServer.Handlers.Implementations.Others;
+using Web.BlazorServer.Handlers.Repositories.Others;
 using Web.BlazorServer.Handlers.Repositories.Transaction.Delivery;
+using Web.BlazorServer.Services.Implementation;
 using Web.BlazorServer.Services.Repositories;
 using Web.BlazorServer.ViewModels.Abstraction;
 using Web.BlazorServer.ViewModels.Others;
@@ -22,14 +25,23 @@ public partial class SalesReturnDeliverySelection
 
     [Inject] IDeliveryHandler DeliveryHandler { get; set; } = default!;
     [Inject] IGridSettingsService GridSettingsService { get; set; } = default!;
+    [Inject] ISchoolYearHandler SchoolYearHandler { get; set; } = default!;
+    IDataGridIntentAdapter DatagridAdapter { get; set; } = default!;
 
     AppDataGrid<DeliveryDataGridVM> DeliveryDataGrid { get; set; } = default!;
     DataGridSettings DeliveryDataGridSettings { get; set; } = new();
-
+    SchoolYearVM? SchoolYearFilter = null;
     string ActionGetDeliveries { get; } = EnumHelper.GetEnumDescription(AppActions.GetAllDeliveries);
+    string ActionGetSchoolYears { get; } = EnumHelper.GetEnumDescription(AppActions.GetSchoolYears);
+
     bool IsLoadingData => AppBusyService.IsBusy(ActionGetDeliveries);
     AppFilterDescriptor? _searchFilter;
     List<int> _selection = [];
+    List<SchoolYearVM> SchoolYears = [];
+    int SchoolYearsCount = 0;
+
+    const int SY_START_MONTH = 6;
+    const int SY_START_DAY = 8;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
@@ -44,7 +56,26 @@ public partial class SalesReturnDeliverySelection
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
+
+        DateTime syStart = new DateTime(
+            DateTime.Now.Year, 
+            SY_START_MONTH, 
+            SY_START_DAY);
+
+        string syCode = DateTime.Now < syStart ? 
+            $"{syStart.Year - 1}-{syStart.Year}" :
+            $"{syStart.Year}-{syStart.Year + 1}";
+
+        SchoolYearFilter = new()
+        {
+            Code = syCode,
+            Name = syCode,
+            U_YearFrom = "0",
+            U_YearTo = "0",
+        };
+        
         _selection = [.. Document.DocumentLines.Select(d => d.BaseEntry).Where(x => x > 0)];
+
     }
 
     async Task LoadGridSettings()
@@ -55,6 +86,40 @@ public partial class SalesReturnDeliverySelection
         await DeliveryDataGrid.DataGrid.ReloadSettings();
         await DeliveryDataGrid.DataGrid.Reload();
     }
+
+    async Task LoadSchoolYears(LoadDataArgs args)
+    {
+        var action = await AppActionFactory.RunAsync(async () =>
+        {
+            await Task.Yield();
+
+            AppBusyService.SetBusy(ActionGetSchoolYears, true);
+
+            DatagridAdapter = new DataGridIntentAdapter(args);
+            DatagridAdapter.AdaptToPagination();
+            if (DatagridAdapter.QueryIntent.Take <= 0)
+                DatagridAdapter.QueryIntent.Take = 5;
+
+            if (!string.IsNullOrEmpty(args.Filter))
+                DatagridAdapter.QueryIntent.Filters.Add(new()
+                {
+                    LogicalOperator = LogicalOperatorEnum.AND,
+                    Property = nameof(SchoolYearVM.Code),
+                    Value = args.Filter,
+                    ComparisonOperator = ComparisonOperatorEnum.Contains
+                });
+
+            (IEnumerable<SchoolYearVM> Data, int Count) = await SchoolYearHandler.GetSchoolYearsAsync(DatagridAdapter.QueryIntent);
+
+            SchoolYears = [.. Data];
+            SchoolYearsCount = Count;
+
+            AppBusyService.SetBusy(ActionGetSchoolYears, false);
+
+            await InvokeAsync(StateHasChanged);
+        }, AppActionOptionPresets.Loading(ActionGetSchoolYears));
+    }
+
 
     async Task<DataGridResultVM<DeliveryDataGridVM>> LoadDataAsync(DataGridIntent intent)
     {
@@ -69,6 +134,16 @@ public partial class SalesReturnDeliverySelection
                     ComparisonOperator = ComparisonOperatorEnum.Equals,
                     Property = "DocStatus"
                 });
+            if (SchoolYearFilter != null)
+            {
+                intent.Filters.Add(
+                    new AppFilterDescriptor
+                    {
+                        Value = SchoolYearFilter.Name,
+                        ComparisonOperator = ComparisonOperatorEnum.Equals,
+                        Property = "SchoolYear"
+                    });
+            }
 
             var response = CardCode is null ?
                 await DeliveryHandler.GetDeliveryDataGridAsync(intent) :

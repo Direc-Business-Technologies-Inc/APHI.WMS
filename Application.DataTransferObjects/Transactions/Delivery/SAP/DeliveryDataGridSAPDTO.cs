@@ -11,4 +11,5 @@ public class DeliveryDataGridSAPDTO
     public string Remarks { get; set; }
     public string DocStatus { get; set; }
     public string Area { get; set; } = string.Empty;
+    public string SchoolYear { get; set; } = string.Empty;
 }
