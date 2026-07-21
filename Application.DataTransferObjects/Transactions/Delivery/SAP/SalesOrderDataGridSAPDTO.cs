@@ -9,4 +9,6 @@ public class SalesOrderDataGridSAPDTO
     public string CardName { get; set; }
     public string ContactPerson { get; set; }
     public string Remarks { get; set; }
+    public string Area { get; set; } = string.Empty;
+
 }

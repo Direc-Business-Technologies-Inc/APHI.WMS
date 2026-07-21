@@ -10,5 +10,6 @@ public class DeliveryDataGridVM
     public string ContactPerson { get; set; } = "-";
     public string Remarks { get; set; } = "-";
     public string DocStatus { get; set; } = "-";
+    public string Area { get; set; } = string.Empty;
     public bool IsOpen => DocStatus.Equals("O", StringComparison.OrdinalIgnoreCase);
 }

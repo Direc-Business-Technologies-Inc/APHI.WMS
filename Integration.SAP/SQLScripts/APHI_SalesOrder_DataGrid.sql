@@ -2,6 +2,7 @@
 	 ORDR.DocEntry
 	,ORDR.DocNum
 	,ORDR.DocDate
+	,ORDR.U_Area [Area]
 	,ORDR.CardCode
 	,OCRD.CardName
 	,OCRD.CntctPrsn

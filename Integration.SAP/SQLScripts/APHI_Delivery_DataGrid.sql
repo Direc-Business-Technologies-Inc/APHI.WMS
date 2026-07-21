@@ -4,6 +4,7 @@ SELECT
 	,ODLN.DocDate
 	,ODLN.DocStatus
 	,ODLN.CardCode
+	,ODLN.U_Area [Area]
 	,OCRD.CardName
 	,OCRD.CntctPrsn [ContactPerson]
 	,ODLN.U_PrepBy [PreparedBy]

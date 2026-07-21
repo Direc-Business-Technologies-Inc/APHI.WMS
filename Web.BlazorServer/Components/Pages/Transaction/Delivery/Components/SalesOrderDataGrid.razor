@@ -43,6 +43,10 @@
                               Type="@typeof(string)"
                               Title="Remarks" />
         <RadzenDataGridColumn TItem="SalesOrderDataGridVM"
+                              Property="@nameof(SalesOrderDataGridVM.Area)"
+                              Type="@typeof(string)"
+                              Title="Area" />
+        <RadzenDataGridColumn TItem="SalesOrderDataGridVM"
                               Frozen
                               FrozenPosition="FrozenColumnPosition.Right"
                               Filterable="false"
