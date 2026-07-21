@@ -5,6 +5,9 @@
 @typeparam TItem where TItem : class
 
 <AppDataGridSkeleton TItem="TItem" Loading="@(!GridSettingsLoaded && !IsBusy)" />
+<div>
+
+</div>
 <RadzenDataGrid TItem="TItem"
                 Visible="@(GridSettingsLoaded && Visible && !IsBusy)"
                 @ref=@(DataGrid)
@@ -25,7 +28,7 @@
                 AllowSorting
                 FilterMode="@FilterMode.Advanced"
                 AllowPaging
-                ShowPagingSummary
+                ShowPagingSummary 
                 PagerHorizontalAlign="@HorizontalAlign.Right">
 
         <HeaderTemplate>

@@ -88,3 +88,11 @@ p, span {
     background-color: transparent !important;
     box-shadow: none !important;
 }
+
+.app-content .rz-data-grid .rz-data-grid-data, .app-content .rz-group-header {
+    min-width: 912px !important;
+}
+
+.app-content .rz-data-grid {
+    overflow-x: auto !important;
+}
