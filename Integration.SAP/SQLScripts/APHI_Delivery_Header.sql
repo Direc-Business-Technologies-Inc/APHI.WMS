@@ -21,6 +21,7 @@ SELECT
 	,ODLN.U_RecBy [ReceivedBy]
 	,ODLN.U_PrepBy [PreparedBy]
 	,ODLN.U_AppBy [ApprovedBy]
+	,ODLN.U_Area [Area]
 	,ODLN.U_NotedBy [NotedBy]
 FROM ODLN
 INNER JOIN OCRD ON ODLN.CardCode = OCRD.CardCode

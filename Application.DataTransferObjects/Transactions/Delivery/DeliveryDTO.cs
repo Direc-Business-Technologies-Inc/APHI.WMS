@@ -25,6 +25,7 @@ public class DeliveryDTO : MarketingDocumentDTO
     public string? NotedBy { get; set; } = null;
     public string PreparedBy { get; set; }
     public string? DeliveryMeans { get; set; } = null;
+    public string? Area { get; set; } = null;
     public string? Courier { get; set; } = null;
     public string? Driver { get; set; } = null;
 

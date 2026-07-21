@@ -25,6 +25,7 @@ public class DeliveryHeaderSAPDTO
     public string? DocRemarks { get; set; }
     public string? ReceivedBy { get; set; }
     public string? PreparedBy { get; set; }
+    public string? Area { get; set; }
     public string? ApprovedBy { get; set; }
     public string? NotedBy { get; set; }
 }
