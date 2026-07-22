@@ -144,7 +144,7 @@ public class DeliveryIntegration(
             WriteIndented = true
         });
 
-        await SLActions.PostAsync<object, DeliveryNotesPayload>("DeliveryNotes", payload);
+        await SLActions.PostAsync<object, DeliveryNotesPayload>("Drafts", payload);
 
         return true;
     }

@@ -21,6 +21,7 @@ public class GoodsReceiptPOPayload
     public string? U_AppBy { get; private set; }
     public string? U_NotedBy { get; private set; }
     public List<object> DocumentLines { get; private set; } = [];
+    public string DocObjectCode { get; } = "oPurchaseDeliveryNotes";
 
     public GoodsReceiptPOPayload(string cardCode,
                           DateTime docDate,

@@ -22,6 +22,7 @@ public class SalesReturnPayload
     public string? U_CheckBy { get; private set; }
     public string? U_NotedBy { get; private set; }
     public string? U_AppBy { get; private set; }
+    public string DocObjectCode { get; } = "oReturns";
 
     public List<object> DocumentLines { get; private set; } = [];
 

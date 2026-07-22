@@ -116,7 +116,7 @@ public class GoodsReturnIntegration(
 
         string json = JsonSerializer.Serialize(payload, new JsonSerializerOptions { WriteIndented = true });
 
-        await SLActions.PostAsync<object, PurchaseReturnPayload>("PurchaseReturns", payload);
+        await SLActions.PostAsync<object, PurchaseReturnPayload>("Drafts", payload);
 
         return true;
     }
@@ -146,7 +146,7 @@ public class GoodsReturnIntegration(
 
         string json = JsonSerializer.Serialize(payload, new JsonSerializerOptions { WriteIndented = true });
 
-        await SLActions.PostAsync<object, PurchaseReturnPayload>("PurchaseReturns", payload);
+        await SLActions.PostAsync<object, PurchaseReturnPayload>("Drafts", payload);
 
         return true;
     }
@@ -174,7 +174,7 @@ public class GoodsReturnIntegration(
                                             data.ReviewedBy,
                                             data.CheckedBy);
 
-        await SLActions.PostAsync<object, PurchaseReturnPayload>("PurchaseReturns", payload);
+        await SLActions.PostAsync<object, PurchaseReturnPayload>("Drafts", payload);
 
         return true;
     }

@@ -19,7 +19,7 @@ public class PurchaseReturnPayload
     public string? U_AppBy { get; private set; }
     public string? U_CheckBy { get; private set; }
     public string? U_RevBy { get; private set; }
-
+    public string DocObjectCode { get; } = "oPurchaseReturns";
 
     public List<object> DocumentLines { get; private set; } = [];
 

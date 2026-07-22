@@ -130,7 +130,7 @@ public class SalesReturnIntegration(
             data.NotedBy,
             data.ApprovedBy);
 
-        await SLActions.PostAsync<object, SalesReturnPayload>("Returns", payload);
+        await SLActions.PostAsync<object, SalesReturnPayload>("Drafts", payload);
 
         return true;
     }
@@ -171,7 +171,7 @@ public class SalesReturnIntegration(
             data.NotedBy,
             data.ApprovedBy);
 
-        await SLActions.PostAsync<object, SalesReturnPayload>("Returns", payload);
+        await SLActions.PostAsync<object, SalesReturnPayload>("Drafts", payload);
 
         return true;
     }
@@ -212,7 +212,7 @@ public class SalesReturnIntegration(
             data.NotedBy,
             data.ApprovedBy);
 
-        await SLActions.PostAsync<object, SalesReturnPayload>("Returns", payload);
+        await SLActions.PostAsync<object, SalesReturnPayload>("Drafts", payload);
 
         return true;
     }

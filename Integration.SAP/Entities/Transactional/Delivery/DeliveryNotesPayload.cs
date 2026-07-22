@@ -24,6 +24,7 @@ public class DeliveryNotesPayload
     public string? U_AppBy { get; private set; }
     public string? U_NotedBy { get; private set; }
     public IEnumerable<DeliveryNotesLinesPayload> DocumentLines { get; private set; }
+    public string DocObjectCode { get; } = "oDeliveryNotes";
 
     public DeliveryNotesPayload(string cardCode,
                                 DateTime docDate,

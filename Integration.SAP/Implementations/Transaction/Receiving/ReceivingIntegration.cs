@@ -151,7 +151,7 @@ public class ReceivingIntegration(
             WriteIndented = true
         });
 
-        await SLActions.PostAsync<object, GoodsReceiptPOPayload>("PurchaseDeliveryNotes", payload);
+        await SLActions.PostAsync<object, GoodsReceiptPOPayload>("Drafts", payload);
 
         return true;
     }
