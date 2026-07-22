@@ -229,7 +229,7 @@ public partial class DeliveryCVUPage
                 FormData.ContactPerson = action.Result.ContactPerson;
                 FormData.SchoolYear = action.Result.SchoolYear;
                 FormData.Designation = action.Result.Designation;
-                FormData.DocDate = action.Result.DocDate;
+                FormData.DocDate = DateTime.Today;
                 FormData.PostingDate = DateTime.Today;
                 FormData.DeliveryDate = action.Result.DocDueDate;
                 FormData.DocumentDate = DateTime.Today;
