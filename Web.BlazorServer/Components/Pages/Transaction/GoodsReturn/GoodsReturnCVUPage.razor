@@ -161,6 +161,7 @@
                                                            @bind-SearchFilter="_grLinesFilter"
                                                            SuggestionSource="@FormData.DocumentLines" />
                                         <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.End" AlignItems="AlignItems.Center" Gap="8px">
+                                            <RadzenButton Icon="qr_code_scanner" Text="Scan" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Primary" Visible="@Creating" Click="@OpenScannerDialog" />
                                             <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenTableSettings" />
                                             <RadzenButton Visible="@Creating" Icon="add" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Success" Click="@AddItems" Disabled="@(string.IsNullOrEmpty(FormData.Warehouse?.WhsCode))" />
                                         </RadzenStack>
