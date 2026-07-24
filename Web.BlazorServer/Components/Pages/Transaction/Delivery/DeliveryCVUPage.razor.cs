@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.Components;
 using Radzen;
 using Shared.Libraries.Entities;
 using Shared.Libraries.Kernel;
+using Web.BlazorServer.Components.Pages.Transaction.InventoryCounting.Components;
+using Web.BlazorServer.Components.Pages.Transaction.Receiving.Components;
 using Web.BlazorServer.Components.Shared.Abstraction;
 using Web.BlazorServer.Defaults;
 using Web.BlazorServer.Handlers.Repositories.Transaction.Delivery;
@@ -12,7 +14,9 @@ using Web.BlazorServer.Services.Implementation;
 using Web.BlazorServer.Services.Repositories;
 using Web.BlazorServer.ViewModels.Enums;
 using Web.BlazorServer.ViewModels.System;
+using Web.BlazorServer.ViewModels.Transaction.Commons;
 using Web.BlazorServer.ViewModels.Transaction.Delivery;
+using Web.BlazorServer.ViewModels.Transaction.Receiving;
 
 namespace Web.BlazorServer.Components.Pages.Transaction.Delivery;
 
@@ -307,5 +311,62 @@ public partial class DeliveryCVUPage
         NavManager.NavigateTo($"/transactions/sales/delivery?T={tab}", true);
     }
 
+    async Task OpenScannerDialog()
+    {
+        await DialogService.OpenAsync<InventoryCountingScanner>(
+            "Scan Barcode",
+            new Dictionary<string, object>
+            {
+                { "OnScan", EventCallback.Factory.Create<string>(this, HandleScanResult) },
+                { "Items", FormData.DocumentLines.Cast<ItemVM>() }
+            },
+            options: new Radzen.DialogOptions
+            {
+                Width = "400px",
+                CloseDialogOnOverlayClick = false,
+            });
+    }
+
+    async Task HandleScanResult(string isbn)
+    {
+        var matchingLines = SalesOrderData.DocumentLines.Where(l =>
+            !string.IsNullOrWhiteSpace(l.ISBN) &&
+            l.ISBN.Equals(isbn, StringComparison.OrdinalIgnoreCase)).ToList();
+
+        if (matchingLines.Count == 0)
+        {
+            ToastService.Warning($"No item found for barcode: {isbn}");
+            return;
+        }
+
+        SalesOrderLineVM? selectedLine = null;
+
+        if (matchingLines.Count == 1)
+        {
+            selectedLine = matchingLines.First();
+        }
+        else
+        {
+            selectedLine = await DialogService.OpenAsync<ItemSelectionDialog>(
+                "Select Item",
+                new Dictionary<string, object> { { "Items", matchingLines } },
+                new Radzen.DialogOptions { Width = "600px" });
+        }
+
+        if (selectedLine != null)
+        {
+            if (selectedLine.Quantity >= selectedLine.OpenQty)
+            {
+                ToastService.Warning($"Item {selectedLine.ItemCode} has already reached its planned quantity.");
+                return;
+            }
+
+            selectedLine.Quantity += 1;
+            await SalesOrderLinesTable.DataGrid.Reload();
+            await InvokeAsync(StateHasChanged);
+
+            ToastService.Success($"Incremented quantity for {selectedLine.ItemCode}");
+        }
+    }
     #endregion Custom Functions
 }

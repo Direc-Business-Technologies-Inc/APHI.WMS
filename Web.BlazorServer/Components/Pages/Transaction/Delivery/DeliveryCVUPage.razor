@@ -177,7 +177,10 @@
                                                                Properties="@(new[] { nameof(SalesOrderLineVM.ItemCode), nameof(SalesOrderLineVM.ItemName) })"
                                                                @bind-SearchFilter="_soLinesFilter"
                                                                SuggestionSource="@SalesOrderData.DocumentLines" />
-                                            <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenSalesOrderTableSettings" />
+                                            <RadzenStack Orientation="Orientation.Horizontal">
+                                                <RadzenButton Icon="qr_code_scanner" Text="Scan" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Primary" Visible="@Creating" Click="@OpenScannerDialog" />
+                                                <RadzenButton Icon="settings" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Light" Click="@OpenSalesOrderTableSettings" />
+                                            </RadzenStack>
                                         </RadzenStack>
                                     </HeaderTemplate>
                                     <Columns>
