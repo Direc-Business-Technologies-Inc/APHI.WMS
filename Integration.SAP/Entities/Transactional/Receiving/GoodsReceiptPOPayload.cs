@@ -49,18 +49,19 @@ public class GoodsReceiptPOPayload
         Comments = "Posted from WMS";
         U_SchlYear = schlYear;
         U_PONo = poNo;
-        U_DRNo = drNo;
+        U_DRNo = Guard.Against.NullOrEmpty(drNo, nameof(U_DRNo), "DR No. cannot be null or empty");
         U_Time = time;
         U_SINo = siNo;
-        U_DelBy = delBy;
-        U_RecBy = recBy;
+        U_DelBy = Guard.Against.NullOrEmpty(delBy, nameof(U_DelBy), "Delivered By cannot be null or empty");
+        U_RecBy = Guard.Against.NullOrEmpty(recBy, nameof(U_DelBy), "Received By cannot be null or empty");
         U_Remarks = docRemarks;
-        U_PrepBy = prepBy;
-        U_RevBy = revBy;
+        U_PrepBy = Guard.Against.NullOrEmpty(prepBy, nameof(U_PrepBy), "Prepared By cannot be null or empty");
+        U_RevBy = Guard.Against.NullOrEmpty(revBy, nameof(U_RevBy), "Reviewed By cannot be null or empty");
         U_AppBy = appBy;
         U_NotedBy = notedBy;
-        U_Time = time;
+        U_Time = Guard.Against.Null(time, nameof(U_Time), "Time cannot be null or empty");
         U_PurchType = purchType;
         U_ItemName = itemName;
+        // required fields: U_DRNo, U_DelBy, U_Time, U_PrepBy, U_RevBy, U_RecBy
     }
 }

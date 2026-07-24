@@ -124,6 +124,9 @@
                                     <ChildContent>
                                         <RadzenTextBox ReadOnly="@Viewing" @bind-Value="@FormData.DRNo" Placeholder="DR-4004" Name="po_dr_no" Disabled="@IsBusy" class="rz-w-100" />
                                     </ChildContent>
+                                    <Helper>
+                                        <RadzenRequiredValidator Component="po_dr_no" />
+                                    </Helper>
                                 </RadzenFormField>
                             </RadzenColumn>
                             <RadzenColumn Size="12" SizeMD="@(FormData.ItemGroupCodes.Contains("100") ? 3 : 4)">
@@ -131,6 +134,9 @@
                                     <ChildContent>
                                         <RadzenTextBox ReadOnly="@Viewing" @bind-Value="@FormData.DeliveredBy" Placeholder="USER ABC" Name="po_delivered_by" Disabled="@IsBusy" class="rz-w-100" />
                                     </ChildContent>
+                                    <Helper>
+                                        <RadzenRequiredValidator Component="po_delivered_by" />
+                                    </Helper>
                                 </RadzenFormField>
                             </RadzenColumn>
                             <RadzenColumn Size="12" SizeMD="@(FormData.ItemGroupCodes.Contains("100") ? 3 : 4)" Visible="@(FormData.ItemGroupCodes.Contains("100"))">
@@ -145,6 +151,9 @@
                                     <ChildContent>
                                         <RadzenDatePicker ShowTime="true" TimeOnly="true" DateFormat="HH:mm" Name="po_time" Placeholder="1400" @bind-Value="@Time" @bind-Value:after="@ParseIntTime" />
                                     </ChildContent>
+                                    <Helper>
+                                        <RadzenRequiredValidator Component="po_time" />
+                                    </Helper>
                                 </RadzenFormField>
                             </RadzenColumn>
                         </RadzenRow>
@@ -299,11 +308,17 @@
                             <ChildContent>
                                 <RadzenTextBox ReadOnly Value="@FormData.PreparedBy" Name="gr_prep_by" Placeholder="WMS User ABC" Disabled="@IsBusy" class="rz-w-100" />
                             </ChildContent>
+                            <Helper>
+                                <RadzenRequiredValidator Component="gr_prep_by" />
+                            </Helper>
                         </RadzenFormField>
                         <RadzenFormField Text="Received By" class="rz-w-100" AllowFloatingLabel="false">
                             <ChildContent>
                                 <RadzenTextBox ReadOnly="@Viewing" Value="@FormData.ReceivedBy" Name="gr_rec_by" Placeholder="WMS User DEF" Disabled="@IsBusy" class="rz-w-100" />
                             </ChildContent>
+                            <Helper>
+                                <RadzenRequiredValidator Component="gr_rec_by" />
+                            </Helper>
                         </RadzenFormField>
                         <RadzenFormField Text="Approved By" class="rz-w-100" AllowFloatingLabel="false">
                             <ChildContent>
@@ -314,6 +329,9 @@
                             <ChildContent>
                                 <RadzenTextBox ReadOnly="@Viewing" @bind-Value="@FormData.ReviewedBy" Name="gr_rev_by" Placeholder="WMS User B" Disabled="@IsBusy" class="rz-w-100" />
                             </ChildContent>
+                            <Helper>
+                                <RadzenRequiredValidator Component="gr_rev_by" />
+                            </Helper>
                         </RadzenFormField>
                         <RadzenFormField Text="Noted By" class="rz-w-100" AllowFloatingLabel="false">
                             <ChildContent>
