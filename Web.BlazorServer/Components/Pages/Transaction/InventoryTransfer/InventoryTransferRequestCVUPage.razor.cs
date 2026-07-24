@@ -73,6 +73,8 @@ public partial class InventoryTransferRequestCVUPage
 
     const string NO_ITEMS_ALERT = "No Items Selected";
     const string NO_ALLOTED_ITEMS_ALERT = "No Items Alloted";
+    const string BORROWING_TO_WAREHOUSE_ALERT = "To Warehouse must be business partner's assigned warehouse when transfer type is borrowing";
+    const string BORROWING_FROM_WAREHOUSE_ALERT = "From Warehouse must be SSC-blocked when transfer type is borrowing";
     const string REMOVE_ZERO_ALLOTED_PROMPT = "Some Items have 0 alloted quantities.\nThese items will be removed.";
 
     List<WarehouseVM> Warehouses { get; set; } = [];
@@ -90,6 +92,9 @@ public partial class InventoryTransferRequestCVUPage
     DataGridSettings InventoryTransferRequestTableSettings { get; set; } = new();
     #endregion
 
+    Task GetBPWarehouse = Task.CompletedTask;
+    List<WarehouseVM> BPWarehouses = [];
+
     #region Overrides
     protected override void OnParametersSet()
     {
@@ -101,6 +106,9 @@ public partial class InventoryTransferRequestCVUPage
         {
             FormData.PreparedBy = AuthenticationService.GetUserName();
         }
+
+        GetBPWarehouse = Task.CompletedTask;
+
         InvokeAsync(StateHasChanged);
     }
 
@@ -158,6 +166,22 @@ public partial class InventoryTransferRequestCVUPage
             if (!await AlertService.PromptAsync(REMOVE_ZERO_ALLOTED_PROMPT))
                 return;
             FormData.Lines = [.. FormData.Lines.ToList().Where(x => x.AllotedQuantity > 0)];
+        }
+
+        await GetBPWarehouse;
+
+        if (FormData.TransferType?.Name.ToLowerInvariant().Trim().Equals("borrowing") ?? false)
+        {
+            if (!BPWarehouses.Any(x => x.WhsCode.Equals(FormData.ToWarehouse?.WhsCode)))
+            {
+                ToastService.Warning(BORROWING_TO_WAREHOUSE_ALERT);
+                return;
+            }
+            if (!(FormData.FromWarehouse?.WhsCode.ToLowerInvariant().Equals("ssc") ?? false))
+            {
+                ToastService.Warning(BORROWING_FROM_WAREHOUSE_ALERT);
+                return;
+            }
         }
 
         var action = await AppActionFactory.RunAsync(async () =>
@@ -277,10 +301,28 @@ public partial class InventoryTransferRequestCVUPage
         });
     }
 
+    async Task LoadBPWarehouses(string cardCode)
+    {
+        BPWarehouses = [.. await BusinessPartnerHandler.GetBusinessPartnerWarehouses(cardCode)];
+    }
+
+    async Task LoadBPWarehouses()
+    {
+        if (FormData.BusinessPartner is null || string.IsNullOrEmpty(FormData.BusinessPartner?.CardCode))
+            GetBPWarehouse = Task.CompletedTask;
+        else
+            GetBPWarehouse = LoadBPWarehouses(FormData.BusinessPartner.CardCode);
+
+        await GetBPWarehouse;
+    }
+
+
     async Task LoadWarehouses(LoadDataArgs args)
     {
+
         var action = await AppActionFactory.RunAsync(async () =>
         {
+            await GetBPWarehouse;
             await Task.Yield();
 
             AppBusyService.SetBusy(ActionGetWarehouses, true);
@@ -324,7 +366,6 @@ public partial class InventoryTransferRequestCVUPage
             AppBusyService.SetBusy(ActionGetWarehouses, false);
         }, AppActionOptionPresets.Loading(ActionGetWarehouses));
         await InvokeAsync(StateHasChanged);
-
     }
 
     async Task LoadSchoolYears(LoadDataArgs args)
@@ -491,6 +532,48 @@ public partial class InventoryTransferRequestCVUPage
             ToastService.Success($"Incremented quantity for {selectedLine.ItemCode}");
         }
     }
+
+    bool IsFromWarehouseValid(WarehouseVM whs)
+    {
+        if (!(FormData.TransferType?.Name.ToLowerInvariant().Trim().Equals("borrowing") ?? false))
+            return true;
+
+        return whs.Block.Trim().ToLowerInvariant().Equals("ssc");
+
+    }
+
+    bool IsToWarehouseValid(WarehouseVM whs)
+    {
+        if (!(FormData.TransferType?.Name.ToLowerInvariant().Trim().Equals("borrowing") ?? false))
+            return true;
+
+        return BPWarehouses.Any(x => x.WhsCode.ToLowerInvariant().Equals(whs.WhsCode.ToLowerInvariant()));
+    }
+
+    async Task SetFromWarehouse(WarehouseVM? whs)
+    {
+        var oldWhs = FormData.FromWarehouse;
+        FormData.FromWarehouse = whs;
+
+        if (whs != null && !IsFromWarehouseValid(whs))
+        {
+            await Task.Yield();
+            FormData.FromWarehouse = oldWhs;
+        }
+    }
+
+    async Task SetToWarehouse(WarehouseVM? whs)
+    {
+        var oldWhs = FormData.ToWarehouse;
+        FormData.ToWarehouse = whs;
+
+        if (whs != null && !IsToWarehouseValid(whs))
+        {
+            await Task.Yield();
+            FormData.ToWarehouse = oldWhs;
+        }
+    }
+
     #endregion Custom Functions
 }
 

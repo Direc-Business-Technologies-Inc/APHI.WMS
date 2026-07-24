@@ -51,6 +51,7 @@
                                     <RadzenTextBox Visible="@Viewing" Value="@(FormData.BusinessPartner?.CardCode ?? string.Empty)" Name="itr_card_code" Disabled="@IsBusy" class="rz-w-100" Placeholder="Card Code" />
                                     <RadzenDropDown Visible="@(Creating)"
                                                     @bind-Value="@FormData.BusinessPartner"
+                                                    @bind-Value:after="LoadBPWarehouses"
                                                     Data="@BusinessPartners"
                                                     Count="@BusinessPartnersCount"
                                                     LoadData="@(args => LoadBusinessPartners(args, "CardCode"))"
@@ -93,7 +94,8 @@
                                                        Disabled="@IsBusy"
                                                        class="rz-w-100" />
                                         <RadzenDropDown Visible="@(Creating)"
-                                                        @bind-Value="@FormData.FromWarehouse"
+                                                        @bind-Value:get="@FormData.FromWarehouse"
+                                                        @bind-Value:set="SetFromWarehouse"
                                                         Data="@Warehouses"
                                                         Count="@WarehousesCount"
                                                         LoadData="@LoadWarehouses"
@@ -104,7 +106,22 @@
                                                         Change="@OnSourceWarehouseChanged"
                                                         TextProperty="@(nameof(WarehouseVM.DisplayString))"
                                                         Placeholder="No Warehouse Selected"
-                                                        class="rz-w-100" />
+                                                        class="rz-w-100">
+                                            <Template Context="whs">
+                                                @if (IsFromWarehouseValid(whs)) 
+                                                {
+                                                    <RadzenText TextStyle="TextStyle.Body2" Style="color: var(--rz-text-disabled-color, #a0a0a0)">
+                                                        @whs.DisplayString
+                                                    </RadzenText>
+                                                } else
+                                                {
+                                                    <RadzenText TextStyle="TextStyle.Body2">
+                                                        @whs.DisplayString
+                                                    </RadzenText>
+                                                }
+                                                
+                                            </Template>
+                                        </RadzenDropDown>
                                     </ChildContent>
                                     <Helper>
                                         <RadzenCustomValidator Visible="@(Creating)"
@@ -127,7 +144,8 @@
                                                        Disabled="@IsBusy"
                                                        class="rz-w-100" />
                                         <RadzenDropDown Visible="@(Creating)"
-                                                        @bind-Value="@FormData.ToWarehouse"
+                                                        @bind-Value:get="@FormData.ToWarehouse"
+                                                        @bind-Value:set="SetToWarehouse"
                                                         Data="@Warehouses"
                                                         Count="@WarehousesCount"
                                                         LoadData="@LoadWarehouses"
@@ -137,7 +155,22 @@
                                                         AllowFiltering
                                                         TextProperty="@(nameof(WarehouseVM.DisplayString))"
                                                         Placeholder="No Warehouse Selected"
-                                                        class="rz-w-100" />
+                                                        class="rz-w-100">
+                                            <Template Context="whs">
+                                                @if (IsToWarehouseValid(whs)) 
+                                                {
+                                                    <RadzenText TextStyle="TextStyle.Body2" Style="color: var(--rz-text-disabled-color, #a0a0a0)">
+                                                        @whs.DisplayString
+                                                    </RadzenText>
+                                                } else
+                                                {
+                                                    <RadzenText TextStyle="TextStyle.Body2">
+                                                        @whs.DisplayString
+                                                    </RadzenText>
+                                                }
+                                                
+                                            </Template>
+                                        </RadzenDropDown>
                                     </ChildContent>
                                     <Helper>
                                         <RadzenCustomValidator Visible="@(Creating)"

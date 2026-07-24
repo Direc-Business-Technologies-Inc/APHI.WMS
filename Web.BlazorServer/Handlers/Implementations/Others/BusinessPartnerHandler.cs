@@ -35,4 +35,12 @@ public class BusinessPartnerHandler(
 
         return (Data.Adapt<IEnumerable<BusinessPartnerVM>>(), Count);
     }
+
+    public async Task<IEnumerable<WarehouseVM>> GetBusinessPartnerWarehouses(string cardCode)
+    {
+        GetBusinessPartnerWarehousesQry qry = new(cardCode);
+        var warehouseDTOs = await Sender.Send(qry);
+
+        return warehouseDTOs.Adapt<IEnumerable<WarehouseVM>>();
+    }
 }

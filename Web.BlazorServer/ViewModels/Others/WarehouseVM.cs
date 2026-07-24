@@ -4,5 +4,7 @@ public class WarehouseVM
 {
     public string WhsCode { get; set; } = string.Empty;
     public string WhsName { get; set; } = string.Empty;
+    public string Block { get; set; } = string.Empty;
+    public bool Disabled { get; set; } = false;
     public string DisplayString => string.IsNullOrEmpty(WhsCode) ? WhsName : $"[{WhsCode}] {WhsName}";
 }

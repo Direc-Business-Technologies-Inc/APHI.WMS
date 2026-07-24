@@ -1,0 +1,7 @@
+﻿SELECT
+	 OWHS.WhsCode
+	,OWHS.WhsName
+	,OCRD.CardCode
+FROM OCRD
+JOIN CRD1 ON OCRD.CardCode = CRD1.CardCode
+JOIN OWHS ON OWHS.WhsCode = CRD1.U_Whs

@@ -26,6 +26,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Remove="SQLScripts\APHI_Others_BP_Warehouses.cs" />
 	  <Compile Remove="SQLScripts\Class1.cs" />
 	</ItemGroup>
 

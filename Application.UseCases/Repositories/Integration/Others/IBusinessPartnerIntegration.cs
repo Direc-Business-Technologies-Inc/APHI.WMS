@@ -1,4 +1,5 @@
-﻿using Application.DataTransferObjects.Others.SAP;
+﻿using Application.DataTransferObjects.Others;
+using Application.DataTransferObjects.Others.SAP;
 using Shared.Libraries.Entities;
 
 namespace Application.UseCases.Repositories.Integration.Others;
@@ -8,4 +9,5 @@ public interface IBusinessPartnerIntegration
     Task<(IEnumerable<BusinessPartnerSAPDTO> Data, int Count)> GetCustomersAsync(DataGridIntent intent);
     Task<(IEnumerable<BusinessPartnerSAPDTO> Data, int Count)> GetVendorsAsync(DataGridIntent intent);
     Task<(IEnumerable<BusinessPartnerSAPDTO> Data, int Count)> GetAllAsync(DataGridIntent intent);
+    Task<IEnumerable<WarehouseDTO>> GetBusinessPartnerWarehouses(string bpCode);
 }

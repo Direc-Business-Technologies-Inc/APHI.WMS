@@ -1,4 +1,5 @@
-﻿using Application.DataTransferObjects.Others.SAP;
+﻿using Application.DataTransferObjects.Others;
+using Application.DataTransferObjects.Others.SAP;
 using Application.UseCases.Repositories.Integration.Others;
 using Database.Libraries.Repositories;
 using Integration.Sap.Entities;
@@ -83,5 +84,43 @@ public class BusinessPartnerIntegration(
         TotalRows? rowCount = await SLActions.RawQueryOneAsync<TotalRows>(countQuery);
 
         return (data, rowCount?.Count ?? data.Count);
+    }
+
+    public async Task<IEnumerable<WarehouseDTO>> GetBusinessPartnerWarehouses(string bpCode)
+    {
+        DataGridIntent FilterIntent = new DataGridIntent()
+        {
+            Take = 9999, // feelsbadman,
+            Skip = 0
+        };
+
+        FilterIntent.Filters.Add(new AppFilterDescriptor()
+        {
+            Value = bpCode,
+            Property = "CardCode",
+            ComparisonOperator = ComparisonOperatorEnum.Equals
+        });
+
+        var qryDetails = qryManager.GetSqlScriptWithMetadata("APHI_Others_BP_Warehouses", out string qry, out bool found);
+        if (!found)
+            throw new Exception("Base query for getting all business partner warehouses not found.");
+
+        string query = DataGridQueryBuilder.BuildQuery(qry, FilterIntent);
+        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, FilterIntent);
+
+        List<WarehouseCardCodeDTO> data = await SLActions.RawQueryAsync<WarehouseCardCodeDTO>(query);
+        TotalRows? rowCount = await SLActions.RawQueryOneAsync<TotalRows>(countQuery);
+
+        return data.Select(x => new WarehouseDTO() { 
+            WhsCode = x.WhsCode, 
+            WhsName = x.WhsName 
+        });
+    }
+
+    private class WarehouseCardCodeDTO
+    {
+        public string WhsCode {get; set;} = string.Empty;
+        public string WhsName { get; set; } = string.Empty;
+	    public string CardCode {get; set;} = string.Empty;
     }
 }
