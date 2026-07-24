@@ -245,6 +245,7 @@
                                                       ButtonStyle="ButtonStyle.Success"
                                                       Click="@AddItems"
                                                       Disabled="@(string.IsNullOrEmpty(FormData.FromWarehouse?.WhsCode))" />
+                                        <RadzenButton Icon="qr_code_scanner" Text="Scan" Size="ButtonSize.Small" ButtonStyle="ButtonStyle.Primary" Visible="@Creating" Click="@OpenScannerDialog" />
                                     </RadzenStack>
                                 </RadzenStack>
                             </HeaderTemplate>
