@@ -51,20 +51,21 @@ public class SalesReturnPayload
         CardCode = Guard.Against.NullOrEmpty(cardCode, nameof(CardCode));
         U_PrepBy = Guard.Against.NullOrEmpty(prepBy, nameof(U_PrepBy));
         Comments = "Posted from WMS";
-        U_RetType = returnType;
+        U_RetType = Guard.Against.NullOrEmpty(returnType, nameof(U_RetType));
         U_SchlYear = schoolYear;
         U_DRNo = drNo;
         U_SINo = siNo;
-        U_PURNo = purNo;
+        U_PURNo = Guard.Against.NullOrEmpty(purNo, nameof(U_PURNo));
         U_SONo = soNo;
-        U_Designation = designation;
-        U_ReturnedBy = returnedBy;
-        U_PickBy = pickBy;
+        U_Designation = Guard.Against.NullOrEmpty(designation, nameof(U_Designation));
+        U_ReturnedBy = Guard.Against.NullOrEmpty(returnedBy, nameof(U_ReturnedBy));
+        U_PickBy = Guard.Against.NullOrEmpty(pickBy, nameof(U_PickBy));
         U_Remarks = docRemarks;
-        U_CheckBy = checkedBy;
+        U_CheckBy = Guard.Against.NullOrEmpty(checkedBy, nameof(U_CheckBy));
         U_NotedBy = notedBy;
         U_AppBy = approvedBy;
 
         DocumentLines = [.. Guard.Against.NullOrEmpty(documentLines, nameof(DocumentLines))];
+        // U_PURNo U_RetBy U_Desig U_PickBy U_CheckBy U_PrepBy U_RetType U_SONo
     }
 }

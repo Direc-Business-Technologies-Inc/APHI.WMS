@@ -71,6 +71,9 @@
                                                         Placeholder="No Return Type"
                                                         class="rz-w-100" />
                                     </ChildContent>
+                                    <Helper>
+                                        <RadzenRequiredValidator Component="sr_ret_typ" />
+                                    </Helper>
                                 </RadzenFormField>
                             </RadzenColumn>
                         </RadzenRow>
@@ -100,6 +103,9 @@
                                     <ChildContent>
                                         <RadzenTextBox ReadOnly="@Viewing" @bind-Value="@FormData.PURNo" Placeholder="DR-015" Name="sr_dr_no" Disabled="@IsBusy" class="rz-w-100" />
                                     </ChildContent>
+                                    <Helper>
+                                        <RadzenRequiredValidator Component="sr_dr_no" />
+                                    </Helper>
                                 </RadzenFormField>
                             </RadzenColumn>
                         </RadzenRow>
@@ -249,11 +255,41 @@
                             <ChildContent>
                                 <RadzenTextBox ReadOnly Value="@FormData.PreparedBy" Name="sr_prep_by" Disabled="@IsBusy" class="rz-w-100" />
                             </ChildContent>
+                            <Helper>
+                                <RadzenRequiredValidator Component="sr_prep_by" />
+                            </Helper>
                         </RadzenFormField>
                         <RadzenFormField Text="Checked By" class="rz-w-100" AllowFloatingLabel="false">
                             <ChildContent>
                                 <RadzenTextBox ReadOnly="@Viewing" @bind-Value="@FormData.CheckedBy" Name="sr_chkd_by" Placeholder="WMS User A" Disabled="@IsBusy" class="rz-w-100" />
                             </ChildContent>
+                            <Helper>
+                                <RadzenRequiredValidator Component="sr_chkd_by" />
+                            </Helper>
+                        </RadzenFormField>
+                        <RadzenFormField Text="Returned By" class="rz-w-100" AllowFloatingLabel="false">
+                            <ChildContent>
+                                <RadzenTextBox ReadOnly="@Viewing" @bind-Value="@FormData.ReturnedBy" Name="sr_ret_by" Placeholder="WMS User A" Disabled="@IsBusy" class="rz-w-100" />
+                            </ChildContent>
+                            <Helper>
+                                <RadzenRequiredValidator Component="sr_ret_by" />
+                            </Helper>
+                        </RadzenFormField>
+                        <RadzenFormField Text="Designation By" class="rz-w-100" AllowFloatingLabel="false">
+                            <ChildContent>
+                                <RadzenTextBox ReadOnly="@Viewing" @bind-Value="@FormData.Designation" Name="sr_desig_by" Placeholder="WMS User A" Disabled="@IsBusy" class="rz-w-100" />
+                            </ChildContent>
+                            <Helper>
+                                <RadzenRequiredValidator Component="sr_desig_by" />
+                            </Helper>
+                        </RadzenFormField>
+                        <RadzenFormField Text="Picked By" class="rz-w-100" AllowFloatingLabel="false">
+                            <ChildContent>
+                                <RadzenTextBox ReadOnly="@Viewing" @bind-Value="@FormData.PickBy" Name="sr_pick_by" Placeholder="WMS User A" Disabled="@IsBusy" class="rz-w-100" />
+                            </ChildContent>
+                            <Helper>
+                                <RadzenRequiredValidator Component="sr_pick_by" />
+                            </Helper>
                         </RadzenFormField>
                         <RadzenFormField Text="Noted By" class="rz-w-100" AllowFloatingLabel="false">
                             <ChildContent>
