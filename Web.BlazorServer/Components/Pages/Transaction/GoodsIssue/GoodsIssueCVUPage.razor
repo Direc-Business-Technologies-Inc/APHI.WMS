@@ -73,6 +73,10 @@
                                                         Placeholder="No Business Partner Selected"
                                                         class="rz-w-100" />
                                     </ChildContent>
+                                    <Helper>
+                                        <RadzenCustomValidator Validator="@(() => !(FormData.TransactionType?.Name.ToLowerInvariant().Equals("samples") ?? false) || (FormData.BusinessPartner?.CardName is not null))" Component="gr_bp_selection" Text="Required" />
+                                        <RadzenCustomValidator Validator="@(() => (FormData.TransactionType?.Name.ToLowerInvariant().Equals("adjustments") ?? false) || (FormData.BusinessPartner?.CardCode is not null))" Component="gr_bp_selection" Text="Required" />
+                                    </Helper>
                                 </RadzenFormField>
                             </RadzenColumn>
                             <RadzenColumn Size="12" SizeMD="4">
@@ -147,6 +151,9 @@
                                     <ChildContent>
                                         <RadzenTextBox ReadOnly="@Viewing" @bind-Value="@FormData.Designation" Name="gr_designation" Placeholder="Administrator" Disabled="@IsBusy" class="rz-w-100" />
                                     </ChildContent>
+                                    <Helper>
+                                        <RadzenCustomValidator Validator="@(() => !(FormData.TransactionType?.Name.ToLowerInvariant().Equals("samples") ?? false) || (FormData.Designation is not null))" Component="gr_designation" Text="Required" />
+                                    </Helper>
                                 </RadzenFormField>
                             </RadzenColumn>
                             <RadzenColumn Size="12" SizeMD="4">
@@ -154,11 +161,14 @@
                                     <ChildContent>
                                         <RadzenTextBox ReadOnly="@Viewing" @bind-Value="@FormData.ReceivedBy" Name="gr_rec_by" Placeholder="Contact Person A" Disabled="@IsBusy" class="rz-w-100" />
                                     </ChildContent>
+                                    <Helper>
+                                        <RadzenCustomValidator Validator="@(() => (FormData.TransactionType?.Name.ToLowerInvariant().Equals("adjustments") ?? false) || !string.IsNullOrEmpty(FormData.ReceivedBy))" Component="gr_rec_by" Text="Required"/>
+                                    </Helper>
                                 </RadzenFormField>
                             </RadzenColumn>
                         </RadzenRow>
 
-                    </RadzenStack>
+                    </RadzenStack>  
                 </ChildContent>
             </RadzenFieldset>
 

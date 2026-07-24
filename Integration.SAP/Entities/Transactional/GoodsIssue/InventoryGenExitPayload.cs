@@ -35,14 +35,24 @@ public class InventoryGenExitPayload
         U_TransType = Guard.Against.NullOrEmpty(transType, nameof(U_TransType), "Transaction Type cannot be null or empty");
         DocumentLines = Guard.Against.NullOrEmpty(lines, nameof(DocumentLines), "Document Lines cannot be null or empty");
         Comments = "Posted from WMS";
-        U_BpCode = bpCode;
-        U_BPName = bpName;
+        U_BpCode = transType.Trim().ToLowerInvariant().Equals("adjustments") ?
+            Guard.Against.NullOrEmpty(bpCode, nameof(U_BpCode), "U_BpCode cannot be null or empty") :
+            bpCode != null ?
+                throw new Exception("Cannot use BP Code when transaction type is adjustment") :
+                null;
+        U_BPName = transType.Trim().ToLowerInvariant().Equals("samples") ?
+            Guard.Against.NullOrEmpty(bpName, nameof(U_BPName), "U_BPName cannot be null or empty") :
+            bpName;
         U_SchlYear = schlyear;
         U_SRFNo = srfNo;
-        U_Desig = designation;
+        U_Desig = transType.Trim().ToLowerInvariant().Equals("samples") ?
+            Guard.Against.NullOrEmpty(designation, nameof(U_BPName), "U_Desig cannot be null or empty") : 
+            designation;
         U_Remarks = remarks;
         U_AppBy = appBy;
-        U_RecBy = recBy;
+        U_RecBy = transType.Trim().ToLowerInvariant().Equals("adjustments") ? 
+            recBy :
+            Guard.Against.NullOrEmpty(recBy, nameof(U_RecBy), "U_RecBy cannot be null or empty");
         U_NotedBy = notedBy;
     }
 }

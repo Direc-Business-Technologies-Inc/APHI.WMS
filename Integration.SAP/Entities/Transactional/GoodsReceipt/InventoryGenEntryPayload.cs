@@ -1,4 +1,5 @@
 ﻿using Ardalis.GuardClauses;
+using Integration.SAP.Helpers;
 
 namespace Integration.SAP.Entities.Transactional.GoodsReceipt;
 
@@ -35,12 +36,20 @@ public class InventoryGenEntryPayload
         U_TransType = Guard.Against.NullOrEmpty(transType, nameof(U_TransType), "Transaction Type cannot be null or empty");
         DocumentLines = Guard.Against.NullOrEmpty(lines, nameof(DocumentLines), "Document Lines cannot be null or empty");
         Comments = "Posted from WMS";
-        U_BpCode = bpCode;
-        U_BPName = bpName;
+        U_BpCode = bpCode is null ?
+            transType.EqualsIgnoreCase("adjustments") ?
+                Guard.Against.NullOrEmpty(bpCode, nameof(U_BpCode), "BP Code cannot be null or empty") :
+                throw new Exception("Cannot use Customer BP Code when Transaction Type = Adjustments") :
+            bpCode;
+        U_BPName = transType.EqualsIgnoreCase("adjustments") ?
+            bpName :
+            Guard.Against.NullOrEmpty(bpName, nameof(U_BPName), "BP Name cannot be null or empty");
         U_PURNo = purNo;
         U_WARNo = warNo;
         U_Desig = designation;
-        U_RecBy = recievedBy;
+        U_RecBy = transType.EqualsIgnoreCase("adjustments") ?
+            recievedBy :
+            Guard.Against.NullOrEmpty(recievedBy, nameof(U_RecBy), "Received By cannot be null or empty");
         U_Remarks = remarks;
         U_AppBy = appBy;
         U_NotedBy = notedBy;

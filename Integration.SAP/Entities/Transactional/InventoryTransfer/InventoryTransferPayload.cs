@@ -1,4 +1,5 @@
 ﻿using Ardalis.GuardClauses;
+using Integration.SAP.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -52,7 +53,9 @@ public class InventoryTransferPayload
         U_AppBy = approvedBy;  
         U_NotedBy = notedBy;
         U_SchlYear = schlYear;
-        CardCode = Guard.Against.NullOrEmpty(cardCode, nameof(cardCode), "\"Card Code\" cannot be empty");
+        CardCode = transferType.EqualsIgnoreCase("borrowing") || transferType.EqualsIgnoreCase("samples") ?
+            Guard.Against.NullOrEmpty(cardCode, nameof(cardCode), "\"Card Code\" cannot be empty") :
+            cardCode;
         DocumentLines = Guard.Against.NullOrEmpty(lines, nameof(DocumentLines), "Document Lines cannot be null or empty");
     }
 

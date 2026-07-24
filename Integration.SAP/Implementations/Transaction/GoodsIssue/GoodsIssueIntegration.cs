@@ -112,7 +112,7 @@ public class GoodsIssueIntegration(
         InventoryGenExitPayload payload = new(data.PreparedBy,
                                               data.TransactionType.Code,
                                               payloadLines,
-                                              data.BusinessPartner?.CardCode,
+                                              data.TransactionType.Name.Trim().ToLowerInvariant().Equals("adjustments") ? null : data.BusinessPartner?.CardCode,
                                               data.BusinessPartner?.CardName,
                                               data.SchoolYear,
                                               data.SrfNo,
