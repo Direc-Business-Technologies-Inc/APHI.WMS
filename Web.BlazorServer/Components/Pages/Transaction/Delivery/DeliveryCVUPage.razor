@@ -89,6 +89,9 @@
                                     <ChildContent>
                                         <RadzenTextBox ReadOnly Value="@(FormData.SapReference.DocNum?.ToString() ?? string.Empty)" Placeholder="DR-001" Name="dlv_dr_no" Disabled="@IsBusy" class="rz-w-100" />
                                     </ChildContent>
+                                    <Helper>
+                                        <RadzenRequiredValidator Component="dlv_dr_no" />
+                                    </Helper>
                                 </RadzenFormField>
                             </RadzenColumn>
                             <RadzenColumn Size="12" SizeMD="4">
@@ -115,6 +118,9 @@
                                                         Placeholder="No Delivery Means Selected"
                                                         class="rz-w-100" />
                                     </ChildContent>
+                                    <Helper>
+                                        <RadzenRequiredValidator Component="dlv_means" />
+                                    </Helper>
                                 </RadzenFormField>
                             </RadzenColumn>
                         </RadzenRow>
@@ -125,6 +131,9 @@
                                     <ChildContent>
                                         <RadzenTextBox ReadOnly="@Viewing" @bind-Value="@FormData.Courier" Placeholder="N/A" Name="dlv_courier" Disabled="@IsBusy" class="rz-w-100" />
                                     </ChildContent>
+                                    <Helper>
+                                        <RadzenCustomValidator Component="dlv_courier" Validator="@(() => !(FormData.DeliveryMeans?.ToLowerInvariant().Equals("outsourced") ?? false) || !string.IsNullOrEmpty(FormData.Courier))" Text="Required" />
+                                    </Helper>
                                 </RadzenFormField>
                             </RadzenColumn>
                             <RadzenColumn Size="12" SizeMD="4">
@@ -132,6 +141,9 @@
                                     <ChildContent>
                                         <RadzenTextBox ReadOnly="@Viewing" @bind-Value="@FormData.CourierName" Placeholder="N/A" Name="dlv_courier_name" Disabled="@IsBusy" class="rz-w-100" />
                                     </ChildContent>
+                                    <Helper>
+                                        <RadzenCustomValidator Component="dlv_courier_name" Validator="@(() => !(FormData.DeliveryMeans?.ToLowerInvariant().Equals("outsourced") ?? false) || !string.IsNullOrEmpty(FormData.CourierName))" Text="Required" />
+                                    </Helper>
                                 </RadzenFormField>
                             </RadzenColumn>
                             <RadzenColumn Size="12" SizeMD="4">
@@ -139,6 +151,9 @@
                                     <ChildContent>
                                         <RadzenTextBox ReadOnly="@Viewing" @bind-Value="@FormData.Driver" Placeholder="N/A" Name="dlv_driver" Disabled="@IsBusy" class="rz-w-100" />
                                     </ChildContent>
+                                    <Helper>
+                                        <RadzenCustomValidator Component="dlv_driver" Validator="@(() => !(FormData.DeliveryMeans?.ToLowerInvariant().Equals("in-house") ?? false) || !string.IsNullOrEmpty(FormData.Driver))" Text="Required" />
+                                    </Helper>
                                 </RadzenFormField>
                             </RadzenColumn>
                         </RadzenRow>
@@ -156,6 +171,9 @@
                                     <ChildContent>
                                         <RadzenTextBox ReadOnly="@Viewing" @bind-Value="@FormData.PlateNo" Placeholder="N/A" Name="dlv_plate_no" Disabled="@IsBusy" class="rz-w-100" />
                                     </ChildContent>
+                                    <Helper>
+                                        <RadzenCustomValidator Component="dlv_plate_no" Validator="@(() => !(FormData.DeliveryMeans?.ToLowerInvariant().Equals("in-house") ?? false) || !string.IsNullOrEmpty(FormData.PlateNo))" Text="Required" />
+                                    </Helper>
                                 </RadzenFormField>
                             </RadzenColumn>
                         </RadzenRow>
@@ -295,6 +313,9 @@
                             <ChildContent>
                                 <RadzenTextBox ReadOnly Value="@FormData.PreparedBy" Name="dlv_prep_by" Disabled="@IsBusy" class="rz-w-100" />
                             </ChildContent>
+                            <Helper>
+                                <RadzenRequiredValidator Component="dlv_prep_by" />
+                            </Helper>
                         </RadzenFormField>
                         <RadzenFormField Text="Received By" class="rz-w-100" AllowFloatingLabel="false">
                             <ChildContent>

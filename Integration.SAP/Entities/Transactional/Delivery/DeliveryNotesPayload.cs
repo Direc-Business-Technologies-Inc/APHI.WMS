@@ -55,13 +55,21 @@ public class DeliveryNotesPayload
         U_SchlYear = schlYear;
         U_DRNo = drNo;
         U_DelivMeans = delivMeans;
-        U_Courier = courier;
-        U_CourName = courName;
+        U_Courier = delivMeans?.Trim().ToLowerInvariant().Equals("outsourced") ?? false ?
+            Guard.Against.NullOrEmpty(courier, nameof(U_Courier), "Courier cannot be null or empty") :
+            courier;
+        U_CourName = delivMeans?.Trim().ToLowerInvariant().Equals("outsourced") ?? false ?
+            Guard.Against.NullOrEmpty(courName, nameof(U_CourName), "Courier Name cannot be null or empty") :
+            courName;
         U_ActualDelivDate = actualDelivDate;
         U_Desig = desig;
         U_WBNo = wbNo;
-        U_PlateNo = plateNo;
-        U_Driver = driver;
+        U_PlateNo = delivMeans?.Trim().ToLowerInvariant().Equals("in-house") ?? false ?
+            Guard.Against.NullOrEmpty(plateNo, nameof(U_PlateNo), "Plate Number cannot be null or empty") :
+            plateNo;
+        U_Driver = delivMeans?.Trim().ToLowerInvariant().Equals("in-house") ?? false ?
+            Guard.Against.NullOrEmpty(driver, nameof(U_Driver), "Plate Number cannot be null or empty") :
+            driver;
         U_Remarks = docRemarks;
         U_RecBy = recBy;
         U_AppBy = appBy;
