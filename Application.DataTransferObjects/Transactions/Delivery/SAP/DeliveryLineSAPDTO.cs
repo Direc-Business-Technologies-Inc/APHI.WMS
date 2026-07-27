@@ -14,4 +14,5 @@ public class DeliveryLineSAPDTO
     public string UoMCode { get; set; }
     public decimal UoMValue { get; set; }
     public string UoMName { get; set; }
+    public int? CreatedFrom { get; set; }
 }

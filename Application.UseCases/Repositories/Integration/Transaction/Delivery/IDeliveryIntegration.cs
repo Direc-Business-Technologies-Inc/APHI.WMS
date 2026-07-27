@@ -14,4 +14,7 @@ public interface IDeliveryIntegration
     Task<SalesOrderHeaderSAPDTO?> GetSalesOrderDocumentHeaderAsync(int docEntry);
     Task<IEnumerable<SalesOrderLineSAPDTO>> GetSalesOrderDocumentLinesAsync(int docEntry);
     Task<bool> PostDeliveryDocument(DeliveryDTO document);
+    Task<(IEnumerable<DeliveryDataGridSAPDTO> Data, int Count)> GetDeliveryDraftDocumentsAsync(DataGridIntent intent);
+    Task<DeliveryHeaderSAPDTO?> GetDeliveryDraftDocumentHeaderAsync(int docEntry);
+    Task<IEnumerable<DeliveryLineSAPDTO>> GetDeliveryDraftDocumentLinesAsync(int docEntry);
 }

@@ -27,6 +27,7 @@
         <AppContentBadge Visible="@Viewing" Title="Doc" Content="@FormData.SapReference.DocNum.ToString()" />
         <AppContentBadge Title="Doc Date" Content="@FormData.DocDate.ToString("MM-dd-yy")" ChildBadgeStyle="BadgeStyle.Secondary" ChildShade="Shade.Default" />
         <AppContentBadge Title="Delivery Date" Content="@FormData.DocDueDate.ToString("MM-dd-yy")" ChildBadgeStyle="BadgeStyle.Secondary" ChildShade="Shade.Default" />
+        <AppContentBadge Title="From Sales Order" Visible="@(!string.IsNullOrEmpty(CreatedFrom))" Content="@CreatedFrom" ChildBadgeStyle="BadgeStyle.Secondary" ChildShade="Shade.Default" />
     </RadzenStack>
 
     <RadzenTemplateForm Visible="@(!IsLoadingData)" @ref="@TemplateForm" TItem="DeliveryVM" @bind-Data="@FormData" EditContext="@EditContext" Submit="@HandleSubmit">

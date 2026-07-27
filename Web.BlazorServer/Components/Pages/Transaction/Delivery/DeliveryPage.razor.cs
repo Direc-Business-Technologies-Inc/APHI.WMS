@@ -18,14 +18,25 @@ public partial class DeliveryPage
     {
         base.OnParametersSet();
         if (T is not null)
-            SelectedTab = T.ToLower() == "dlv" ? 1 : 0;
+            SelectedTab = T.ToLower() switch
+            {
+                "salesorder" => 0,
+                "delivery" => 1,
+                "deliverydrafts" => 2,
+                _ => 0
+            };
     }
     #endregion Overrides
 
     #region Custom Functions
     void TabChanged()
     {
-        T = SelectedTab == 0 ? "so" : "dlv";
+        T = SelectedTab switch
+        {
+            1 => "delivery",
+            2 => "deliverydrafts",
+            _ => "salesorder"
+        };
         NavManager.NavigateTo($"/transactions/sales/delivery?T={T}");
     }
     #endregion Custom Functions

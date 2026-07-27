@@ -68,4 +68,18 @@ public class DeliveryHandler(
         IEnumerable<DeliveryMeansDTO> response = await Sender.Send(qry);
         return response.Adapt<IEnumerable<DeliveryMeansVM>>();
     }
+
+    public async Task<(IEnumerable<DeliveryDataGridVM> Data, int Count)> GetDeliveryDraftDataGridAsync(DataGridIntent intent)
+    {
+        GetDeliveryDraftsDatagridQry qry = new(intent);
+        (IEnumerable<DeliveryDataGridDTO> Data, int Count) = await Sender.Send(qry);
+        return (Data.Adapt<IEnumerable<DeliveryDataGridVM>>(), Count);
+    }
+
+    public async Task<DeliveryVM?> GetDeliveryDraftAsync(int docEntry)
+    {
+        GetDeliveryDraftQry qry = new(docEntry);
+        DeliveryDTO? response = await Sender.Send(qry);
+        return response.Adapt<DeliveryVM?>();
+    }
 }

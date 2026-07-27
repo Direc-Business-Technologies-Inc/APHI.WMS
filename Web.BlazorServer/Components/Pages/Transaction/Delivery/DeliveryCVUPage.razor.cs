@@ -26,6 +26,8 @@ public partial class DeliveryCVUPage
     [SupplyParameterFromQuery]
     [Parameter]
     public int Ref { get; set; }
+    [SupplyParameterFromQuery]
+    public bool Draft { get; set; } = false;
     #endregion Parameters
 
     #region Injects
@@ -40,8 +42,8 @@ public partial class DeliveryCVUPage
     // Scope the draft cache by mode + source order so drafts never collide across records/modes.
     protected override string FormCacheKey => $"{GetType().Name}-{PageAction}-{Ref}-FCACHE";
 
-    bool Creating => PageAction == PageActionTypeEnum.Create;
-    bool Viewing => PageAction == PageActionTypeEnum.View;
+    bool Creating => PageAction == PageActionTypeEnum.Create && !Draft;
+    bool Viewing => PageAction == PageActionTypeEnum.View || Draft;
     bool IsBusy => AppBusyService.IsBusy(ActionGetDelivery) || AppBusyService.IsBusy(ActionCreateDelivery);
     bool IsLoadingData => AppBusyService.IsBusy(ActionGetDelivery);
 
@@ -50,6 +52,8 @@ public partial class DeliveryCVUPage
     readonly string ActionGetDelivery = EnumHelper.GetEnumDescription(AppActions.ViewDelivery);
     readonly string ActionCreateDelivery = EnumHelper.GetEnumDescription(AppActions.CreateDelivery);
     readonly string ActionGetDeliveryMeans = EnumHelper.GetEnumDescription(AppActions.GetDeliveryMeans);
+
+    string CreatedFrom = string.Empty;
     #endregion Primitives
 
     #region Data Structures
@@ -249,7 +253,10 @@ public partial class DeliveryCVUPage
     {
         var action = await AppActionFactory.RunAsync(async () =>
         {
-            var result = await DeliveryHandler.GetDeliveryAsync(Ref);
+            var result = Draft ?
+                await DeliveryHandler.GetDeliveryDraftAsync(Ref) :
+                await DeliveryHandler.GetDeliveryAsync(Ref);
+
             AppBusyService.SetBusy(ActionGetDelivery, false);
             return result;
         }, AppActionOptionPresets.Loading(ActionGetDelivery));

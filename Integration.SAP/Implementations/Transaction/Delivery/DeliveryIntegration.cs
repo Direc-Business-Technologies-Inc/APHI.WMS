@@ -54,6 +54,41 @@ public class DeliveryIntegration(
         return (docs, rowCount?.Count ?? docs.Count);
     }
 
+    public Task<DeliveryHeaderSAPDTO?> GetDeliveryDraftDocumentHeaderAsync(int docEntry)
+    {
+        return SLActions.SingleAsync<DeliveryHeaderSAPDTO, object>("APHI_Delivery_DraftHeader", new { DocEntry = docEntry });
+    }
+
+    public async Task<IEnumerable<DeliveryLineSAPDTO>> GetDeliveryDraftDocumentLinesAsync(int docEntry)
+    {
+        var result = await SLActions.QueryAsync<DeliveryLineSAPDTO, object>("APHI_Delivery_DraftLines", new { DocEntry = docEntry });
+        return result;
+    }
+
+    public async Task<(IEnumerable<DeliveryDataGridSAPDTO> Data, int Count)> GetDeliveryDraftDocumentsAsync(DataGridIntent intent)
+    {
+        if (intent.Sorts.Count <= 0)
+        {
+            intent.Sorts.Add(new AppSortDescriptor
+            {
+                Property = "DocEntry",
+                Direction = SortDirectionEnum.Descending
+            });
+        }
+
+        var qryDetails = qryManager.GetSqlScriptWithMetadata("APHI_Delivery_DraftDataGrid", out string qry, out bool found);
+        if (!found)
+            throw new Exception("Query for getting all Approved Deliveries not found.");
+
+        string query = DataGridQueryBuilder.BuildQuery(qry, intent);
+        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent);
+
+        List<DeliveryDataGridSAPDTO> docs = await SLActions.RawQueryAsync<DeliveryDataGridSAPDTO>(query);
+        TotalRows? rowCount = await SLActions.RawQueryOneAsync<TotalRows>(countQuery);
+
+        return (docs, rowCount?.Count ?? docs.Count);
+    }
+
     public async Task<IEnumerable<DeliveryMeansSAPDTO>> GetDeliveryMeansAsync()
     {
         IEnumerable<DeliveryMeansSAPDTO> data = await SLActions.QueryAsync<DeliveryMeansSAPDTO>("APHI_Delivery_DeliveryMeans");
@@ -74,6 +109,7 @@ public class DeliveryIntegration(
 
         return doc;
     }
+
 
     public async Task<(IEnumerable<SalesOrderDataGridSAPDTO> Data, int Count)> GetSalesOrderDocumentsAsync(DataGridIntent intent)
     {

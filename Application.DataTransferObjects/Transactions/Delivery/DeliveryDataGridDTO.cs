@@ -12,4 +12,5 @@ public class DeliveryDataGridDTO
     public string DocStatus { get; set; } = string.Empty;
     public string Area { get; set; } = string.Empty;
     public string SchoolYear { get; set; } = string.Empty;
+    public int? CreatedFrom { get; set; }
 }

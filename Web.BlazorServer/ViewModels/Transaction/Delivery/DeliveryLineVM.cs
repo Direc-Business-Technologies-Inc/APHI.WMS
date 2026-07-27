@@ -7,4 +7,5 @@ namespace Web.BlazorServer.ViewModels.Transaction.Delivery;
 public class DeliveryLineVM : ItemVM
 {
     public WarehouseVM? Warehouse { get; set; }
+    public int? CreatedFrom { get; set; }
 }
