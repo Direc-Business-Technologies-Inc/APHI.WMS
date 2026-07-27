@@ -42,6 +42,8 @@ public partial class SalesOrderCVUPage
     #region Data Structures
     AppFilterDescriptor? _soLinesFilter;
 
+    bool HasDrafts = false;
+    List<AppFilterDescriptor> DraftsFilter = [];
     AppTable<SalesOrderLineVM> SalesOrderTable { get; set; } = default!;
     DataGridSettings SalesOrderTableSettings { get; set; } = new();
 
@@ -65,9 +67,22 @@ public partial class SalesOrderCVUPage
 
         if (firstRender)
         {
-            await LoadDataAsync();
+            await Task.WhenAll(
+                LoadDrafts(),
+                LoadDataAsync());
             await InvokeAsync(StateHasChanged);
         }
+    }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+
+        DraftsFilter = [ new AppFilterDescriptor {
+            Property = "CreatedFrom",
+            Value = Ref,
+            ComparisonOperator = ComparisonOperatorEnum.Equals
+        }];
     }
 
     protected override Task InitializeEditing()
@@ -108,6 +123,17 @@ public partial class SalesOrderCVUPage
 
         if (!GridSettingsLoaded && !IsLoadingData)
             await LoadGridSettings();
+    }
+
+    async Task LoadDrafts()
+    {
+        (var data, int count) = await DeliveryHandler.GetDeliveryDraftDataGridAsync(new DataGridIntent
+        {
+            Take = 1,
+            Filters = DraftsFilter
+        });
+
+        HasDrafts = count > 0;
     }
 
     async Task GetSalesOrder()

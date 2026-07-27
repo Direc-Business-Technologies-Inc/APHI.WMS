@@ -16,6 +16,7 @@ public partial class DeliveryDraftDataGrid
 
     [Inject] IDeliveryHandler DeliveryHandler { get; set; } = default!;
     [Inject] IGridSettingsService GridSettingsService { get; set; } = default!;
+    [Parameter] public List<AppFilterDescriptor> Filters { get; set; } = [];
 
     AppDataGrid<DeliveryDataGridVM> DeliveryGrid { get; set; } = default!;
     DataGridSettings DeliveryDataGridSettings { get; set; } = new();
@@ -28,6 +29,8 @@ public partial class DeliveryDraftDataGrid
         var action = await AppActionFactory.RunAsync(async () =>
         {
             AppBusyService.SetBusy(ActionGetAllDeliveries, true);
+
+            if (Filters.Count > 0) intent.Filters.AddRange(Filters);
 
             var response = await DeliveryHandler.GetDeliveryDraftDataGridAsync(intent);
 

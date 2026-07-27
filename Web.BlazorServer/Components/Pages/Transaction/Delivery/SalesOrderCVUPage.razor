@@ -1,3 +1,4 @@
+@using Web.BlazorServer.Components.Pages.Transaction.Delivery.Components
 @using Web.BlazorServer.Components.Security
 @using Web.BlazorServer.Components.Shared.Skeletons
 @using Web.BlazorServer.ViewModels.Transaction.Delivery
@@ -204,8 +205,11 @@
                 <RadzenColumn>
                     <RadzenStack class="rz-mt-8" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
                         <RadzenButton IsBusy="@IsBusy" Text="Back" ButtonStyle="ButtonStyle.Base" Click="@Back" />
-                        <RadzenStack Visible="@Can.Create("ODLV")" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="16px">
-                            <RadzenButton IsBusy="@IsBusy" Text="Create" ButtonStyle="ButtonStyle.Success" Click="@CreateDelivery" />
+                        <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5em">
+                            <RadzenButton Visible="HasDrafts" IsBusy="@IsBusy" Text="View Created Drafts" ButtonStyle="ButtonStyle.Primary" Click="@OpenDraftsDatagrid" />
+                            <RadzenStack Visible="@Can.Create("ODLV")" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="16px">
+                                <RadzenButton IsBusy="@IsBusy" Text="Create" ButtonStyle="ButtonStyle.Success" Click="@CreateDelivery" />
+                            </RadzenStack>
                         </RadzenStack>
                     </RadzenStack>
                 </RadzenColumn>
@@ -227,4 +231,22 @@
 
         await SalesOrderTable.DataGrid.Reload();
     }
+
+    async Task OpenDraftsDatagrid()
+    {
+        await DialogService.OpenAsync(
+            "Delivery Drafts",
+            ds => @<DeliveryDraftDataGrid Filters="DraftsFilter" />,
+        DatagridDialogOptions);
+    }
+
+    readonly DialogOptions DatagridDialogOptions = new()
+    {
+        CloseDialogOnOverlayClick = true,
+        CloseDialogOnEsc = true,
+        Draggable = true,
+        Resizable = true,
+        ShowClose = true,
+        Width = "67%"
+    };
 }
