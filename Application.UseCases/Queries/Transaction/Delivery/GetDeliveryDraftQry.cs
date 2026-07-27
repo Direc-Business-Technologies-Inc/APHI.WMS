@@ -24,7 +24,7 @@ public class GetDeliveryDraftQryHandler(
         if (doc is null)
             return null;
 
-        IEnumerable<DeliveryLineSAPDTO> lines = await integration.GetDeliveryDocumentLinesAsync(request.DocEntry);
+        IEnumerable<DeliveryLineSAPDTO> lines = await integration.GetDeliveryDraftDocumentLinesAsync(request.DocEntry);
 
         DeliveryDTO dto = doc.Adapt<DeliveryDTO>();
         dto.DocumentLines = lines.Adapt<IEnumerable<DeliveryLineDTO>>();
