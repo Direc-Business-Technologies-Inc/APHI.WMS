@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using Mapster;
+using Microsoft.AspNetCore.Components;
 using Radzen;
 using Shared.Libraries.Entities;
 using Shared.Libraries.Kernel;
@@ -95,14 +96,20 @@ public partial class ItemSelection
 
     async Task OnRowSelect(ItemVM data)
     {
-        if (!SelectedItems.Any(x => x.ItemCode == data.ItemCode))
+        if (!Request.Lines.Any(x => x.ItemCode == data.ItemCode))
+        {
+            Request.Lines.Add(data.Adapt<InventoryTransferRequestLineVM>());
             SelectedItems.Add(data);
+        }
     }
 
     async Task OnRowDeselect(ItemVM data)
     {
-        if (SelectedItems.Any(x => x.ItemCode == data.ItemCode))
+        if (Request.Lines.Any(x => x.ItemCode == data.ItemCode))
+        {
+            Request.Lines.RemoveAll(x => x.ItemCode == data.ItemCode);
             SelectedItems.Remove(data);
+        }
     }
 
     async Task SaveSelection()
