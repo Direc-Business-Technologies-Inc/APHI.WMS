@@ -16,6 +16,7 @@ SELECT
      END AS [UoMCode]
 	,RDR1.NumPerMsr [UoMValue]
 	,OUOM.UomName [UoMName]
+    ,REPLACE(ISNULL(OITM.U_ISBN, ''), '-', '') [ISBN]
 FROM ORDR
 INNER JOIN RDR1 ON RDR1.DocEntry = ORDR.DocEntry
 INNER JOIN OITM ON RDR1.ItemCode = OITM.ItemCode

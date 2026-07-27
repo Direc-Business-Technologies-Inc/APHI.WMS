@@ -125,6 +125,7 @@ public partial class DeliveryCVUPage
 
     protected override async Task HandleSubmit()
     {
+        Console.WriteLine(SalesOrderData.DocumentLines.First().ISBN);
         if (Creating && !SalesOrderData.DocumentLines.Any(l => l.Quantity > 0))
         {
             ToastService.Warning("Please enter a delivery quantity for at least one item");
@@ -318,7 +319,7 @@ public partial class DeliveryCVUPage
             new Dictionary<string, object>
             {
                 { "OnScan", EventCallback.Factory.Create<string>(this, HandleScanResult) },
-                { "Items", FormData.DocumentLines.Cast<ItemVM>() }
+                { "Items", SalesOrderData.DocumentLines.Cast<ItemVM>() }
             },
             options: new Radzen.DialogOptions
             {
