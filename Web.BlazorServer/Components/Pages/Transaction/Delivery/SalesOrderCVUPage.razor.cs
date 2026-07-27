@@ -163,7 +163,7 @@ public partial class SalesOrderCVUPage
         await SalesOrderTable.DataGrid.Reload();
     }
 
-    void Back() => NavManager.NavigateTo("/transactions/sales/delivery?T=so", true);
+    void Back() => NavManager.NavigateTo("/transactions/sales/delivery?T=salesorder", true);
 
     void CreateDelivery() => NavManager.NavigateTo($"/transactions/sales/delivery/create?ref={Ref}");
     #endregion Custom Functions

@@ -27,4 +27,4 @@ FROM ODRF
 INNER JOIN OCRD ON ODRF.CardCode = OCRD.CardCode
 WHERE 
 	ODRF.ObjType = 15 -- object type is 'Delivery Notes'
-	ODRF.DocEntry = @DocEntry
+	AND ODRF.DocEntry = @DocEntry

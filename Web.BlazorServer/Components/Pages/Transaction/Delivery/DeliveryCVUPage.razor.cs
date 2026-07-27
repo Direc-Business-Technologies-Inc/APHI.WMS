@@ -124,7 +124,7 @@ public partial class DeliveryCVUPage
     {
         AdaptToForm();
         await ClearFormCacheAsync();
-        NavManager.NavigateTo("/transactions/sales/delivery?T=dlv", true);
+        NavManager.NavigateTo("/transactions/sales/delivery?T=delivery", true);
     }
 
     protected override async Task HandleSubmit()
@@ -184,7 +184,7 @@ public partial class DeliveryCVUPage
         action.OnSuccess(async (args) =>
         {
             await ClearFormCacheAsync();
-            NavManager.NavigateTo("/transactions/sales/delivery?T=dlv", true);
+            NavManager.NavigateTo("/transactions/sales/delivery?T=delivery", true);
         });
     }
     #endregion Overrides
@@ -315,7 +315,7 @@ public partial class DeliveryCVUPage
                 return;
 
         await ClearFormCacheAsync();
-        string tab = Creating ? "so" : "dlv";
+        string tab = Creating ? "saleorder" : "delivery";
         NavManager.NavigateTo($"/transactions/sales/delivery?T={tab}", true);
     }
 
