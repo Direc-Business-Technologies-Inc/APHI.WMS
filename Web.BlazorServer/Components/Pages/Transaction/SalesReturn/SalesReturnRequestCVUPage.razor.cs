@@ -128,7 +128,7 @@ public partial class SalesReturnRequestCVUPage
         action.OnSuccess(async (_) =>
         {
             await ClearFormCacheAsync();
-            NavManager.NavigateTo("/transactions/sales/sales-return?T=srr", true);
+            NavManager.NavigateTo("/transactions/sales/sales-return?T=salesreturnrequest", true);
         });
     }
 
@@ -203,7 +203,7 @@ public partial class SalesReturnRequestCVUPage
                 return;
 
         await ClearFormCacheAsync();
-        NavManager.NavigateTo("/transactions/sales/sales-return?T=srr", true);
+        NavManager.NavigateTo("/transactions/sales/sales-return?T=salesreturnrequest", true);
     }
 
     async Task LoadSchoolYears(LoadDataArgs args)

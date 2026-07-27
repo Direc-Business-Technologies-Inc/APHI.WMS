@@ -216,4 +216,42 @@ public class SalesReturnIntegration(
 
         return true;
     }
+
+    public async Task<(IEnumerable<SalesReturnDataGridSAPDTO> Data, int Count)> GetSalesReturnDraftDataAsync(DataGridIntent intent)
+    {
+        if (intent.Sorts.Count <= 0)
+        {
+            intent.Sorts.Add(new AppSortDescriptor
+            {
+                Property = "DocEntry",
+                Direction = SortDirectionEnum.Descending
+            });
+        }
+
+        var qryDetails = qryManager.GetSqlScriptWithMetadata("APHI_SalesReturn_DraftDataGrid", out string qry, out bool found);
+        if (!found)
+            throw new Exception("Query for getting all Sales Return not found.");
+
+        string query = DataGridQueryBuilder.BuildQuery(qry, intent);
+        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent);
+
+        List<SalesReturnDataGridSAPDTO> docs = await SLActions.RawQueryAsync<SalesReturnDataGridSAPDTO>(query);
+        TotalRows? rowCount = await SLActions.RawQueryOneAsync<TotalRows>(countQuery);
+
+        return (docs, rowCount?.Count ?? docs.Count);
+    }
+
+    public async Task<SalesReturnHeaderSAPDTO?> GetSalesReturnDraftHeaderAsync(int docEntry)
+    {
+        SalesReturnHeaderSAPDTO? doc = await SLActions.SingleAsync<SalesReturnHeaderSAPDTO, object>("APHI_SalesReturn_DraftHeader", new { DocEntry = docEntry });
+
+        return doc;
+    }
+
+    public async Task<IEnumerable<SalesReturnLinesSAPDTO>> GetSalesReturnDraftLinesAsync(int docEntry)
+    {
+        IEnumerable<SalesReturnLinesSAPDTO> doc = await SLActions.QueryAsync<SalesReturnLinesSAPDTO, object>("APHI_SalesReturn_DraftLines", new { DocEntry = docEntry });
+
+        return doc;
+    }
 }

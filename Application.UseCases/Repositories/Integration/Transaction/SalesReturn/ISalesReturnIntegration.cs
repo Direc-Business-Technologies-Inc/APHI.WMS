@@ -16,4 +16,8 @@ public interface ISalesReturnIntegration
     Task<bool> PostSalesReturnAsync(SalesReturnDTO data);
     Task<bool> PostSalesReturnFromDeliveryAsync(SalesReturnDTO data);
     Task<bool> PostSalesReturnFromRequestAsync(SalesReturnDTO data);
+
+    Task<(IEnumerable<SalesReturnDataGridSAPDTO> Data, int Count)> GetSalesReturnDraftDataAsync(DataGridIntent intent);
+    Task<SalesReturnHeaderSAPDTO?> GetSalesReturnDraftHeaderAsync(int docEntry);
+    Task<IEnumerable<SalesReturnLinesSAPDTO>> GetSalesReturnDraftLinesAsync(int docEntry);
 }

@@ -13,4 +13,6 @@ public interface ISalesReturnHandler
     Task<IEnumerable<ReturnTypeVM>> GetReturnTypesAsync();
     Task<bool> PostSalesReturnAsync(SalesReturnVM data, SalesReturnPostingSource source);
     Task<bool> PostSalesReturnFromRequestAsync(SalesReturnRequestVM data);
+    Task<(IEnumerable<SalesReturnDataGridVM> Data, int Count)> GetSalesReturnDraftDataGridAsync(DataGridIntent intent);
+    Task<SalesReturnVM?> GetSalesReturnDraftAsync(int docEntry);
 }

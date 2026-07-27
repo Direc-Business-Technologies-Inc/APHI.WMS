@@ -19,7 +19,13 @@ public partial class SalesReturnPage
     {
         base.OnParametersSet();
         if (T is not null)
-            SelectedTab = T.ToLower() == "srr" ? 1 : 0;
+            SelectedTab = T.ToLower() switch
+            {
+                "salesreturn" => 0,
+                "salesreturndraft" => 1,
+                "salesreturnrequest" => 2,
+                _ => 0
+            };
     }
 
     #endregion Overrides
@@ -27,7 +33,13 @@ public partial class SalesReturnPage
     #region Custom Functions
     void TabChanged()
     {
-        T = SelectedTab == 0 ? "sr" : "srr";
+        T = SelectedTab switch
+        {
+            1 => "salesreturndraft",
+            2 => "salesreturnrequest",
+            _ => "salesreturn"
+        };
+
         NavManager.NavigateTo($"/transactions/sales/sales-return?T={T}");
     }
     #endregion Custom Functions

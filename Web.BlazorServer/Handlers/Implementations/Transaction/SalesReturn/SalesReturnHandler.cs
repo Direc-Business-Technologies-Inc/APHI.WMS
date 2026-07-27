@@ -61,4 +61,19 @@ public class SalesReturnHandler(ISender Sender) : ISalesReturnHandler
         PostSalesReturnCmd cmd = new(dto, SalesReturnPostingSource.Request);
         return await Sender.Send(cmd);
     }
+
+    public async Task<(IEnumerable<SalesReturnDataGridVM> Data, int Count)> GetSalesReturnDraftDataGridAsync(DataGridIntent intent)
+    {
+        GetSalesReturnDraftsDataGridQry qry = new(intent);
+        (IEnumerable<SalesReturnDataGridDTO> Data, int Count) = await Sender.Send(qry);
+        return (Data.Adapt<IEnumerable<SalesReturnDataGridVM>>(), Count);
+    }
+
+    public async Task<SalesReturnVM?> GetSalesReturnDraftAsync(int docEntry)
+    {
+
+        GetSalesReturnDraftQry qry = new(docEntry);
+        SalesReturnDTO? response = await Sender.Send(qry);
+        return response.Adapt<SalesReturnVM?>();
+    }
 }

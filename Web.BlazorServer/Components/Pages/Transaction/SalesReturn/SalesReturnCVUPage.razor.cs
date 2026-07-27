@@ -26,6 +26,8 @@ public partial class SalesReturnCVUPage
     [SupplyParameterFromQuery]
     [Parameter]
     public int Ref { get; set; }
+    [SupplyParameterFromQuery]
+    public bool Draft { get; set; } = false;
     #endregion Parameters
 
     #region Injects
@@ -152,7 +154,7 @@ public partial class SalesReturnCVUPage
         action.OnSuccess(async (_) =>
         {
             await ClearFormCacheAsync();
-            NavManager.NavigateTo("/transactions/sales/sales-return?T=sr", true);
+            NavManager.NavigateTo("/transactions/sales/sales-return?T=salesreturn", true);
         });
     }
 
@@ -203,7 +205,10 @@ public partial class SalesReturnCVUPage
 
         var action = await AppActionFactory.RunAsync(async () =>
         {
-            var result = await SalesReturnHandler.GetSalesReturnAsync(Ref);
+            var result = Draft ?
+                await SalesReturnHandler.GetSalesReturnDraftAsync(Ref) :
+                await SalesReturnHandler.GetSalesReturnAsync(Ref);
+
             AppBusyService.SetBusy(ActionGetSalesReturn, false);
             return result;
         }, AppActionOptionPresets.Loading(ActionGetSalesReturn));
@@ -236,7 +241,7 @@ public partial class SalesReturnCVUPage
                 return;
 
         await ClearFormCacheAsync();
-        NavManager.NavigateTo("/transactions/sales/sales-return?T=sr", true);
+        NavManager.NavigateTo("/transactions/sales/sales-return?T=salesreturn", true);
     }
 
     async Task LoadCustomers(LoadDataArgs args)
