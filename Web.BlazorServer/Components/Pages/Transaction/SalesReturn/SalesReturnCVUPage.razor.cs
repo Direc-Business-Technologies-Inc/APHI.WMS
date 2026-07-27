@@ -16,7 +16,6 @@ using Web.BlazorServer.Services.Repositories;
 using Web.BlazorServer.ViewModels.Enums;
 using Web.BlazorServer.ViewModels.Others;
 using Web.BlazorServer.ViewModels.Transaction.Commons;
-using Web.BlazorServer.ViewModels.Transaction.GoodsReturn;
 using Web.BlazorServer.ViewModels.Transaction.SalesReturn;
 
 namespace Web.BlazorServer.Components.Pages.Transaction.SalesReturn;
