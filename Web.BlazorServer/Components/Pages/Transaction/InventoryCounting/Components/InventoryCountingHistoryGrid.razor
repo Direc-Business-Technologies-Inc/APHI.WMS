@@ -2,6 +2,7 @@
 @using Web.BlazorServer.ViewModels.Transaction.InventoryCounting
 
 @inherits BaseComponent
+<RadzenMediaQuery Query="(max-width: 768px)" Change="OnChange" />
 
 <AppDataGrid @ref="@DataGrid"
              Id="inventory_counting_history_grid"
@@ -24,53 +25,67 @@
         </RadzenStack>
     </HeaderTemplate>
     <GridColumns>
-        <RadzenDataGridColumn TItem="InventoryCountingDataGridVM"
-                              Property="@nameof(InventoryCountingDataGridVM.AppDocNum)"
-                              Title="Doc #"
-                              Type="@typeof(string)" />
-        <RadzenDataGridColumn TItem="InventoryCountingDataGridVM"
-                              Property="@nameof(InventoryCountingDataGridVM.Warehouse)"
-                              Title="Warehouse"
-                              Type="@typeof(string)" />
-        <RadzenDataGridColumn TItem="InventoryCountingDataGridVM"
-                              Property="@nameof(InventoryCountingDataGridVM.CycleType)"
-                              Title="Cycle Type">
-            <Template>
-                @context.CycleType.ToString()
-            </Template>
-        </RadzenDataGridColumn>
-        <RadzenDataGridColumn TItem="InventoryCountingDataGridVM"
-                              Property="@nameof(InventoryCountingDataGridVM.Status)"
-                              Title="Status">
-            <Template>
-                <AppContentBadge Title="" Content="@context.Status.ToString()"
-                                 ChildBadgeStyle="@(context.Status switch {
-                                     InventoryCountingDocumentStatus.Saved => BadgeStyle.Info,
-                                     InventoryCountingDocumentStatus.Posted => BadgeStyle.Secondary,
-                                     _ => BadgeStyle.Light
-                                 })" />
-            </Template>
-        </RadzenDataGridColumn>
-        <RadzenDataGridColumn TItem="InventoryCountingDataGridVM"
-                              Property="@nameof(InventoryCountingDataGridVM.CreatedBy)"
-                              Title="Created By"
-                              Type="@typeof(string)" />
-        <RadzenDataGridColumn TItem="InventoryCountingDataGridVM"
-                              Property="@nameof(InventoryCountingDataGridVM.CreatedDate)"
-                              Title="Created Date"
-                              Type="@typeof(DateOnly)" 
-                              FormatString="{0:d}">
-            <Template>
-                @context.CreatedDate.ToString("MM/dd/yyyy")
-            </Template>
-        </RadzenDataGridColumn>
-        <RadzenDataGridColumn TItem="InventoryCountingDataGridVM"
-                              Frozen FrozenPosition="FrozenColumnPosition.Right"
-                              Width="35px" Filterable="false" Sortable="false" Pickable="false">
-            <Template>
-                <RadzenButton Icon="visibility" Size="ButtonSize.ExtraSmall" Click="() => ViewDocument(context)" />
-            </Template>
-        </RadzenDataGridColumn>
+        @if (IsSmallScreen)
+        {
+
+            <RadzenDataGridColumn TItem="InventoryCountingDataGridVM" Filterable="false" Pickable="false" Sortable="false">
+                <Template Context="context">
+                    <InventoryCountingCard InventoryCounting="context" OnClick="ViewDocument" />
+                </Template>
+            </RadzenDataGridColumn>
+        }
+        else
+        {
+
+            <RadzenDataGridColumn TItem="InventoryCountingDataGridVM"
+                                  Property="@nameof(InventoryCountingDataGridVM.AppDocNum)"
+                                  Title="Doc #"
+                                  Type="@typeof(string)" />
+            <RadzenDataGridColumn TItem="InventoryCountingDataGridVM"
+                                  Property="@nameof(InventoryCountingDataGridVM.Warehouse)"
+                                  Title="Warehouse"
+                                  Type="@typeof(string)" />
+            <RadzenDataGridColumn TItem="InventoryCountingDataGridVM"
+                                  Property="@nameof(InventoryCountingDataGridVM.CycleType)"
+                                  Title="Cycle Type">
+                <Template>
+                    @context.CycleType.ToString()
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="InventoryCountingDataGridVM"
+                                  Property="@nameof(InventoryCountingDataGridVM.Status)"
+                                  Title="Status">
+                <Template>
+                    <AppContentBadge Title="" Content="@context.Status.ToString()"
+                                     ChildBadgeStyle="@(context.Status switch
+                                     {
+                                         InventoryCountingDocumentStatus.Saved => BadgeStyle.Info,
+                                         InventoryCountingDocumentStatus.Posted => BadgeStyle.Secondary,
+                                         _ => BadgeStyle.Light
+                                     })" />
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="InventoryCountingDataGridVM"
+                                  Property="@nameof(InventoryCountingDataGridVM.CreatedBy)"
+                                  Title="Created By"
+                                  Type="@typeof(string)" />
+            <RadzenDataGridColumn TItem="InventoryCountingDataGridVM"
+                                  Property="@nameof(InventoryCountingDataGridVM.CreatedDate)"
+                                  Title="Created Date"
+                                  Type="@typeof(DateOnly)"
+                                  FormatString="{0:d}">
+                <Template>
+                    @context.CreatedDate.ToString("MM/dd/yyyy")
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="InventoryCountingDataGridVM"
+                                  Frozen FrozenPosition="FrozenColumnPosition.Right"
+                                  Width="35px" Filterable="false" Sortable="false" Pickable="false">
+                <Template>
+                    <RadzenButton Icon="visibility" Size="ButtonSize.ExtraSmall" Click="() => ViewDocument(context)" />
+                </Template>
+            </RadzenDataGridColumn>
+        }
     </GridColumns>
 </AppDataGrid>
 
@@ -84,5 +99,15 @@
                                     @bind-GridSettings=@GridSettings />,
             options: GridSettingsService.GetDialogOptions());
         await DataGrid.DataGrid.Reload();
+    }
+
+    bool IsSmallScreen = false;
+    async Task OnChange(bool matches)
+    {
+        if (matches != IsSmallScreen)
+        {
+            IsSmallScreen = matches;
+            await InvokeAsync(StateHasChanged);
+        }
     }
 }
