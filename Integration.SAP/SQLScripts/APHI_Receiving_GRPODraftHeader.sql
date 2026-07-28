@@ -44,4 +44,4 @@ INNER JOIN OCRD AS T5 ON T0.CardCode = T5.CardCode
 LEFT JOIN OCPR AS T6 ON T3.CntctCode = T6.CntctCode
 WHERE 
 	T0.Comments LIKE '%WMS%'
-	AND T0.DocEntry = 134687
+	AND T0.DocEntry = @DocEntry

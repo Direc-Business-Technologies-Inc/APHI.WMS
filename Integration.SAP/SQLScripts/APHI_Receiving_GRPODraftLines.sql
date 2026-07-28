@@ -22,6 +22,6 @@ INNER JOIN OITM AS T2 ON T1.ItemCode = T2.ItemCode
 INNER JOIN OWHS AS T3 ON T1.WhsCode = T3.WhsCode
 LEFT JOIN OUOM AS T4 ON T1.UomEntry = T4.UomEntry
 WHERE
-	T0.DocEntry = 134687
+	T0.DocEntry = @DocEntry
 ORDER BY
 	T1.LineNum
