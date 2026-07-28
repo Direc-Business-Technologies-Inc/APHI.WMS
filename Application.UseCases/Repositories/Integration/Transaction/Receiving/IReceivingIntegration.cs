@@ -13,6 +13,9 @@ public interface IReceivingIntegration
     public Task<(IEnumerable<PurchaseDeliveryNoteSAPDTO>, int)> GetPurchaseDeliveryNotesListAsync(DataGridIntent intent);
     public Task<PurchaseDeliveryNoteHeaderSAPDTO?> GetPurchaseDeliveryNoteHeaderAsync(int docEntry);
     public Task<IEnumerable<PurchaseDeliveryNoteLineSAPDTO>> GetPurchaseDeliveryNoteLinesAsync(int docEntry);
+    public Task<(IEnumerable<PurchaseDeliveryNoteSAPDTO>, int)> GetGRPODraftListAsync(DataGridIntent intent);
+    public Task<PurchaseDeliveryNoteHeaderSAPDTO?> GetGRPODraftHeaderAsync(int docEntry);
+    public Task<IEnumerable<PurchaseDeliveryNoteLineSAPDTO>> GetGRPODraftLinesAsync(int docEntry);
     public Task<bool> PostGoodsReceiptPOAsync(PurchaseDeliveryNoteDTO data);
     public Task<IEnumerable<PurchaseTypeSAPDTO>> GetPurchaseTypesAsync();
 }

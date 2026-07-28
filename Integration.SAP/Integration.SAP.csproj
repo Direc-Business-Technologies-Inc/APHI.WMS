@@ -46,4 +46,8 @@
 	  <Content Update="SQLScripts\APHI_Other_WhsItemsByItemGroup.sql" Link="Scripts\APHI_Other_WhsItemsByItemGroup.sql" />
 	</ItemGroup>
 
+	<ItemGroup>
+	  <Folder Include="SQLScripts\NewFolder\" />
+	</ItemGroup>
+
 </Project>

@@ -77,6 +77,9 @@ public partial class PurchaseOrderCVUPage
         Position = 0,
         Icon = "receipt_long",
     }];
+    List<AppFilterDescriptor> DraftFilter = [];
+
+    bool HasDrafts = false;
 
     public IDataGridIntentAdapter DatagridAdapter { get; set; } = default!;
     #endregion Data Structures
@@ -88,6 +91,12 @@ public partial class PurchaseOrderCVUPage
             PageAction = PageActionHelper.GetPageActionType(NavManager.Uri);
         else if (ModalMode && ModalAction != null)
             PageAction = (PageActionTypeEnum)ModalAction;
+
+        DraftFilter = [ new AppFilterDescriptor {
+            Value = Ref,
+            Property = "BaseEntry",
+            ComparisonOperator = ComparisonOperatorEnum.Equals
+        }];
     }
 
     protected override void OnInitialized()
@@ -102,7 +111,10 @@ public partial class PurchaseOrderCVUPage
 
         if (firstRender)
         {
-            await LoadDataAsync();
+            await Task.WhenAll(
+                LoadDataAsync(),
+                DraftsCheck()
+                );
 
             await InvokeAsync(StateHasChanged);
         }
@@ -226,6 +238,20 @@ public partial class PurchaseOrderCVUPage
 
         await ClearFormCacheAsync();
         NavManager.NavigateTo($"/transactions/purchasing/receiving?t=po", true);
+    }
+
+    async Task<bool> DraftsCheck()
+    {
+        (_, int count) = await ReceivingHandler.GetGRPODraftDataGridAsync(
+            new DataGridIntent
+            {
+                Take = 1,
+                Filters = [..DraftFilter]
+            }
+        );
+
+        HasDrafts = count > 0;
+        return HasDrafts;
     }
 
     async Task RemoveLine(PurchaseOrderLineVM line)

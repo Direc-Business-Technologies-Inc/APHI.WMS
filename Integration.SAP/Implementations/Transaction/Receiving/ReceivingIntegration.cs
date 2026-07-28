@@ -30,6 +30,44 @@ public class ReceivingIntegration(
 
         return lines;
     }
+    
+    public async Task<PurchaseDeliveryNoteHeaderSAPDTO?> GetGRPODraftHeaderAsync(int docEntry)
+    {
+        PurchaseDeliveryNoteHeaderSAPDTO? doc = await SLActions.SingleAsync<PurchaseDeliveryNoteHeaderSAPDTO, object>("APHI_Receiving_GRPODraftHeader", new { docEntry });
+
+        return doc;
+    }
+
+    public async Task<IEnumerable<PurchaseDeliveryNoteLineSAPDTO>> GetGRPODraftLinesAsync(int docEntry)
+    {
+        List<PurchaseDeliveryNoteLineSAPDTO>? lines = await SLActions.QueryAsync<PurchaseDeliveryNoteLineSAPDTO, object>("APHI_Receiving_GRPODraftLines", new { docEntry });
+
+        return lines;
+    }
+
+    public async Task<(IEnumerable<PurchaseDeliveryNoteSAPDTO>, int)> GetGRPODraftListAsync(DataGridIntent intent)
+    {
+        if (intent.Sorts.Count <= 0)
+        {
+            intent.Sorts.Add(new AppSortDescriptor
+            {
+                Property = "DocDate",
+                Direction = SortDirectionEnum.Descending
+            });
+        }
+
+        var qryDetails = qryManager.GetSqlScriptWithMetadata("APHI_Receiving_GRPODrafts", out string qry, out bool found);
+        if (!found)
+            throw new Exception("Query for getting all draft grpo  not found.");
+
+        string query = DataGridQueryBuilder.BuildQuery(qry, intent);
+        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent);
+
+        List<PurchaseDeliveryNoteSAPDTO> docs = await SLActions.RawQueryAsync<PurchaseDeliveryNoteSAPDTO>(query);
+        TotalRows? rowCount = await SLActions.RawQueryOneAsync<TotalRows>(countQuery);
+
+        return (docs, rowCount?.Count ?? docs.Count);
+    }
 
     public async Task<(IEnumerable<PurchaseDeliveryNoteSAPDTO>, int)> GetPurchaseDeliveryNotesListAsync(DataGridIntent intent)
     {

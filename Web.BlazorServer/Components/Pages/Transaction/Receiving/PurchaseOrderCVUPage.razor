@@ -1,4 +1,5 @@
 ﻿@using Domain.Entities.Enums.Transaction.Receiving
+@using Web.BlazorServer.Components.Pages.Transaction.Receiving.Components
 @using Web.BlazorServer.Components.Security
 @using Web.BlazorServer.Components.Shared.Skeletons
 @using Web.BlazorServer.ViewModels.Others
@@ -328,12 +329,15 @@
                 <RadzenColumn>
                     <RadzenStack class="rz-mt-8" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween">
                         <RadzenButton IsBusy="@IsBusy" Text="Back" Disabled="@(IsBusy || Creating)" ButtonStyle="ButtonStyle.Base" Click="@Return" />
-                        <RadzenStack Visible="@Can.Create("ORCV")" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="16px">
-                            <RadzenButton IsBusy="@IsBusy" Visible="@(Creating)" Text="Cancel" ButtonStyle="ButtonStyle.Base" Click="@CancelEditing" />
-                            <RadzenButton IsBusy="@IsBusy" Visible="@(Viewing)" Text="Edit" ButtonStyle="ButtonStyle.Success" Click="@InitializeEditing" />
-                            <RadzenButton IsBusy="@IsBusy" Visible="@(Creating)" ButtonStyle="ButtonStyle.Success" ButtonType="ButtonType.Submit">
-                                Save
-                            </RadzenButton>
+                        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="16px">
+                            <RadzenButton IsBusy="@IsBusy" Visible="HasDrafts" Text="View GRPO Drafts" ButtonStyle="ButtonStyle.Primary" Click="OpenDraftsDatagrid" />
+                            <RadzenStack Visible="@Can.Create("ORCV")" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" Gap="16px">
+                                <RadzenButton IsBusy="@IsBusy" Visible="@(Creating)" Text="Cancel" ButtonStyle="ButtonStyle.Base" Click="@CancelEditing" />
+                                <RadzenButton IsBusy="@IsBusy" Visible="@(Viewing)" Text="Edit" ButtonStyle="ButtonStyle.Success" Click="@InitializeEditing" />
+                                <RadzenButton IsBusy="@IsBusy" Visible="@(Creating)" ButtonStyle="ButtonStyle.Success" ButtonType="ButtonType.Submit">
+                                    Save
+                                </RadzenButton>
+                            </RadzenStack>
                         </RadzenStack>
                     </RadzenStack>
                 </RadzenColumn>
@@ -355,4 +359,23 @@
 
         await PurchaseOrderTable.DataGrid.Reload();
     }
+    
+
+    async Task OpenDraftsDatagrid()
+    {
+        await DialogService.OpenAsync(
+            "Delivery Drafts",
+            ds => @<GRPODraftDataGrid Filters="DraftFilter" />,
+        DatagridDialogOptions);
+    }
+
+    readonly DialogOptions DatagridDialogOptions = new()
+    {
+        CloseDialogOnOverlayClick = true,
+        CloseDialogOnEsc = true,
+        Draggable = true,
+        Resizable = true,
+        ShowClose = true,
+        Width = "67%"
+    };
 }

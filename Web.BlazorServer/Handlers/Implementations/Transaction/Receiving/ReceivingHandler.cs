@@ -28,6 +28,22 @@ public class ReceivingHandler(
 
         return response.Adapt<PurchaseDeliveryNoteVM?>();
     }
+    
+    public async Task<(IEnumerable<PurchaseDeliveryNoteDataGridVM> Data, int Count)> GetGRPODraftDataGridAsync(DataGridIntent intent)
+    {
+        GetGRPODraftListQry qry = new(intent);
+        (IEnumerable<PurchaseDeliveryNoteDataGridDTO> Data, int Count) = await Sender.Send(qry);
+
+        return (Data.Adapt<IEnumerable<PurchaseDeliveryNoteDataGridVM>>(), Count);
+    }
+
+    public async Task<PurchaseDeliveryNoteVM?> GetGRPODraftAsync(int docEntry)
+    {
+        GetGRPODraftQry qry = new(docEntry);
+        PurchaseDeliveryNoteDTO? response = await Sender.Send(qry);
+
+        return response.Adapt<PurchaseDeliveryNoteVM?>();
+    }
 
     public async Task<PurchaseOrderVM?> GetPurchaseOrderAsync(int docEntry)
     {

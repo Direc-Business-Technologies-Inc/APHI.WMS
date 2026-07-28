@@ -29,6 +29,8 @@ public partial class GoodsReceiptPOCVUPage
 
     [Parameter]
     public PageActionTypeEnum? ModalAction { get; set; } = null;
+    [SupplyParameterFromQuery]
+    public bool Draft { get; set; } = false;
 
     #endregion Parameters
 
@@ -153,7 +155,9 @@ public partial class GoodsReceiptPOCVUPage
         var action = await AppActionFactory.RunAsync(async () =>
         {
 
-            var result = await ReceivingHandler.GetPurchaseDeliveryNoteAsync(Ref);
+            var result = Draft ? 
+                await ReceivingHandler.GetGRPODraftAsync(Ref) :
+                await ReceivingHandler.GetPurchaseDeliveryNoteAsync(Ref);
 
             AppBusyService.SetBusy(ActionGetPurchaseDeliveryNote, false);
             return result;
