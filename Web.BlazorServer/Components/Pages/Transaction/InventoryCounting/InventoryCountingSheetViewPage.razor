@@ -8,6 +8,7 @@
 @attribute [AppAuthorizationAttribute("VIEW", "OICT")]
 
 <PageTitle>Inventory Counting Sheet</PageTitle>
+<RadzenMediaQuery Query="(max-width: 912px)" Change="OnChange" />
 
 <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween" class="rz-mb-4">
     <AppBreadCrumbs ModuleCode="OICT" />
@@ -57,13 +58,13 @@
             <Columns>
                 <RadzenDataGridColumn TItem="InventoryCountingSheetLineVM"
                                       Property="@nameof(InventoryCountingSheetLineVM.ItemCode)"
-                                      Title="Item Code" Type="@typeof(string)" />
+                                      Title="Item Code" Type="@typeof(string)" Width="@(IsSmallScreen ? "250px" : string.Empty)" />
                 <RadzenDataGridColumn TItem="InventoryCountingSheetLineVM"
                                       Property="@nameof(InventoryCountingSheetLineVM.ItemName)"
-                                      Title="Item Name" Type="@typeof(string)" />
+                                      Title="Item Name" Type="@typeof(string)" Width="@(IsSmallScreen ? "250px" : string.Empty)" />
                 <RadzenDataGridColumn TItem="InventoryCountingSheetLineVM"
                                       Property="@nameof(InventoryCountingSheetLineVM.UoMName)"
-                                      Title="UoM" Width="100px" Type="@typeof(string)" />
+                                      Title="UoM" Width="@(IsSmallScreen ? string.Empty : "120px")" Type="@typeof(string)" />
                 <RadzenDataGridColumn TItem="InventoryCountingSheetLineVM"
                                       Property="@nameof(InventoryCountingSheetLineVM.Quantity)"
                                       Title="Count Qty" Width="120px" Type="@typeof(decimal)">
@@ -94,3 +95,15 @@
     }
 
 </AppContent>
+@code {
+
+    bool IsSmallScreen = false;
+    async Task OnChange(bool matches)
+    {
+        if (matches != IsSmallScreen)
+        {
+            IsSmallScreen = matches;
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+}

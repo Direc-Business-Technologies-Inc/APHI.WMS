@@ -27,6 +27,7 @@
                       Click="@AddSheet" />
     </RadzenStack>
 </RadzenStack>
+<RadzenMediaQuery Query="(max-width: 912px)" Change="OnChange" />
 
 <AppContent>
     <AppFormSkeleton TItem="InventoryCountingVM" Loading="@IsLoadingData" />
@@ -194,16 +195,16 @@
                                 <Columns>
                                     <RadzenDataGridColumn TItem="InventoryCountingLineVM"
                                                           Property="@nameof(InventoryCountingLineVM.ItemCode)"
-                                                          Title="Item Code" Type="@typeof(string)" />
+                                                          Title="Item Code" Type="@typeof(string)" Width="@(IsSmallScreen ? "120px" : string.Empty)" />
                                     <RadzenDataGridColumn TItem="InventoryCountingLineVM"
                                                           Property="@nameof(InventoryCountingLineVM.ItemName)"
-                                                          Title="Item Name" Type="@typeof(string)" />
+                                                          Title="Item Name" Type="@typeof(string)" Width="@(IsSmallScreen ? "220px" : string.Empty)" />
                                     <RadzenDataGridColumn TItem="InventoryCountingLineVM"
                                                           Property="@nameof(InventoryCountingLineVM.UoMName)"
-                                                          Title="UoM" Width="100px" Type="@typeof(string)" />
+                                                          Title="UoM" Width="@(IsSmallScreen ? string.Empty : "120px")" Type="@typeof(string)" />
                                     <RadzenDataGridColumn TItem="InventoryCountingLineVM"
                                                           Property="@nameof(InventoryCountingLineVM.Quantity)"
-                                                          Title="On Hand" Width="120px" Type="@typeof(decimal)">
+                                                          Title="On Hand" Width="@(IsSmallScreen ? string.Empty : "120px")" Type="@typeof(decimal)">
                                         <Template Context="lineVm">
                                             @lineVm.Quantity.ToString("N0")
                                         </Template>
@@ -264,13 +265,13 @@
                                 <Columns>
                                     <RadzenDataGridColumn TItem="InventoryCountingLineVM"
                                                           Property="@nameof(InventoryCountingLineVM.ItemCode)"
-                                                          Title="Item Code" Type="@typeof(string)" />
+                                                          Title="Item Code" Type="@typeof(string)" Width="@(IsSmallScreen ? "120px" : string.Empty)" />
                                     <RadzenDataGridColumn TItem="InventoryCountingLineVM"
                                                           Property="@nameof(InventoryCountingLineVM.ItemName)"
-                                                          Title="Item Name" Type="@typeof(string)" />
+                                                          Title="Item Name" Type="@typeof(string)" Width="@(IsSmallScreen ? "220px" : string.Empty)" />
                                     <RadzenDataGridColumn TItem="InventoryCountingLineVM"
                                                           Property="@nameof(InventoryCountingLineVM.UoMName)"
-                                                          Title="UoM" Width="100px" Type="@typeof(string)" />
+                                                          Title="UoM" Type="@typeof(string)" Width="@(IsSmallScreen ? string.Empty : "120px")" />
                                     <RadzenDataGridColumn TItem="InventoryCountingLineVM"
                                                           Property="@nameof(InventoryCountingLineVM.Quantity)"
                                                           Title="On Hand" Width="120px">
@@ -353,5 +354,18 @@
             "Sheets",
             ds => @<InventoryCountingSheetListModal Sheets="@FormData.Sheets" DocumentId="@FormData.Id" />,
     options: GridSettingsService.GetDialogOptions().MaximizedMode());
+    }
+
+    
+    
+    bool IsSmallScreen = false;
+
+    async Task OnChange(bool matches)
+    {
+        if (matches != IsSmallScreen)
+        {
+            IsSmallScreen = matches;
+            await InvokeAsync(StateHasChanged);
+        }
     }
 }
