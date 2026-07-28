@@ -12,6 +12,7 @@
 @attribute [AppAuthorizationAttribute("VIEW", "ORCV")]
 
 <PageTitle>@(Creating ? "New Receiving Document" : string.Empty)@(Viewing ? $"PO {FormData.SapReference.DocNum}" : string.Empty)</PageTitle>
+<RadzenMediaQuery Query="(max-width: 912px)" Change="OnChange" />
 
 <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween" class="rz-mb-4">
     <AppBreadCrumbs ModuleCode="ORCV" AdditionalRoutes="@AdditionalRoutes" />
@@ -200,10 +201,10 @@
                                                           Property="@nameof(PurchaseOrderLineVM.ItemCode)"
                                                           Type="@typeof(string)"
                                                           Title="Item Code"
-                                                          Width="150px"/>
+                                                  Width="@(IsSmallScreen ?  "120px" : string.Empty)" />
                                     <RadzenDataGridColumn TItem="PurchaseOrderLineVM"
                                                           Property="@nameof(PurchaseOrderLineVM.ItemName)"
-                                                          Width="260px"
+                                                  Width="@(IsSmallScreen ?  "250px" : string.Empty)"
                                                           Type="@typeof(string)"
                                                           Title="Item Name" />
                                     <RadzenDataGridColumn TItem="PurchaseOrderLineVM"
@@ -217,14 +218,17 @@
                                     <RadzenDataGridColumn TItem="PurchaseOrderLineVM"
                                                           Property="@nameof(PurchaseOrderLineVM.UoMName)"
                                                           Type="@typeof(string)"
+                                                  Width="@(IsSmallScreen ?  string.Empty : "120px")"
                                                           Title="UoM" />
                                     <RadzenDataGridColumn TItem="PurchaseOrderLineVM"
                                                           Property="@nameof(PurchaseOrderLineVM.InputType)"
                                                           Type="@typeof(InputType)"
+                                                  Width="@(IsSmallScreen ?  string.Empty : "120px")"
                                                           Title="Input" />
                                     <RadzenDataGridColumn TItem="PurchaseOrderLineVM"
                                                           Property="@nameof(PurchaseOrderLineVM.TargetQuantity)"
                                                           Type="@typeof(decimal)"
+                                                  Width="@(IsSmallScreen ?  string.Empty : "120px")"
                                                           Title="Planned Qty">
                                         <Template Context="data">
                                             <RadzenNumeric Format="N0"
@@ -237,7 +241,7 @@
                                     </RadzenDataGridColumn>
                                     <RadzenDataGridColumn TItem="PurchaseOrderLineVM"
                                                           Property="@nameof(PurchaseOrderLineVM.OpenQuantity)"
-                                                          Title="Open Qty" Width="150px">
+                                                          Title="Open Qty" Width="120px">
                                         <Template Context="data">
                                             <RadzenNumeric Format="N0"
                                                            @bind-Value="@data.OpenQuantity"
@@ -252,7 +256,7 @@
                                     {
                                         <RadzenDataGridColumn TItem="PurchaseOrderLineVM"
                                                               Property="@nameof(PurchaseOrderLineVM.Quantity)"
-                                                              Width="150px"
+                                                              Width="120px"
                                                               Title="Received Qty">
                                             <Template Context="data">
                                                 <RadzenFormField class="rz-w-100 remove-form-input-margin">
@@ -378,4 +382,17 @@
         ShowClose = true,
         Width = "67%"
     };
+
+    
+    
+    bool IsSmallScreen = false;
+
+    async Task OnChange(bool matches)
+    {
+        if (matches != IsSmallScreen)
+        {
+            IsSmallScreen = matches;
+            await InvokeAsync(StateHasChanged);
+        }
+    }
 }

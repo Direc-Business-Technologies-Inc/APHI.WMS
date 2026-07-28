@@ -13,6 +13,7 @@
 <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween" class="rz-mb-4">
     <AppBreadCrumbs ModuleCode="ORCV" AdditionalRoutes="@AdditionalRoutes" />
 </RadzenStack>
+<RadzenMediaQuery Query="(max-width: 912px)" Change="OnChange" />
 
 <AppContent>
 
@@ -148,60 +149,60 @@
 
             <RadzenFieldset AllowCollapse Text="Details">
                 <ChildContent>
-                            <AppTable @ref="@PurchaseDeliveryNoteTable"
-                                      Id="grpo_cvu_items"
-                                      TItem="PurchaseDeliveryNoteLineVM"
-                                      @bind-GridSettingsLoaded="@GridSettingsLoaded"
-                                      SearchFilter="@_grpoLinesFilter"
-                                      Data="@FormData.DocumentLines">
-                                <HeaderTemplate>
-                                    <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center" Gap="8px">
-                                        <AppTableSearchBar TItem="PurchaseDeliveryNoteLineVM"
-                                                           Properties="@(new[] { nameof(PurchaseDeliveryNoteLineVM.ItemCode), nameof(PurchaseDeliveryNoteLineVM.ItemName) })"
-                                                           @bind-SearchFilter="_grpoLinesFilter"
-                                                           SuggestionSource="@FormData.DocumentLines" />
-                                        <RadzenStack Orientation="Orientation.Horizontal"
-                                                     JustifyContent="JustifyContent.End"
-                                                     AlignItems="AlignItems.Center"
-                                                     Gap="8px">
-                                            <RadzenButton Icon="settings"
-                                                          Size="ButtonSize.Small"
-                                                          ButtonStyle="ButtonStyle.Light"
-                                                          Click="@OpenTableSettings" />
-                                        </RadzenStack>
-                                    </RadzenStack>
-                                </HeaderTemplate>
-                                <Columns>
-                                    <RadzenDataGridColumn TItem="PurchaseDeliveryNoteLineVM"
-                                                          Property="@nameof(PurchaseDeliveryNoteLineVM.LineNum)"
-                                                          Type="@typeof(int)"
-                                                          Width="40px" TextAlign="TextAlign.Center" />
-                                    <RadzenDataGridColumn TItem="PurchaseDeliveryNoteLineVM"
-                                                          Property="@nameof(PurchaseDeliveryNoteLineVM.ItemCode)"
-                                                          Type="@typeof(string)"
-                                                          Width="18%"
-                                                          Title="Item Code" />
-                                    <RadzenDataGridColumn TItem="PurchaseDeliveryNoteLineVM"
-                                                          Property="@nameof(PurchaseDeliveryNoteLineVM.ItemName)"
-                                                  Type="@typeof(string)" Width="32%"
+                    <AppTable @ref="@PurchaseDeliveryNoteTable"
+                              Id="grpo_cvu_items"
+                              TItem="PurchaseDeliveryNoteLineVM"
+                              @bind-GridSettingsLoaded="@GridSettingsLoaded"
+                              SearchFilter="@_grpoLinesFilter"
+                              Data="@FormData.DocumentLines">
+                        <HeaderTemplate>
+                            <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center" Gap="8px">
+                                <AppTableSearchBar TItem="PurchaseDeliveryNoteLineVM"
+                                                   Properties="@(new[] { nameof(PurchaseDeliveryNoteLineVM.ItemCode), nameof(PurchaseDeliveryNoteLineVM.ItemName) })"
+                                                   @bind-SearchFilter="_grpoLinesFilter"
+                                                   SuggestionSource="@FormData.DocumentLines" />
+                                <RadzenStack Orientation="Orientation.Horizontal"
+                                             JustifyContent="JustifyContent.End"
+                                             AlignItems="AlignItems.Center"
+                                             Gap="8px">
+                                    <RadzenButton Icon="settings"
+                                                  Size="ButtonSize.Small"
+                                                  ButtonStyle="ButtonStyle.Light"
+                                                  Click="@OpenTableSettings" />
+                                </RadzenStack>
+                            </RadzenStack>
+                        </HeaderTemplate>
+                        <Columns>
+                            <RadzenDataGridColumn TItem="PurchaseDeliveryNoteLineVM"
+                                                  Property="@nameof(PurchaseDeliveryNoteLineVM.LineNum)"
+                                                  Type="@typeof(int)"
+                                                  Width="40px" TextAlign="TextAlign.Center" />
+                            <RadzenDataGridColumn TItem="PurchaseDeliveryNoteLineVM"
+                                                  Property="@nameof(PurchaseDeliveryNoteLineVM.ItemCode)"
+                                                  Type="@typeof(string)"
+                                                  Width="@(IsSmallScreen ?  "120px" : string.Empty)"
+                                                  Title="Item Code" />
+                            <RadzenDataGridColumn TItem="PurchaseDeliveryNoteLineVM"
+                                                  Property="@nameof(PurchaseDeliveryNoteLineVM.ItemName)"
+                                                  Type="@typeof(string)" Width="@(IsSmallScreen ?  "220px" : string.Empty)"
                                                   Title="Item Name" />
-                                    <RadzenDataGridColumn TItem="PurchaseDeliveryNoteLineVM"
-                                                          Property="@nameof(PurchaseDeliveryNoteLineVM.UoMName)"
-                                                          Type="@typeof(string)"
-                                                          Title="UoM"  />
-                                    <RadzenDataGridColumn TItem="PurchaseDeliveryNoteLineVM"
-                                                          Property="@nameof(PurchaseDeliveryNoteLineVM.Quantity)"
-                                                          Type="@typeof(decimal)"
-                                                          Title="Quantity" >
-                                        <Template Context="data">
-                                            <RadzenNumeric Format="N0" @bind-Value="@data.Quantity" Min="0" ReadOnly ShowUpDown="false" />
-                                        </Template>
-                                    </RadzenDataGridColumn>
-                                    <RadzenDataGridColumn TItem="PurchaseDeliveryNoteLineVM"
-                                                          Property="@nameof(PurchaseDeliveryNoteLineVM.InputType)"
-                                                          Title="Input" Width="100px" />
-                                </Columns>
-                            </AppTable>
+                            <RadzenDataGridColumn TItem="PurchaseDeliveryNoteLineVM"
+                                                  Property="@nameof(PurchaseDeliveryNoteLineVM.UoMName)"
+                                                  Type="@typeof(string)"
+                                                  Title="UoM" Width="@(IsSmallScreen ?  string.Empty : "120px")" />
+                            <RadzenDataGridColumn TItem="PurchaseDeliveryNoteLineVM"
+                                                  Property="@nameof(PurchaseDeliveryNoteLineVM.Quantity)"
+                                                  Type="@typeof(decimal)" Width="120px"
+                                                  Title="Quantity">
+                                <Template Context="data">
+                                    <RadzenNumeric Format="N0" @bind-Value="@data.Quantity" Min="0" ReadOnly ShowUpDown="false" />
+                                </Template>
+                            </RadzenDataGridColumn>
+                            <RadzenDataGridColumn TItem="PurchaseDeliveryNoteLineVM"
+                                                  Property="@nameof(PurchaseDeliveryNoteLineVM.InputType)"
+                                                  Title="Input" Width="@(IsSmallScreen ?  string.Empty : "120px")" />
+                        </Columns>
+                    </AppTable>
                 </ChildContent>
             </RadzenFieldset>
 
@@ -263,6 +264,19 @@
         options: GridSettingsService.GetDialogOptions());
 
         await PurchaseDeliveryNoteTable.DataGrid.Reload();
+    }
+
+    
+    
+    bool IsSmallScreen = false;
+
+    async Task OnChange(bool matches)
+    {
+        if (matches != IsSmallScreen)
+        {
+            IsSmallScreen = matches;
+            await InvokeAsync(StateHasChanged);
+        }
     }
 }
 
