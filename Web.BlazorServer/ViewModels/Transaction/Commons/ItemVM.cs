@@ -10,4 +10,5 @@ public class ItemVM
     public string UoMCode { get; set; }
     public decimal UoMValue { get; set; }
     public string UoMName { get; set; } = string.Empty;
+    public decimal OnHand { get; set; }
 }

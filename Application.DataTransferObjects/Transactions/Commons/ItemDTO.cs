@@ -10,4 +10,5 @@ public class ItemDTO
     public decimal UoMValue { get; set; }
     public string UoMName { get; set; }
     public string? ISBN { get; set; }
+    public decimal OnHand { get; set; } = 0;
 }

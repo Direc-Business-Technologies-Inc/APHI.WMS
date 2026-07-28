@@ -98,7 +98,9 @@ public partial class ItemSelection
     {
         if (!Request.Lines.Any(x => x.ItemCode == data.ItemCode))
         {
-            Request.Lines.Add(data.Adapt<InventoryTransferRequestLineVM>());
+            var newLine = data.Adapt<InventoryTransferRequestLineVM>();
+            newLine.OnHandQuantity = data.OnHand;
+            Request.Lines.Add(newLine);
             SelectedItems.Add(data);
         }
     }
