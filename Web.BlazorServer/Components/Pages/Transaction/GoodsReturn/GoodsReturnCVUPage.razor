@@ -12,6 +12,7 @@
 @attribute [AppAuthorizationAttribute("VIEW", "OGRN")]
 
 <PageTitle>@(Creating ? "New Goods Return Document" : string.Empty)@(Viewing ? $"Goods Return {FormData.SapReference.DocNum}" : string.Empty)</PageTitle>
+<RadzenMediaQuery Query="(max-width: 912px)" Change="OnChange" />
 
 <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween" class="rz-mb-4">
     <AppBreadCrumbs ModuleCode="OGRN" />
@@ -177,15 +178,15 @@
                                     <RadzenDataGridColumn TItem="GoodsReturnLineVM"
                                                           Property="@nameof(GoodsReturnLineVM.ItemCode)"
                                                           Type="@typeof(string)"
-                                                          Title="Item Code" />
+                                                          Title="Item Code" Width="@(IsSmallScreen ? "120px" : string.Empty)" />
                                     <RadzenDataGridColumn TItem="GoodsReturnLineVM"
                                                           Property="@nameof(GoodsReturnLineVM.ItemName)"
                                                           Type="@typeof(string)"
-                                                          Title="Item Name" />
+                                                          Title="Item Name" Width="@(IsSmallScreen ? "220px" : string.Empty)" />
                                     <RadzenDataGridColumn TItem="GoodsReturnLineVM"
                                                           Property="Warehouse.WhsName"
                                                           Type="@typeof(string)"
-                                                          Title="Warehouse" Width="150px">
+                                                          Title="Warehouse" Width="@(IsSmallScreen ? string.Empty : "120px")">
                                         <Template Context="data">
                                             @data.Warehouse.WhsName
                                         </Template>
@@ -193,11 +194,11 @@
                                     <RadzenDataGridColumn TItem="GoodsReturnLineVM"
                                                           Property="@nameof(GoodsReturnLineVM.UoMName)"
                                                           Type="@typeof(string)"
-                                                          Title="UoM" Width="125px" />
+                                                          Title="UoM" Width="@(IsSmallScreen ? string.Empty : "120px")" />
                                     <RadzenDataGridColumn Visible="@(Creating && !FormData.Standalone)" TItem="GoodsReturnLineVM"
                                                           Property="@nameof(GoodsReturnLineVM.OpenQuantity)"
                                                           Type="@typeof(decimal)"
-                                                          Title="Open Quantity" Width="150px">
+                                                          Title="Open Quantity" Width="120px">
                                         <Template Context="data">
                                             <RadzenNumeric Format="N0" @bind-Value="@data.OpenQuantity" Min="0" ReadOnly ShowUpDown="false" />
                                         </Template>
@@ -205,7 +206,7 @@
                                     <RadzenDataGridColumn TItem="GoodsReturnLineVM"
                                                           Property="@nameof(GoodsReturnLineVM.Quantity)"
                                                           Type="@typeof(decimal)"
-                                                          Title="Quantity" Width="150px">
+                                                          Title="Quantity" Width="120px">
                                         <Template Context="data">
                                             <RadzenNumeric Format="N0" @bind-Value="@data.Quantity" Min="0" Max="@(FormData.Standalone ? null : data.OpenQuantity)" ReadOnly="@(Viewing || (!FormData.Standalone && data.OpenQuantity <= 0))" ShowUpDown="@Creating" />
                                         </Template>
@@ -317,5 +318,17 @@
         options: GridSettingsService.GetDialogOptions());
 
         await GoodsReturnTable.DataGrid.Reload();
+    }
+
+    
+    bool IsSmallScreen = false;
+
+    async Task OnChange(bool matches)
+    {
+        if (matches != IsSmallScreen)
+        {
+            IsSmallScreen = matches;
+            await InvokeAsync(StateHasChanged);
+        }
     }
 }
