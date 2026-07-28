@@ -21,7 +21,7 @@ public class InventoryTransferPayload
     public string? U_NotedBy { get; private set; }
     public string? U_SchlYear { get; private set; }
     public string DocObjectCode { get; private set; } = "oStockTransfer";
-    public IEnumerable<InventoryTransferLinesPayload> DocumentLines { get; private set; }
+    public IEnumerable<InventoryTransferLinesPayload> StockTransferLines { get; private set; }
     public string? CardCode { get; private set; }
     public string? CardName { get; private set; }
 
@@ -53,7 +53,7 @@ public class InventoryTransferPayload
         U_NotedBy = notedBy;
         U_SchlYear = schlYear;
         CardCode = Guard.Against.NullOrEmpty(cardCode, nameof(cardCode), "\"Card Code\" cannot be empty");
-        DocumentLines = Guard.Against.NullOrEmpty(lines, nameof(DocumentLines), "Document Lines cannot be null or empty");
+        StockTransferLines = Guard.Against.NullOrEmpty(lines, nameof(StockTransferLines), "Document Lines cannot be null or empty");
     }
 
     public static InventoryTransferPayload Create(

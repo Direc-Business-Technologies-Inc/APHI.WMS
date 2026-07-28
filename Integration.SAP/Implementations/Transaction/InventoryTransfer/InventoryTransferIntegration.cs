@@ -220,7 +220,7 @@ public partial class InventoryTransferIntegration(
         string jsonString = JsonSerializer.Serialize(payload, jsonSerializerOptions);
         try
         {
-            var result = await SLActions.PostAsync<InventoryTransferResponse, InventoryTransferPayload>("Drafts", payload);
+            var result = await SLActions.PostAsync<InventoryTransferResponse, InventoryTransferPayload>("StockTransfers", payload);
             return result.DocEntry;
         }
         catch (SLException ex) when (ex.InnerException is Flurl.Http.FlurlHttpException httpException)
