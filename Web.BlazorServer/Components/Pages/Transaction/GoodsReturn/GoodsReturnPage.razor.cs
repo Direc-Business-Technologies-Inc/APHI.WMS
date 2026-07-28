@@ -19,7 +19,12 @@ public partial class GoodsReturnPage
     {
         base.OnParametersSet();
         if (T is not null)
-            SelectedTab = T.ToLower() == "grr" ? 1 : 0;
+            SelectedTab = T.ToLower() switch
+            {
+                "grd" => 1,
+                "grr" => 2,
+                _ => 0
+            };
     }
 
     #endregion Overrides
@@ -27,7 +32,13 @@ public partial class GoodsReturnPage
     #region Custom Functions
     void TabChanged()
     {
-        T = SelectedTab == 0 ? "gr" : "grr";
+        T = SelectedTab switch
+        {
+            1 => "grd",
+            2 => "grr",
+            _ => "gr"
+        };
+
         NavManager.NavigateTo($"/transactions/purchasing/goods-return?T={T}");
     }
     #endregion Custom Functions

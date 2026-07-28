@@ -28,6 +28,8 @@ public partial class GoodsReturnCVUPage
     [SupplyParameterFromQuery]
     [Parameter]
     public int Ref { get; set; }
+    [SupplyParameterFromQuery]
+    public bool Draft { get; set; } = false;
 
     [Parameter]
     public bool ModalMode { get; set; } = false;
@@ -208,7 +210,9 @@ public partial class GoodsReturnCVUPage
         var action = await AppActionFactory.RunAsync(async () =>
         {
 
-            var result = await GoodsReturnHandler.GetGoodsReturnAsync(Ref);
+            var result = Draft ? 
+                await GoodsReturnHandler.GetGoodsReturnDraftAsync(Ref) :
+                await GoodsReturnHandler.GetGoodsReturnAsync(Ref);
 
             AppBusyService.SetBusy(ActionGetGoodsReturn, false);
             return result;

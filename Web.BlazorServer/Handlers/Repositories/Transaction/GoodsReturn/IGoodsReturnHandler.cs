@@ -10,6 +10,8 @@ public interface IGoodsReturnHandler
     Task<GoodsReturnRequestVM?> GetGoodsReturnRequestAsync(int docEntry);
     Task<(IEnumerable<GoodsReturnDataGridVM> Data, int Count)> GetGoodsReturnDataGridAsync(DataGridIntent intent);
     Task<GoodsReturnVM?> GetGoodsReturnAsync(int docEntry);
+    Task<(IEnumerable<GoodsReturnDataGridVM> Data, int Count)> GetGoodsReturnDraftDataGridAsync(DataGridIntent intent);
+    Task<GoodsReturnVM?> GetGoodsReturnDraftAsync(int docEntry);
     Task<bool> PostGoodsReturnAsync(GoodsReturnRequestVM data, GoodsReturnPostingSource source);
     Task<bool> PostGoodsReturnAsync(GoodsReturnVM data, GoodsReturnPostingSource source);
     Task<IEnumerable<ReturnTypeVM>> GetReturnTypesAsync();

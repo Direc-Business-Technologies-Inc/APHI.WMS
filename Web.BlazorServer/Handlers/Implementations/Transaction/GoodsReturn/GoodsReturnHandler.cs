@@ -29,6 +29,21 @@ namespace Web.BlazorServer.Handlers.Implementations.Transaction.GoodsReturn
 
             return (Data.Adapt<IEnumerable<GoodsReturnDataGridVM>>(), Count);
         }
+        public async Task<GoodsReturnVM?> GetGoodsReturnDraftAsync(int docEntry)
+        {
+            GetGoodsReturnDraftQry qry = new(docEntry);
+            GoodsReturnDTO? response = await Sender.Send(qry);
+
+            return response.Adapt<GoodsReturnVM>();
+        }
+
+        public async Task<(IEnumerable<GoodsReturnDataGridVM> Data, int Count)> GetGoodsReturnDraftDataGridAsync(DataGridIntent intent)
+        {
+            GetGoodsReturnDraftsQry qry = new(intent);
+            (IEnumerable<GoodsReturnDataGridDTO> Data, int Count) = await Sender.Send(qry);
+
+            return (Data.Adapt<IEnumerable<GoodsReturnDataGridVM>>(), Count);
+        }
 
         public async Task<GoodsReturnRequestVM?> GetGoodsReturnRequestAsync(int docEntry)
         {

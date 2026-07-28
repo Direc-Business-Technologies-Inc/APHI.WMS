@@ -29,6 +29,43 @@ public class GoodsReturnIntegration(
 
         return lines;
     }
+    public async Task<GoodsReturnHeaderSAPDTO?> GetGoodsReturnDraftHeaderAsync(int docEntry)
+    {
+        GoodsReturnHeaderSAPDTO? doc = await SLActions.SingleAsync<GoodsReturnHeaderSAPDTO, object>("APHI_GoodsReturn_GoodsReturnDraftHeader", new { docEntry });
+
+        return doc;
+    }
+
+    public async Task<IEnumerable<GoodsReturnLineSAPDTO>> GetGoodsReturnDraftLinesAsync(int docEntry)
+    {
+        List<GoodsReturnLineSAPDTO>? lines = await SLActions.QueryAsync<GoodsReturnLineSAPDTO, object>("APHI_GoodsReturn_GoodsReturnDraftLines", new { docEntry });
+
+        return lines;
+    }
+
+    public async Task<(IEnumerable<GoodsReturnsSAPDTO>, int)> GetGoodsReturnDraftsListAsync(DataGridIntent intent)
+    {
+        if (intent.Sorts.Count <= 0)
+        {
+            intent.Sorts.Add(new AppSortDescriptor
+            {
+                Property = "DocDate",
+                Direction = SortDirectionEnum.Descending
+            });
+        }
+
+        var qryDetails = qryManager.GetSqlScriptWithMetadata("APHI_GoodsReturn_GoodsReturnDrafts", out string qry, out bool found);
+        if (!found)
+            throw new Exception("Query for getting all goods return drafts not found.");
+
+        string query = DataGridQueryBuilder.BuildQuery(qry, intent);
+        string countQuery = DataGridQueryBuilder.BuildCountQuery(qry, intent);
+
+        List<GoodsReturnsSAPDTO> docs = await SLActions.RawQueryAsync<GoodsReturnsSAPDTO>(query);
+        TotalRows? rowCount = await SLActions.RawQueryOneAsync<TotalRows>(countQuery);
+
+        return (docs, rowCount?.Count ?? docs.Count);
+    }
 
     public async Task<(IEnumerable<GoodsReturnsSAPDTO>, int)> GetGoodsReturnsListAsync(DataGridIntent intent)
     {

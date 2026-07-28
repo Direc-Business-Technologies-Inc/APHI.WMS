@@ -12,6 +12,9 @@ public interface IGoodsReturnIntegration
     public Task<(IEnumerable<GoodsReturnsSAPDTO>, int)> GetGoodsReturnsListAsync(DataGridIntent intent);
     public Task<GoodsReturnHeaderSAPDTO?> GetGoodsReturnHeaderAsync(int docEntry);
     public Task<IEnumerable<GoodsReturnLineSAPDTO>> GetGoodsReturnLinesAsync(int docEntry);
+    public Task<(IEnumerable<GoodsReturnsSAPDTO>, int)> GetGoodsReturnDraftsListAsync(DataGridIntent intent);
+    public Task<GoodsReturnHeaderSAPDTO?> GetGoodsReturnDraftHeaderAsync(int docEntry);
+    public Task<IEnumerable<GoodsReturnLineSAPDTO>> GetGoodsReturnDraftLinesAsync(int docEntry);
     public Task<bool> PostGoodsReturnAsync(GoodsReturnDTO data);
     public Task<bool> PostGoodsReturnFromGRRAsync(GoodsReturnDTO data);
     public Task<bool> PostGoodsReturnFromGRPOAsync(GoodsReturnDTO data);
