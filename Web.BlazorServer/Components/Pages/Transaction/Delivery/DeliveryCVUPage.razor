@@ -1,3 +1,4 @@
+@using Web.BlazorServer.Components.Pages.Transaction.Delivery.Components.Columns
 @using Web.BlazorServer.Components.Security
 @using Web.BlazorServer.Components.Shared.Skeletons
 @using Web.BlazorServer.ViewModels.Transaction.Delivery
@@ -185,53 +186,7 @@
                                         </RadzenStack>
                                     </HeaderTemplate>
                                     <Columns>
-                                        <RadzenDataGridColumn TItem="SalesOrderLineVM"
-                                                              Property="@nameof(SalesOrderLineVM.LineNum)"
-                                                              Width="40px" TextAlign="TextAlign.Center" />
-                                        <RadzenDataGridColumn TItem="SalesOrderLineVM"
-                                                              Property="@nameof(SalesOrderLineVM.ItemCode)"
-                                                              Title="Item Code" />
-                                        <RadzenDataGridColumn TItem="SalesOrderLineVM"
-                                                              Property="@nameof(SalesOrderLineVM.ItemName)"
-                                                              Title="Item Name" />
-                                        <RadzenDataGridColumn TItem="SalesOrderLineVM"
-                                                              Property="@nameof(SalesOrderLineVM.Warehouse.WhsName)"
-                                                              Title="Warehouse" Width="150px">
-                                                          <Template Context="data">
-                                                              @data.Warehouse?.WhsName
-                                                          </Template>
-                                        </RadzenDataGridColumn>
-                                        <RadzenDataGridColumn TItem="SalesOrderLineVM"
-                                                              Property="@nameof(SalesOrderLineVM.OnHand)"
-                                                              Title="On-hand Qty" Width="130px">
-                                            <Template Context="data">
-                                                @data.OnHand.ToString("N0")
-                                            </Template>
-                                        </RadzenDataGridColumn>
-                                        <RadzenDataGridColumn TItem="SalesOrderLineVM"
-                                                              Property="@nameof(SalesOrderLineVM.UoMName)"
-                                                              Title="UoM" Width="100px" />
-                                        <RadzenDataGridColumn TItem="SalesOrderLineVM"
-                                                              Property="@nameof(SalesOrderLineVM.TargetQty)"
-                                                              Title="Target Qty" Width="130px">
-                                            <Template Context="data">
-                                                @data.TargetQty.ToString("N0")
-                                            </Template>
-                                        </RadzenDataGridColumn>
-                                        <RadzenDataGridColumn TItem="SalesOrderLineVM"
-                                                              Property="@nameof(SalesOrderLineVM.OpenQty)"
-                                                              Title="Open Qty" Width="130px">
-                                            <Template Context="data">
-                                                @data.OpenQty.ToString("N0")
-                                            </Template>
-                                        </RadzenDataGridColumn>
-                                        <RadzenDataGridColumn TItem="SalesOrderLineVM"
-                                                              Title="Deliver Qty" Width="140px">
-                                            <Template Context="data">
-                                                <RadzenNumeric Format="N0" @bind-Value="@data.Quantity"
-                                                               class="rz-w-100" />
-                                            </Template>
-                                        </RadzenDataGridColumn>
+                                        <DeliveryCreateColumns />
                                     </Columns>
                                 </AppTable>
                             }
@@ -248,32 +203,7 @@
                                         </RadzenStack>
                                     </HeaderTemplate>
                                     <Columns>
-                                        <RadzenDataGridColumn TItem="DeliveryLineVM"
-                                                              Property="@nameof(DeliveryLineVM.LineNum)"
-                                                              Width="40px" TextAlign="TextAlign.Center" />
-                                        <RadzenDataGridColumn TItem="DeliveryLineVM"
-                                                              Property="@nameof(DeliveryLineVM.ItemCode)"
-                                                              Title="Item Code" />
-                                        <RadzenDataGridColumn TItem="DeliveryLineVM"
-                                                              Property="@nameof(DeliveryLineVM.ItemName)"
-                                                              Title="Item Name" />
-                                        <RadzenDataGridColumn TItem="DeliveryLineVM"
-                                                              Property="@nameof(DeliveryLineVM.Warehouse)"
-                                                              Title="Warehouse" Width="150px">
-                                            <Template Context="data">
-                                                @(data.Warehouse?.WhsName ?? "-")
-                                            </Template>
-                                        </RadzenDataGridColumn>
-                                        <RadzenDataGridColumn TItem="DeliveryLineVM"
-                                                              Property="@nameof(DeliveryLineVM.UoMName)"
-                                                              Title="UoM" Width="100px" />
-                                        <RadzenDataGridColumn TItem="DeliveryLineVM"
-                                                              Property="@nameof(DeliveryLineVM.Quantity)"
-                                                              Title="Quantity" Width="130px">
-                                            <Template Context="data">
-                                                @data.Quantity.ToString("N0")
-                                            </Template>
-                                        </RadzenDataGridColumn>
+                                        <DeliveryViewColumns />
                                     </Columns>
                                 </AppTable>
                             }

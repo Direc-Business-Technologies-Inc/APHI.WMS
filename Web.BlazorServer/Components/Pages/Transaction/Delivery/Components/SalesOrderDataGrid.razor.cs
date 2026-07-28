@@ -20,6 +20,7 @@ public partial class SalesOrderDataGrid
     DataGridSettings SalesOrderDataGridSettings { get; set; } = new();
 
     string ActionGetAllSalesOrders { get; } = EnumHelper.GetEnumDescription(AppActions.GetAllSalesOrders);
+    bool IsSmallScreen { get; set; } = false;
     AppFilterDescriptor? _searchFilter;
 
     async Task<DataGridResultVM<SalesOrderDataGridVM>> LoadDataAsync(DataGridIntent intent)

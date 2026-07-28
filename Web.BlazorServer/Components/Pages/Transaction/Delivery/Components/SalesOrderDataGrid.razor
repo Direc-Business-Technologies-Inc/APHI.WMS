@@ -1,7 +1,9 @@
+@using Web.BlazorServer.Components.Pages.Transaction.Delivery.Components.Cards
 @using Web.BlazorServer.Components.Security
 @using Web.BlazorServer.ViewModels.Transaction.Delivery
 
 @inherits BaseComponent
+<RadzenMediaQuery Query="(max-width: 768px)" Change="OnChange" />
 
 <AppDataGrid @ref="@SalesOrderGrid" Id="sales_order_delivery_grid" TItem="SalesOrderDataGridVM" DataGetter="@LoadDataAsync" GridSettings="@SalesOrderDataGridSettings" @bind-GridSettingsLoaded="@GridSettingsLoaded" ActionName="@ActionGetAllSalesOrders" SearchFilter="@_searchFilter">
     <HeaderTemplate>
@@ -17,45 +19,56 @@
         </RadzenStack>
     </HeaderTemplate>
     <GridColumns>
-        <RadzenDataGridColumn TItem="SalesOrderDataGridVM"
-                              Property="@nameof(SalesOrderDataGridVM.DocNum)"
-                              Type="@typeof(int)"
-                              Title="SO Doc No." />
-        <RadzenDataGridColumn TItem="SalesOrderDataGridVM"
-                              Property="@nameof(SalesOrderDataGridVM.DocDate)"
-                              Type="@typeof(DateOnly)"
-                              FormatString="{0:d}"
-                              Title="SO Date">
-            <Template>
-                @context.DocDate.ToString("MM/dd/yyyy")
-            </Template>
-        </RadzenDataGridColumn>
-        <RadzenDataGridColumn TItem="SalesOrderDataGridVM"
-                              Property="@nameof(SalesOrderDataGridVM.CardName)"
-                              Type="@typeof(string)"
-                              Title="Customer Name" />
-        <RadzenDataGridColumn TItem="SalesOrderDataGridVM"
-                              Property="@nameof(SalesOrderDataGridVM.ContactPerson)"
-                              Type="@typeof(string)"
-                              Title="Contact Person" />
-        <RadzenDataGridColumn TItem="SalesOrderDataGridVM"
-                              Property="@nameof(SalesOrderDataGridVM.Remarks)"
-                              Type="@typeof(string)"
-                              Title="Remarks" />
-        <RadzenDataGridColumn TItem="SalesOrderDataGridVM"
-                              Property="@nameof(SalesOrderDataGridVM.Area)"
-                              Type="@typeof(string)"
-                              Title="Area" />
-        <RadzenDataGridColumn TItem="SalesOrderDataGridVM"
-                              Frozen
-                              FrozenPosition="FrozenColumnPosition.Right"
-                              Filterable="false"
-                              Sortable="false"
-                              Width="35px">
-            <Template>
-                <RadzenButton Icon="visibility" Size="ButtonSize.ExtraSmall" Click="() => ViewSalesOrder(context)" />
-            </Template>
-        </RadzenDataGridColumn>
+        @if (IsSmallScreen)
+        {
+            <RadzenDataGridColumn TItem="SalesOrderDataGridVM" Filterable="false" Pickable="false" Sortable="false">
+                <Template Context="context">
+                    <SalesOrderCard SalesOrder="context" />
+                </Template>
+            </RadzenDataGridColumn>
+        }
+        else
+        {
+            <RadzenDataGridColumn TItem="SalesOrderDataGridVM"
+                                  Property="@nameof(SalesOrderDataGridVM.DocNum)"
+                                  Type="@typeof(int)"
+                                  Title="SO Doc No." />
+            <RadzenDataGridColumn TItem="SalesOrderDataGridVM"
+                                  Property="@nameof(SalesOrderDataGridVM.DocDate)"
+                                  Type="@typeof(DateOnly)"
+                                  FormatString="{0:d}"
+                                  Title="SO Date">
+                <Template>
+                    @context.DocDate.ToString("MM/dd/yyyy")
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="SalesOrderDataGridVM"
+                                  Property="@nameof(SalesOrderDataGridVM.CardName)"
+                                  Type="@typeof(string)"
+                                  Title="Customer Name" />
+            <RadzenDataGridColumn TItem="SalesOrderDataGridVM"
+                                  Property="@nameof(SalesOrderDataGridVM.ContactPerson)"
+                                  Type="@typeof(string)"
+                                  Title="Contact Person" />
+            <RadzenDataGridColumn TItem="SalesOrderDataGridVM"
+                                  Property="@nameof(SalesOrderDataGridVM.Remarks)"
+                                  Type="@typeof(string)"
+                                  Title="Remarks" />
+            <RadzenDataGridColumn TItem="SalesOrderDataGridVM"
+                                  Property="@nameof(SalesOrderDataGridVM.Area)"
+                                  Type="@typeof(string)"
+                                  Title="Area" />
+            <RadzenDataGridColumn TItem="SalesOrderDataGridVM"
+                                  Frozen
+                                  FrozenPosition="FrozenColumnPosition.Right"
+                                  Filterable="false"
+                                  Sortable="false"
+                                  Width="35px">
+                <Template>
+                    <RadzenButton Icon="visibility" Size="ButtonSize.ExtraSmall" Click="() => ViewSalesOrder(context)" />
+                </Template>
+            </RadzenDataGridColumn>
+        }
     </GridColumns>
 </AppDataGrid>
 
@@ -66,9 +79,19 @@
             "Table Settings",
             ds => @<AppGridSettings TItem="SalesOrderDataGridVM"
                                     @bind-Grid=@SalesOrderGrid.DataGrid
-                                    @bind-GridSettings=@SalesOrderDataGridSettings />,
+                                    @bind-GridSettings=@SalesOrderDataGridSettings />
+    ,
         options: GridSettingsService.GetDialogOptions());
 
         await SalesOrderGrid.DataGrid.Reload();
+    }
+
+    async Task OnChange(bool matches)
+    {
+        if (matches != IsSmallScreen)
+        {
+            IsSmallScreen = matches;
+            await InvokeAsync(StateHasChanged);
+        }
     }
 }
