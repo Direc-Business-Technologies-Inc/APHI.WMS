@@ -16,6 +16,7 @@
 <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween" class="rz-mb-4">
     <AppBreadCrumbs ModuleCode="OSRN" />
 </RadzenStack>
+<RadzenMediaQuery Query="(max-width: 912px)" Change="OnChange" />
 
 <AppContent>
 
@@ -181,15 +182,15 @@
                                     <RadzenDataGridColumn TItem="SalesReturnLineVM"
                                                           Property="@nameof(SalesReturnLineVM.ItemCode)"
                                                           Type="@typeof(string)"
-                                                          Title="Item Code" />
+                                                          Title="Item Code" Width="@(IsSmallScreen ?  "120px" : string.Empty)" />
                                     <RadzenDataGridColumn TItem="SalesReturnLineVM"
                                                           Property="@nameof(SalesReturnLineVM.ItemName)"
                                                           Type="@typeof(string)"
-                                                          Title="Item Name" />
+                                                          Title="Item Name" Width="@(IsSmallScreen ?  "120px" : string.Empty)" />
                                     <RadzenDataGridColumn TItem="SalesReturnLineVM"
                                                           Property="Warehouse.WhsName"
                                                           Type="@typeof(string)"
-                                                          Title="Warehouse" Width="150px">
+                                                          Title="Warehouse" Width="@(IsSmallScreen ?  string.Empty : "120px")">
                                         <Template Context="data">
                                             @data.Warehouse?.WhsName
                                         </Template>
@@ -197,11 +198,11 @@
                                     <RadzenDataGridColumn TItem="SalesReturnLineVM"
                                                           Property="@nameof(SalesReturnLineVM.UoMName)"
                                                           Type="@typeof(string)"
-                                                          Title="UoM" Width="125px" />
+                                                          Title="UoM" Width="@(IsSmallScreen ?  string.Empty : "120px")" />
                                     <RadzenDataGridColumn Visible="@(Creating && !FormData.DefinitivelyStandalone)" TItem="SalesReturnLineVM"
                                                           Property="@nameof(SalesReturnLineVM.OpenQuantity)"
                                                           Type="@typeof(decimal)"
-                                                          Title="Open Qty" Width="150px">
+                                                          Title="Open Qty" Width="120px">
                                         <Template Context="data">
                                             <RadzenNumeric Format="N0" @bind-Value="@data.OpenQuantity" Min="0" ReadOnly ShowUpDown="false" />
                                         </Template>
@@ -209,7 +210,7 @@
                                     <RadzenDataGridColumn TItem="SalesReturnLineVM"
                                                           Property="@nameof(SalesReturnLineVM.Quantity)"
                                                           Type="@typeof(decimal)"
-                                                          Title="Quantity" Width="150px">
+                                                          Title="Quantity" Width="120px">
                                         <Template Context="data">
                                             <RadzenNumeric Format="N0" @bind-Value="@data.Quantity" Min="0" Max="@(FormData.DefinitivelyStandalone ? null : data.OpenQuantity)" ReadOnly="@(Viewing || (!FormData.DefinitivelyStandalone && data.OpenQuantity <= 0))" ShowUpDown="@Creating" />
                                         </Template>
@@ -326,5 +327,17 @@
         options: GridSettingsService.GetDialogOptions());
 
         await SalesReturnTable.DataGrid.Reload();
+    }
+
+    
+    bool IsSmallScreen = false;
+
+    async Task OnChange(bool matches)
+    {
+        if (matches != IsSmallScreen)
+        {
+            IsSmallScreen = matches;
+            await InvokeAsync(StateHasChanged);
+        }
     }
 }
