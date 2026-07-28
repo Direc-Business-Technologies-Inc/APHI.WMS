@@ -1,8 +1,9 @@
 ﻿@using Web.BlazorServer.ViewModels.Transaction.GoodsReceipt
 
 @inherits BaseComponent
+<RadzenMediaQuery Query="(max-width: 768px)" Change="OnChange" />
 
-<AppDataGrid @ref="@GoodsReceiptDataGrid" Id="approved_goods_receipt_grid" TItem="GoodsReceiptDataGridVM" DataGetter="@LoadDataAsync" GridSettings="@GoodsReceiptDataGridSettings" @bind-GridSettingsLoaded="@GridSettingsLoaded" ActionName="@ActionGetGoodsReceipts" SearchFilter="@_searchFilter" >
+<AppDataGrid @ref="@GoodsReceiptDataGrid" Id="approved_goods_receipt_grid" TItem="GoodsReceiptDataGridVM" DataGetter="@LoadDataAsync" GridSettings="@GoodsReceiptDataGridSettings" @bind-GridSettingsLoaded="@GridSettingsLoaded" ActionName="@ActionGetGoodsReceipts" SearchFilter="@_searchFilter">
     <HeaderTemplate>
         <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center">
             <AppDataGridSearchBar TItem="GoodsReceiptDataGridVM"
@@ -17,36 +18,47 @@
         </RadzenStack>
     </HeaderTemplate>
     <GridColumns>
-        <RadzenDataGridColumn TItem="GoodsReceiptDataGridVM"
-                              Property="@nameof(GoodsReceiptDataGridVM.DocEntry)"
-                              Type="@typeof(int)"
-                              Title="Doc No." />
-        <RadzenDataGridColumn TItem="GoodsReceiptDataGridVM"
-                              Property="@nameof(GoodsReceiptDataGridVM.DocDate)"
-                              Type="@typeof(DateOnly)"
-                              FormatString="{0:d}"
-                              Title="Doc Date">
-            <Template>
-                @context.DocDate.ToString("MM/dd/yyyy")
-            </Template>
-        </RadzenDataGridColumn>
-        <RadzenDataGridColumn TItem="GoodsReceiptDataGridVM"
-                              Property="@nameof(GoodsReceiptDataGridVM.PreparedBy)"
-                              Type="@typeof(string)"
-                              Title="Prepared By" />
-        <RadzenDataGridColumn TItem="GoodsReceiptDataGridVM"
-                              Property="@nameof(GoodsReceiptDataGridVM.TransTypeName)"
-                              Type="@typeof(string)"
-                              Title="Trans. Type" />
-        <RadzenDataGridColumn TItem="GoodsReceiptDataGridVM"
-                              Frozen
-                              Filterable="false" Sortable="false" Pickable="false"
-                              FrozenPosition="FrozenColumnPosition.Right"
-                              Width="35px">
-            <Template>
-                <RadzenButton Icon="visibility" Size="ButtonSize.ExtraSmall" Click="() => ViewGoodsReceipt(context)" />
-            </Template>
-        </RadzenDataGridColumn>
+        @if (IsSmallScreen)
+        {
+            <RadzenDataGridColumn TItem="GoodsReceiptDataGridVM" Filterable="false" Pickable="false" Sortable="false">
+                <Template Context="context">
+                    <GoodsReceiptCard GoodsReceipt="context" OnClick="ViewGoodsReceipt" />
+                </Template>
+            </RadzenDataGridColumn>
+        }
+        else
+        {
+            <RadzenDataGridColumn TItem="GoodsReceiptDataGridVM"
+                                  Property="@nameof(GoodsReceiptDataGridVM.DocEntry)"
+                                  Type="@typeof(int)"
+                                  Title="Doc No." />
+            <RadzenDataGridColumn TItem="GoodsReceiptDataGridVM"
+                                  Property="@nameof(GoodsReceiptDataGridVM.DocDate)"
+                                  Type="@typeof(DateOnly)"
+                                  FormatString="{0:d}"
+                                  Title="Doc Date">
+                <Template>
+                    @context.DocDate.ToString("MM/dd/yyyy")
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="GoodsReceiptDataGridVM"
+                                  Property="@nameof(GoodsReceiptDataGridVM.PreparedBy)"
+                                  Type="@typeof(string)"
+                                  Title="Prepared By" />
+            <RadzenDataGridColumn TItem="GoodsReceiptDataGridVM"
+                                  Property="@nameof(GoodsReceiptDataGridVM.TransTypeName)"
+                                  Type="@typeof(string)"
+                                  Title="Trans. Type" />
+            <RadzenDataGridColumn TItem="GoodsReceiptDataGridVM"
+                                  Frozen
+                                  Filterable="false" Sortable="false" Pickable="false"
+                                  FrozenPosition="FrozenColumnPosition.Right"
+                                  Width="35px">
+                <Template>
+                    <RadzenButton Icon="visibility" Size="ButtonSize.ExtraSmall" Click="() => ViewGoodsReceipt(context)" />
+                </Template>
+            </RadzenDataGridColumn>
+        }
     </GridColumns>
 </AppDataGrid>
 
@@ -61,5 +73,15 @@
         options: GridSettingsService.GetDialogOptions());
 
         await GoodsReceiptDataGrid.DataGrid.Reload();
+    }
+    bool IsSmallScreen = false;
+
+    async Task OnChange(bool matches)
+    {
+        if (matches != IsSmallScreen)
+        {
+            IsSmallScreen = matches;
+            await InvokeAsync(StateHasChanged);
+        }
     }
 }

@@ -5,20 +5,19 @@
 
 <RadzenCard onclick="@(() => OnClick.InvokeAsync(GoodsIssue))" Variant="Variant.Outlined">
     <RadzenStack Gap="0" Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween">
-
         <RadzenStack Gap="0">
-            <RadzenText TextStyle="TextStyle.Overline" class="rz-mt-2 rz-my-0">Goods Issue</RadzenText>
+            <RadzenText TextStyle="TextStyle.Overline" class="rz-my-0">Goods Issue</RadzenText>
             <RadzenText TextStyle="TextStyle.H6" class="rz-my-0 rz-text-truncate"><strong>@GoodsIssue.DocEntry.ToString().OrWhenNull("-")</strong></RadzenText>
         </RadzenStack>
         <RadzenText TextStyle="TextStyle.Subtitle2">@GoodsIssue.DocDate.ToShortDateString()</RadzenText>
     </RadzenStack>
-    <RadzenRow class="rz-mt-2" Gap="0" RowGap="0">
+    <RadzenRow class="rz-mt-3" Gap="0" RowGap="0">
         <RadzenColumn SizeSM="6">
-            <RadzenText TextStyle="TextStyle.Overline" class="rz-mt-2 rz-my-0">Prepared By</RadzenText>
+            <RadzenText TextStyle="TextStyle.Overline" class="rz-my-0">Prepared By</RadzenText>
             <RadzenText TextStyle="TextStyle.Body2" class="rz-my-0  rz-text-truncate rz-text-caption">@GoodsIssue.PreparedBy.OrWhenNull("-")</RadzenText>
         </RadzenColumn>
         <RadzenColumn SizeSM="6">
-            <RadzenText TextStyle="TextStyle.Overline" class="rz-mt-2 rz-my-0">Transfer Type</RadzenText>
+            <RadzenText TextStyle="TextStyle.Overline" class="rz-my-0">Transfer Type</RadzenText>
             <RadzenText TextStyle="TextStyle.Body2" class="rz-my-0  rz-text-truncate rz-text-caption">@GoodsIssue.TransTypeName.OrWhenNull("-")</RadzenText>
         </RadzenColumn>
     </RadzenRow>
