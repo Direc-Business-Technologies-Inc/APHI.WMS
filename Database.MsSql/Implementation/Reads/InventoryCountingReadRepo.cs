@@ -117,9 +117,9 @@ public class InventoryCountingReadRepo(IDbContextFactory<AppDbContext> dbContext
         });
     }
 
-    public Task<bool> ExistsDocumentForWarehouseAndCycleInPeriodAsync(string whsCode, CycleType cycleType, DateTime countingDate)
+    public Task<IEnumerable<string>> ExistsDocumentForWarehouseAndCycleInPeriodAsync(string whsCode, string[] itemCodes, CycleType cycleType, DateTime countingDate)
     {
-        return ExecuteAppDbWork<bool>(async () =>
+        return ExecuteAppDbWork<IEnumerable<string>>(async () =>
         {
             await using var ctx = await dbContextFactory.CreateDbContextAsync();
 
@@ -153,12 +153,30 @@ public class InventoryCountingReadRepo(IDbContextFactory<AppDbContext> dbContext
                     throw new ArgumentOutOfRangeException(nameof(cycleType));
             }
 
-            return await ctx.Set<InventoryCountingDocumentDEM>()
+            //return await ctx.Set<InventoryCountingDocumentDEM>()
+            //    .AsNoTracking()
+            //    .AnyAsync(d => d.Warehouse.WhsCode == whsCode
+            //                && d.CycleType == cycleType
+            //                && d.CountingDate >= periodStart
+            //                && d.CountingDate < periodEnd);
+
+            var collisions = ctx.Set<InventoryCountingDocumentDEM>()
                 .AsNoTracking()
-                .AnyAsync(d => d.Warehouse.WhsCode == whsCode
-                            && d.CycleType == cycleType
-                            && d.CountingDate >= periodStart
-                            && d.CountingDate < periodEnd);
+                .Where(d => d.Warehouse.WhsCode == whsCode
+                                && d.CycleType == cycleType
+                                && d.CountingDate >= periodStart
+                                && d.CountingDate < periodEnd);
+
+            if (!collisions.Any()) return [];
+
+            foreach (var collision in collisions)
+            {
+                var items = collision.DocumentLines.Where(x => itemCodes.Contains(x.ItemCode)).Select(x => x.ItemCode);
+                if (items.Any())
+                    return [.. items];
+            }
+
+            return [];
         });
     }
 }

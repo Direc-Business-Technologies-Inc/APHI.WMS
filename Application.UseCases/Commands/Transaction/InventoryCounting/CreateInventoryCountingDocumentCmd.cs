@@ -27,12 +27,12 @@ public class CreateInventoryCountingDocumentCmdHandler(
 
         InventoryCountingDocumentDTO data = request.Data;
 
-        bool duplicate = await inventoryCountingReadRepo
-            .ExistsDocumentForWarehouseAndCycleInPeriodAsync(data.Warehouse.WhsCode, data.CycleType, data.CountingDate);
+        IEnumerable<string> duplicates = await inventoryCountingReadRepo
+            .ExistsDocumentForWarehouseAndCycleInPeriodAsync(data.Warehouse.WhsCode, data.DocumentLines.Select(x => x.ItemCode).ToArray(), data.CycleType, data.CountingDate);
 
-        if (duplicate)
+        if (duplicates.Any())
             throw new InvalidOperationException(
-                $"An inventory counting document already exists for warehouse '{data.Warehouse.WhsName}' with cycle type '{data.CycleType}' in the same period.");
+                $"An inventory counting document already exists for items {string.Join(", ", duplicates)} in warehouse '{data.Warehouse.WhsName}' with cycle type '{data.CycleType}' in the same period.");
 
         DocumentNumberDEM docNum = await docNumReadRepository.GetDocumentNumberEntityWithLockingAsync(docType.Id, appCommandRepo.GetDbContext());
 

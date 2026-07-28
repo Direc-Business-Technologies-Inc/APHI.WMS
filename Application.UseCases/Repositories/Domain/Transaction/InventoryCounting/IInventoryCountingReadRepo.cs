@@ -8,5 +8,5 @@ public interface IInventoryCountingReadRepo
 {
     Task<(IEnumerable<InventoryCountingDataGridDTO> data, int count)> GetInventoryCountingDataGrid(DataGridIntent intent);
     Task<InventoryCountingDocumentDTO?> GetInventoryCountingDocument(Guid id);
-    Task<bool> ExistsDocumentForWarehouseAndCycleInPeriodAsync(string whsCode, CycleType cycleType, DateTime countingDate);
+    Task<IEnumerable<string>> ExistsDocumentForWarehouseAndCycleInPeriodAsync(string whsCode, string[] itemCodes, CycleType cycleType, DateTime countingDate);
 }
