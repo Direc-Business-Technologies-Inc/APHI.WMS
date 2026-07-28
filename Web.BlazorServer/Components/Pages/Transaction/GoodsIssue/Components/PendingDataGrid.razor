@@ -1,6 +1,8 @@
-﻿@using Web.BlazorServer.ViewModels.Transaction.GoodsIssue
+﻿@using Web.BlazorServer.Components.Pages.Transaction.GoodsIssue.Components.Cards
+@using Web.BlazorServer.ViewModels.Transaction.GoodsIssue
 
 @inherits BaseComponent
+<RadzenMediaQuery Query="(max-width: 912px)" Change="OnChange" />
 
 <AppDataGrid @ref="@GoodsIssueDataGrid" Id="pending_goods_issue_grid" TItem="GoodsIssueDataGridVM" DataGetter="@LoadDataAsync" GridSettings="@GoodsIssueDataGridSettings" @bind-GridSettingsLoaded="@GridSettingsLoaded" ActionName="@ActionGetGoodsIssues" SearchFilter="@_searchFilter">
     <HeaderTemplate>
@@ -17,36 +19,48 @@
         </RadzenStack>
     </HeaderTemplate>
     <GridColumns>
-        <RadzenDataGridColumn TItem="GoodsIssueDataGridVM"
-                              Property="@nameof(GoodsIssueDataGridVM.DocEntry)"
-                              Type="@typeof(int)"
-                              Title="Doc No." />
-        <RadzenDataGridColumn TItem="GoodsIssueDataGridVM"
-                              Property="@nameof(GoodsIssueDataGridVM.DocDate)"
-                              Type="@typeof(DateOnly)"
-                              FormatString="{0:d}"
-                              Title="Doc Date">
-            <Template>
-                @context.DocDate.ToString("MM/dd/yyyy")
-            </Template>
-        </RadzenDataGridColumn>
-        <RadzenDataGridColumn TItem="GoodsIssueDataGridVM"
-                              Property="@nameof(GoodsIssueDataGridVM.PreparedBy)"
-                              Type="@typeof(string)"
-                              Title="Prepared By" />
-        <RadzenDataGridColumn TItem="GoodsIssueDataGridVM"
-                              Property="@nameof(GoodsIssueDataGridVM.TransTypeName)"
-                              Type="@typeof(string)"
-                              Title="Trans. Type" />
-        <RadzenDataGridColumn TItem="GoodsIssueDataGridVM"
-                              Frozen
-                              FrozenPosition="FrozenColumnPosition.Right"
-                              Width="35px"
-                              Filterable="false" Sortable="false" Pickable="false">
-            <Template>
-                <RadzenButton Icon="visibility" Size="ButtonSize.ExtraSmall" Click="() => ViewGoodsIssue(context)" />
-            </Template>
-        </RadzenDataGridColumn>
+        @if (IsSmallScreen)
+        {
+            <RadzenDataGridColumn TItem="GoodsIssueDataGridVM" Filterable="false" Pickable="false" Sortable="false">
+                <Template Context="context">
+                    <GoodsIssueCard GoodsIssue="context" OnClick="ViewGoodsIssue" />
+                </Template>
+            </RadzenDataGridColumn>
+        }
+        else
+        {
+
+            <RadzenDataGridColumn TItem="GoodsIssueDataGridVM"
+                                  Property="@nameof(GoodsIssueDataGridVM.DocEntry)"
+                                  Type="@typeof(int)"
+                                  Title="Doc No." />
+            <RadzenDataGridColumn TItem="GoodsIssueDataGridVM"
+                                  Property="@nameof(GoodsIssueDataGridVM.DocDate)"
+                                  Type="@typeof(DateOnly)"
+                                  FormatString="{0:d}"
+                                  Title="Doc Date">
+                <Template>
+                    @context.DocDate.ToString("MM/dd/yyyy")
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="GoodsIssueDataGridVM"
+                                  Property="@nameof(GoodsIssueDataGridVM.PreparedBy)"
+                                  Type="@typeof(string)"
+                                  Title="Prepared By" />
+            <RadzenDataGridColumn TItem="GoodsIssueDataGridVM"
+                                  Property="@nameof(GoodsIssueDataGridVM.TransTypeName)"
+                                  Type="@typeof(string)"
+                                  Title="Trans. Type" />
+            <RadzenDataGridColumn TItem="GoodsIssueDataGridVM"
+                                  Frozen
+                                  FrozenPosition="FrozenColumnPosition.Right"
+                                  Width="35px"
+                                  Filterable="false" Sortable="false" Pickable="false">
+                <Template>
+                    <RadzenButton Icon="visibility" Size="ButtonSize.ExtraSmall" Click="() => ViewGoodsIssue(context)" />
+                </Template>
+            </RadzenDataGridColumn>
+        }
     </GridColumns>
 </AppDataGrid>
 
@@ -61,5 +75,16 @@
         options: GridSettingsService.GetDialogOptions());
 
         await GoodsIssueDataGrid.DataGrid.Reload();
+    }
+
+    bool IsSmallScreen = false;
+
+    async Task OnChange(bool matches)
+    {
+        if (matches != IsSmallScreen)
+        {
+            IsSmallScreen = matches;
+            await InvokeAsync(StateHasChanged);
+        }
     }
 }

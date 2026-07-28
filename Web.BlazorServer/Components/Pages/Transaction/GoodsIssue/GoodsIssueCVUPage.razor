@@ -12,6 +12,7 @@
 @attribute [AppAuthorizationAttribute("VIEW", "OGIS")]
 
 <PageTitle>@(Creating ? "New Goods Issue Document" : string.Empty)@(Viewing ? $"Goods Issue {FormData.SapReference.DocNum}" : string.Empty)</PageTitle>
+<RadzenMediaQuery Query="(max-width: 912px)" Change="OnChange" />
 
 <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween" class="rz-mb-4">
     <AppBreadCrumbs ModuleCode="OGIS" />
@@ -25,7 +26,7 @@
         <AppContentBadge Visible="@Viewing" Title="Doc" Content="@FormData.SapReference.DocNum.ToString()" />
         <AppContentBadge Title="Doc Date" Content="@FormData.DocDate.ToString("MM-dd-yy")" ChildBadgeStyle="BadgeStyle.Secondary" ChildShade="Shade.Default" />
     </RadzenStack>
-    
+
     <RadzenTemplateForm Visible="@(!IsLoadingData)" @ref="@TemplateForm" TItem="GoodsIssueVM" @bind-Data="@FormData" EditContext="@EditContext" Submit="@HandleSubmit">
         <RadzenStack Gap="1rem">
 
@@ -166,7 +167,7 @@
                 <ChildContent>
                     <RadzenRow>
                         <RadzenColumn>
-                            <AppTable @ref="@GoodsIssueTable" Id="goods_issue_cvu_items" TItem="GoodsIssueLineVM" @bind-GridSettingsLoaded="@GridSettingsLoaded" SearchFilter="@_giLinesFilter" Data="[..FormData.DocumentLines]">
+                            <AppTable @ref="@GoodsIssueTable" Id="goods_issue_cvu_items" TItem="GoodsIssueLineVM" @bind-GridSettingsLoaded="@GridSettingsLoaded" SearchFilter="@_giLinesFilter" Data="[.. FormData.DocumentLines]">
                                 <HeaderTemplate>
                                     <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center" Gap="8px">
                                         <AppTableSearchBar TItem="GoodsIssueLineVM"
@@ -184,17 +185,18 @@
                                                           Property="@nameof(GoodsIssueLineVM.LineNum)"
                                                           Width="40px" TextAlign="TextAlign.Center"
                                                           Type="@typeof(int)" />
-                                    <RadzenDataGridColumn TItem="GoodsIssueLineVM"
-                                                          Property="@nameof(GoodsIssueLineVM.ItemCode)"
-                                                          Title="Item Code"
-                                                          Type="@typeof(string)" />
-                                    <RadzenDataGridColumn TItem="GoodsIssueLineVM"
-                                                          Property="@nameof(GoodsIssueLineVM.ItemName)"
-                                                          Title="Item Name"
-                                                          Type="@typeof(string)" />
+                                        <RadzenDataGridColumn TItem="GoodsIssueLineVM"
+                                                              Property="@nameof(GoodsIssueLineVM.ItemCode)"
+                                                              Title="Item Code"
+                                                              Type="@typeof(string)" Width="@(IsSmallScreen ? "120px" : string.Empty)" />
+                                        <RadzenDataGridColumn TItem="GoodsIssueLineVM"
+                                                              Property="@nameof(GoodsIssueLineVM.ItemName)"
+                                                              Title="Item Name"
+                                                              Type="@typeof(string)" Width="@(IsSmallScreen ? "220px" : string.Empty)" />
+
                                     <RadzenDataGridColumn TItem="GoodsIssueLineVM"
                                                           Property="Warehouse.WhsName"
-                                                          Title="Warehouse" Width="150px"
+                                                          Title="Warehouse" Width="@(IsSmallScreen ? string.Empty : "120px")"
                                                           Type="@typeof(string)">
                                         <Template Context="data">
                                             @if (Viewing)
@@ -227,7 +229,7 @@
                                     </RadzenDataGridColumn>
                                     <RadzenDataGridColumn TItem="GoodsIssueLineVM"
                                                           Property="@nameof(GoodsIssueLineVM.UoMName)"
-                                                          Title="UoM" Width="125px"
+                                                          Title="UoM" Width="@(IsSmallScreen ? string.Empty : "120px")"
                                                           Type="@typeof(string)" />
                                     <RadzenDataGridColumn TItem="GoodsIssueLineVM"
                                                           Property="@nameof(GoodsIssueLineVM.Quantity)"
@@ -325,5 +327,16 @@
         options: GridSettingsService.GetDialogOptions());
 
         await GoodsIssueTable.DataGrid.Reload();
+    }
+
+    bool IsSmallScreen = false;
+
+    async Task OnChange(bool matches)
+    {
+        if (matches != IsSmallScreen)
+        {
+            IsSmallScreen = matches;
+            await InvokeAsync(StateHasChanged);
+        }
     }
 }
