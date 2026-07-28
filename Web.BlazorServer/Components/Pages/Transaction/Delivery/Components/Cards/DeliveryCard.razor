@@ -1,0 +1,39 @@
+﻿@using Web.BlazorServer.Helpers
+@using Web.BlazorServer.ViewModels.Transaction.Delivery
+@inherits BaseComponent
+
+
+<RadzenCard onclick="@(() => OnClick.InvokeAsync(Delivery))" Variant="Variant.Outlined" >
+    <RadzenStack Gap="0" Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween">
+        <RadzenText TextStyle="TextStyle.Subtitle2"><strong>@Delivery.DocEntry</strong></RadzenText>
+        <RadzenText TextStyle="TextStyle.Subtitle2">@Delivery.DocDate.ToShortDateString()</RadzenText>
+    </RadzenStack>
+    <RadzenRow class="rz-mt-2" Gap="0" RowGap="0">
+        <RadzenColumn SizeXS="8" SizeSM="10" OrderXS="1">
+            <RadzenText TextStyle="TextStyle.Overline" class="rz-mt-2 rz-my-0">Customer Name</RadzenText>
+            <RadzenText TextStyle="TextStyle.Body1" class="rz-my-0 rz-text-truncate">@Delivery.CardName.OrWhenNull("-")</RadzenText>
+        </RadzenColumn>
+        <RadzenColumn SizeXS="8" SizeSM="10" OrderXS="3">
+            <RadzenText TextStyle="TextStyle.Overline" class="rz-mt-2 rz-my-0">Contact Person</RadzenText>
+            <RadzenText TextStyle="TextStyle.Body2" class="rz-my-0  rz-text-truncate rz-text-caption">@Delivery.ContactPerson.OrWhenNull("-")</RadzenText>
+        </RadzenColumn>
+        <RadzenColumn SizeXS="4" SizeSM="2" OrderXS="2">
+            <RadzenText TextStyle="TextStyle.Overline" class="rz-mt-2 rz-my-0">Area</RadzenText>
+            <RadzenText TextStyle="TextStyle.Body2" class="rz-my-0  rz-text-truncate rz-text-caption">@Delivery.Area.OrWhenNull("-")</RadzenText>
+        </RadzenColumn>
+        <RadzenColumn Size="12" OrderXS="4">
+            <RadzenText TextStyle="TextStyle.Overline" class="rz-mt-4 rz-my-0">Remarks</RadzenText>
+            <RadzenText TextStyle="TextStyle.Body2" class="rz-my-0 rz-text-truncate rz-text-caption">@Delivery.Remarks.OrWhenNull("-")</RadzenText>
+        </RadzenColumn>
+    </RadzenRow>
+</RadzenCard>
+
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public DeliveryDataGridVM Delivery { get; set; }
+
+    [Parameter]
+    public EventCallback<DeliveryDataGridVM> OnClick { get; set; }
+}

@@ -1,7 +1,9 @@
-﻿@using Web.BlazorServer.Components.Security
+﻿@using Web.BlazorServer.Components.Pages.Transaction.Delivery.Components.Cards
+@using Web.BlazorServer.Components.Security
 @using Web.BlazorServer.ViewModels.Transaction.Delivery
 
 @inherits BaseComponent
+<RadzenMediaQuery Query="(max-width: 768px)" Change="OnChange" />
 
 <AppDataGrid @ref="@DeliveryGrid" Id="delivery_grid" TItem="DeliveryDataGridVM" DataGetter="@LoadDataAsync" GridSettings="@DeliveryDataGridSettings" @bind-GridSettingsLoaded="@GridSettingsLoaded" ActionName="@ActionGetAllDeliveries" SearchFilter="@_searchFilter">
     <HeaderTemplate>
@@ -17,49 +19,61 @@
         </RadzenStack>
     </HeaderTemplate>
     <GridColumns>
-        <RadzenDataGridColumn TItem="DeliveryDataGridVM"
-                              Property="@nameof(DeliveryDataGridVM.DocNum)"
-                              Type="@typeof(int)"
-                              Title="Delivery Doc No." />
-        <RadzenDataGridColumn TItem="DeliveryDataGridVM"
-                              Property="@nameof(DeliveryDataGridVM.DocDate)"
-                              Type="@typeof(DateOnly)"
-                              FormatString="{0:d}"
-                              Title="Delivery Date">
-            <Template>
-                @context.DocDate.ToString("MM/dd/yyyy")
-            </Template>
-        </RadzenDataGridColumn>
-        <RadzenDataGridColumn TItem="DeliveryDataGridVM"
-                              Property="@nameof(DeliveryDataGridVM.CardName)"
-                              Type="@typeof(string)"
-                              Title="Customer Name" />
-        <RadzenDataGridColumn TItem="DeliveryDataGridVM"
-                              Property="@nameof(DeliveryDataGridVM.ContactPerson)"
-                              Type="@typeof(string)"
-                              Title="Contact Person" />
-        <RadzenDataGridColumn TItem="DeliveryDataGridVM"
-                              Property="@nameof(DeliveryDataGridVM.Remarks)"
-                              Type="@typeof(string)"
-                              Title="Remarks" />
-        <RadzenDataGridColumn TItem="DeliveryDataGridVM"
-                              Property="@nameof(DeliveryDataGridVM.Area)"
-                              Type="@typeof(string)"
-                              Title="Area" />
-        <RadzenDataGridColumn TItem="DeliveryDataGridVM"
-                              Property="@nameof(DeliveryDataGridVM.CreatedFrom)"
-                              Type="@typeof(string)"
-                              Title="From Sales Order" />
-        <RadzenDataGridColumn TItem="DeliveryDataGridVM"
-                              Frozen
-                              Filterable="false"
-                              Sortable="false"
-                              FrozenPosition="FrozenColumnPosition.Right"
-                              Width="35px">
-            <Template>
-                <RadzenButton Icon="visibility" Size="ButtonSize.ExtraSmall" Click="() => ViewDelivery(context)" />
-            </Template>
-        </RadzenDataGridColumn>
+        @if (IsSmallScreen)
+        {
+
+            <RadzenDataGridColumn TItem="DeliveryDataGridVM" Filterable="false" Pickable="false" Sortable="false">
+                <Template Context="context">
+                    <DeliveryCard Delivery="context" OnClick="ViewDelivery" />
+                </Template>
+            </RadzenDataGridColumn>
+        }
+        else
+        {
+            <RadzenDataGridColumn TItem="DeliveryDataGridVM"
+                                  Property="@nameof(DeliveryDataGridVM.DocNum)"
+                                  Type="@typeof(int)"
+                                  Title="Delivery Doc No." />
+            <RadzenDataGridColumn TItem="DeliveryDataGridVM"
+                                  Property="@nameof(DeliveryDataGridVM.DocDate)"
+                                  Type="@typeof(DateOnly)"
+                                  FormatString="{0:d}"
+                                  Title="Delivery Date">
+                <Template>
+                    @context.DocDate.ToString("MM/dd/yyyy")
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="DeliveryDataGridVM"
+                                  Property="@nameof(DeliveryDataGridVM.CardName)"
+                                  Type="@typeof(string)"
+                                  Title="Customer Name" />
+            <RadzenDataGridColumn TItem="DeliveryDataGridVM"
+                                  Property="@nameof(DeliveryDataGridVM.ContactPerson)"
+                                  Type="@typeof(string)"
+                                  Title="Contact Person" />
+            <RadzenDataGridColumn TItem="DeliveryDataGridVM"
+                                  Property="@nameof(DeliveryDataGridVM.Remarks)"
+                                  Type="@typeof(string)"
+                                  Title="Remarks" />
+            <RadzenDataGridColumn TItem="DeliveryDataGridVM"
+                                  Property="@nameof(DeliveryDataGridVM.Area)"
+                                  Type="@typeof(string)"
+                                  Title="Area" />
+            <RadzenDataGridColumn TItem="DeliveryDataGridVM"
+                                  Property="@nameof(DeliveryDataGridVM.CreatedFrom)"
+                                  Type="@typeof(string)"
+                                  Title="From Sales Order" />
+            <RadzenDataGridColumn TItem="DeliveryDataGridVM"
+                                  Frozen
+                                  Filterable="false"
+                                  Sortable="false"
+                                  FrozenPosition="FrozenColumnPosition.Right"
+                                  Width="35px">
+                <Template>
+                    <RadzenButton Icon="visibility" Size="ButtonSize.ExtraSmall" Click="() => ViewDelivery(context)" />
+                </Template>
+            </RadzenDataGridColumn>
+        }
     </GridColumns>
 </AppDataGrid>
 
@@ -74,5 +88,14 @@
         options: GridSettingsService.GetDialogOptions());
 
         await DeliveryGrid.DataGrid.Reload();
+    }
+    bool IsSmallScreen = false;
+    async Task OnChange(bool matches)
+    {
+        if (matches != IsSmallScreen)
+        {
+            IsSmallScreen = matches;
+            await InvokeAsync(StateHasChanged);
+        }
     }
 }

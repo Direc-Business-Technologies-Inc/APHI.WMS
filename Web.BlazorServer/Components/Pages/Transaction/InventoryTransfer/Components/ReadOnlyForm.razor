@@ -2,6 +2,7 @@
 @using Web.BlazorServer.ViewModels.Transaction.InventoryTransfer
 
 @inherits BaseForm<InventoryTransferCVUVM>
+<RadzenMediaQuery Query="(max-width: 912px)" Change="OnChange" />
 
 <RadzenStack Orientation="Orientation.Horizontal"
              AlignItems="AlignItems.Center"
@@ -146,20 +147,20 @@
                                 <RadzenDataGridColumn TItem="InventoryTransferCVULineVM"
                                                       Property="@nameof(InventoryTransferCVULineVM.ItemCode)"
                                                       Type="@typeof(string)"
-                                                      Title="Item Code" />
+                                                      Title="Item Code" Width="@(IsSmallScreen ?  "120px" : string.Empty)" />
                                 <RadzenDataGridColumn TItem="InventoryTransferCVULineVM"
                                                       Property="@nameof(InventoryTransferCVULineVM.ItemDescription)"
                                                       Type="@typeof(string)"
-                                                      Title="Description" />
+                                                      Title="Description" Width="@(IsSmallScreen ?  "220px" : string.Empty)" />
                                 <RadzenDataGridColumn TItem="InventoryTransferCVULineVM"
                                                       Property="@nameof(InventoryTransferCVULineVM.UoMName)"
                                                       Type="@typeof(string)"
-                                                      Title="UoM" />
+                                                      Title="UoM" Width="@(IsSmallScreen ?  string.Empty : "120px")" />
                                 <RadzenDataGridColumn TItem="InventoryTransferCVULineVM"
                                                       Property="@nameof(InventoryTransferCVULineVM.Quantity)"
                                                       Type="@typeof(decimal)"
                                                       Title="Quantity"
-                                                      Width="150px">
+                                                      Width="120px">
                                     <Template Context="data">
                                         <RadzenNumeric Format="N0"
                                                        @bind-Value="@data.Quantity"
@@ -252,5 +253,17 @@
         options: GridSettingsService.GetDialogOptions());
 
         await LinesTable.DataGrid.Reload();
+    }
+
+    
+    bool IsSmallScreen = false;
+
+    async Task OnChange(bool matches)
+    {
+        if (matches != IsSmallScreen)
+        {
+            IsSmallScreen = matches;
+            await InvokeAsync(StateHasChanged);
+        }
     }
 }

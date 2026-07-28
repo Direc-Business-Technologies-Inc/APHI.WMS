@@ -1,0 +1,76 @@
+﻿@using Web.BlazorServer.ViewModels.Transaction.Delivery
+<RadzenMediaQuery Query="(max-width: 912px)" Change="OnChange" />
+@if (IsSmallScreen)
+{
+    <RadzenDataGridColumn TItem="DeliveryLineVM"
+                          Property="@nameof(DeliveryLineVM.LineNum)"
+                          Width="40px" TextAlign="TextAlign.Center" />
+    <RadzenDataGridColumn TItem="DeliveryLineVM"
+                          Property="@nameof(DeliveryLineVM.ItemCode)"
+                          Title="Item Code" Width="120px" />
+    <RadzenDataGridColumn TItem="DeliveryLineVM"
+                          Property="@nameof(DeliveryLineVM.ItemName)"
+                          Title="Item Name" Width="250px" />
+    <RadzenDataGridColumn TItem="DeliveryLineVM"
+                          Property="@nameof(DeliveryLineVM.Warehouse)"
+                          Title="Warehouse">
+        <Template Context="data">
+            @(data.Warehouse?.WhsName ?? "-")
+        </Template>
+    </RadzenDataGridColumn>
+    <RadzenDataGridColumn TItem="DeliveryLineVM"
+                          Property="@nameof(DeliveryLineVM.UoMName)"
+                          Title="UoM" />
+    <RadzenDataGridColumn TItem="DeliveryLineVM"
+                          Property="@nameof(DeliveryLineVM.Quantity)"
+                          Title="Quantity" Width="130px">
+        <Template Context="data">
+            @data.Quantity.ToString("N0")
+        </Template>
+    </RadzenDataGridColumn>
+    
+}
+else
+{
+    <RadzenDataGridColumn TItem="DeliveryLineVM"
+                          Property="@nameof(DeliveryLineVM.LineNum)"
+                          Width="40px" TextAlign="TextAlign.Center" />
+    <RadzenDataGridColumn TItem="DeliveryLineVM"
+                          Property="@nameof(DeliveryLineVM.ItemCode)"
+                          Title="Item Code" />
+    <RadzenDataGridColumn TItem="DeliveryLineVM"
+                          Property="@nameof(DeliveryLineVM.ItemName)"
+                          Title="Item Name" />
+    <RadzenDataGridColumn TItem="DeliveryLineVM"
+                          Property="@nameof(DeliveryLineVM.Warehouse)"
+                          Title="Warehouse" Width="120px">
+        <Template Context="data">
+            @(data.Warehouse?.WhsName ?? "-")
+        </Template>
+    </RadzenDataGridColumn>
+    <RadzenDataGridColumn TItem="DeliveryLineVM"
+                          Property="@nameof(DeliveryLineVM.UoMName)"
+                          Title="UoM" Width="120px" />
+    <RadzenDataGridColumn TItem="DeliveryLineVM"
+                          Property="@nameof(DeliveryLineVM.Quantity)"
+                          Title="Quantity" Width="130px">
+        <Template Context="data">
+            @data.Quantity.ToString("N0")
+        </Template>
+    </RadzenDataGridColumn>
+    
+}
+
+        
+@code {
+    bool IsSmallScreen = false;
+
+    async Task OnChange(bool matches)
+    {
+        if (matches != IsSmallScreen)
+        {
+            IsSmallScreen = matches;
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+}

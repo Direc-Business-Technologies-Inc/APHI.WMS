@@ -1,0 +1,90 @@
+﻿@using Web.BlazorServer.ViewModels.Transaction.Delivery
+<RadzenMediaQuery Query="(max-width: 912px)" Change="OnChange" />
+@if (IsSmallScreen)
+{
+
+    <RadzenDataGridColumn TItem="SalesOrderLineVM"
+                          Property="@nameof(SalesOrderLineVM.LineNum)"
+                          Width="40px" TextAlign="TextAlign.Center" />
+    <RadzenDataGridColumn TItem="SalesOrderLineVM"
+                          Property="@nameof(SalesOrderLineVM.ItemCode)"
+                          Title="Item Code"
+                          Width="120px" />
+    <RadzenDataGridColumn TItem="SalesOrderLineVM"
+                          Property="@nameof(SalesOrderLineVM.ItemName)"
+                          Title="Item Name"
+                          Width="220px" />
+    <RadzenDataGridColumn TItem="SalesOrderLineVM"
+                          Property="@nameof(SalesOrderLineVM.Warehouse.WhsName)"
+                          Title="Warehouse">
+        <Template Context="data">
+            @data.Warehouse?.WhsName
+        </Template>
+    </RadzenDataGridColumn>
+    <RadzenDataGridColumn TItem="SalesOrderLineVM"
+                          Property="@nameof(SalesOrderLineVM.UoMName)"
+                          Title="UoM" />
+    <RadzenDataGridColumn TItem="SalesOrderLineVM"
+                          Property="@nameof(SalesOrderLineVM.TargetQty)"
+                          Title="Target Qty">
+        <Template Context="data">
+            @data.TargetQty.ToString("N0")
+        </Template>
+    </RadzenDataGridColumn>
+    <RadzenDataGridColumn TItem="SalesOrderLineVM"
+                          Property="@nameof(SalesOrderLineVM.OpenQty)"
+                          Title="Open Qty" Width="130px">
+        <Template Context="data">
+            @data.OpenQty.ToString("N0")
+        </Template>
+    </RadzenDataGridColumn>
+}
+else
+{
+    <RadzenDataGridColumn TItem="SalesOrderLineVM"
+                          Property="@nameof(SalesOrderLineVM.LineNum)"
+                          Width="40px" TextAlign="TextAlign.Center" />
+    <RadzenDataGridColumn TItem="SalesOrderLineVM"
+                          Property="@nameof(SalesOrderLineVM.ItemCode)"
+                          Title="Item Code"/>
+    <RadzenDataGridColumn TItem="SalesOrderLineVM"
+                          Property="@nameof(SalesOrderLineVM.ItemName)"
+                          Title="Item Name" />
+    <RadzenDataGridColumn TItem="SalesOrderLineVM"
+                          Property="@nameof(SalesOrderLineVM.Warehouse.WhsName)"
+                          Title="Warehouse">
+        <Template Context="data">
+            @data.Warehouse?.WhsName
+        </Template>
+    </RadzenDataGridColumn>
+    <RadzenDataGridColumn TItem="SalesOrderLineVM"
+                          Property="@nameof(SalesOrderLineVM.UoMName)"
+                          Title="UoM" Width="130px" />
+    <RadzenDataGridColumn TItem="SalesOrderLineVM"
+                          Property="@nameof(SalesOrderLineVM.TargetQty)"
+                          Title="Target Qty" Width="130px">
+        <Template Context="data">
+            @data.TargetQty.ToString("N0")
+        </Template>
+    </RadzenDataGridColumn>
+    <RadzenDataGridColumn TItem="SalesOrderLineVM"
+                          Property="@nameof(SalesOrderLineVM.OpenQty)"
+                          Title="Open Qty" Width="130px">
+        <Template Context="data">
+            @data.OpenQty.ToString("N0")
+        </Template>
+    </RadzenDataGridColumn>
+}
+
+@code {
+    bool IsSmallScreen = false;
+
+    async Task OnChange(bool matches)
+    {
+        if (matches != IsSmallScreen)
+        {
+            IsSmallScreen = matches;
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+}

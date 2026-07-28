@@ -1,7 +1,10 @@
+@using Web.BlazorServer.Components.Pages.Transaction.Delivery.Components.Cards
 @using Web.BlazorServer.Components.Security
 @using Web.BlazorServer.ViewModels.Transaction.Delivery
 
 @inherits BaseComponent
+
+<RadzenMediaQuery Query="(max-width: 768px)" Change="OnChange" />
 
 <AppDataGrid @ref="@DeliveryGrid" Id="delivery_grid" TItem="DeliveryDataGridVM" DataGetter="@LoadDataAsync" GridSettings="@DeliveryDataGridSettings" @bind-GridSettingsLoaded="@GridSettingsLoaded" ActionName="@ActionGetAllDeliveries" SearchFilter="@_searchFilter">
     <HeaderTemplate>
@@ -17,6 +20,16 @@
         </RadzenStack>
     </HeaderTemplate>
     <GridColumns>
+        @if (IsSmallScreen)
+        {
+            
+            <RadzenDataGridColumn TItem="DeliveryDataGridVM" Filterable="false" Pickable="false" Sortable="false">
+                <Template Context="context">
+                    <DeliveryCard Delivery="context" OnClick="ViewDelivery"/>
+                </Template>
+            </RadzenDataGridColumn>
+        }
+        else {
         <RadzenDataGridColumn TItem="DeliveryDataGridVM"
                               Property="@nameof(DeliveryDataGridVM.DocNum)"
                               Type="@typeof(int)"
@@ -55,7 +68,8 @@
             <Template>
                 <RadzenButton Icon="visibility" Size="ButtonSize.ExtraSmall" Click="() => ViewDelivery(context)" />
             </Template>
-        </RadzenDataGridColumn>
+            </RadzenDataGridColumn>
+        }
     </GridColumns>
 </AppDataGrid>
 
@@ -66,9 +80,20 @@
             "Table Settings",
             ds => @<AppGridSettings TItem="DeliveryDataGridVM"
                                     @bind-Grid=@DeliveryGrid.DataGrid
-                                    @bind-GridSettings=@DeliveryDataGridSettings />,
+                                    @bind-GridSettings=@DeliveryDataGridSettings />
+    ,
         options: GridSettingsService.GetDialogOptions());
 
         await DeliveryGrid.DataGrid.Reload();
+    }
+
+    bool IsSmallScreen = false;
+    async Task OnChange(bool matches)
+    {
+        if (matches != IsSmallScreen)
+        {
+            IsSmallScreen = matches;
+            await InvokeAsync(StateHasChanged);
+        }
     }
 }

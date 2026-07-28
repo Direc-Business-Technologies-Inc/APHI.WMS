@@ -12,6 +12,7 @@
 @attribute [AppAuthorizationAttribute("VIEW", "OITR")]
 
 <PageTitle>@(CreatingNew ? "New Inventory Transfer" : "ITR: ") @(IsLoadingData ? "..." : FormData.DocNum)</PageTitle>
+<RadzenMediaQuery Query="(max-width: 912px)" Change="OnChange" />
 
 <RadzenStack Orientation="Orientation.Horizontal"
              AlignItems="AlignItems.Center"
@@ -262,22 +263,22 @@
                                 <RadzenDataGridColumn TItem="InventoryTransferRequestLineVM"
                                                       Property="@nameof(InventoryTransferRequestLineVM.ItemCode)"
                                                       Type="@typeof(string)"
-                                                      Title="Item Code" />
+                                                      Title="Item Code" Width="@(IsSmallScreen ? "120px" : string.Empty)" />
                                 <RadzenDataGridColumn TItem="InventoryTransferRequestLineVM"
                                                       Property="@nameof(InventoryTransferRequestLineVM.ItemName)"
                                                       Type="@typeof(string)"
-                                                      Title="Description" />
+                                                      Title="Description" Width="@(IsSmallScreen ? "220px" : string.Empty)" />
                                 <RadzenDataGridColumn TItem="InventoryTransferRequestLineVM"
                                                       Property="@nameof(InventoryTransferRequestLineVM.UoMName)"
                                                       Type="@typeof(string)"
-                                                      Title="UoM" />
+                                                      Title="UoM" Width="@(IsSmallScreen ?  string.Empty : "120px")" />
                                 @if (!CreatingNew)
                                 {
                                     <RadzenDataGridColumn TItem="InventoryTransferRequestLineVM"
                                                           Property="@nameof(InventoryTransferRequestLineVM.Quantity)"
                                                           Type="@typeof(decimal)"
                                                           Title="Required Quantity"
-                                                          Width="150px">
+                                                          Width="@(IsSmallScreen ?  string.Empty : "120px")">
                                         <Template Context="data">
                                             <RadzenNumeric Format="N0"
                                                            @bind-Value="@data.Quantity"
@@ -291,7 +292,7 @@
                                                           Property="@nameof(InventoryTransferRequestLineVM.PendingQuantity)"
                                                           Type="@typeof(decimal)"
                                                           Title="Pending Quantity"
-                                                          Width="150px">
+                                                          Width="@(IsSmallScreen ?  string.Empty : "120px")">
                                         <Template Context="data">
                                             <RadzenNumeric Format="N0"
                                                            Value="@(data.PendingQuantity)"
@@ -305,7 +306,7 @@
                                                           Property="@nameof(InventoryTransferRequestLineVM.OpenQuantity)"
                                                           Type="@typeof(decimal)"
                                                           Title="Open Quantity"
-                                                          Width="150px">
+                                                          Width="120px">
                                         <Template Context="data">
                                             <RadzenNumeric Format="N0"
                                                            Value="@(data.OpenQuantity)"
@@ -322,7 +323,7 @@
                                                           Property="@nameof(InventoryTransferRequestLineVM.OnHandQuantity)"
                                                           Type="@typeof(decimal)"
                                                           Title="On-hand Quantity"
-                                                          Width="150px">
+                                                          Width="@(IsSmallScreen ?  string.Empty : "120px")">
                                         <Template Context="data">
                                             <RadzenNumeric Format="N0"
                                                            ReadOnly
@@ -338,7 +339,7 @@
                                                           Property="@nameof(InventoryTransferRequestLineVM.AllotedQuantity)"
                                                           Type="@typeof(decimal)"
                                                           Title="@(CreatingNew ? "Quantity" : "Alloted Quantity")"
-                                                          Width="150px"
+                                                          Width="120px"
                                                           Visible="@Creating">
                                         <Template Context="data">
                                             <RadzenNumeric Format="N0"
@@ -504,5 +505,17 @@
         options: GridSettingsService.GetDialogOptions());
 
         await InventoryTransferRequestTable.DataGrid.Reload();
+    }
+
+    
+    bool IsSmallScreen = false;
+
+    async Task OnChange(bool matches)
+    {
+        if (matches != IsSmallScreen)
+        {
+            IsSmallScreen = matches;
+            await InvokeAsync(StateHasChanged);
+        }
     }
 }
