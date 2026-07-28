@@ -12,6 +12,7 @@
 @attribute [AppAuthorizationAttribute("VIEW", "OGRC")]
 
 <PageTitle>@(Creating ? "New Goods Receipt Document" : string.Empty)@(Viewing ? $"Goods Receipt {FormData.SapReference.DocNum}" : string.Empty)</PageTitle>
+<RadzenMediaQuery Query="(max-width: 912px)" Change="OnChange" />
 
 <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween" class="rz-mb-4">
     <AppBreadCrumbs ModuleCode="OGRC" />
@@ -176,13 +177,13 @@
                                                           Width="40px" TextAlign="TextAlign.Center" />
                                     <RadzenDataGridColumn TItem="GoodsReceiptLineVM"
                                                           Property="@nameof(GoodsReceiptLineVM.ItemCode)"
-                                                          Title="Item Code" />
+                                                          Title="Item Code" Width="@(IsSmallScreen ? "120px" : string.Empty)"/>
                                     <RadzenDataGridColumn TItem="GoodsReceiptLineVM"
                                                           Property="@nameof(GoodsReceiptLineVM.ItemName)"
-                                                          Title="Item Name" />
+                                                          Title="Item Name" Width="@(IsSmallScreen ? "220px" : string.Empty)" />
                                     <RadzenDataGridColumn TItem="GoodsReceiptLineVM"
                                                           Property="@nameof(GoodsReceiptLineVM.Warehouse.WhsName)"
-                                                          Title="Warehouse" Width="150px">
+                                                          Title="Warehouse" Width="@(IsSmallScreen ? string.Empty : "120px")">
                                         <Template Context="data">
                                             <RadzenFormField class="rz-w-100 remove-form-input-margin">
                                                 <ChildContent>
@@ -216,11 +217,11 @@
                                     <RadzenDataGridColumn TItem="GoodsReceiptLineVM"
                                                           Property="@nameof(GoodsReceiptLineVM.UoMName)"
                                                           Type="@typeof(string)"
-                                                          Title="UoM" Width="125px" />
+                                                          Title="UoM" Width="@(IsSmallScreen ? string.Empty : "120px")" />
                                     <RadzenDataGridColumn TItem="GoodsReceiptLineVM"
                                                           Property="@nameof(GoodsReceiptLineVM.Quantity)"
                                                           Type="@typeof(decimal)"
-                                                          Title="Quantity" Width="150px">
+                                                          Title="Quantity" Width="120px">
                                         <Template Context="data">
                                             <RadzenNumeric Format="N0" @bind-Value="@data.Quantity" Min="0" ReadOnly="@Viewing" ShowUpDown="@Creating" />
                                         </Template>
@@ -324,6 +325,18 @@
             options: GridSettingsService.GetDialogOptions().MaximizedMode());
 
         if (result is not null) await CopyFromGoodsIssue(result);
+    }
+
+    
+    bool IsSmallScreen = false;
+
+    async Task OnChange(bool matches)
+    {
+        if (matches != IsSmallScreen)
+        {
+            IsSmallScreen = matches;
+            await InvokeAsync(StateHasChanged);
+        }
     }
 }
 
