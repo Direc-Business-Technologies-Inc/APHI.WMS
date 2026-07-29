@@ -1,0 +1,29 @@
+﻿@using Web.BlazorServer.Helpers
+@using Web.BlazorServer.ViewModels.Administration.Role
+@inherits BaseComponent
+
+<RadzenCard Variant="Variant.Outlined" onclick="@(() => OnClick.InvokeAsync(Role))">
+    <RadzenRow class="rz-mt-2" Gap="1rem" RowGap="0">
+        <RadzenColumn>
+            <RadzenText TextStyle="TextStyle.Body1" class="rz-my-0 rz-text-truncate">@Role.Name.OrWhenNull("-")</RadzenText>
+            <RadzenText TextStyle="TextStyle.Caption" class="@CaptionClass">@(Role.Active ? "ACTIVE" : "INACTIVE")</RadzenText>
+        </RadzenColumn>
+        <RadzenColumn>
+            <RadzenText TextStyle="TextStyle.Overline" class="rz-mt-2 rz-my-0">Code</RadzenText>
+            <RadzenText TextStyle="TextStyle.Body2" class="rz-my-0  rz-text-truncate rz-text-caption">@Role.Code.OrWhenNull("-")</RadzenText>
+        </RadzenColumn>
+    </RadzenRow>
+</RadzenCard>
+
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public RoleVM Role { get; set; }
+
+    [Parameter]
+    public EventCallback<RoleVM> OnClick { get; set; }
+
+    string CaptionClass => "rz-my-0 rz-text-truncate " + (Role.Active ? "rz-color-success" : "rz-color-danger");
+
+}
