@@ -222,11 +222,6 @@
                                                   Width="@(IsSmallScreen ?  string.Empty : "120px")"
                                                           Title="UoM" />
                                     <RadzenDataGridColumn TItem="PurchaseOrderLineVM"
-                                                          Property="@nameof(PurchaseOrderLineVM.InputType)"
-                                                          Type="@typeof(InputType)"
-                                                  Width="@(IsSmallScreen ?  string.Empty : "120px")"
-                                                          Title="Input" />
-                                    <RadzenDataGridColumn TItem="PurchaseOrderLineVM"
                                                           Property="@nameof(PurchaseOrderLineVM.TargetQuantity)"
                                                           Type="@typeof(decimal)"
                                                   Width="@(IsSmallScreen ?  string.Empty : "120px")"

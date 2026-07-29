@@ -200,9 +200,6 @@
                                     <RadzenNumeric Format="N0" @bind-Value="@data.Quantity" Min="0" ReadOnly ShowUpDown="false" />
                                 </Template>
                             </RadzenDataGridColumn>
-                            <RadzenDataGridColumn TItem="PurchaseDeliveryNoteLineVM"
-                                                  Property="@nameof(PurchaseDeliveryNoteLineVM.InputType)"
-                                                  Title="Input" Width="@(IsSmallScreen ?  string.Empty : "120px")" />
                         </Columns>
                     </AppTable>
                 </ChildContent>
