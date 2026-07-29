@@ -5,7 +5,7 @@
 @using Web.BlazorServer.ViewModels.Transaction.Receiving
 
 @inherits BaseComponent
-<RadzenMediaQuery Query="(max-width: 768px)" Change="OnChange" />
+<RadzenMediaQuery Query="(max-width: 912px)" Change="OnChange" />
 
 <AppDataGrid @ref="@GoodsReturnDataGrid" Id="goods_return_grid" TItem="GoodsReturnDataGridVM" DataGetter="@LoadDataAsync" GridSettings="@GoodsReturnDataGridSettings" @bind-GridSettingsLoaded="@GridSettingsLoaded" ActionName="@ActionGetGoodsReturns" SearchFilter="@_searchFilter">
     <HeaderTemplate>

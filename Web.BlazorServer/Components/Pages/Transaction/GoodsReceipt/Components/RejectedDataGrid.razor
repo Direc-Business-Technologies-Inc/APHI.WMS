@@ -1,7 +1,7 @@
 ﻿@using Web.BlazorServer.ViewModels.Transaction.GoodsReceipt
 
 @inherits BaseComponent
-<RadzenMediaQuery Query="(max-width: 768px)" Change="OnChange" />
+<RadzenMediaQuery Query="(max-width: 912px)" Change="OnChange" />
 
 <AppDataGrid @ref="@GoodsReceiptDataGrid" Id="rejected_goods_issue_grid" TItem="GoodsReceiptDataGridVM" DataGetter="@LoadDataAsync" GridSettings="@GoodsReceiptDataGridSettings" @bind-GridSettingsLoaded="@GridSettingsLoaded" ActionName="@ActionGetGoodsReceipts" SearchFilter="@_searchFilter">
     <HeaderTemplate>
