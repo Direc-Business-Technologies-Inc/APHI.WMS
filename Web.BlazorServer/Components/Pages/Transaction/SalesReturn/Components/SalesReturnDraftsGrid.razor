@@ -1,7 +1,8 @@
-﻿@using Web.BlazorServer.Components.Security
+﻿@using Web.BlazorServer.Components.Pages.Transaction.SalesReturn.Components.Cards
 @using Web.BlazorServer.ViewModels.Transaction.SalesReturn
 
 @inherits BaseComponent
+<RadzenMediaQuery Query="(max-width: 912px)" Change="OnChange" />
 
 <AppDataGrid @ref="@SalesReturnDataGrid" Id="sales_return_grid" TItem="SalesReturnDataGridVM" DataGetter="@LoadDataAsync" GridSettings="@SalesReturnDataGridSettings" @bind-GridSettingsLoaded="@GridSettingsLoaded" ActionName="@ActionGetSalesReturns" SearchFilter="@_searchFilter">
     <HeaderTemplate>
@@ -17,41 +18,53 @@
         </RadzenStack>
     </HeaderTemplate>
     <GridColumns>
-        <RadzenDataGridColumn TItem="SalesReturnDataGridVM"
-                              Property="@nameof(SalesReturnDataGridVM.DocNum)"
-                              Type="@typeof(int)"
-                              Title="SR Doc No." />
-        <RadzenDataGridColumn TItem="SalesReturnDataGridVM"
-                              Property="@nameof(SalesReturnDataGridVM.DocDate)"
-                              Type="@typeof(DateOnly)"
-                              FormatString="{0:d}"
-                              Title="Doc Date">
-            <Template>
-                @context.DocDate.ToString("MM/dd/yyyy")
-            </Template>
-        </RadzenDataGridColumn>
-        <RadzenDataGridColumn TItem="SalesReturnDataGridVM"
-                              Property="@nameof(SalesReturnDataGridVM.CardCode)"
-                              Type="@typeof(string)"
-                              Title="Customer Code" />
-        <RadzenDataGridColumn TItem="SalesReturnDataGridVM"
-                              Property="@nameof(SalesReturnDataGridVM.CardName)"
-                              Type="@typeof(string)"
-                              Title="Customer Name" />
-        <RadzenDataGridColumn TItem="SalesReturnDataGridVM"
-                              Property="@nameof(SalesReturnDataGridVM.Remarks)"
-                              Type="@typeof(string)"
-                              Title="Remarks" />
-        <RadzenDataGridColumn TItem="SalesReturnDataGridVM"
-                              Frozen
-                              FrozenPosition="FrozenColumnPosition.Right"
-                              Filterable="false"
-                              Sortable="false"
-                              Width="35px">
-            <Template>
-                <RadzenButton Icon="visibility" Size="ButtonSize.ExtraSmall" Click="() => ViewSalesReturn(context)" />
-            </Template>
-        </RadzenDataGridColumn>
+        @if (IsSmallScreen)
+        {
+
+            <RadzenDataGridColumn TItem="SalesReturnDataGridVM" Filterable="false" Pickable="false" Sortable="false">
+                <Template Context="context">
+                    <SalesReturnCard SalesReturn="context" OnClick="ViewSalesReturn" />
+                </Template>
+            </RadzenDataGridColumn>
+        }
+        else
+        {
+            <RadzenDataGridColumn TItem="SalesReturnDataGridVM"
+                                  Property="@nameof(SalesReturnDataGridVM.DocNum)"
+                                  Type="@typeof(int)"
+                                  Title="SR Doc No." />
+            <RadzenDataGridColumn TItem="SalesReturnDataGridVM"
+                                  Property="@nameof(SalesReturnDataGridVM.DocDate)"
+                                  Type="@typeof(DateOnly)"
+                                  FormatString="{0:d}"
+                                  Title="Doc Date">
+                <Template>
+                    @context.DocDate.ToString("MM/dd/yyyy")
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="SalesReturnDataGridVM"
+                                  Property="@nameof(SalesReturnDataGridVM.CardCode)"
+                                  Type="@typeof(string)"
+                                  Title="Customer Code" />
+            <RadzenDataGridColumn TItem="SalesReturnDataGridVM"
+                                  Property="@nameof(SalesReturnDataGridVM.CardName)"
+                                  Type="@typeof(string)"
+                                  Title="Customer Name" />
+            <RadzenDataGridColumn TItem="SalesReturnDataGridVM"
+                                  Property="@nameof(SalesReturnDataGridVM.Remarks)"
+                                  Type="@typeof(string)"
+                                  Title="Remarks" />
+            <RadzenDataGridColumn TItem="SalesReturnDataGridVM"
+                                  Frozen
+                                  FrozenPosition="FrozenColumnPosition.Right"
+                                  Filterable="false"
+                                  Sortable="false"
+                                  Width="35px">
+                <Template>
+                    <RadzenButton Icon="visibility" Size="ButtonSize.ExtraSmall" Click="() => ViewSalesReturn(context)" />
+                </Template>
+            </RadzenDataGridColumn>
+        }
     </GridColumns>
 </AppDataGrid>
 
@@ -66,5 +79,15 @@
         options: GridSettingsService.GetDialogOptions());
 
         await SalesReturnDataGrid.DataGrid.Reload();
+    }
+
+    bool IsSmallScreen = false;
+    async Task OnChange(bool matches)
+    {
+        if (matches != IsSmallScreen)
+        {
+            IsSmallScreen = matches;
+            await InvokeAsync(StateHasChanged);
+        }
     }
 }
