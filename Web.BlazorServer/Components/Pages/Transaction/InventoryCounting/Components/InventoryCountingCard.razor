@@ -1,0 +1,49 @@
+﻿@using Domain.Entities.Enums.Transaction.InventoryCounting
+@using Web.BlazorServer.Helpers
+@using Web.BlazorServer.ViewModels.Transaction.InventoryCounting
+@inherits BaseComponent
+
+
+<RadzenCard onclick="@(() => OnClick.InvokeAsync(InventoryCounting))" Variant="Variant.Outlined" class="rz-p-0">
+    <RadzenStack Gap="0" class="@HeaderClass" Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween">
+        <RadzenText TextStyle="TextStyle.Subtitle2">@InventoryCounting.Status.ToString()</RadzenText>
+        <RadzenText TextStyle="TextStyle.Subtitle2">@InventoryCounting.CreatedDate.ToShortDateString()</RadzenText>
+    </RadzenStack>
+    <RadzenRow class="rz-mt-2 rz-pb-6 rz-px-6" Gap="0" RowGap="0">
+        <RadzenColumn>
+            <RadzenText TextStyle="TextStyle.Overline" class="rz-mt-2 rz-my-0">Inventory Counting</RadzenText>
+            <RadzenText TextStyle="TextStyle.Body1" class="rz-my-0 rz-text-truncate">@InventoryCounting.AppDocNum.OrWhenNull("-")</RadzenText>
+        </RadzenColumn>
+        <RadzenColumn SizeXS="8">
+            <RadzenText TextStyle="TextStyle.Overline" class="rz-mt-2 rz-my-0">Warehouse</RadzenText>
+            <RadzenText TextStyle="TextStyle.Body2" class="rz-my-0 rz-text-truncate  rz-text-caption">@InventoryCounting.Warehouse.OrWhenNull("-")</RadzenText>
+        </RadzenColumn>
+        <RadzenColumn SizeXS="4">
+            <RadzenText TextStyle="TextStyle.Overline" class="rz-mt-2 rz-my-0">Cycle Type</RadzenText>
+            <RadzenText TextStyle="TextStyle.Body2" class="rz-my-0 rz-text-truncate  rz-text-caption">@InventoryCounting.CycleType.ToString().OrWhenNull("-")</RadzenText>
+        </RadzenColumn>
+        <RadzenColumn>
+            <RadzenText TextStyle="TextStyle.Overline" class="rz-mt-4 rz-my-0">Created By</RadzenText>
+            <RadzenText TextStyle="TextStyle.Body2" class="rz-my-0 rz-text-truncate rz-text-caption">@InventoryCounting.CreatedBy.OrWhenNull("-")</RadzenText>
+        </RadzenColumn>
+    </RadzenRow>
+</RadzenCard>
+
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public InventoryCountingDataGridVM InventoryCounting { get; set; }
+
+    public string HeaderClass => InventoryCounting.Status switch
+    {
+        InventoryCountingDocumentStatus.Open => "rz-background-color-success",
+        InventoryCountingDocumentStatus.Posted => "rz-background-color-secondary",
+        InventoryCountingDocumentStatus.Recount => "rz-background-color-warning",
+        InventoryCountingDocumentStatus.Saved => "rz-background-color-info-light",
+        _ => string.Empty
+    } + " rz-pt-6 rz-px-6 rz-pb-2";
+
+    [Parameter]
+    public EventCallback<InventoryCountingDataGridVM> OnClick { get; set; }
+}

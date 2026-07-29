@@ -1,8 +1,10 @@
-﻿@using Web.BlazorServer.Components.Security
+﻿@using Web.BlazorServer.Components.Pages.Transaction.Receiving.Components.Card
+@using Web.BlazorServer.Components.Security
 @using Web.BlazorServer.ViewModels.Administration.User
 @using Web.BlazorServer.ViewModels.Transaction.Receiving
 
 @inherits BaseComponent
+<RadzenMediaQuery Query="(max-width: 912px)" Change="OnChange" />
 
 <AppDataGrid @ref="@PurchaseOrderDataGrid" Id="purchase_order_grid" TItem="PurchaseOrderDataGridVM" DataGetter="@LoadDataAsync" GridSettings="@PurchaseOrderDataGridSettings" @bind-GridSettingsLoaded="@GridSettingsLoaded" ActionName="@ActionGetPurchaseOrders" ClearOnDispose="true" SearchFilter="@_searchFilter">
     <HeaderTemplate>
@@ -18,41 +20,53 @@
         </RadzenStack>
     </HeaderTemplate>
     <GridColumns>
-        <RadzenDataGridColumn TItem="PurchaseOrderDataGridVM"
-                              Property="@nameof(PurchaseOrderDataGridVM.DocNum)"
-                              Type="@typeof(int)"
-                              Title="PO Doc No." />
-        <RadzenDataGridColumn TItem="PurchaseOrderDataGridVM"
-                              Property="@nameof(PurchaseOrderDataGridVM.DocDate)"
-                              Type="@typeof(DateOnly)"
-                              FormatString="{0:d}"
-                              Title="PO Date" >
-            <Template>
-                @context.DocDate.ToString("MM/dd/yyyy")
-            </Template>
-        </RadzenDataGridColumn>
-        <RadzenDataGridColumn TItem="PurchaseOrderDataGridVM"
-                              Property="@nameof(PurchaseOrderDataGridVM.CardName)"
-                              Type="@typeof(string)"
-                              Title="Supplier Name" />
-        <RadzenDataGridColumn TItem="PurchaseOrderDataGridVM"
-                              Property="@nameof(PurchaseOrderDataGridVM.SupplierContactPerson)"
-                              Type="@typeof(string)"
-                              Title="Contact Person" />
-        <RadzenDataGridColumn TItem="PurchaseOrderDataGridVM"
-                              Property="@nameof(PurchaseOrderDataGridVM.Remarks)"
-                              Type="@typeof(string)"
-                              Title="Remarks" />
-        <RadzenDataGridColumn TItem="PurchaseOrderDataGridVM"
-                              Frozen
-                              FrozenPosition="FrozenColumnPosition.Right"
-                              Filterable="false"
-                              Sortable="false"
-                              Width="35px">
-            <Template>
-                <RadzenButton Icon="visibility" Size="ButtonSize.ExtraSmall" Click="() => ViewPurchaseOrder(context)" />
-            </Template>
-        </RadzenDataGridColumn>
+        @if (IsSmallScreen)
+        {
+
+            <RadzenDataGridColumn TItem="PurchaseOrderDataGridVM" Filterable="false" Pickable="false" Sortable="false">
+                <Template Context="context">
+                    <PurchaseOrderCard PurchaseOrder="context" OnClick="ViewPurchaseOrder" />
+                </Template>
+            </RadzenDataGridColumn>
+        }
+        else
+        {
+            <RadzenDataGridColumn TItem="PurchaseOrderDataGridVM"
+                                  Property="@nameof(PurchaseOrderDataGridVM.DocNum)"
+                                  Type="@typeof(int)"
+                                  Title="PO Doc No." />
+            <RadzenDataGridColumn TItem="PurchaseOrderDataGridVM"
+                                  Property="@nameof(PurchaseOrderDataGridVM.DocDate)"
+                                  Type="@typeof(DateOnly)"
+                                  FormatString="{0:d}"
+                                  Title="PO Date">
+                <Template>
+                    @context.DocDate.ToString("MM/dd/yyyy")
+                </Template>
+            </RadzenDataGridColumn>
+            <RadzenDataGridColumn TItem="PurchaseOrderDataGridVM"
+                                  Property="@nameof(PurchaseOrderDataGridVM.CardName)"
+                                  Type="@typeof(string)"
+                                  Title="Supplier Name" />
+            <RadzenDataGridColumn TItem="PurchaseOrderDataGridVM"
+                                  Property="@nameof(PurchaseOrderDataGridVM.SupplierContactPerson)"
+                                  Type="@typeof(string)"
+                                  Title="Contact Person" />
+            <RadzenDataGridColumn TItem="PurchaseOrderDataGridVM"
+                                  Property="@nameof(PurchaseOrderDataGridVM.Remarks)"
+                                  Type="@typeof(string)"
+                                  Title="Remarks" />
+            <RadzenDataGridColumn TItem="PurchaseOrderDataGridVM"
+                                  Frozen
+                                  FrozenPosition="FrozenColumnPosition.Right"
+                                  Filterable="false"
+                                  Sortable="false"
+                                  Width="35px">
+                <Template>
+                    <RadzenButton Icon="visibility" Size="ButtonSize.ExtraSmall" Click="() => ViewPurchaseOrder(context)" />
+                </Template>
+            </RadzenDataGridColumn>
+        }
     </GridColumns>
 </AppDataGrid>
 
@@ -67,5 +81,15 @@
         options: GridSettingsService.GetDialogOptions());
 
         await PurchaseOrderDataGrid.DataGrid.Reload();
+    }
+
+    bool IsSmallScreen = false;
+    async Task OnChange(bool matches)
+    {
+        if (matches != IsSmallScreen)
+        {
+            IsSmallScreen = matches;
+            await InvokeAsync(StateHasChanged);
+        }
     }
 }

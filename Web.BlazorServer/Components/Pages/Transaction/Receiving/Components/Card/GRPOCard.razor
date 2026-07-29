@@ -1,0 +1,41 @@
+﻿@using Web.BlazorServer.Helpers
+@using Web.BlazorServer.ViewModels.Transaction.Receiving
+@inherits BaseComponent
+
+<RadzenCard onclick="@(() => OnClick.InvokeAsync(GRPO))" Variant="Variant.Outlined">
+    <RadzenStack Gap="0" Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween">
+        <RadzenText TextStyle="TextStyle.Subtitle2"><strong>@GRPO.DocNum</strong></RadzenText>
+        <RadzenText TextStyle="TextStyle.Subtitle2">@GRPO.DocDate.ToShortDateString()</RadzenText>
+    </RadzenStack>
+    <RadzenRow class="rz-mt-2" Gap="0.5em" RowGap="0">
+        <RadzenColumn SizeXS="8" SizeSM="10" OrderXS="1">
+            <RadzenText TextStyle="TextStyle.Overline" class="rz-mt-2 rz-my-0">Supplier Name</RadzenText>
+            <RadzenText TextStyle="TextStyle.Body1" class="rz-my-0 rz-text-truncate">@GRPO.CardName.OrWhenNull("-")</RadzenText>
+        </RadzenColumn>
+        <RadzenColumn SizeXS="8" SizeSM="10" OrderXS="3">
+            <RadzenText TextStyle="TextStyle.Overline" class="rz-mt-2 rz-my-0">Contact Person</RadzenText>
+            <RadzenText TextStyle="TextStyle.Body2" class="rz-my-0  rz-text-truncate rz-text-caption">@GRPO.ItemDesc.OrWhenNull("-")</RadzenText>
+        </RadzenColumn>
+        <RadzenColumn SizeXS="8" SizeSM="10" OrderXS="5">
+            <RadzenText TextStyle="TextStyle.Overline" class="rz-mt-2 rz-my-0">Warehouse</RadzenText>
+            <RadzenText TextStyle="TextStyle.Body2" class="rz-my-0  rz-text-truncate rz-text-caption">@GRPO.WhsName.OrWhenNull("-")</RadzenText>
+        </RadzenColumn>
+        <RadzenColumn SizeXS="4" SizeSM="2"  Size="6" OrderXS="2">
+            <RadzenText TextStyle="TextStyle.Overline" class="rz-mt-2 rz-my-0">PO Number</RadzenText>
+            <RadzenText TextStyle="TextStyle.Body2" class="rz-my-0  rz-text-truncate rz-text-caption">@GRPO.BaseDocNum.ToString().OrWhenNull("-")</RadzenText>
+        </RadzenColumn>
+        <RadzenColumn SizeXS="4" SizeSM="2" Size="6" OrderXS="4">
+            <RadzenText TextStyle="TextStyle.Overline" class="rz-mt-2 rz-my-0">PO Date</RadzenText>
+            <RadzenText TextStyle="TextStyle.Body2" class="rz-my-0  rz-text-truncate rz-text-caption">@GRPO.PoDocDate.ToShortDateString().OrWhenNull("-")</RadzenText>
+        </RadzenColumn>
+    </RadzenRow>
+</RadzenCard>
+
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public PurchaseDeliveryNoteDataGridVM GRPO { get; set; }
+    [Parameter]
+    public EventCallback<PurchaseDeliveryNoteDataGridVM> OnClick { get; set; }
+}

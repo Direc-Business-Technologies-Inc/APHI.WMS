@@ -3,7 +3,7 @@
 @using Web.BlazorServer.ViewModels.Transaction.Delivery
 
 @inherits BaseComponent
-<RadzenMediaQuery Query="(max-width: 768px)" Change="OnChange" />
+<RadzenMediaQuery Query="(max-width: 912px)" Change="OnChange" />
 
 <AppDataGrid @ref="@DeliveryGrid" Id="delivery_grid" TItem="DeliveryDataGridVM" DataGetter="@LoadDataAsync" GridSettings="@DeliveryDataGridSettings" @bind-GridSettingsLoaded="@GridSettingsLoaded" ActionName="@ActionGetAllDeliveries" SearchFilter="@_searchFilter">
     <HeaderTemplate>

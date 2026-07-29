@@ -1,9 +1,11 @@
-﻿@using Web.BlazorServer.Components.Security
+﻿@using Web.BlazorServer.Components.Pages.Transaction.GoodsReturn.Components.Cards
+@using Web.BlazorServer.Components.Security
 @using Web.BlazorServer.ViewModels.Administration.User
 @using Web.BlazorServer.ViewModels.Transaction.GoodsReturn
 @using Web.BlazorServer.ViewModels.Transaction.Receiving
 
 @inherits BaseComponent
+<RadzenMediaQuery Query="(max-width: 912px)" Change="OnChange" />
 
 <AppDataGrid @ref="@GoodsReturnRequestDataGrid" Id="goods_return_request_grid" TItem="GRRDataGridVM" DataGetter="@LoadDataAsync" GridSettings="@GoodsReturnRequestDataGridSettings" @bind-GridSettingsLoaded="@GridSettingsLoaded" ActionName="@ActionGetGoodsReturnRequests" SearchFilter="@_searchFilter">
     <HeaderTemplate>
@@ -19,6 +21,19 @@
         </RadzenStack>
     </HeaderTemplate>
     <GridColumns>
+        
+        @if (IsSmallScreen)
+        {
+
+            <RadzenDataGridColumn TItem="GRRDataGridVM" Filterable="false" Pickable="false" Sortable="false">
+                <Template Context="context">
+                    <GoodsReturnRequestCard GoodsReturn="context" OnClick="ViewGoodsReturnRequest"/>
+                </Template>
+            </RadzenDataGridColumn>
+        }
+        else
+        {
+            
         <RadzenDataGridColumn TItem="GRRDataGridVM"
                               Property="@nameof(GRRDataGridVM.DocNum)"
                               Type="@typeof(int)"
@@ -55,6 +70,7 @@
                 <RadzenButton Icon="visibility" Size="ButtonSize.ExtraSmall" Click="() => ViewGoodsReturnRequest(context)" />
             </Template>
         </RadzenDataGridColumn>
+        }
     </GridColumns>
 </AppDataGrid>
 
@@ -69,5 +85,14 @@
         options: GridSettingsService.GetDialogOptions());
 
         await GoodsReturnRequestDataGrid.DataGrid.Reload();
+    }
+    bool IsSmallScreen = false;
+    async Task OnChange(bool matches)
+    {
+        if (matches != IsSmallScreen)
+        {
+            IsSmallScreen = matches;
+            await InvokeAsync(StateHasChanged);
+        }
     }
 }

@@ -1,0 +1,34 @@
+﻿@using Web.BlazorServer.Helpers
+@using Web.BlazorServer.ViewModels.Transaction.GoodsReceipt
+@inherits BaseComponent
+
+
+<RadzenCard onclick="@(() => OnClick.InvokeAsync(GoodsReceipt))" Variant="Variant.Outlined">
+    <RadzenStack Gap="0" Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween">
+        <RadzenStack Gap="0">
+            <RadzenText TextStyle="TextStyle.Overline" class=" rz-my-0">Goods Issue</RadzenText>
+            <RadzenText TextStyle="TextStyle.H6" class="rz-my-0 rz-text-truncate"><strong>@GoodsReceipt.DocEntry.ToString().OrWhenNull("-")</strong></RadzenText>
+        </RadzenStack>
+        <RadzenText TextStyle="TextStyle.Subtitle2">@GoodsReceipt.DocDate.ToShortDateString()</RadzenText>
+    </RadzenStack>
+    <RadzenRow class="rz-mt-3" Gap="0" RowGap="0">
+        <RadzenColumn SizeSM="6">
+            <RadzenText TextStyle="TextStyle.Overline" class="rz-my-0">Prepared By</RadzenText>
+            <RadzenText TextStyle="TextStyle.Body2" class="rz-my-0  rz-text-truncate rz-text-caption">@GoodsReceipt.PreparedBy.OrWhenNull("-")</RadzenText>
+        </RadzenColumn>
+        <RadzenColumn SizeSM="6">
+            <RadzenText TextStyle="TextStyle.Overline" class="rz-my-0">Transfer Type</RadzenText>
+            <RadzenText TextStyle="TextStyle.Body2" class="rz-my-0  rz-text-truncate rz-text-caption">@GoodsReceipt.TransTypeName.OrWhenNull("-")</RadzenText>
+        </RadzenColumn>
+    </RadzenRow>
+</RadzenCard>
+
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public GoodsReceiptDataGridVM GoodsReceipt { get; set; }
+
+    [Parameter]
+    public EventCallback<GoodsReceiptDataGridVM> OnClick { get; set; }
+}
