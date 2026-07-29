@@ -36,7 +36,9 @@
     <RadzenStack Visible="@(Viewing && !IsLoadingData)"
                  Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center"
                  JustifyContent="JustifyContent.End" Gap="1rem" class="rz-mb-2">
-        <RadzenStack Orientation="Orientation.Horizontal" Gap="0.5rem" AlignItems="AlignItems.Center">
+        <RadzenStack Orientation="Orientation.Horizontal"
+                     Wrap="FlexWrap.WrapReverse"
+                     Gap="24px" AlignItems="AlignItems.Center">
             <AppContentBadge Title="Doc #" Content="@FormData.AppDocNum.Value" />
             <AppContentBadge Title="Status" Content="@FormData.Status.ToString()"
                              ChildBadgeStyle="@(FormData.Status switch

@@ -1,0 +1,41 @@
+﻿@using Web.BlazorServer.Helpers
+@using Web.BlazorServer.ViewModels.Administration.User
+@inherits BaseComponent
+
+<RadzenCard Variant="Variant.Outlined">
+    <RadzenRow class="rz-mt-2" Gap="1rem" RowGap="0" onclick="@(() => OnCardClicked.InvokeAsync(User))">
+        <RadzenColumn>
+            <RadzenText TextStyle="TextStyle.Body1" class="rz-my-0 rz-text-truncate">@User.FullName.OrWhenNull("-")</RadzenText>
+            <RadzenText TextStyle="TextStyle.Caption" class="rz-my-0 rz-text-truncate">@User.Position.OrWhenNull("-")</RadzenText>
+        </RadzenColumn>
+        <RadzenRow>
+            <RadzenColumn>
+                <RadzenText TextStyle="TextStyle.Overline" class="rz-mt-2 rz-my-0">User Name</RadzenText>
+                <RadzenText TextStyle="TextStyle.Body2" class="rz-my-0  rz-text-truncate rz-text-caption">@User.UserName.OrWhenNull("-")</RadzenText>
+            </RadzenColumn>
+            <RadzenColumn>
+                <RadzenText TextStyle="TextStyle.Overline" class="rz-mt-2 rz-my-0">Email</RadzenText>
+                <RadzenText TextStyle="TextStyle.Body2" class="rz-my-0  rz-text-truncate rz-text-caption">@User.Email.OrWhenNull("-")</RadzenText>
+            </RadzenColumn>
+        </RadzenRow>
+    </RadzenRow>
+    <RadzenStack Orientation="Orientation.Horizontal" Visible="ButtonVisible" class="rz-mt-2" JustifyContent="JustifyContent.End">
+        <RadzenButton Icon="key_vertical" ButtonStyle="ButtonStyle.Info" Size="ButtonSize.ExtraSmall" Click="() => OnButtonClicked.InvokeAsync(User)" Text="Change Password" />
+    </RadzenStack>
+</RadzenCard>
+
+
+@code {
+    [Parameter]
+    [EditorRequired]
+    public UserDataGridVM User { get; set; }
+
+    [Parameter]
+    public EventCallback<UserDataGridVM> OnCardClicked {get; set;}
+
+    [Parameter]
+    public EventCallback<UserDataGridVM> OnButtonClicked {get; set;}
+
+    [Parameter]
+    public bool ButtonVisible { get; set; } = false;
+}

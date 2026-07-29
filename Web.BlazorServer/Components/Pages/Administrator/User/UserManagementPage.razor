@@ -1,4 +1,5 @@
-﻿@using Web.BlazorServer.Components.Security
+﻿@using Web.BlazorServer.Components.Pages.Administrator.User.Components
+@using Web.BlazorServer.Components.Security
 @using Web.BlazorServer.Extensions
 @using Web.BlazorServer.ViewModels.Administration.User
 
@@ -9,6 +10,7 @@
 
 
 <PageTitle>User Management</PageTitle>
+<RadzenMediaQuery Query="(max-width: 912px)" Change="OnChange" />
 
 <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween" class="rz-mb-4">
     <AppBreadCrumbs ModuleCode="OUSR" />
@@ -29,48 +31,59 @@
             </RadzenStack>
         </HeaderTemplate>
         <GridColumns>
-            <RadzenDataGridColumn TItem="UserDataGridVM"
-                                  Property="@nameof(UserDataGridVM.FullName)"
-                                  Type="@typeof(string)"
-                                  Title="Full Name" />
-            <RadzenDataGridColumn TItem="UserDataGridVM"
-                                  Property="@nameof(UserDataGridVM.UserName)"
-                                  Type="@typeof(string)"
-                                  Title="Username" />
-            <RadzenDataGridColumn TItem="UserDataGridVM"
-                                  Property="@nameof(UserDataGridVM.Email)"
-                                  Type="@typeof(string)"
-                                  Title="Email" />
-            <RadzenDataGridColumn TItem="UserDataGridVM"
-                                  Property="@nameof(UserDataGridVM.Phone)"
-                                  Type="@typeof(string)"
-                                  Title="Phone No." />
-            <RadzenDataGridColumn TItem="UserDataGridVM"
-                                  Property="@nameof(UserDataGridVM.Position)"
-                                  Type="@typeof(string)"
-                                  Title="Position" />
-            <RadzenDataGridColumn TItem="UserDataGridVM"
-                                  Property="@nameof(UserDataGridVM.Active)"
-                                  Type="@typeof(bool)"
-                                  Title="Status">
-                <Template Context="data">
-                    <RadzenBadge BadgeStyle="@(data.Active? BadgeStyle.Success: BadgeStyle.Base)" Text="@(data.Active ? "Active" : "Inactive")" />
-                </Template>
-            </RadzenDataGridColumn>
-            <RadzenDataGridColumn TItem="UserDataGridVM"
-                                  Type="@typeof(bool)"
-                                  Frozen
-                                  FrozenPosition="FrozenColumnPosition.Right"
-                                  Width="70px"
-                                  MaxWidth="70px"
-                                  Pickable="false" Sortable="false" Filterable="false">
-                <Template Context="data">
-                    <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceEvenly">
-                        <RadzenButton Visible="@Can.Update("OUSR")" Icon="key_vertical" ButtonStyle="ButtonStyle.Info" Size="ButtonSize.ExtraSmall" Click="() => OpenPasswordManagement(data)" />
-                        <RadzenButton Icon="visibility" Size="ButtonSize.ExtraSmall" Click="() => ViewUser(data)" />
-                    </RadzenStack>
-                </Template>
-            </RadzenDataGridColumn>
+            @if (IsSmallScreen)
+            {
+                <RadzenDataGridColumn TItem="UserDataGridVM" Filterable="false" Pickable="false" Sortable="false">
+                    <Template Context="context">
+                        <UserCard User="context" OnCardClicked="ViewUser" OnButtonClicked="OpenPasswordManagement" ButtonVisible="@Can.Update("OUSR")" />
+                    </Template>
+                </RadzenDataGridColumn>
+            }
+            else
+            {
+                <RadzenDataGridColumn TItem="UserDataGridVM"
+                                      Property="@nameof(UserDataGridVM.FullName)"
+                                      Type="@typeof(string)"
+                                      Title="Full Name" />
+                <RadzenDataGridColumn TItem="UserDataGridVM"
+                                      Property="@nameof(UserDataGridVM.UserName)"
+                                      Type="@typeof(string)"
+                                      Title="Username" />
+                <RadzenDataGridColumn TItem="UserDataGridVM"
+                                      Property="@nameof(UserDataGridVM.Email)"
+                                      Type="@typeof(string)"
+                                      Title="Email" />
+                <RadzenDataGridColumn TItem="UserDataGridVM"
+                                      Property="@nameof(UserDataGridVM.Phone)"
+                                      Type="@typeof(string)"
+                                      Title="Phone No." />
+                <RadzenDataGridColumn TItem="UserDataGridVM"
+                                      Property="@nameof(UserDataGridVM.Position)"
+                                      Type="@typeof(string)"
+                                      Title="Position" />
+                <RadzenDataGridColumn TItem="UserDataGridVM"
+                                      Property="@nameof(UserDataGridVM.Active)"
+                                      Type="@typeof(bool)"
+                                      Title="Status">
+                    <Template Context="data">
+                        <RadzenBadge BadgeStyle="@(data.Active ? BadgeStyle.Success : BadgeStyle.Base)" Text="@(data.Active ? "Active" : "Inactive")" />
+                    </Template>
+                </RadzenDataGridColumn>
+                <RadzenDataGridColumn TItem="UserDataGridVM"
+                                      Type="@typeof(bool)"
+                                      Frozen
+                                      FrozenPosition="FrozenColumnPosition.Right"
+                                      Width="70px"
+                                      MaxWidth="70px"
+                                      Pickable="false" Sortable="false" Filterable="false">
+                    <Template Context="data">
+                        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceEvenly">
+                            <RadzenButton Visible="@Can.Update("OUSR")" Icon="key_vertical" ButtonStyle="ButtonStyle.Info" Size="ButtonSize.ExtraSmall" Click="() => OpenPasswordManagement(data)" />
+                            <RadzenButton Icon="visibility" Size="ButtonSize.ExtraSmall" Click="() => ViewUser(data)" />
+                        </RadzenStack>
+                    </Template>
+                </RadzenDataGridColumn>
+            }
         </GridColumns>
     </AppDataGrid>
 </AppContent>
@@ -81,8 +94,8 @@
         await DialogService.OpenAsync(
             "Table Settings",
             ds => @<AppGridSettings TItem="UserDataGridVM"
-            @bind-Grid=@UsersDataGrid.DataGrid
-            @bind-GridSettings=@UsersDataGridSettings />,
+                                    @bind-Grid=@UsersDataGrid.DataGrid
+                                    @bind-GridSettings=@UsersDataGridSettings />,
         options: GridSettingsService.GetDialogOptions());
 
         await UsersDataGrid.DataGrid.Reload();
@@ -94,5 +107,14 @@
             $"Update Password",
             ds => @<UserPasswordManagement User="user" />,
     options: GridSettingsService.GetDialogOptions().CloseByCustomButton());
+    }
+    bool IsSmallScreen = false;
+    async Task OnChange(bool matches)
+    {
+        if (matches != IsSmallScreen)
+        {
+            IsSmallScreen = matches;
+            await InvokeAsync(StateHasChanged);
+        }
     }
 }

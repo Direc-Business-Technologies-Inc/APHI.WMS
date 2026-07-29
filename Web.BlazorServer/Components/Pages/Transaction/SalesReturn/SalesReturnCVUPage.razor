@@ -22,7 +22,9 @@
 
     <AppFormSkeleton TItem="SalesReturnVM" Loading="@IsLoadingData" />
 
-    <RadzenStack Visible="@(!IsLoadingData)" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End" Gap="32px" class="rz-mb-2">
+    <RadzenStack Visible="@(!IsLoadingData)" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End"
+                 Wrap="FlexWrap.WrapReverse"
+                 Gap="24px" class="rz-mb-2">
         <AppContentBadge Visible="@Viewing" Title="Doc" Content="@FormData.SapReference.DocNum.ToString()" />
         <AppContentBadge Title="Doc Date" Content="@FormData.DocDate.ToString("MM-dd-yy")" ChildBadgeStyle="BadgeStyle.Secondary" ChildShade="Shade.Default" />
         <AppContentBadge Title="Doc Due Date" Content="@FormData.DocDueDate.ToString("MM-dd-yy")" ChildBadgeStyle="BadgeStyle.Secondary" ChildShade="Shade.Default" />
