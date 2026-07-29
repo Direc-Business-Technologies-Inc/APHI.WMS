@@ -20,7 +20,9 @@
     <AppFormSkeleton TItem="InventoryCountingSheetVM" Loading="@IsLoadingData" />
 
     @* Parent document info badges *@
-    <RadzenStack Visible="@(!IsLoadingData)" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End" Gap="0.5rem" class="rz-mb-2 rz-w-100">
+    <RadzenStack Visible="@(!IsLoadingData)" Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End"
+                 Wrap="FlexWrap.WrapReverse"
+                 Gap="24px" class="rz-mb-2 rz-w-100">
         <AppContentBadge Title="Doc #" Content="@ParentDocument?.AppDocNum.Value" />
         <AppContentBadge Title="Warehouse" Content="@ParentDocument?.Warehouse.WhsName" />
         <AppContentBadge Title="Counting Date" Content="@ParentDocument?.CountingDate.ToString("MM/dd/yyyy")" />
