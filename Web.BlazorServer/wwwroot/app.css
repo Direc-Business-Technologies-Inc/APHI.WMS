@@ -103,3 +103,15 @@ p, span {
         padding-right: 0.2rem;
     }
 }
+
+@media (max-width: 576px) {
+    .my-datagrid-searchbar {
+        min-width : 120px;
+    }
+}
+
+@media (min-width: 577px) {
+    .my-datagrid-searchbar {
+        min-width: 220px;
+    }
+}
