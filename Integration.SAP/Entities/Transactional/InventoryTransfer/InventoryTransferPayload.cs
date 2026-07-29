@@ -20,7 +20,7 @@ public class InventoryTransferPayload
     public string? U_AppBy { get; private set; }
     public string? U_NotedBy { get; private set; }
     public string? U_SchlYear { get; private set; }
-    public string DocObjectCode { get; private set; } = "oStockTransfer";
+    public int DocObjectCode { get; private set; } = 67;
     public IEnumerable<InventoryTransferLinesPayload> StockTransferLines { get; private set; }
     public string? CardCode { get; private set; }
     public string? CardName { get; private set; }
