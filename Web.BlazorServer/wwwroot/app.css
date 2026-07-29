@@ -96,3 +96,10 @@ p, span {
 .app-content .rz-data-grid {
     overflow-x: auto !important;
 }
+
+@media (max-width: 768px) {
+    .app-content .rz-fieldset-content {
+        padding-left: 0.2rem;
+        padding-right: 0.2rem;
+    }
+}
