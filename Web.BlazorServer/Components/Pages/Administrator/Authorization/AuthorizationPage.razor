@@ -8,16 +8,23 @@
 @attribute [AppAuthorizationAttribute("VIEW", "OAUT")]
 
 <PageTitle>Authorization Management</PageTitle>
-
-<RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.SpaceBetween" class="rz-mb-4">
-    <AppBreadCrumbs ModuleCode="OAUT" />
-    <RadzenSelectBar TValue="AuthorizationType" @bind-Value="@ActiveTab">
-        <Items>
-            <RadzenSelectBarItem Text="Role Authorization" Value="AuthorizationType.Role" />
-            <RadzenSelectBarItem Text="User Authorization" Value="AuthorizationType.User" />
-        </Items>
-    </RadzenSelectBar>
-</RadzenStack>
+<RadzenRow RowGap="0.5rem" class="rz-mb-4">
+    <RadzenColumn SizeSM="8">
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Start">
+            <AppBreadCrumbs ModuleCode="OAUT" />
+        </RadzenStack>
+    </RadzenColumn>
+    <RadzenColumn SizeSM="4">
+        <RadzenStack Orientation="Orientation.Horizontal" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.End">
+            <RadzenSelectBar TValue="AuthorizationType" @bind-Value="@ActiveTab">
+                <Items>
+                    <RadzenSelectBarItem Text="Role Authorization" Value="AuthorizationType.Role" />
+                    <RadzenSelectBarItem Text="User Authorization" Value="AuthorizationType.User" />
+                </Items>
+            </RadzenSelectBar>
+        </RadzenStack>
+    </RadzenColumn>
+</RadzenRow>
 <AppContent>
     @if (ActiveTab.Equals(AuthorizationType.Role))
     {
