@@ -3,7 +3,7 @@
 @inherits BaseComponent
 
 <AppBreadcrumbSkeleton Loading="@IsBusy" />
-<RadzenStack Visible="@(!IsBusy)" Orientation="Orientation.Horizontal" Gap="16px" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Start" Wrap="FlexWrap.Wrap">
+<RadzenStack class="rz-mx-2 rz-mt-4" Visible="@(!IsBusy)" Orientation="Orientation.Horizontal" Gap="16px" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Start" Wrap="FlexWrap.Wrap">
     @if (Routes.Count() == 1)
     {
         <RadzenStack Orientation="Orientation.Horizontal" Gap="4px" AlignItems="AlignItems.Center" JustifyContent="JustifyContent.Start">
