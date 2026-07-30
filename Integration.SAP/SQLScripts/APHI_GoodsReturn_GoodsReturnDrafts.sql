@@ -1,6 +1,6 @@
 SELECT
 	 T0.DocEntry
-	,T0.DocNum
+	,T0.DocEntry [DocNum]
 	,T0.DocDate
 	,T0.DocDueDate
 	,T0.CardCode

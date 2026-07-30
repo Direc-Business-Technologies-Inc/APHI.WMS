@@ -1,6 +1,6 @@
 SELECT
 	  T0.DocEntry
-	, T0.DocNum
+	, T0.DocEntry [DocNum]
     , T0.DocDate
 	, T2.Code [TransTypeCode]
     , T2.Name [TransTypeName]

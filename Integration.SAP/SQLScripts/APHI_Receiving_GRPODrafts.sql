@@ -1,6 +1,6 @@
 SELECT TOP(10)
 	 ODRF.DocEntry
-	,ODRF.DocNum
+	,ODRF.DocEntry [DocNum]
 	,ODRF.DocDate
 	,ODRF.DocDueDate
 	,ODRF.CardCode
