@@ -21,7 +21,7 @@ SELECT
 	 END as DocStatus
 FROM ODRF T0
 INNER JOIN DRF1 T1 ON T1.DocEntry = T0.DocEntry
-LEFT JOIN PDN1 T2 ON T2.DocEntry = T1.BaseEntry AND T2.ObjType = T1.BaseType
+LEFT JOIN PDN1 T2 ON T2.DocEntry = T1.BaseEntry AND T2.ObjType = T1.BaseType AND T2.LineNum = T1.LineNum
 LEFT JOIN OPDN T3 ON T3.DocEntry = T2.DocEntry
 LEFT JOIN  POR1 T4 ON T4.DocEntry = T3.BaseEntry AND T4.ObjType = T2.BaseType
 LEFT JOIN OPOR T5 ON T5.DocEntry = T4.DocEntry
