@@ -6,7 +6,7 @@
 <RadzenCard onclick="@(() => OnClick.InvokeAsync(InventoryTransfer))" Variant="Variant.Outlined">
     <RadzenStack Gap="0" Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween">
         <RadzenStack Gap="0">
-            <RadzenText TextStyle="TextStyle.Overline" class=" rz-my-0">Goods Issue</RadzenText>
+            <RadzenText TextStyle="TextStyle.Overline" class=" rz-my-0">Inventory Transfer</RadzenText>
             <RadzenText Visible="IsDraft" TextStyle="TextStyle.H6" class="rz-my-0 rz-text-truncate"><strong>@InventoryTransfer.DocEntry.ToString().OrWhenNull("-")</strong></RadzenText>
             <RadzenText Visible="@(!IsDraft)" TextStyle="TextStyle.H6" class="rz-my-0 rz-text-truncate"><strong>@InventoryTransfer.DocNum.ToString().OrWhenNull("-")</strong></RadzenText>
         </RadzenStack>
