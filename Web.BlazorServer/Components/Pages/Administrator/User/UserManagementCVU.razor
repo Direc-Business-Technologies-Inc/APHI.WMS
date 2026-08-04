@@ -101,7 +101,7 @@
                                 <RadzenColumn Size="12">
                                     <RadzenFormField Text="Company*" class="rz-w-100" AllowFloatingLabel="false">
                                         <ChildContent>
-                                            <RadzenTextBox ReadOnly="@Viewing" @bind-Value="@FormData.Company" Placeholder="Direc" Name="user_company" Disabled="@IsBusy" class="rz-w-100" />
+                                            <RadzenTextBox ReadOnly="@Viewing" @bind-Value="@FormData.Company" @bind-Value:after="OnCompanyChanged" Placeholder="Direc" Name="user_company" Disabled="@IsBusy" class="rz-w-100" />
                                         </ChildContent>
                                         <Helper>
                                             <RadzenRequiredValidator Component="user_company" Text="Company is required" Popup />
@@ -138,7 +138,7 @@
                                     <RadzenFormField Text="Role*" class="rz-w-100" AllowFloatingLabel="false">
                                         <ChildContent>
                                             <RadzenTextBox Visible="@Viewing" ReadOnly Value="@FormData.Role?.Name" Placeholder="WMS-0000" Name="user_username" Disabled="@IsBusy" class="rz-w-100" />
-                                            <RadzenDropDown Visible="@(Creating || Updating)" @bind-Value="@FormData.Role" Placeholder="Administrator" Data="@Roles" TextProperty="@nameof(RoleVM.Name)" AllowFiltering FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Name="user_role" />
+                                            <RadzenDropDown Visible="@(Creating || Updating)" @bind-Value="@FormData.Role" @bind-Value:after="OnRoleChanged" Placeholder="Administrator" Data="@Roles" TextProperty="@nameof(RoleVM.Name)" AllowFiltering FilterCaseSensitivity="FilterCaseSensitivity.CaseInsensitive" Name="user_role" />
                                         </ChildContent>
                                         <Helper>
                                             <RadzenRequiredValidator Component="user_role" Text="User Role is required" Popup />

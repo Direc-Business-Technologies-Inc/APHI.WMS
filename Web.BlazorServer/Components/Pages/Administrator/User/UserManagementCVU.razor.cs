@@ -210,6 +210,8 @@ public partial class UserManagementCVU
         NavManager.NavigateTo($"/administration/user/user-management", true);
     }
 
+    private string? _originalUsername;
+
     async Task GetLatestUserSeries()
     {
         if (!Creating)
@@ -228,6 +230,65 @@ public partial class UserManagementCVU
 
         if (action.Result is not null)
             FormData.Account.UserName.Value = action.Result.NextDocNum;
+
+        _originalUsername = FormData.Account.UserName.Value;
+    }
+
+    private string? _previousCompany;
+    private string? _previousRoleCode;
+
+    private void OnCompanyChanged()
+    {
+        UpdateUserName();
+    }
+
+    private void OnRoleChanged()
+    {
+        UpdateUserName();
+    }
+
+    private void UpdateUserName()
+    {
+        if (!Creating && string.IsNullOrWhiteSpace(_previousCompany) &&
+            string.IsNullOrWhiteSpace(_previousRoleCode))
+        {
+            var value = FormData.Account.UserName.Value;
+
+            if (string.IsNullOrWhiteSpace(value))
+                return;
+
+            var parts = value.Split('-', 3);
+
+            if (parts.Length == 3)
+            {
+                _previousCompany = parts[0];
+                _previousRoleCode = parts[1];
+
+                _originalUsername = parts[2]; // WMS-0001
+            }
+        }
+
+        var username = _originalUsername ?? string.Empty;
+
+        // Remove previous prefix
+        if (!string.IsNullOrWhiteSpace(_previousCompany) &&
+            !string.IsNullOrWhiteSpace(_previousRoleCode))
+        {
+            var previousPrefix = $"{_previousCompany}-{_previousRoleCode}-";
+
+            if (username.StartsWith(previousPrefix, StringComparison.OrdinalIgnoreCase))
+            {
+                username = username.Substring(previousPrefix.Length);
+            }
+        }
+
+        var company = FormData.Company;
+        var roleCode = FormData.Role?.Code;
+
+        FormData.Account.UserName.Value = $"{company}-{roleCode}-{username}";
+
+        _previousCompany = company;
+        _previousRoleCode = roleCode;
     }
 
     #endregion
