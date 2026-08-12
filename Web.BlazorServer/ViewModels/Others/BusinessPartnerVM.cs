@@ -1,7 +1,10 @@
-﻿namespace Web.BlazorServer.ViewModels.Others;
+﻿using Domain.Markers;
+
+namespace Web.BlazorServer.ViewModels.Others;
 
 public class BusinessPartnerVM
 {
     public string CardCode { get; set; } = string.Empty;
     public string CardName { get; set; } = string.Empty;
+    public string DisplayString => string.IsNullOrEmpty(CardCode) ? CardName : $"[{CardCode}] {CardName}";
 }

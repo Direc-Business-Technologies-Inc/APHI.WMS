@@ -383,12 +383,26 @@ public partial class GoodsIssueCVUPage
             if (!string.IsNullOrEmpty(args.Filter))
                 DatagridAdapter.QueryIntent.Filters.Add(new()
                 {
-                    LogicalOperator = LogicalOperatorEnum.AND,
-                    Property = nameof(BusinessPartnerVM.CardName),
-                    Value = args.Filter,
-                    ComparisonOperator = ComparisonOperatorEnum.Contains
+                    LogicalOperator = LogicalOperatorEnum.OR,
+                    Filters = new List<AppFilterDescriptor>()
+                    {
+                        new AppFilterDescriptor
+                        {
+                            LogicalOperator = LogicalOperatorEnum.OR,
+                            Property = nameof(BusinessPartnerVM.CardName),
+                            Value = args.Filter,
+                            ComparisonOperator = ComparisonOperatorEnum.Contains
+                        },
+                        new AppFilterDescriptor
+                        {
+                            LogicalOperator = LogicalOperatorEnum.OR,
+                            Property = nameof(BusinessPartnerVM.CardCode),
+                            Value = args.Filter,
+                            ComparisonOperator = ComparisonOperatorEnum.Contains
+                        }
+                    }
                 });
-
+            
             (IEnumerable<BusinessPartnerVM> Data, int Count) = await BusinessPartnerHandler.GetAllAsync(DatagridAdapter.QueryIntent);
 
             BusinessPartners = [.. Data];
