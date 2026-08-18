@@ -194,6 +194,7 @@ public class MappingRegistration : IRegister
             .Map(d => d.ItemName, s => s.ItemName)
             .Map(d => d.Quantity, s => s.Quantity)
             .Map(d => d.UoMCode, s => s.UoMCode)
+            .Map(d => d.ISBN, s => s.ISBN)
             .Map(d => d.UoMValue, s => s.UoMValue)
             .Map(d => d.UoMName, s => s.UoMName)
             .Map(d => d.Warehouse, s => new WarehouseDTO()
@@ -388,6 +389,7 @@ public class MappingRegistration : IRegister
             .Map(d => d.UoMCode, s => s.UoMCode)
             .Map(d => d.UoMValue, s => s.UoMValue)
             .Map(d => d.UoMName, s => s.UoMName)
+            .Map(d => d.ISBN, s => s.ISBN)
             .Map(d => d.Warehouse, s => new WarehouseDTO()
             {
                 WhsCode = s.WhsCode,
@@ -684,6 +686,7 @@ public class MappingRegistration : IRegister
             .Map(d => d.ItemCode, s => s.ItemCode)
             .Map(d => d.ItemName, s => s.ItemName)
             .Map(d => d.Quantity, s => s.Quantity)
+            .Map(d => d.ISBN, s => s.ISBN)
             .Map(d => d.Warehouse, s => new WarehouseDTO
             {
                 WhsCode = s.WhsCode,

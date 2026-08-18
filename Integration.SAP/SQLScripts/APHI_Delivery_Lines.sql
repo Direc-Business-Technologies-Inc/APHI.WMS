@@ -13,6 +13,7 @@
      END AS [UoMCode]
 	,DLN1.NumPerMsr [UoMValue]
 	,OUOM.UomName [UoMName]
+	,REPLACE(ISNULL(OITM.U_ISBN, ''), '-', '') [ISBN]
 FROM ODLN
 INNER JOIN DLN1 ON DLN1.DocEntry = ODLN.DocEntry
 INNER JOIN OITM ON DLN1.ItemCode = OITM.ItemCode

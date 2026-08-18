@@ -13,6 +13,7 @@ SELECT
      END AS [UoMCode]
 	,DRF1.NumPerMsr [UoMValue]
 	,OUOM.UomName [UoMName]
+	,REPLACE(ISNULL(OITM.U_ISBN, ''), '-', '') [ISBN]
 FROM ODRF
 INNER JOIN DRF1 ON DRF1.DocEntry = ODRF.DocEntry
 INNER JOIN OITM ON DRF1.ItemCode = OITM.ItemCode

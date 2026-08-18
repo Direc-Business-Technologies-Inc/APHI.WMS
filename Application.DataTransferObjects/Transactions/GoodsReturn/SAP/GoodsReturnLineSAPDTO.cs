@@ -11,6 +11,7 @@ public class GoodsReturnLineSAPDTO
     public string UoMCode { get; set; }
     public decimal UoMValue { get; set; }
     public string UoMName { get; set; }
+    public string? ISBN { get; set; }
     public string WhsCode { get; set; }
     public string WhsName { get; set; }
 }

@@ -6,6 +6,7 @@ using Shared.Libraries.Entities;
 using Shared.Libraries.Kernel;
 using Web.BlazorServer.Components.Pages.Transaction.InventoryCounting.Components;
 using Web.BlazorServer.Components.Pages.Transaction.Receiving.Components;
+using Web.BlazorServer.Components.Pages.Transaction.SalesReturn.Components;
 using Web.BlazorServer.Components.Shared.Abstraction;
 using Web.BlazorServer.Defaults;
 using Web.BlazorServer.Handlers.Repositories.Others;
@@ -400,12 +401,13 @@ public partial class SalesReturnCVUPage
 
     async Task OpenScannerDialog()
     {
-        await DialogService.OpenAsync<InventoryCountingScanner>(
+        await DialogService.OpenAsync<SalesReturnScanner>(
             "Scan Barcode",
             new Dictionary<string, object>
             {
-                { "OnScan", EventCallback.Factory.Create<string>(this, HandleScanResult) },
-                { "Items", FormData.DocumentLines.Cast<ItemVM>() }
+                { "OnScan", EventCallback.Factory.Create<(string Data, string? DeliveryId)>(this, HandleScanResult) },
+                { "Items", FormData.DocumentLines },
+                { "DeliveryIds", FormData.DRNo}
             },
             options: new Radzen.DialogOptions
             {
@@ -414,15 +416,18 @@ public partial class SalesReturnCVUPage
             });
     }
 
-    async Task HandleScanResult(string isbn)
+    async Task HandleScanResult((string Data, string? DeliveryId) result)
     {
         var matchingLines = FormData.DocumentLines.Where(l =>
             !string.IsNullOrWhiteSpace(l.ISBN) &&
-            l.ISBN.Equals(isbn, StringComparison.OrdinalIgnoreCase)).ToList();
+            l.ISBN.Equals(result.Data, StringComparison.OrdinalIgnoreCase) &&
+            !string.IsNullOrWhiteSpace(l.DRNo) &&
+            l.DRNo.Equals(result.DeliveryId, StringComparison.OrdinalIgnoreCase)
+            ).ToList();
 
         if (matchingLines.Count == 0)
         {
-            ToastService.Warning($"No item found for barcode: {isbn}");
+            ToastService.Warning($"No item found for barcode: {result.Data}");
             return;
         }
 

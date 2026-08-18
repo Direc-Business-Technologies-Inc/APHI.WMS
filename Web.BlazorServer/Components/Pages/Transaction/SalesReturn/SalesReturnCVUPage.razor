@@ -190,6 +190,10 @@
                                                           Type="@typeof(string)"
                                                           Title="Item Name" Width="@(IsSmallScreen ?  "120px" : string.Empty)" />
                                     <RadzenDataGridColumn TItem="SalesReturnLineVM"
+                                                          Property="@nameof(SalesReturnLineVM.DRNo)"
+                                                          Type="@typeof(string)"
+                                                          Title="DRNo." Width="@(IsSmallScreen ?  "120px" : string.Empty)" />
+                                    <RadzenDataGridColumn TItem="SalesReturnLineVM"
                                                           Property="Warehouse.WhsName"
                                                           Type="@typeof(string)"
                                                           Title="Warehouse" Width="@(IsSmallScreen ?  string.Empty : "120px")">

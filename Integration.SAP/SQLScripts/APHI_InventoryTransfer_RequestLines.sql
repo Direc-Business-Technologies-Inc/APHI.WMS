@@ -19,5 +19,7 @@ SELECT T0.ItemCode
            AND _T2.ItemCode = T0.ItemCode  -- Ensure matching item
         ), 0
     ) AS "PendingQuantity"
+    ,REPLACE(ISNULL(T1.U_ISBN, ''), '-', '') [ISBN]
 FROM WTQ1 AS T0
+INNER JOIN OITM T1 ON T1.ItemCode = T0.ItemCode
 WHERE T0.DocEntry = @DocEntry

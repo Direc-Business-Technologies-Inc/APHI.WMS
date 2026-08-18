@@ -10,6 +10,7 @@ public class InventoryTransferRequestLineSAPDTO
     public string ItemName { get; set; }
     public int LineNum { get; set; }
     public string UoMName { get; set; }
+    public string? ISBN { get; set; }
     public Decimal Quantity { get; set; }
     public Decimal OpenQuantity { get; set; }
     public Decimal PendingQuantity { get; set; }

@@ -5,6 +5,7 @@ namespace Web.BlazorServer.ViewModels.Transaction.SalesReturn;
 
 public class SalesReturnLineVM : ItemVM
 {
+    public string? DRNo { get; set; }
     public int DocEntry { get; set; }
     public int DocNum { get; set; }
     public int BaseEntry { get; set; }

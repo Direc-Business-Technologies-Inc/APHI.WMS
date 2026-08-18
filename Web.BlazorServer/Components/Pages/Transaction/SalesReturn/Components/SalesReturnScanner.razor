@@ -1,0 +1,169 @@
+﻿@using Web.BlazorServer.Components.Shared.Integration
+@using Web.BlazorServer.ViewModels.Transaction.Commons
+@using Web.BlazorServer.ViewModels.Transaction.SalesReturn
+
+@inherits BaseComponent
+
+<RadzenStack Gap="1rem" AlignItems="AlignItems.Center">
+    @if (IsScanning)
+    {
+        <RadzenText Text="Point the camera at the Barcode to scan." TextStyle="TextStyle.Body2" />
+
+        <CameraScannerReaderCanvas UpdateScannedDataEvent="@OnScannedDataReceived"
+                                   UpdateStateEvent="@OnStateUpdated"
+                                   ScannedData="@ScannedData" />
+
+        <RadzenDropDown TValue="string"
+                        Data="@DeliveryIdList"
+                        @bind-Value="@SelectedDeliveryId"
+                        Placeholder="Select Delivery ID"
+                        Style="width: 100%; position: relative; z-index: 10000;" />
+
+        <RadzenStack Orientation="Orientation.Horizontal" Gap="8px">
+            <RadzenButton Text="Stop"
+                          Icon="stop"
+                          ButtonStyle="ButtonStyle.Danger"
+                          Click="@ToggleScanning" />
+            <RadzenButton Text="Cancel" ButtonStyle="ButtonStyle.Base"
+                          Click="@Cancel" />
+        </RadzenStack>
+    }
+    else if (!string.IsNullOrEmpty(LastScannedData))
+    {
+        <RadzenStack Gap="1.5rem" AlignItems="AlignItems.Center" Style="padding: 1rem; width: 100%;">
+            <RadzenIcon Icon="check_circle" IconColor="var(--rz-success)" Style="font-size: 3rem;" />
+
+            <RadzenStack Gap="0.5rem" AlignItems="AlignItems.Center" Style="width: 100%;">
+                <RadzenText Text="Barcode Scanned Successfully!" TextStyle="TextStyle.Subtitle1" />
+                <RadzenText Text="@LastScannedData" TextStyle="TextStyle.H6" Style="font-weight: bold;" />
+
+                @if (ScannedItem != null)
+                {
+                    <RadzenCard Variant="Variant.Flat" Style="width: 100%; background: var(--rz-base-background-color); padding: 1rem; margin-top: 0.5rem;">
+                        <RadzenStack Gap="0.5rem">
+                            <RadzenRow>
+                                <RadzenColumn Size="4">
+                                    <RadzenText Text="Code:" TextStyle="TextStyle.Caption" />
+                                </RadzenColumn>
+                                <RadzenColumn Size="8">
+                                    <RadzenText Text="@ScannedItem.ItemCode" TextStyle="TextStyle.Body2" Style="font-weight: bold;" />
+                                </RadzenColumn>
+                            </RadzenRow>
+                            <RadzenRow>
+                                <RadzenColumn Size="4">
+                                    <RadzenText Text="Name:" TextStyle="TextStyle.Caption" />
+                                </RadzenColumn>
+                                <RadzenColumn Size="8">
+                                    <RadzenText Text="@ScannedItem.ItemName" TextStyle="TextStyle.Body2" />
+                                </RadzenColumn>
+                            </RadzenRow>
+                            <RadzenRow>
+                                <RadzenColumn Size="4">
+                                    <RadzenText Text="Total Scanned:" TextStyle="TextStyle.Caption" />
+                                </RadzenColumn>
+                                <RadzenColumn Size="8">
+                                    <RadzenText Text="@ScannedItem.Quantity.ToString("N2")" TextStyle="TextStyle.H5" Style="color: var(--rz-success); font-weight: bold;" />
+                                </RadzenColumn>
+                            </RadzenRow>
+                        </RadzenStack>
+                    </RadzenCard>
+                }
+                else
+                {
+                    <RadzenAlert AlertStyle="AlertStyle.Warning" Variant="Variant.Flat" Shade="Shade.Lighter" AllowClose="false" Style="margin-top: 1rem; width: 100%;">
+                        Item not found in the current list.
+                    </RadzenAlert>
+                }
+            </RadzenStack>
+
+            <RadzenText Text="Do you want to scan another barcode?" TextStyle="TextStyle.Body2" />
+
+            <RadzenStack Orientation="Orientation.Horizontal" Gap="12px">
+                <RadzenButton Text="Scan Again" Icon="qr_code_scanner" ButtonStyle="ButtonStyle.Primary"
+                              Click="@RestartScanning" />
+                <RadzenButton Text="Finish" Icon="done_all" ButtonStyle="ButtonStyle.Secondary"
+                              Click="@Finish" />
+            </RadzenStack>
+        </RadzenStack>
+    }
+    else
+    {
+        <RadzenText Text="Camera is stopped." TextStyle="TextStyle.Body2" />
+        <RadzenStack Orientation="Orientation.Horizontal" Gap="8px">
+            <RadzenButton Text="Start Camera"
+                          Icon="qr_code_scanner"
+                          ButtonStyle="ButtonStyle.Primary"
+                          Click="@ToggleScanning" />
+            <RadzenButton Text="Cancel" ButtonStyle="ButtonStyle.Base"
+                          Click="@Cancel" />
+        </RadzenStack>
+    }
+</RadzenStack>
+
+@code {
+    [Parameter] public EventCallback<(string Data, string? DeliveryId)> OnScan { get; set; }
+    [Parameter] public IEnumerable<SalesReturnLineVM> Items { get; set; } = [];
+    [Parameter] public string DeliveryIds { get; set; } = string.Empty;
+
+    private List<string> DeliveryIdList { get; set; } = [];
+    private string? SelectedDeliveryId;
+    bool IsScanning { get; set; } = true;
+    string ScannedData { get; set; } = string.Empty;
+    string LastScannedData { get; set; } = string.Empty;
+    SalesReturnLineVM? ScannedItem { get; set; }
+
+    void ToggleScanning() => IsScanning = !IsScanning;
+
+    protected override void OnParametersSet()
+    {
+        DeliveryIdList = string.IsNullOrWhiteSpace(DeliveryIds)
+            ? []
+            : DeliveryIds
+                .Split(',', StringSplitOptions.RemoveEmptyEntries)
+                .Select(id => id.Trim())
+                .ToList();
+    }
+
+    async Task OnScannedDataReceived(string data)
+    {
+        if (string.IsNullOrWhiteSpace(SelectedDeliveryId))
+        {
+            IsScanning = false;
+            StateHasChanged();
+            return;
+        };
+
+        IsScanning = false;
+        LastScannedData = data;
+
+        if (OnScan.HasDelegate)
+        {
+            await OnScan.InvokeAsync((data, SelectedDeliveryId));
+        }
+
+        ScannedItem = Items?.FirstOrDefault(l =>
+            !string.IsNullOrWhiteSpace(l.ISBN) &&
+            l.ISBN.Equals(data, StringComparison.OrdinalIgnoreCase) &&
+            !string.IsNullOrWhiteSpace(l.DRNo) &&
+            l.DRNo.Equals(SelectedDeliveryId, StringComparison.OrdinalIgnoreCase));
+
+        StateHasChanged();
+    }
+
+    async Task OnStateUpdated(int state)
+    {
+        await InvokeAsync(StateHasChanged);
+    }
+
+    void RestartScanning()
+    {
+        LastScannedData = string.Empty;
+        ScannedItem = null;
+        IsScanning = true;
+        StateHasChanged();
+    }
+
+    void Finish() => DialogService.Close(LastScannedData);
+
+    void Cancel() => DialogService.Close(string.Empty);
+}

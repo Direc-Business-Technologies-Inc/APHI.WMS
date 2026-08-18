@@ -15,5 +15,6 @@ public class SalesReturnLinesSAPDTO
     public string UoMCode {  get; set; }
     public decimal UoMValue {  get; set; }
     public string UoMName {  get; set; }
+    public string? ISBN {  get; set; }
 
 }

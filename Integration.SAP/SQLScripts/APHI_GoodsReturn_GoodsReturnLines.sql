@@ -19,6 +19,7 @@ SELECT
 		WHEN T0.DocStatus = 'C' THEN 'Closed'
 	 ELSE 'Open'
 	 END as DocStatus
+	 ,REPLACE(ISNULL(T6.U_ISBN, ''), '-', '') [ISBN]
 FROM ORPD T0
 INNER JOIN RPD1 T1 ON T1.DocEntry = T0.DocEntry
 LEFT JOIN PDN1 T2 ON T2.DocEntry = T1.BaseEntry AND T2.ObjType = T1.BaseType AND T2.LineNum = T1.LineNum

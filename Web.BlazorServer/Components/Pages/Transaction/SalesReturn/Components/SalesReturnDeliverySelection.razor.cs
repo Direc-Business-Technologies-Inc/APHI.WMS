@@ -187,6 +187,7 @@ public partial class SalesReturnDeliverySelection
 
                 Document.DocumentLines.AddRange(item.DocumentLines.Select((x, ix) => new SalesReturnLineVM
                 {
+                    DRNo = item.SapReference?.DocEntry?.ToString() ?? "0",
                     LineNum = ix + 1,
                     BaseEntry = item.SapReference.DocEntry ?? 0,
                     BaseDocNum = item.SapReference.DocNum ?? 0,
@@ -198,7 +199,8 @@ public partial class SalesReturnDeliverySelection
                     UoMValue = x.UoMValue,
                     TargetQuantity = x.Quantity,
                     OpenQuantity = x.Quantity,
-                    Quantity = x.Quantity,
+                    Quantity = 0, // start in zero for scanning or input
+                    ISBN = x.ISBN,
                     Warehouse = x.Warehouse is null ? null : new WarehouseVM
                     {
                         WhsCode = x.Warehouse.WhsCode,
