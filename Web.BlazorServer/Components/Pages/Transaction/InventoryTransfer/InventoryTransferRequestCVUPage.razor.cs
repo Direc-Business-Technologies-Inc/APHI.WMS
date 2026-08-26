@@ -478,13 +478,14 @@ public partial class InventoryTransferRequestCVUPage
 
         if (selectedLine != null)
         {
-            if (selectedLine.Quantity >= selectedLine.OpenQuantity)
+            if (selectedLine.Quantity > selectedLine.OnHand)
             {
-                ToastService.Warning($"Item {selectedLine.ItemCode} has already reached its planned quantity.");
+                ToastService.Warning($"Item {selectedLine.ItemCode} exceeds the OnHand Quantity");
                 return;
             }
 
-            selectedLine.Quantity += 1;
+            selectedLine.Quantity += 1; // for the scanned item, increment the quantity
+            selectedLine.AllotedQuantity += 1;
             await InventoryTransferRequestTable.DataGrid.Reload();
             await InvokeAsync(StateHasChanged);
 

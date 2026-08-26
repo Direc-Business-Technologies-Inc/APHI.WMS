@@ -59,7 +59,7 @@ public partial class ItemSelection
             intent.Filters.Add(new AppFilterDescriptor()
             {
                 LogicalOperator = LogicalOperatorEnum.AND,
-                Property = nameof(ItemVM.Quantity),
+                Property = nameof(ItemVM.OnHand),
                 ComparisonOperator = ComparisonOperatorEnum.GreaterThan,
                 Value = 0,
                 FilterValueType = FilterValueTypeEnum.Number

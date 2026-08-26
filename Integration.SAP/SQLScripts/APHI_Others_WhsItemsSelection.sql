@@ -2,7 +2,7 @@ SELECT
      T0.ItemCode
     ,T0.ItemName
     ,T5.WhsCode
-    ,T5.OnHand [Quantity]
+    ,0 [Quantity]
     ,CASE
         WHEN ISNULL(T0.InvntryUom, '') = '' THEN 'Manual'
         WHEN T2.UomEntry IS NOT NULL THEN T2.UomCode
@@ -12,6 +12,7 @@ SELECT
     ,ISNULL(T4.BaseQty, 1) [UoMValue]
     ,ISNULL(T5.OnHand, 0) [OnHand]
     ,ISNULL(T5.OnHand, 0) - ISNULL(T5.IsCommited, 0) [Available]
+    ,REPLACE(ISNULL(T0.U_ISBN, ''), '-', '') [ISBN]
 FROM OITM T0
 INNER JOIN OITB T1 ON T0.ItmsGrpCod = T1.ItmsGrpCod
 LEFT JOIN OUOM T2 ON T0.InvntryUom = T2.UomName

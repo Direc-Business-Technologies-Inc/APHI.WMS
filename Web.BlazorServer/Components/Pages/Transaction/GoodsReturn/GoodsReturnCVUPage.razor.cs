@@ -438,7 +438,7 @@ public partial class GoodsReturnCVUPage
 
         if (selectedLine != null)
         {
-            if (selectedLine.Quantity >= selectedLine.OpenQuantity)
+            if (selectedLine.Quantity >= selectedLine.OpenQuantity && FormData.GRPODocEntry != 0)
             {
                 ToastService.Warning($"Item {selectedLine.ItemCode} has already reached its planned quantity.");
                 return;

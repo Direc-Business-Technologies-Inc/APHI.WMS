@@ -9,6 +9,7 @@ SELECT
      END AS [UoMCode]
     ,ISNULL(T2.UomName, 'Manual') [UoMName]
     ,ISNULL(T4.BaseQty, 1) [UoMValue]
+    ,REPLACE(ISNULL(T0.U_ISBN, ''), '-', '') [ISBN]
 FROM OITM T0
 INNER JOIN OITB T1 ON T0.ItmsGrpCod = T1.ItmsGrpCod
 LEFT JOIN OUOM T2 ON T0.InvntryUom = T2.UomName

@@ -82,6 +82,7 @@ public partial class SalesReturnItemSelection
                 UoMCode = data.UoMCode,
                 UoMName = data.UoMName,
                 UoMValue = data.UoMValue,
+                ISBN = data.ISBN,
                 Warehouse = Return.Warehouse ?? new(),
             });
         }

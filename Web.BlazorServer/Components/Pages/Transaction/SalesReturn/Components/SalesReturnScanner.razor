@@ -14,6 +14,7 @@
                                    ScannedData="@ScannedData" />
 
         <RadzenDropDown TValue="string"
+                        Visible="@(!DeliveryIdListIsEmpty)"
                         Data="@DeliveryIdList"
                         @bind-Value="@SelectedDeliveryId"
                         Placeholder="Select Delivery ID"
@@ -112,6 +113,7 @@
     string LastScannedData { get; set; } = string.Empty;
     SalesReturnLineVM? ScannedItem { get; set; }
 
+    bool DeliveryIdListIsEmpty => DeliveryIdList == null || !DeliveryIdList.Any();
     void ToggleScanning() => IsScanning = !IsScanning;
 
     protected override void OnParametersSet()
@@ -126,7 +128,7 @@
 
     async Task OnScannedDataReceived(string data)
     {
-        if (string.IsNullOrWhiteSpace(SelectedDeliveryId))
+        if (string.IsNullOrWhiteSpace(SelectedDeliveryId) && !DeliveryIdListIsEmpty)
         {
             IsScanning = false;
             StateHasChanged();
@@ -141,11 +143,20 @@
             await OnScan.InvokeAsync((data, SelectedDeliveryId));
         }
 
-        ScannedItem = Items?.FirstOrDefault(l =>
+        if(DeliveryIdListIsEmpty)
+        {
+            ScannedItem = Items?.FirstOrDefault(l =>
+            !string.IsNullOrWhiteSpace(l.ISBN) &&
+            l.ISBN.Equals(data, StringComparison.OrdinalIgnoreCase));
+        }
+        else
+        {
+            ScannedItem = Items?.FirstOrDefault(l =>
             !string.IsNullOrWhiteSpace(l.ISBN) &&
             l.ISBN.Equals(data, StringComparison.OrdinalIgnoreCase) &&
             !string.IsNullOrWhiteSpace(l.DRNo) &&
             l.DRNo.Equals(SelectedDeliveryId, StringComparison.OrdinalIgnoreCase));
+        }
 
         StateHasChanged();
     }

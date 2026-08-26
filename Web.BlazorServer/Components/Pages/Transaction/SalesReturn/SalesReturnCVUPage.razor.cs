@@ -418,12 +418,24 @@ public partial class SalesReturnCVUPage
 
     async Task HandleScanResult((string Data, string? DeliveryId) result)
     {
-        var matchingLines = FormData.DocumentLines.Where(l =>
+        var matchingLines = new List<SalesReturnLineVM>();
+
+        if(string.IsNullOrEmpty(result.DeliveryId))
+        {
+            matchingLines = FormData.DocumentLines.Where(l =>
+            !string.IsNullOrWhiteSpace(l.ISBN) &&
+            l.ISBN.Equals(result.Data, StringComparison.OrdinalIgnoreCase)
+            ).ToList();
+        }
+        else
+        {
+            matchingLines = FormData.DocumentLines.Where(l =>
             !string.IsNullOrWhiteSpace(l.ISBN) &&
             l.ISBN.Equals(result.Data, StringComparison.OrdinalIgnoreCase) &&
             !string.IsNullOrWhiteSpace(l.DRNo) &&
             l.DRNo.Equals(result.DeliveryId, StringComparison.OrdinalIgnoreCase)
             ).ToList();
+        }
 
         if (matchingLines.Count == 0)
         {
@@ -447,7 +459,7 @@ public partial class SalesReturnCVUPage
 
         if (selectedLine != null)
         {
-            if (selectedLine.Quantity >= selectedLine.OpenQuantity)
+            if ((selectedLine.Quantity >= selectedLine.OpenQuantity) && !string.IsNullOrEmpty(result.DeliveryId))
             {
                 ToastService.Warning($"Item {selectedLine.ItemCode} has already reached its planned quantity.");
                 return;
