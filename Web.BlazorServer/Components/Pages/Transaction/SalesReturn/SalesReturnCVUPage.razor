@@ -114,7 +114,7 @@
                                         <RadzenTextBox ReadOnly Visible="@Viewing" Value="@FormData.Warehouse?.WhsName" Name="sr_whs_name" Placeholder="No Warehouse Selected" Disabled="@IsBusy" class="rz-w-100" />
                                         <RadzenDropDown Visible="@Creating"
                                                         @bind-Value="@FormData.Warehouse"
-                                                        Change="(args) => OnFieldChanged(nameof(FormData.Warehouse))"
+                                                        Change="@OnWarehouseChanged"
                                                         Data="@Warehouses"
                                                         Count="@WarehousesCount"
                                                         LoadData="@LoadWarehouses"

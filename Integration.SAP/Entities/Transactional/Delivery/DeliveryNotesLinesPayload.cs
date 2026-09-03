@@ -11,6 +11,7 @@ public class DeliveryNotesLinesPayload
     public string ItemCode { get; private set; }
     public decimal Quantity { get; private set; }
     public string WarehouseCode { get; private set; }
+    public IEnumerable<DeliveryNotesLineAdditionalExpensesPayload>? DocumentLineAdditionalExpenses { get; private set; }
 
     public DeliveryNotesLinesPayload(int baseEntry,
                                      int baseType,
@@ -18,7 +19,8 @@ public class DeliveryNotesLinesPayload
                                      int lineNum,
                                      string itemCode,
                                      decimal quantity,
-                                     string warehouseCode)
+                                     string warehouseCode,
+                                     List<DeliveryNotesLineAdditionalExpensesPayload>? additionalExpenses)
     {
         BaseEntry = Guard.Against.Negative(baseEntry, nameof(BaseEntry), "Base Entry cannot be negative");
         BaseType = Guard.Against.Negative(baseType, nameof(BaseType), "Base Type cannot be negative");
@@ -27,5 +29,22 @@ public class DeliveryNotesLinesPayload
         ItemCode = Guard.Against.NullOrEmpty(itemCode, nameof(ItemCode), "Item Code cannot be null or empty");
         Quantity = Guard.Against.NegativeOrZero(quantity, nameof(Quantity), "Quantity cannot be negative or zero");
         WarehouseCode = Guard.Against.NullOrEmpty(warehouseCode, nameof(WarehouseCode), "Warehouse Code cannot be null or empty");
+        DocumentLineAdditionalExpenses = additionalExpenses;
+    }
+
+    public class DeliveryNotesLineAdditionalExpensesPayload
+    {
+        public int LineNumber { get; private set; }
+        public int GroupCode { get; private set; }
+        public int ExpenseCode { get; private set; }
+        public decimal LineTotal { get; private set; }
+
+        public DeliveryNotesLineAdditionalExpensesPayload(int lineNumber, int groupCode, int expenseCode, decimal lineTotal)
+        {
+            LineNumber = Guard.Against.Negative(lineNumber, nameof(LineNumber), "Line Number cannot be negative");
+            GroupCode = Guard.Against.Negative(groupCode, nameof(GroupCode), "GroupCode cannot be negative");
+            ExpenseCode = Guard.Against.NegativeOrZero(expenseCode, nameof(ExpenseCode), "ExpenseCode cannot be negative or zero");
+            LineTotal = lineTotal;
+        }
     }
 }

@@ -11,4 +11,5 @@ public class ItemDTO
     public string UoMName { get; set; }
     public string? ISBN { get; set; }
     public decimal OnHand { get; set; } = 0;
+    public decimal Available { get; set; } = 0;
 }

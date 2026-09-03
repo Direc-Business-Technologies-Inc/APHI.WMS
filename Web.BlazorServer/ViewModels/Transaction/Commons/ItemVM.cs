@@ -11,4 +11,5 @@ public class ItemVM
     public decimal UoMValue { get; set; }
     public string UoMName { get; set; } = string.Empty;
     public decimal OnHand { get; set; }
+    public decimal Available { get; set; }
 }

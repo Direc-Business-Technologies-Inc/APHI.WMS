@@ -8,6 +8,7 @@ using Integration.Sap.Repositories;
 using Integration.SAP.Entities.Transactional.Delivery;
 using Shared.Libraries.Entities;
 using System.Text.Json;
+using static Integration.SAP.Entities.Transactional.Delivery.DeliveryNotesLinesPayload;
 
 namespace Integration.SAP.Implementations.Transaction.Delivery;
 
@@ -142,7 +143,32 @@ public class DeliveryIntegration(
 
         for (int i = 0; i < validLines.Count; i++)
         {
+            List<DeliveryNotesLineAdditionalExpensesPayload>? additionalExpense = [];
+            var expenseline = 0;
+
             var line = validLines[i];
+
+            if(line.Freight1 != 0)
+            {
+                additionalExpense.Add(new DeliveryNotesLineAdditionalExpensesPayload(
+                i,
+                expenseline,
+                line.Freight1Code,
+                line.Freight1
+                ));
+
+                expenseline++;
+            }
+
+            if(line.Freight2 != 0)
+            {
+                additionalExpense.Add(new DeliveryNotesLineAdditionalExpensesPayload(
+                i,
+                expenseline,
+                line.Freight2Code,
+                line.Freight2
+                ));
+            }
 
             payloadLines.Add(new DeliveryNotesLinesPayload(
                 document.SapReference.BaseEntry,
@@ -151,7 +177,8 @@ public class DeliveryIntegration(
                 i,
                 line.ItemCode,
                 line.Quantity,
-                line.Warehouse.WhsCode));
+                line.Warehouse.WhsCode,
+                additionalExpense));
         }
 
         DeliveryNotesPayload payload = new(

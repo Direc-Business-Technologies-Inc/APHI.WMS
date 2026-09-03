@@ -399,6 +399,22 @@ public partial class SalesReturnCVUPage
         await SalesReturnTable.DataGrid.RefreshDataAsync();
     }
 
+    async Task OnWarehouseChanged(object? value)
+    {
+        if (value is WarehouseVM warehouse)
+        {
+            FormData.Warehouse = warehouse;
+
+            foreach (var line in FormData.DocumentLines)
+            {
+                line.Warehouse = warehouse;
+            }
+        }
+
+        await SalesReturnTable.DataGrid.Reload();
+        await InvokeAsync(StateHasChanged);
+    }
+
     async Task OpenScannerDialog()
     {
         await DialogService.OpenAsync<SalesReturnScanner>(

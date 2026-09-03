@@ -244,6 +244,7 @@ public partial class DeliveryCVUPage
                 FormData.DocumentDate = DateTime.Today;
                 FormData.Area = action.Result.Area;
                 FormData.SapReference.DocNum = action.Result.SapReference.DocNum;
+                FormData.DocRemarks = action.Result.DocRemarks;
                 SetInitialSalesOrderQuantity();
             }
         });
