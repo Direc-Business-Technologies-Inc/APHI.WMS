@@ -16,6 +16,7 @@ public class SalesReturnLinesPayload
     public string UoMCode { get; private set; }
     public decimal Quantity { get; private set; }
     public string WarehouseCode { get; private set; }
+    public IEnumerable<SalesReturnLineAdditionalExpensesPayload>? DocumentLineAdditionalExpenses { get; private set; }
 
     public SalesReturnLinesPayload(
         int baseEntry,
@@ -25,7 +26,8 @@ public class SalesReturnLinesPayload
         string itemCode,
         string uomCode,
         decimal qty,
-        string whsCode)
+        string whsCode,
+        IEnumerable<SalesReturnLineAdditionalExpensesPayload>? additionalExpenses)
     {
         BaseEntry = Guard.Against.Null(baseEntry, nameof(BaseEntry));
         BaseType = Guard.Against.Null(baseType, nameof(BaseType));
@@ -35,6 +37,25 @@ public class SalesReturnLinesPayload
         UoMCode = Guard.Against.NullOrEmpty(uomCode, nameof(UoMCode));
         Quantity = Guard.Against.NegativeOrZero(qty, nameof(Quantity));
         WarehouseCode = Guard.Against.NullOrEmpty(whsCode, nameof(WarehouseCode));
+
+        DocumentLineAdditionalExpenses = additionalExpenses;
+    }
+
+
+    public class SalesReturnLineAdditionalExpensesPayload
+    {
+        public int LineNumber { get; private set; }
+        public int GroupCode { get; private set; }
+        public int ExpenseCode { get; private set; }
+        public decimal LineTotal { get; private set; }
+
+        public SalesReturnLineAdditionalExpensesPayload(int lineNumber, int groupCode, int expenseCode, decimal lineTotal)
+        {
+            LineNumber = Guard.Against.Negative(lineNumber, nameof(LineNumber), "Line Number cannot be negative");
+            GroupCode = Guard.Against.Negative(groupCode, nameof(GroupCode), "GroupCode cannot be negative");
+            ExpenseCode = Guard.Against.NegativeOrZero(expenseCode, nameof(ExpenseCode), "ExpenseCode cannot be negative or zero");
+            LineTotal = lineTotal;
+        }
     }
 }
 

@@ -7,6 +7,8 @@ using Integration.Sap.Helpers;
 using Integration.Sap.Repositories;
 using Integration.SAP.Entities.Transactional.SalesReturn;
 using Shared.Libraries.Entities;
+using static Integration.SAP.Entities.Transactional.Delivery.DeliveryNotesLinesPayload;
+using static Integration.SAP.Entities.Transactional.SalesReturn.SalesReturnLinesPayload;
 
 namespace Integration.SAP.Implementations.Transaction.SalesReturn;
 
@@ -141,15 +143,45 @@ public class SalesReturnIntegration(
 
         // BaseType 15 = A/R Delivery
         foreach (SalesReturnLineDTO line in data.DocumentLines.Where(dl => dl.Quantity > 0))
+        {
+            List<SalesReturnLineAdditionalExpensesPayload>? additionalExpense = [];
+            var expenseline = 0;
+            var lineIndex = data.DocumentLines.IndexOf(line);
+
+            if (line.Freight1 != 0)
+            {
+                additionalExpense.Add(new SalesReturnLineAdditionalExpensesPayload(
+                lineIndex,
+                expenseline,
+                line.Freight1Code,
+                line.Freight1
+                ));
+
+                expenseline++;
+            }
+
+            if (line.Freight2 != 0)
+            {
+                additionalExpense.Add(new SalesReturnLineAdditionalExpensesPayload(
+                lineIndex,
+                expenseline,
+                line.Freight2Code,
+                line.Freight2
+                ));
+            }
+
             payloadLines.Add(new SalesReturnLinesPayload(
-                line.BaseEntry,
-                15,
-                line.BaseLine,
-                data.DocumentLines.IndexOf(line),
-                line.ItemCode,
-                line.UoMCode,
-                line.Quantity,
-                line.Warehouse?.WhsCode ?? string.Empty));
+                            line.BaseEntry,
+                            15,
+                            line.BaseLine,
+                            lineIndex,
+                            line.ItemCode,
+                            line.UoMCode,
+                            line.Quantity,
+                            line.Warehouse?.WhsCode ?? string.Empty,
+                            additionalExpense));
+        }
+            
 
         SalesReturnPayload payload = new(
             data.DocDate,
@@ -182,6 +214,33 @@ public class SalesReturnIntegration(
 
         // BaseType for Sales Return Request — update with the correct SAP object type when known
         foreach (SalesReturnLineDTO line in data.DocumentLines.Where(dl => dl.Quantity > 0))
+        {
+            List<SalesReturnLineAdditionalExpensesPayload>? additionalExpense = [];
+            var expenseline = 0;
+            var lineIndex = data.DocumentLines.IndexOf(line);
+
+            if (line.Freight1 != 0)
+            {
+                additionalExpense.Add(new SalesReturnLineAdditionalExpensesPayload(
+                lineIndex,
+                expenseline,
+                line.Freight1Code,
+                line.Freight1
+                ));
+
+                expenseline++;
+            }
+
+            if (line.Freight2 != 0)
+            {
+                additionalExpense.Add(new SalesReturnLineAdditionalExpensesPayload(
+                lineIndex,
+                expenseline,
+                line.Freight2Code,
+                line.Freight2
+                ));
+            }
+
             payloadLines.Add(new SalesReturnLinesPayload(
                 data.SalesReturnRequestDocEntry,
                 234000031,
@@ -190,7 +249,10 @@ public class SalesReturnIntegration(
                 line.ItemCode,
                 line.UoMCode,
                 line.Quantity,
-                line.Warehouse?.WhsCode ?? string.Empty));
+                line.Warehouse?.WhsCode ?? string.Empty,
+                additionalExpense
+                ));
+        }
 
         SalesReturnPayload payload = new(
             data.DocDate,

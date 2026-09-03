@@ -206,6 +206,11 @@ public partial class SalesReturnDeliverySelection
                         WhsCode = x.Warehouse.WhsCode,
                         WhsName = x.Warehouse.WhsName
                     },
+
+                    Freight1Code = x.Freight1Code,
+                    Freight1 = x.Freight1,
+                    Freight2Code = x.Freight2Code,
+                    Freight2 = x.Freight2
                 }));
             }
         }, AppActionOptionPresets.Loading(ActionGetDeliveries));
