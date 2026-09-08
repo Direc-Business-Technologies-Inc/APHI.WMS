@@ -23,7 +23,7 @@ SELECT
 
     ,ISNULL(F.Freight2Code, 0) [Freight2Code]
     ,ISNULL(F.Freight2, 0) [Freight2]
-
+    ,RDR1.U_MarkUp [MarkUp]
 FROM ORDR
 
 INNER JOIN RDR1 

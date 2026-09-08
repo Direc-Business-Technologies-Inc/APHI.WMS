@@ -178,6 +178,7 @@ public class DeliveryIntegration(
                 line.ItemCode,
                 line.Quantity,
                 line.Warehouse.WhsCode,
+                line.MarkUp,
                 additionalExpense));
         }
 

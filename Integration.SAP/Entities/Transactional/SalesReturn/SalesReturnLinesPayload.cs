@@ -16,6 +16,7 @@ public class SalesReturnLinesPayload
     public string UoMCode { get; private set; }
     public decimal Quantity { get; private set; }
     public string WarehouseCode { get; private set; }
+    public decimal U_MarkUp { get; private set; }
     public IEnumerable<SalesReturnLineAdditionalExpensesPayload>? DocumentLineAdditionalExpenses { get; private set; }
 
     public SalesReturnLinesPayload(
@@ -27,6 +28,7 @@ public class SalesReturnLinesPayload
         string uomCode,
         decimal qty,
         string whsCode,
+        decimal markup,
         IEnumerable<SalesReturnLineAdditionalExpensesPayload>? additionalExpenses)
     {
         BaseEntry = Guard.Against.Null(baseEntry, nameof(BaseEntry));
@@ -37,6 +39,7 @@ public class SalesReturnLinesPayload
         UoMCode = Guard.Against.NullOrEmpty(uomCode, nameof(UoMCode));
         Quantity = Guard.Against.NegativeOrZero(qty, nameof(Quantity));
         WarehouseCode = Guard.Against.NullOrEmpty(whsCode, nameof(WarehouseCode));
+        U_MarkUp = Guard.Against.Negative(markup, nameof(U_MarkUp));
 
         DocumentLineAdditionalExpenses = additionalExpenses;
     }

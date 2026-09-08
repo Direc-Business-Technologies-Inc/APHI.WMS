@@ -210,7 +210,8 @@ public partial class SalesReturnDeliverySelection
                     Freight1Code = x.Freight1Code,
                     Freight1 = x.Freight1,
                     Freight2Code = x.Freight2Code,
-                    Freight2 = x.Freight2
+                    Freight2 = x.Freight2,
+                    MarkUp = x.MarkUp,
                 }));
             }
         }, AppActionOptionPresets.Loading(ActionGetDeliveries));

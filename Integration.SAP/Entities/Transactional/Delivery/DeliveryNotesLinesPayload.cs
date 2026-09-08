@@ -11,6 +11,7 @@ public class DeliveryNotesLinesPayload
     public string ItemCode { get; private set; }
     public decimal Quantity { get; private set; }
     public string WarehouseCode { get; private set; }
+    public decimal U_MarkUp { get; private set; }
     public IEnumerable<DeliveryNotesLineAdditionalExpensesPayload>? DocumentLineAdditionalExpenses { get; private set; }
 
     public DeliveryNotesLinesPayload(int baseEntry,
@@ -20,6 +21,7 @@ public class DeliveryNotesLinesPayload
                                      string itemCode,
                                      decimal quantity,
                                      string warehouseCode,
+                                     decimal markup,
                                      List<DeliveryNotesLineAdditionalExpensesPayload>? additionalExpenses)
     {
         BaseEntry = Guard.Against.Negative(baseEntry, nameof(BaseEntry), "Base Entry cannot be negative");
@@ -29,6 +31,7 @@ public class DeliveryNotesLinesPayload
         ItemCode = Guard.Against.NullOrEmpty(itemCode, nameof(ItemCode), "Item Code cannot be null or empty");
         Quantity = Guard.Against.NegativeOrZero(quantity, nameof(Quantity), "Quantity cannot be negative or zero");
         WarehouseCode = Guard.Against.NullOrEmpty(warehouseCode, nameof(WarehouseCode), "Warehouse Code cannot be null or empty");
+        U_MarkUp = Guard.Against.Negative(markup, nameof(U_MarkUp), "Markup cannot be negative");
         DocumentLineAdditionalExpenses = additionalExpenses;
     }
 

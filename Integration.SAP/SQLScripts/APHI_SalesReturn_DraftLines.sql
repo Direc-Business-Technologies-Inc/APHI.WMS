@@ -20,6 +20,7 @@ SELECT
 
 	,ISNULL(F.Freight2Code, 0) [Freight2Code]
 	,ISNULL(F.Freight2, 0) [Freight2]
+    ,DRF1.U_MarkUp [MarkUp]
 FROM ODRF
 INNER JOIN DRF1 ON DRF1.DocEntry = ODRF.DocEntry
 INNER JOIN OITM ON DRF1.ItemCode = OITM.ItemCode

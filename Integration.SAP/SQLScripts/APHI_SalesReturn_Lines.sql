@@ -19,6 +19,7 @@ SELECT
 
 	,ISNULL(F.Freight2Code, 0) [Freight2Code]
 	,ISNULL(F.Freight2, 0) [Freight2]
+    ,RDN1.U_MarkUp [MarkUp]
 FROM ORDN
 INNER JOIN RDN1 ON RDN1.DocEntry = ORDN.DocEntry
 INNER JOIN OITM ON RDN1.ItemCode = OITM.ItemCode

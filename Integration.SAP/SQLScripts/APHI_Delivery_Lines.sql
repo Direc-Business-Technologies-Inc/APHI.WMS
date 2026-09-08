@@ -20,6 +20,7 @@
 
 	,ISNULL(F.Freight2Code, 0) [Freight2Code]
 	,ISNULL(F.Freight2, 0) [Freight2]
+    ,DLN1.U_MarkUp [MarkUp]
 FROM ODLN
 INNER JOIN DLN1 ON DLN1.DocEntry = ODLN.DocEntry
 INNER JOIN OITM ON DLN1.ItemCode = OITM.ItemCode

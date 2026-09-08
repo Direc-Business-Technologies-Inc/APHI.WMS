@@ -179,6 +179,7 @@ public class SalesReturnIntegration(
                             line.UoMCode,
                             line.Quantity,
                             line.Warehouse?.WhsCode ?? string.Empty,
+                            line.MarkUp,
                             additionalExpense));
         }
             
@@ -250,6 +251,7 @@ public class SalesReturnIntegration(
                 line.UoMCode,
                 line.Quantity,
                 line.Warehouse?.WhsCode ?? string.Empty,
+                line.MarkUp,
                 additionalExpense
                 ));
         }
