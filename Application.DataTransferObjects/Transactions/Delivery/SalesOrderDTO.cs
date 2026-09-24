@@ -16,5 +16,6 @@ public class SalesOrderDTO : MarketingDocumentDTO
     public string? ReviewedBy { get; set; } = null;
     public string? ApprovedBy { get; set; } = null;
     public string? NotedBy { get; set; }
+    public decimal DiscPercent { get; set; } = 0;
     public IEnumerable<SalesOrderLineDTO> DocumentLines { get; set; } = [];
 }

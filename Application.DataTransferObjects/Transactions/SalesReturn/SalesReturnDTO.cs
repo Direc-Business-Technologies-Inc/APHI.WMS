@@ -20,6 +20,7 @@ public class SalesReturnDTO : MarketingDocumentDTO
     public string? CheckedBy { get; set; }
     public string? NotedBy { get; set; }
     public string? ApprovedBy { get; set; }
+    public decimal DiscPercent { get; set; }
 
     public int DeliveryDocEntry { get; set; }
     public int DeliveryDocNum { get; set; }

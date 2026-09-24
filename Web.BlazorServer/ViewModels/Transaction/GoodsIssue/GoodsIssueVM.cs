@@ -15,6 +15,6 @@ public class GoodsIssueVM : MarketingDocumentVM
     public string PreparedBy { get; set; } = string.Empty;
     public string? ApprovedBy { get; set; } = null;
     public string? NotedBy { get; set; } = null;
-    public IEnumerable<GoodsIssueLineVM> DocumentLines { get; set; } = [];
+    public List<GoodsIssueLineVM> DocumentLines { get; set; } = [];
     public WarehouseVM? Warehouse { get; set; } = null;
 }

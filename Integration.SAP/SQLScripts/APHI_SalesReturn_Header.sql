@@ -21,6 +21,8 @@ SELECT
 	,ORDN.U_CheckBy [CheckedBy]
 	,ORDN.U_NotedBy [NotedBy]
 	,ORDN.U_AppBy [ApprovedBy]
+	,CPN1.U_MaxInv [DiscPercent]
 FROM ORDN
 INNER JOIN OCRD ON ORDN.CardCode = OCRD.CardCode
+OUTER APPLY(SELECT TOP 1 CPN1.U_MaxInv FROM CPN1 INNER JOIN OCPN ON CPN1.CpnNo = OCPN.CpnNo WHERE OCRD.CardCode = CPN1.BpCode AND OCPN.Status = 'O') CPN1
 WHERE ORDN.DocEntry = @DocEntry

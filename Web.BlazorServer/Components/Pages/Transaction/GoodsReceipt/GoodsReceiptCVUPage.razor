@@ -160,7 +160,7 @@
                 <ChildContent>
                     <RadzenRow>
                         <RadzenColumn>
-                            <AppTable @ref="@GoodsReceiptTable" Id="goods_receipt_cvu_items" TItem="GoodsReceiptLineVM" @bind-GridSettingsLoaded="@GridSettingsLoaded" SearchFilter="@_grLinesFilter" Data="[..FormData.DocumentLines]">
+                            <AppTable @ref="@GoodsReceiptTable" Id="goods_receipt_cvu_items" TItem="GoodsReceiptLineVM" @bind-GridSettingsLoaded="@GridSettingsLoaded" SearchFilter="@_grLinesFilter" Data="FormData.DocumentLines">
                                 <HeaderTemplate>
                                     <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center" Gap="8px">
                                         <AppTableSearchBar TItem="GoodsReceiptLineVM"

@@ -23,6 +23,8 @@ SELECT
 	,ODLN.U_AppBy [ApprovedBy]
 	,ODLN.U_Area [Area]
 	,ODLN.U_NotedBy [NotedBy]
+	,CPN1.U_MaxInv [DiscPercent]
 FROM ODLN
 INNER JOIN OCRD ON ODLN.CardCode = OCRD.CardCode
+OUTER APPLY(SELECT TOP 1 CPN1.U_MaxInv FROM CPN1 INNER JOIN OCPN ON CPN1.CpnNo = OCPN.CpnNo WHERE OCRD.CardCode = CPN1.BpCode AND OCPN.Status = 'O') CPN1
 WHERE ODLN.DocEntry = @DocEntry

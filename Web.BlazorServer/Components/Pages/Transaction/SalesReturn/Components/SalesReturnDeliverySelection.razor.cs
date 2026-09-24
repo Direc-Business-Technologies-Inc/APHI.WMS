@@ -185,6 +185,8 @@ public partial class SalesReturnDeliverySelection
             {
                 if (item is null) continue;
 
+                Document.DiscPercent = item.DiscPercent;
+
                 Document.DocumentLines.AddRange(item.DocumentLines.Select((x, ix) => new SalesReturnLineVM
                 {
                     DRNo = item.SapReference?.DocEntry?.ToString() ?? "0",
@@ -212,6 +214,7 @@ public partial class SalesReturnDeliverySelection
                     Freight2Code = x.Freight2Code,
                     Freight2 = x.Freight2,
                     MarkUp = x.MarkUp,
+                    Price = x.Price
                 }));
             }
         }, AppActionOptionPresets.Loading(ActionGetDeliveries));

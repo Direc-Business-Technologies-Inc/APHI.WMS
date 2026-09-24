@@ -245,6 +245,7 @@ public partial class DeliveryCVUPage
                 FormData.Area = action.Result.Area;
                 FormData.SapReference.DocNum = action.Result.SapReference.DocNum;
                 FormData.DocRemarks = action.Result.DocRemarks;
+                FormData.DiscPercent = action.Result.DiscPercent;
                 SetInitialSalesOrderQuantity();
             }
         });

@@ -154,7 +154,7 @@ public class SalesReturnIntegration(
                 lineIndex,
                 expenseline,
                 line.Freight1Code,
-                line.Freight1
+                line.Quantity * line.MarkUp //Total MarkUp
                 ));
 
                 expenseline++;
@@ -166,7 +166,7 @@ public class SalesReturnIntegration(
                 lineIndex,
                 expenseline,
                 line.Freight2Code,
-                line.Freight2
+                -((line.Quantity * line.Price) + (line.Quantity * line.MarkUp)) * (data.DiscPercent / 100) // Total Discount
                 ));
             }
 
@@ -226,7 +226,7 @@ public class SalesReturnIntegration(
                 lineIndex,
                 expenseline,
                 line.Freight1Code,
-                line.Freight1
+                line.Quantity * line.MarkUp //Total MarkUp
                 ));
 
                 expenseline++;
@@ -238,7 +238,7 @@ public class SalesReturnIntegration(
                 lineIndex,
                 expenseline,
                 line.Freight2Code,
-                line.Freight2
+                -((line.Quantity * line.Price) + (line.Quantity * line.MarkUp)) * (data.DiscPercent / 100) // Total Discount
                 ));
             }
 

@@ -307,7 +307,7 @@ public partial class InventoryCountingCVUPage
         {
             _blackList = [];
             FormData.DocumentLines = [.. (result ?? []).Where(x => x.Quantity > 0)];
-            FormData.DocumentLines = FormData.DocumentLines.Except(_blackList);
+            FormData.DocumentLines = FormData.DocumentLines.Except(_blackList).ToList();
 
             if (DocumentLinesTable is not null)
                 await DocumentLinesTable.DataGrid.Reload();

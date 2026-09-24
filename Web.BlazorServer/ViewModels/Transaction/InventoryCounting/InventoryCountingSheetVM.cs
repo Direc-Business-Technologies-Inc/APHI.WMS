@@ -11,5 +11,5 @@ public class InventoryCountingSheetVM
     public UserDetailVM Counter { get; set; } = new();
     public DateTime SubmittedDate { get; set; }
     public InventoryCountingSheetStatus Status { get; set; }
-    public IEnumerable<InventoryCountingSheetLineVM> SheetLines { get; set; } = [];
+    public List<InventoryCountingSheetLineVM> SheetLines { get; set; } = [];
 }

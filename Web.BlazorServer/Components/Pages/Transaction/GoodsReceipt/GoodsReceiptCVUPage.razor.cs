@@ -427,7 +427,7 @@ public partial class GoodsReceiptCVUPage
             FormData.BusinessPartner = res.BusinessPartner;
             FormData.Designation = res.Designation;
             FormData.DocRemarks = res.DocRemarks;
-            FormData.DocumentLines = res.DocumentLines.Adapt<IEnumerable<GoodsReceiptLineVM>>();
+            FormData.DocumentLines = res.DocumentLines.Adapt<List<GoodsReceiptLineVM>>();
             await InvokeAsync(StateHasChanged);
 
         });

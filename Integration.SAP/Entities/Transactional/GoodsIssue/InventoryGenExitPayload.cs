@@ -4,6 +4,7 @@ namespace Integration.SAP.Entities.Transactional.GoodsIssue;
 
 public class InventoryGenExitPayload
 {
+    public DateTime DocDate { get; private set; }
     public string U_PrepBy { get; private set; }
     public string Comments { get; private set; }
     public string U_TransType { get; private set; }
@@ -18,7 +19,8 @@ public class InventoryGenExitPayload
     public string? U_NotedBy { get; set; }
     public IEnumerable<InventoryGenExitLinesPayload> DocumentLines { get; private set; } = [];
 
-    public InventoryGenExitPayload(string preparedBy,
+    public InventoryGenExitPayload(DateTime docDate,
+                                   string preparedBy,
                                    string transType,
                                    IEnumerable<InventoryGenExitLinesPayload> lines,
                                    string? bpCode = null,
@@ -31,6 +33,7 @@ public class InventoryGenExitPayload
                                    string? recBy = null,
                                    string? notedBy = null)
     {
+        DocDate = Guard.Against.NullOrOutOfSQLDateRange(docDate, nameof(DocDate));
         U_PrepBy = Guard.Against.NullOrEmpty(preparedBy, nameof(U_PrepBy), "Prepared By cannot be null or empty");
         U_TransType = Guard.Against.NullOrEmpty(transType, nameof(U_TransType), "Transaction Type cannot be null or empty");
         DocumentLines = Guard.Against.NullOrEmpty(lines, nameof(DocumentLines), "Document Lines cannot be null or empty");

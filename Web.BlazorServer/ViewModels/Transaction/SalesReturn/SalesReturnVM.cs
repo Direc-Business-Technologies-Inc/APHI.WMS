@@ -21,6 +21,7 @@ public class SalesReturnVM : MarketingDocumentVM
     public string? CheckedBy { get; set; }
     public string? NotedBy { get; set; }
     public string? ApprovedBy { get; set; }
+    public decimal DiscPercent { get; set; }
 
     public bool Standalone { get; set; } = true;
     public bool DefinitivelyStandalone { get; set; } = false;

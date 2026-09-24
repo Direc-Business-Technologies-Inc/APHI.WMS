@@ -118,7 +118,7 @@
                 <ChildContent>
                     <RadzenRow>
                         <RadzenColumn>
-                            <AppTable @ref="@SalesOrderTable" Id="so_cvu_items" TItem="SalesOrderLineVM" @bind-GridSettingsLoaded="@GridSettingsLoaded" SearchFilter="@_soLinesFilter" Data="[.. FormData.DocumentLines]">
+                            <AppTable @ref="@SalesOrderTable" Id="so_cvu_items" TItem="SalesOrderLineVM" @bind-GridSettingsLoaded="@GridSettingsLoaded" SearchFilter="@_soLinesFilter" Data="FormData.DocumentLines">
                                 <HeaderTemplate>
                                     <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center" Gap="8px">
                                         <AppTableSearchBar TItem="SalesOrderLineVM"

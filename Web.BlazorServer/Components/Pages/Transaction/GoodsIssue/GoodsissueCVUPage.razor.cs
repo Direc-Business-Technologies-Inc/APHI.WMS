@@ -14,6 +14,7 @@ using Web.BlazorServer.ViewModels.Enums;
 using Web.BlazorServer.ViewModels.Others;
 using Web.BlazorServer.ViewModels.Transaction.Commons;
 using Web.BlazorServer.ViewModels.Transaction.GoodsIssue;
+using Web.BlazorServer.ViewModels.Transaction.InventoryCounting;
 
 namespace Web.BlazorServer.Components.Pages.Transaction.GoodsIssue;
 

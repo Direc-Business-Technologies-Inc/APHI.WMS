@@ -16,5 +16,6 @@ public class SalesOrderVM : MarketingDocumentVM
     public string? ReviewedBy { get; set; }
     public string? ApprovedBy { get; set; }
     public string? NotedBy { get; set; }
-    public IEnumerable<SalesOrderLineVM> DocumentLines { get; set; } = [];
+    public decimal DiscPercent { get; set; }
+    public List<SalesOrderLineVM> DocumentLines { get; set; } = [];
 }

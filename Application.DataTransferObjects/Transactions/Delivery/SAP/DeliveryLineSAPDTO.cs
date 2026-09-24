@@ -22,4 +22,5 @@ public class DeliveryLineSAPDTO
     public int Freight2Code { get; set; }
     public decimal Freight2 { get; set; }
     public decimal MarkUp { get; set; }
+    public decimal Price { get; set; }
 }

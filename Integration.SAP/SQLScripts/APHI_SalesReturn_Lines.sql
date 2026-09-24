@@ -7,6 +7,7 @@ SELECT
 	,RDN1.WhsCode
 	,OWHS.WhsName
 	,RDN1.Quantity [Quantity]
+    ,RDN1.Price
 	,CASE 
         WHEN ISNULL(RDN1.UomCode, '') = '' THEN 'Manual'
         ELSE RDN1.UomCode

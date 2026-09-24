@@ -27,6 +27,7 @@ public class DeliveryVM : MarketingDocumentVM
     public string? Courier { get; set; } = null;
     public string? Driver { get; set; } = null;
     public string? Area { get; set; } = null;
+    public decimal DiscPercent { get; set; }
 
-    public IEnumerable<DeliveryLineVM> DocumentLines { get; set; } = [];
+    public List<DeliveryLineVM> DocumentLines { get; set; } = [];
 }

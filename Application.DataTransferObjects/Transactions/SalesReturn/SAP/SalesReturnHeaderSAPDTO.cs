@@ -24,4 +24,5 @@ public class SalesReturnHeaderSAPDTO
     public string CheckedBy {  get; set; }
     public string NotedBy {  get; set; }
     public string ApprovedBy {  get; set; }
+    public decimal DiscPercent {  get; set; }
 }

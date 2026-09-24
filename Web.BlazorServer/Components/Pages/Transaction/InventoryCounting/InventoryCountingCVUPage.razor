@@ -179,7 +179,7 @@
                                       TItem="InventoryCountingLineVM"
                                       @bind-GridSettingsLoaded="@GridSettingsLoaded"
                                       SearchFilter="@_createLinesFilter"
-                                      Data="[..FormData.DocumentLines]">
+                                      Data="FormData.DocumentLines">
                                 <HeaderTemplate>
                                     <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center" Gap="8px">
                                         <AppTableSearchBar TItem="InventoryCountingLineVM"

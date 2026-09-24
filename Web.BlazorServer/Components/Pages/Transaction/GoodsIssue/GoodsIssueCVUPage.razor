@@ -169,7 +169,7 @@
                 <ChildContent>
                     <RadzenRow>
                         <RadzenColumn>
-                            <AppTable @ref="@GoodsIssueTable" Id="goods_issue_cvu_items" TItem="GoodsIssueLineVM" @bind-GridSettingsLoaded="@GridSettingsLoaded" SearchFilter="@_giLinesFilter" Data="[.. FormData.DocumentLines]">
+                            <AppTable @ref="@GoodsIssueTable" Id="goods_issue_cvu_items" TItem="GoodsIssueLineVM" @bind-GridSettingsLoaded="@GridSettingsLoaded" SearchFilter="@_giLinesFilter" Data="@FormData.DocumentLines">
                                 <HeaderTemplate>
                                     <RadzenStack Orientation="Orientation.Horizontal" JustifyContent="JustifyContent.SpaceBetween" AlignItems="AlignItems.Center" Gap="8px">
                                         <AppTableSearchBar TItem="GoodsIssueLineVM"
@@ -315,7 +315,7 @@
             "Item Selection",
             ds => @<GoodsIssueItemSelection @bind-Issue="@FormData" />,
     options: GridSettingsService.GetDialogOptions().MaximizedMode());
-
+        
         await GoodsIssueTable.DataGrid.Reload();
     }
 

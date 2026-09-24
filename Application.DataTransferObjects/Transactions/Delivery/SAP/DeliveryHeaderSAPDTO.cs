@@ -28,4 +28,5 @@ public class DeliveryHeaderSAPDTO
     public string? Area { get; set; }
     public string? ApprovedBy { get; set; }
     public string? NotedBy { get; set; }
+    public decimal DiscPercent { get; set; }
 }

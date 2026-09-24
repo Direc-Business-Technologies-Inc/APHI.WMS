@@ -17,5 +17,5 @@ public class GoodsReceiptVM : MarketingDocumentVM
     public string? ReceivedBy { get; set; } = null;
     public string? ApprovedBy { get; set; } = null;
     public string? NotedBy { get; set; } = null;
-    public IEnumerable<GoodsReceiptLineVM> DocumentLines { get; set; } = [];
+    public List<GoodsReceiptLineVM> DocumentLines { get; set; } = [];
 }

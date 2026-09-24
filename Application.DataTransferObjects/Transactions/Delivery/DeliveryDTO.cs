@@ -28,6 +28,7 @@ public class DeliveryDTO : MarketingDocumentDTO
     public string? Area { get; set; } = null;
     public string? Courier { get; set; } = null;
     public string? Driver { get; set; } = null;
+    public decimal DiscPercent { get; set; }
 
     public IEnumerable<DeliveryLineDTO> DocumentLines { get; set; } = [];
 }

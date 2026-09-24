@@ -9,6 +9,7 @@ using Integration.SAP.Entities.Transactional.Delivery;
 using Shared.Libraries.Entities;
 using System.Text.Json;
 using static Integration.SAP.Entities.Transactional.Delivery.DeliveryNotesLinesPayload;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Integration.SAP.Implementations.Transaction.Delivery;
 
@@ -154,7 +155,7 @@ public class DeliveryIntegration(
                 i,
                 expenseline,
                 line.Freight1Code,
-                line.Freight1
+                line.Quantity * line.MarkUp //Total MarkUp
                 ));
 
                 expenseline++;
@@ -166,7 +167,7 @@ public class DeliveryIntegration(
                 i,
                 expenseline,
                 line.Freight2Code,
-                line.Freight2
+                -((line.Quantity * line.Price) + (line.Quantity * line.MarkUp)) * (document.DiscPercent / 100) // Total Discount
                 ));
             }
 

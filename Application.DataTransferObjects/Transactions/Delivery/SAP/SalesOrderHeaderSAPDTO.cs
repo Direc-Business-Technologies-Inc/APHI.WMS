@@ -21,4 +21,5 @@ public class SalesOrderHeaderSAPDTO
     public string? ReviewedBy { get; set; }
     public string? AppprovedBy { get; set; }
     public string? NotedBy { get; set; }
+    public decimal DiscPercent { get; set; }
 }
